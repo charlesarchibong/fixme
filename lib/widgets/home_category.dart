@@ -39,7 +39,7 @@ class _HomeCategoryState extends State<HomeCategory> {
       child: Card(
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-        elevation: 4.0,
+        elevation: 1.0,
         child: Padding(
           padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
           child: Row(

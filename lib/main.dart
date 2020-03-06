@@ -5,7 +5,6 @@ import 'package:call_a_technician/util/const.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:provider/provider.dart';
-
 import 'providers/register_form_validation.dart';
 
 void main() {

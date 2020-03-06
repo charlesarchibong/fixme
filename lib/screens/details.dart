@@ -1,8 +1,8 @@
 import 'package:call_a_technician/screens/notifications.dart';
-import 'package:call_a_technician/util/comments.dart';
 import 'package:call_a_technician/util/const.dart';
 import 'package:call_a_technician/util/foods.dart';
 import 'package:call_a_technician/widgets/badge.dart';
+import 'package:call_a_technician/widgets/reviews.dart';
 import 'package:call_a_technician/widgets/smooth_star_rating.dart';
 import 'package:flutter/material.dart';
 
@@ -175,66 +175,25 @@ class _ProductDetailsState extends State<ProductDetails> {
               maxLines: 2,
             ),
             SizedBox(height: 20.0),
-            ListView.builder(
-              shrinkWrap: true,
-              primary: false,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: comments == null ? 0 : comments.length,
-              itemBuilder: (BuildContext context, int index) {
-                Map comment = comments[index];
-                return ListTile(
-                  leading: CircleAvatar(
-                    radius: 25.0,
-                    backgroundImage: AssetImage(
-                      "${comment['img']}",
-                    ),
-                  ),
-                  title: Text("${comment['name']}"),
-                  subtitle: Column(
-                    children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          SmoothStarRating(
-                            starCount: 5,
-                            color: Constants.ratingBG,
-                            allowHalfRating: true,
-                            rating: 5.0,
-                            size: 12.0,
-                          ),
-                          SizedBox(width: 6.0),
-                          Text(
-                            "February 14, 2020",
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w300,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 7.0),
-                      Text(
-                        "${comment["comment"]}",
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
+            Reviews(),
             SizedBox(height: 10.0),
           ],
         ),
       ),
-      bottomNavigationBar: Container(
-        height: 50.0,
-        child: RaisedButton(
-          child: Text(
-            "Request Service",
-            style: TextStyle(
-              color: Colors.white,
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.only(bottom: 30.0, left: 20.0, right: 20.0),
+        child: Container(
+          height: 50.0,
+          child: RaisedButton(
+            child: Text(
+              "Request Service",
+              style: TextStyle(
+                color: Colors.white,
+              ),
             ),
+            color: Theme.of(context).accentColor,
+            onPressed: () {},
           ),
-          color: Theme.of(context).accentColor,
-          onPressed: () {},
         ),
       ),
     );

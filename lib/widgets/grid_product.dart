@@ -52,7 +52,7 @@ class GridProduct extends StatelessWidget {
                     child: Icon(
                       isFav ? Icons.favorite : Icons.favorite_border,
                       color: Colors.red,
-                      size: 17,
+                      size: 15,
                     ),
                   ),
                 ),
@@ -64,7 +64,7 @@ class GridProduct extends StatelessWidget {
             child: Text(
               "$name",
               style: TextStyle(
-                fontSize: 20.0,
+                fontSize: 15.0,
                 fontWeight: FontWeight.w900,
               ),
               maxLines: 2,

@@ -1,8 +1,14 @@
+import 'dart:convert';
+
+import 'package:call_a_technician/models/user.dart';
 import 'package:call_a_technician/providers/register_form_validation.dart';
-import 'package:call_a_technician/screens/main_screen.dart';
+import 'package:call_a_technician/util/Utils.dart';
+import 'package:call_a_technician/widgets/alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+
+import 'main_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -10,28 +16,74 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  final TextEditingController _nameControl = new TextEditingController();
+  final TextEditingController _firstNameController =
+      new TextEditingController();
+  final TextEditingController _lastNameController = new TextEditingController();
   final TextEditingController _emailControl = new TextEditingController();
   final TextEditingController _passwordControl = new TextEditingController();
   final TextEditingController _phoneControl = new TextEditingController();
-
   void _registerUser() {
     final registerForm =
         Provider.of<RegisterFormValidation>(context, listen: false);
-    bool errorValid = registerForm.validate(_nameControl.text,
-        _phoneControl.text, _emailControl.text, _passwordControl.text);
+    bool errorValid = registerForm.validate(
+        _firstNameController.text,
+        _lastNameController.text,
+        _phoneControl.text,
+        _emailControl.text,
+        _passwordControl.text);
     bool validEmail = registerForm.validateEmail(_emailControl.text);
     if (!errorValid) {
       if (validEmail) {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (BuildContext context) {
-              return MainScreen();
-            },
-          ),
-        );
+        registerForm.setLoading();
+        User user = new User.name(
+            firstName: _firstNameController.text,
+            lastName: _lastNameController.text,
+            phoneNumber: _phoneControl.text,
+            email: _emailControl.text,
+            password: _passwordControl.text,
+            address: 'Loading');
+        registerForm.registerUser(user.toJson()).then((user) {
+          registerForm.setNotLoading();
+          print(user.toJson());
+          Utils.setUserSession(jsonEncode(user));
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (BuildContext context) {
+                return MainScreen();
+              },
+            ),
+          );
+        }).catchError((onError) {
+//          SnackBar(content: BuildContext context, )
+          // Alert(title: 'Error', description: onError.toString());
+          _showAlert(context, onError.toString().split(':')[1]);
+          registerForm.setNotLoading();
+          print(onError);
+        });
       }
     }
+  }
+
+  void _showAlert(BuildContext context, String message) {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text("Error"),
+              content: Text(message),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0)),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text("Try again"),
+                  padding: EdgeInsets.all(10.0),
+                  textColor: Colors.white,
+                  color: Theme.of(context).accentColor,
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                )
+              ],
+            ));
   }
 
   @override
@@ -42,22 +94,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
       child: ListView(
         shrinkWrap: true,
         children: <Widget>[
-          SizedBox(height: 10.0),
           Container(
             alignment: Alignment.center,
             margin: EdgeInsets.only(
               top: 25.0,
             ),
-            child: Text(
-              "Create an account",
-              style: TextStyle(
-                fontSize: 18.0,
-                fontWeight: FontWeight.w700,
-                color: Theme.of(context).accentColor,
-              ),
+            child: Image.asset(
+              "assets/cat.png",
+              height: 100,
             ),
           ),
-          SizedBox(height: 30.0),
+          SizedBox(height: 15.0),
           Card(
             elevation: 3.0,
             child: Container(
@@ -68,13 +115,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
               ),
               child: TextField(
+                enabled: registerForm.enableForm,
                 style: TextStyle(
                   fontSize: 15.0,
                   color: Colors.black,
                 ),
                 decoration: InputDecoration(
-                  errorText:
-                      registerForm.name ? 'Name field cannot be empty' : null,
+                  errorText: registerForm.firstName
+                      ? 'First Name field cannot be empty'
+                      : null,
                   contentPadding: EdgeInsets.all(10.0),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5.0),
@@ -88,7 +137,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     borderRadius: BorderRadius.circular(5.0),
                   ),
-                  hintText: "Name",
+                  hintText: "First Name",
                   prefixIcon: Icon(
                     Icons.perm_identity,
                     color: Colors.black,
@@ -99,7 +148,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ),
                 maxLines: 1,
-                controller: _nameControl,
+                controller: _firstNameController,
               ),
             ),
           ),
@@ -114,6 +163,55 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
               ),
               child: TextField(
+                enabled: registerForm.enableForm,
+                style: TextStyle(
+                  fontSize: 15.0,
+                  color: Colors.black,
+                ),
+                decoration: InputDecoration(
+                  errorText: registerForm.lastName
+                      ? 'Last name field cannot be empty'
+                      : null,
+                  contentPadding: EdgeInsets.all(10.0),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                    borderSide: BorderSide(
+                      color: Colors.white,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.white,
+                    ),
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                  hintText: "Last Name",
+                  prefixIcon: Icon(
+                    Icons.perm_identity,
+                    color: Colors.black,
+                  ),
+                  hintStyle: TextStyle(
+                    fontSize: 15.0,
+                    color: Colors.black,
+                  ),
+                ),
+                maxLines: 1,
+                controller: _lastNameController,
+              ),
+            ),
+          ),
+          SizedBox(height: 10.0),
+          Card(
+            elevation: 3.0,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(5.0),
+                ),
+              ),
+              child: TextField(
+                enabled: registerForm.enableForm,
                 style: TextStyle(
                   fontSize: 15.0,
                   color: Colors.black,
@@ -165,6 +263,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
               ),
               child: TextField(
+                enabled: registerForm.enableForm,
                 style: TextStyle(
                   fontSize: 15.0,
                   color: Colors.black,
@@ -214,6 +313,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
               ),
               child: TextField(
+                enabled: registerForm.enableForm,
                 style: TextStyle(
                   fontSize: 15.0,
                   color: Colors.black,
@@ -255,14 +355,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
           Container(
             height: 50.0,
             child: RaisedButton(
-              child: Text(
-                "Register".toUpperCase(),
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
+              elevation: 5.0,
+              child: registerForm.loading
+                  ? CircularProgressIndicator(backgroundColor: Colors.white)
+                  : Text(
+                      "Register".toUpperCase(),
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
               onPressed: () {
-                _registerUser();
+                registerForm.enableForm ? _registerUser() : null;
               },
               color: Theme.of(context).accentColor,
             ),

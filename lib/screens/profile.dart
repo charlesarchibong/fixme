@@ -14,7 +14,7 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.fromLTRB(10.0, 0, 10.0, 0),
+        padding: EdgeInsets.fromLTRB(10.0, 15.0, 10.0, 0),
         child: ListView(
           children: <Widget>[
             Row(

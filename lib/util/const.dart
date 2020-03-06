@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 class Constants {
   static String appName = "Call A Technician (CAT)";
+  static String baseUrl = "https://callatechnician.com.ng";
+  static String createUserUrl = "/reg-user";
+  static String loginUserUrl = "/user-login";
 
   //Colors for theme
 //  Color(0xfffcfcff);
@@ -16,8 +19,8 @@ class Constants {
   static Color darkAccent = Colors.yellow[700];
 
   static ThemeData lightTheme = ThemeData(
-//    primarySwatch: Colors.blue,
-    brightness: Brightness.light,
+    primarySwatch: Colors.blue,
+    // brightness: Brightness.light,
     backgroundColor: darkAccent,
     primaryColor: lightPrimary,
     accentColor: lightAccent,

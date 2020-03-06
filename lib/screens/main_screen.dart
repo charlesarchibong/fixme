@@ -1,16 +1,17 @@
 import 'package:call_a_technician/screens/cart.dart';
 import 'package:call_a_technician/screens/favorite_screen.dart';
 import 'package:call_a_technician/screens/home.dart';
+import 'package:call_a_technician/screens/join.dart';
 import 'package:call_a_technician/screens/notifications.dart';
 import 'package:call_a_technician/screens/profile.dart';
 import 'package:call_a_technician/screens/search.dart';
+import 'package:call_a_technician/util/Utils.dart';
 import 'package:call_a_technician/util/const.dart';
 import 'package:call_a_technician/widgets/badge.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
-// import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -26,6 +27,17 @@ class _MainScreenState extends State<MainScreen> {
     FlutterStatusbarcolor.setStatusBarColor(Constants.darkAccent);
     FlutterStatusbarcolor.setNavigationBarColor(Constants.darkAccent);
     // FlutterStatusbarcolor
+    final user = Utils.getUserSession();
+    print(user);
+    if (user == null) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (BuildContext context) {
+            return JoinApp();
+          },
+        ),
+      );
+    }
     return WillPopScope(
       onWillPop: () => Future.value(false),
       child: Scaffold(
@@ -83,6 +95,35 @@ class _MainScreenState extends State<MainScreen> {
                     ),
                   ),
                 ),
+                otherAccountsPictures: <Widget>[
+                  Container(
+                    height: 200,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border:
+                            Border.all(color: Constants.lightAccent, width: 1)),
+                    padding: EdgeInsets.symmetric(horizontal: 16.0),
+//                  width: MediaQuery.of(context).size.width * 10.6,
+                    child: ClipOval(
+                      child: Image(
+                        fit: BoxFit.contain,
+                        image: NetworkImage(
+                          'https://www.pngarts.com/files/3/Cool-Avatar-Transparent-Image.png',
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              ListTile(
+                title: Text('Jobs'),
+                trailing: Icon(Icons.work),
+                onTap: () {},
+              ),
+              ListTile(
+                title: Text('Post Job(s)'),
+                trailing: Icon(Icons.add_circle_outline),
+                onTap: () {},
               )
             ],
           ),

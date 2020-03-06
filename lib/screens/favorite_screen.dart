@@ -21,7 +21,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>
             Text(
               "My Favorite Technician(s)",
               style: TextStyle(
-                fontSize: 23,
+                fontSize: 19,
                 fontWeight: FontWeight.w800,
               ),
             ),

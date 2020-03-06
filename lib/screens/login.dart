@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:call_a_technician/providers/login_form_validation.dart';
+import 'package:call_a_technician/screens/forget_password_page.dart';
 import 'package:call_a_technician/screens/main_screen.dart';
+import 'package:call_a_technician/util/Utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -11,17 +15,51 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _usernameControl = new TextEditingController();
   final TextEditingController _passwordControl = new TextEditingController();
-  void loginUser() {
+  void _loginUser() {
     final loginForm = Provider.of<LoginFormValidation>(context, listen: false);
     if (loginForm.validate(_usernameControl.text, _passwordControl.text)) {
       if (loginForm.validateEmail(_usernameControl.text)) {
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (BuildContext context) {
-            return MainScreen();
-          }),
-        );
+        loginForm.setLoading();
+        loginForm
+            .loginUser(_usernameControl.text, _passwordControl.text)
+            .then((user) {
+          loginForm.setNotLoading();
+          print(user.toJson());
+          Utils.setUserSession(jsonEncode(user));
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (BuildContext context) {
+              return MainScreen();
+            }),
+          );
+        }).catchError((error) {
+          loginForm.setNotLoading();
+          print(error.toString().split(":")[1]);
+          _showAlert(context, error.toString().split(":")[1]);
+        });
       }
     }
+  }
+
+  void _showAlert(BuildContext context, String message) {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text("Error"),
+              content: Text(message),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0)),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text("Try again"),
+                  padding: EdgeInsets.all(10.0),
+                  textColor: Colors.white,
+                  color: Theme.of(context).accentColor,
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                )
+              ],
+            ));
   }
 
   @override
@@ -36,18 +74,14 @@ class _LoginScreenState extends State<LoginScreen> {
           Container(
             alignment: Alignment.center,
             margin: EdgeInsets.only(
-              top: 25.0,
+              top: 15.0,
             ),
-            child: Text(
-              "Log in to your account",
-              style: TextStyle(
-                fontSize: 18.0,
-                fontWeight: FontWeight.w700,
-                color: Theme.of(context).accentColor,
-              ),
+            child: Image.asset(
+              "assets/cat.png",
+              height: 100,
             ),
           ),
-          SizedBox(height: 30.0),
+          SizedBox(height: 10.0),
           Card(
             elevation: 3.0,
             child: Container(
@@ -158,26 +192,40 @@ class _LoginScreenState extends State<LoginScreen> {
                   color: Theme.of(context).accentColor,
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (BuildContext context) {
+                  return ForgetPassword();
+                }));
+              },
             ),
           ),
           SizedBox(height: 30.0),
           Container(
             height: 50.0,
             child: RaisedButton(
-              child: Text(
-                "LOGIN".toUpperCase(),
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
+              child: loginForm.loading
+                  ? Container(
+                      alignment: Alignment.center,
+                      width: 50,
+                      height: 50,
+                      child: CircularProgressIndicator(
+                        backgroundColor: Colors.white,
+                      ),
+                    )
+                  : Text(
+                      "LOGIN".toUpperCase(),
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
               onPressed: () {
-                loginUser();
+                _loginUser();
               },
               color: Theme.of(context).accentColor,
             ),
           ),
-          SizedBox(height: 20.0),
+          SizedBox(height: 50.0),
         ],
       ),
     );
