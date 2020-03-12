@@ -1,6 +1,8 @@
 import 'package:call_a_technician/providers/login_form_validation.dart';
+import 'package:call_a_technician/providers/post_job_provider.dart';
 import 'package:call_a_technician/util/const.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class PostJob extends StatefulWidget {
@@ -8,10 +10,12 @@ class PostJob extends StatefulWidget {
   _PostJobState createState() => _PostJobState();
 }
 
+var jobCategory;
+
 class _PostJobState extends State<PostJob> {
   @override
   Widget build(BuildContext context) {
-    final loginForm = Provider.of<LoginFormValidation>(context);
+    final postJob = Provider.of<PostJobProvider>(context);
 
     return Scaffold(
         appBar: AppBar(
@@ -35,18 +39,18 @@ class _PostJobState extends State<PostJob> {
           child: ListView(
             shrinkWrap: true,
             children: <Widget>[
-              SizedBox(height: 10.0),
+              SizedBox(height: 20.0),
               Container(
-                alignment: Alignment.center,
-                margin: EdgeInsets.only(
-                  top: 15.0,
-                ),
-                child: Image.asset(
-                  "assets/cat.png",
-                  height: 100,
-                ),
-              ),
-              SizedBox(height: 10.0),
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Post a job in Call A Technician community and get technicians around you notified and bid your job offer and you choose your prefered technician',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16.0,
+                    ),
+                    textAlign: TextAlign.center,
+                  )),
+              SizedBox(height: 20.0),
               Card(
                 elevation: 3.0,
                 child: Container(
@@ -57,18 +61,14 @@ class _PostJobState extends State<PostJob> {
                     ),
                   ),
                   child: TextField(
-                    keyboardType: TextInputType.emailAddress,
                     textCapitalization: TextCapitalization.none,
                     style: TextStyle(
                       fontSize: 15.0,
                       color: Colors.black,
                     ),
                     decoration: InputDecoration(
-                      errorText: loginForm.email
-                          ? 'Email field can not be empty'
-                          : loginForm.invalidEmail
-                              ? 'Email address is invalid'
-                              : null,
+                      errorText:
+                          postJob.title ? 'Job title can not be empty' : null,
                       contentPadding: EdgeInsets.all(10.0),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5.0),
@@ -82,17 +82,202 @@ class _PostJobState extends State<PostJob> {
                         ),
                         borderRadius: BorderRadius.circular(5.0),
                       ),
-                      hintText: "Email",
+                      hintText: "Job Title",
                       hintStyle: TextStyle(
                         fontSize: 15.0,
                         color: Colors.black,
                       ),
                       prefixIcon: Icon(
-                        Icons.perm_identity,
+                        Icons.add_comment,
                         color: Colors.black,
                       ),
                     ),
                     maxLines: 1,
+                    autocorrect: true,
+                    // controller: _usernameControl,
+                  ),
+                ),
+              ),
+              Card(
+                elevation: 3.0,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(5.0),
+                    ),
+                  ),
+                  child: TextField(
+                    textCapitalization: TextCapitalization.none,
+                    keyboardType: TextInputType.multiline,
+                    style: TextStyle(
+                      fontSize: 15.0,
+                      color: Colors.black,
+                    ),
+                    decoration: InputDecoration(
+                      errorText: postJob.description
+                          ? 'Job description can not be empty'
+                          : null,
+                      contentPadding: EdgeInsets.all(10.0),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                        borderSide: BorderSide(
+                          color: Colors.white,
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.white,
+                        ),
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      hintText: "Job Description",
+                      hintStyle: TextStyle(
+                        fontSize: 15.0,
+                        color: Colors.black,
+                      ),
+                      prefixIcon: Icon(
+                        Icons.description,
+                        color: Colors.black,
+                      ),
+                    ),
+                    maxLines: null,
+                    autocorrect: true,
+                    // controller: _usernameControl,
+                  ),
+                ),
+              ),
+              Card(
+                elevation: 3.0,
+                child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(5.0),
+                      ),
+                    ),
+                    child: DropdownButton<String>(
+                      value: jobCategory,
+                      hint: Text(
+                        'Select Job Category',
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                      ),
+                      isExpanded: true,
+                      underline: SizedBox(),
+                      icon: Icon(Icons.arrow_downward, color: Colors.black),
+                      items: <String>['Electrical', 'Mechanical']
+                          .map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      onChanged: (String newValue) {
+                        setState(() {
+                          jobCategory = newValue;
+                        });
+                      },
+                    )),
+              ),
+              Card(
+                elevation: 3.0,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(5.0),
+                    ),
+                  ),
+                  child: TextField(
+                    textCapitalization: TextCapitalization.none,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      WhitelistingTextInputFormatter.digitsOnly
+                    ],
+                    style: TextStyle(
+                      fontSize: 15.0,
+                      color: Colors.black,
+                    ),
+                    decoration: InputDecoration(
+                      errorText:
+                          postJob.price ? 'Job price can not be empty' : null,
+                      contentPadding: EdgeInsets.all(10.0),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                        borderSide: BorderSide(
+                          color: Colors.white,
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.white,
+                        ),
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      hintText: "Job Price",
+                      hintStyle: TextStyle(
+                        fontSize: 15.0,
+                        color: Colors.black,
+                      ),
+                      prefixIcon: Icon(
+                        Icons.monetization_on,
+                        color: Colors.black,
+                      ),
+                    ),
+                    maxLines: null,
+                    autocorrect: true,
+                    // controller: _usernameControl,
+                  ),
+                ),
+              ),
+              Card(
+                elevation: 3.0,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(5.0),
+                    ),
+                  ),
+                  child: TextField(
+                    textCapitalization: TextCapitalization.none,
+                    keyboardType: TextInputType.text,
+                    style: TextStyle(
+                      fontSize: 15.0,
+                      color: Colors.black,
+                    ),
+                    decoration: InputDecoration(
+                      errorText: postJob.address
+                          ? 'Job address can not be empty'
+                          : null,
+                      contentPadding: EdgeInsets.all(10.0),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                        borderSide: BorderSide(
+                          color: Colors.white,
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.white,
+                        ),
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      hintText: "Job Address location",
+                      hintStyle: TextStyle(
+                        fontSize: 15.0,
+                        color: Colors.black,
+                      ),
+                      prefixIcon: Icon(
+                        Icons.location_on,
+                        color: Colors.black,
+                      ),
+                    ),
+                    maxLines: null,
+                    autocorrect: true,
                     // controller: _usernameControl,
                   ),
                 ),
@@ -101,7 +286,7 @@ class _PostJobState extends State<PostJob> {
               Container(
                 height: 50.0,
                 child: RaisedButton(
-                  child: loginForm.loading
+                  child: postJob.loading
                       ? Container(
                           alignment: Alignment.center,
                           width: 50,

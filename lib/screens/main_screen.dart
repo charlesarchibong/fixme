@@ -3,6 +3,7 @@ import 'package:call_a_technician/screens/favorite_screen.dart';
 import 'package:call_a_technician/screens/home.dart';
 import 'package:call_a_technician/screens/join.dart';
 import 'package:call_a_technician/screens/notifications.dart';
+import 'package:call_a_technician/screens/post_job.dart';
 import 'package:call_a_technician/screens/profile.dart';
 import 'package:call_a_technician/screens/search.dart';
 import 'package:call_a_technician/util/Utils.dart';
@@ -123,7 +124,12 @@ class _MainScreenState extends State<MainScreen> {
               ListTile(
                 title: Text('Post Job(s)'),
                 trailing: Icon(Icons.add_circle_outline),
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (BuildContext context) {
+                    return PostJob();
+                  }));
+                },
               )
             ],
           ),
