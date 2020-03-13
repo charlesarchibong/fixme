@@ -1,3 +1,4 @@
+import 'package:call_a_technician/models/job_category.dart';
 import 'package:call_a_technician/providers/login_form_validation.dart';
 import 'package:call_a_technician/providers/post_job_provider.dart';
 import 'package:call_a_technician/util/const.dart';
@@ -10,7 +11,11 @@ class PostJob extends StatefulWidget {
   _PostJobState createState() => _PostJobState();
 }
 
-var jobCategory;
+JobCategory jobCategory;
+List<JobCategory> jobCategories = <JobCategory>[
+  JobCategory(id: '1', title: 'Mechanical'),
+  JobCategory(id: '2', title: 'Electrical')
+];
 
 class _PostJobState extends State<PostJob> {
   @override
@@ -157,7 +162,7 @@ class _PostJobState extends State<PostJob> {
                         Radius.circular(5.0),
                       ),
                     ),
-                    child: DropdownButton<String>(
+                    child: DropdownButton<JobCategory>(
                       value: jobCategory,
                       hint: Text(
                         'Select Job Category',
@@ -168,17 +173,17 @@ class _PostJobState extends State<PostJob> {
                       isExpanded: true,
                       underline: SizedBox(),
                       icon: Icon(Icons.arrow_downward, color: Colors.black),
-                      items: <String>['Electrical', 'Mechanical']
-                          .map((String value) {
-                        return DropdownMenuItem<String>(
+                      items: jobCategories.map((JobCategory value) {
+                        return DropdownMenuItem<JobCategory>(
                           value: value,
-                          child: Text(value),
+                          child: Text(value.title),
                         );
                       }).toList(),
-                      onChanged: (String newValue) {
+                      onChanged: (JobCategory newValue) {
                         setState(() {
                           jobCategory = newValue;
                         });
+                        // print(jobCategory.id);
                       },
                     )),
               ),
