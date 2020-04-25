@@ -1,5 +1,5 @@
-import 'package:call_a_technician/util/foods.dart';
-import 'package:call_a_technician/widgets/cart_item.dart';
+import 'package:quickfix/util/foods.dart';
+import 'package:quickfix/widgets/cart_item.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 

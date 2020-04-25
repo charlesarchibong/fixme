@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:call_a_technician/models/user.dart';
-import 'package:call_a_technician/providers/register_form_validation.dart';
-import 'package:call_a_technician/util/Utils.dart';
-import 'package:call_a_technician/widgets/alert.dart';
+import 'package:quickfix/models/user.dart';
+import 'package:quickfix/providers/register_form_validation.dart';
+import 'package:quickfix/util/Utils.dart';
+import 'package:quickfix/widgets/alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';

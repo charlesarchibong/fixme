@@ -1,9 +1,9 @@
-import 'package:call_a_technician/screens/notifications.dart';
-import 'package:call_a_technician/util/const.dart';
-import 'package:call_a_technician/util/foods.dart';
-import 'package:call_a_technician/widgets/badge.dart';
-import 'package:call_a_technician/widgets/reviews.dart';
-import 'package:call_a_technician/widgets/smooth_star_rating.dart';
+import 'package:quickfix/screens/notifications.dart';
+import 'package:quickfix/util/const.dart';
+import 'package:quickfix/util/foods.dart';
+import 'package:quickfix/widgets/badge.dart';
+import 'package:quickfix/widgets/reviews.dart';
+import 'package:quickfix/widgets/smooth_star_rating.dart';
 import 'package:flutter/material.dart';
 
 class ProductDetails extends StatefulWidget {

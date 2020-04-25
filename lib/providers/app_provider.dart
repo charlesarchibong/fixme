@@ -1,4 +1,4 @@
-import 'package:call_a_technician/util/const.dart';
+import 'package:quickfix/util/const.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

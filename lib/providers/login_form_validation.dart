@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:call_a_technician/models/user.dart';
-import 'package:call_a_technician/util/Utils.dart';
-import 'package:call_a_technician/util/const.dart';
+import 'package:quickfix/models/user.dart';
+import 'package:quickfix/util/Utils.dart';
+import 'package:quickfix/util/const.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 

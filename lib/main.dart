@@ -1,8 +1,8 @@
-import 'package:call_a_technician/providers/app_provider.dart';
-import 'package:call_a_technician/providers/login_form_validation.dart';
-import 'package:call_a_technician/providers/post_job_provider.dart';
-import 'package:call_a_technician/screens/splash.dart';
-import 'package:call_a_technician/util/const.dart';
+import 'package:quickfix/providers/app_provider.dart';
+import 'package:quickfix/providers/login_form_validation.dart';
+import 'package:quickfix/providers/post_job_provider.dart';
+import 'package:quickfix/screens/splash.dart';
+import 'package:quickfix/util/const.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:provider/provider.dart';

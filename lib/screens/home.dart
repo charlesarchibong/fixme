@@ -1,9 +1,9 @@
-import 'package:call_a_technician/screens/dishes.dart';
-import 'package:call_a_technician/util/categories.dart';
-import 'package:call_a_technician/util/foods.dart';
-import 'package:call_a_technician/widgets/grid_product.dart';
-import 'package:call_a_technician/widgets/home_category.dart';
-import 'package:call_a_technician/widgets/slider_item.dart';
+import 'package:quickfix/screens/dishes.dart';
+import 'package:quickfix/util/categories.dart';
+import 'package:quickfix/util/foods.dart';
+import 'package:quickfix/widgets/grid_product.dart';
+import 'package:quickfix/widgets/home_category.dart';
+import 'package:quickfix/widgets/slider_item.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 

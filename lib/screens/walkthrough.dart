@@ -1,4 +1,4 @@
-import 'package:call_a_technician/screens/join.dart';
+import 'package:quickfix/screens/join.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 //import 'package:introduction_screen/introduction_screen.dart';

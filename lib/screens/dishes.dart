@@ -1,7 +1,7 @@
-import 'package:call_a_technician/screens/notifications.dart';
-import 'package:call_a_technician/util/foods.dart';
-import 'package:call_a_technician/widgets/badge.dart';
-import 'package:call_a_technician/widgets/grid_product.dart';
+import 'package:quickfix/screens/notifications.dart';
+import 'package:quickfix/util/foods.dart';
+import 'package:quickfix/widgets/badge.dart';
+import 'package:quickfix/widgets/grid_product.dart';
 import 'package:flutter/material.dart';
 
 class DishesScreen extends StatefulWidget {

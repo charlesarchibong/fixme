@@ -1,9 +1,9 @@
-import 'package:call_a_technician/screens/notifications.dart';
-import 'package:call_a_technician/util/categories.dart';
-import 'package:call_a_technician/util/foods.dart';
-import 'package:call_a_technician/widgets/badge.dart';
-import 'package:call_a_technician/widgets/grid_product.dart';
-import 'package:call_a_technician/widgets/home_category.dart';
+import 'package:quickfix/screens/notifications.dart';
+import 'package:quickfix/util/categories.dart';
+import 'package:quickfix/util/foods.dart';
+import 'package:quickfix/widgets/badge.dart';
+import 'package:quickfix/widgets/grid_product.dart';
+import 'package:quickfix/widgets/home_category.dart';
 import 'package:flutter/material.dart';
 
 class CategoriesScreen extends StatefulWidget {

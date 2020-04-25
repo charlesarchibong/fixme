@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:call_a_technician/screens/walkthrough.dart';
-import 'package:call_a_technician/util/const.dart';
+import 'package:quickfix/screens/walkthrough.dart';
+import 'package:quickfix/util/const.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

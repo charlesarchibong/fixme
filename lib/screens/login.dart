@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:call_a_technician/providers/login_form_validation.dart';
-import 'package:call_a_technician/screens/forget_password_page.dart';
-import 'package:call_a_technician/screens/main_screen.dart';
-import 'package:call_a_technician/util/Utils.dart';
+import 'package:quickfix/providers/login_form_validation.dart';
+import 'package:quickfix/screens/forget_password_page.dart';
+import 'package:quickfix/screens/main_screen.dart';
+import 'package:quickfix/util/Utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

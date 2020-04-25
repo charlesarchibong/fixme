@@ -1,4 +1,4 @@
-import 'package:call_a_technician/screens/categories_screen.dart';
+import 'package:quickfix/screens/categories_screen.dart';
 import 'package:flutter/material.dart';
 
 class HomeCategory extends StatefulWidget {

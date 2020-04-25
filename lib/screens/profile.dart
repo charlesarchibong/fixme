@@ -1,6 +1,6 @@
-import 'package:call_a_technician/providers/app_provider.dart';
-import 'package:call_a_technician/screens/splash.dart';
-import 'package:call_a_technician/util/const.dart';
+import 'package:quickfix/providers/app_provider.dart';
+import 'package:quickfix/screens/splash.dart';
+import 'package:quickfix/util/const.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

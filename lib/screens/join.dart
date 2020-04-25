@@ -1,5 +1,5 @@
-import 'package:call_a_technician/screens/login.dart';
-import 'package:call_a_technician/screens/register.dart';
+import 'package:quickfix/screens/login.dart';
+import 'package:quickfix/screens/register.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
