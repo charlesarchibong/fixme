@@ -28,17 +28,17 @@ class _MainScreenState extends State<MainScreen> {
     FlutterStatusbarcolor.setStatusBarColor(Constants.darkAccent);
     FlutterStatusbarcolor.setNavigationBarColor(Constants.darkAccent);
     // FlutterStatusbarcolor
-    final user = Utils.getUserSession();
-    print(user);
-    if (user == null) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (BuildContext context) {
-            return JoinApp();
-          },
-        ),
-      );
-    }
+    // final user = Utils.getUserSession();
+    // print(user);
+    // if (user == null) {
+    //   Navigator.of(context).push(
+    //     MaterialPageRoute(
+    //       builder: (BuildContext context) {
+    //         return JoinApp();
+    //       },
+    //     ),
+    //   );
+    // }
     return WillPopScope(
       onWillPop: () => Future.value(false),
       child: Scaffold(
@@ -134,90 +134,91 @@ class _MainScreenState extends State<MainScreen> {
             ],
           ),
         ),
-        body: PageView(
-          physics: NeverScrollableScrollPhysics(),
-          controller: _pageController,
-          onPageChanged: onPageChanged,
-          children: <Widget>[
-            Home(),
-            FavoriteScreen(),
-            SearchScreen(),
-            CartScreen(),
-            Profile(),
-          ],
-        ),
-        bottomNavigationBar: BottomAppBar(
-          child: new Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              SizedBox(width: 7),
-              IconButton(
-                icon: Icon(
-                  Icons.home,
-                  size: 24.0,
-                ),
-                color: _page == 0
-                    ? Theme.of(context).accentColor
-                    : Theme.of(context).textTheme.caption.color,
-                onPressed: () => _pageController.jumpToPage(0),
-              ),
-              IconButton(
-                icon: Icon(
-                  Icons.favorite,
-                  size: 24.0,
-                ),
-                color: _page == 1
-                    ? Theme.of(context).accentColor
-                    : Theme.of(context).textTheme.caption.color,
-                onPressed: () => _pageController.jumpToPage(1),
-              ),
-              IconButton(
-                icon: Icon(
-                  Icons.search,
-                  size: 24.0,
-                  color: Theme.of(context).primaryColor,
-                ),
-                color: _page == 2
-                    ? Theme.of(context).accentColor
-                    : Theme.of(context).textTheme.caption.color,
-                onPressed: () => _pageController.jumpToPage(2),
-              ),
-              IconButton(
-                icon: IconBadge(
-                  icon: Icons.shopping_cart,
-                  size: 24.0,
-                ),
-                color: _page == 3
-                    ? Theme.of(context).accentColor
-                    : Theme.of(context).textTheme.caption.color,
-                onPressed: () => _pageController.jumpToPage(3),
-              ),
-              IconButton(
-                icon: Icon(
-                  Icons.person,
-                  size: 24.0,
-                ),
-                color: _page == 4
-                    ? Theme.of(context).accentColor
-                    : Theme.of(context).textTheme.caption.color,
-                onPressed: () => _pageController.jumpToPage(4),
-              ),
-              SizedBox(width: 7),
-            ],
-          ),
-          color: Theme.of(context).primaryColor,
-          shape: CircularNotchedRectangle(),
-        ),
-        floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: FloatingActionButton(
-          elevation: 4.0,
-          child: Icon(
-            Icons.search,
-          ),
-          onPressed: () => _pageController.jumpToPage(2),
-        ),
+        body: Home(),
+//        PageView(
+//          physics: NeverScrollableScrollPhysics(),
+//          controller: _pageController,
+//          onPageChanged: onPageChanged,
+//          children: <Widget>[
+//            Home(),
+//            FavoriteScreen(),
+//            SearchScreen(),
+//            CartScreen(),
+//            Profile(),
+//          ],
+//        ),
+//        bottomNavigationBar: BottomAppBar(
+//          child: new Row(
+//            mainAxisSize: MainAxisSize.max,
+//            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//            children: <Widget>[
+//              SizedBox(width: 7),
+//              IconButton(
+//                icon: Icon(
+//                  Icons.home,
+//                  size: 24.0,
+//                ),
+//                color: _page == 0
+//                    ? Theme.of(context).accentColor
+//                    : Theme.of(context).textTheme.caption.color,
+//                onPressed: () => _pageController.jumpToPage(0),
+//              ),
+//              IconButton(
+//                icon: Icon(
+//                  Icons.favorite,
+//                  size: 24.0,
+//                ),
+//                color: _page == 1
+//                    ? Theme.of(context).accentColor
+//                    : Theme.of(context).textTheme.caption.color,
+//                onPressed: () => _pageController.jumpToPage(1),
+//              ),
+//              IconButton(
+//                icon: Icon(
+//                  Icons.search,
+//                  size: 24.0,
+//                  color: Theme.of(context).primaryColor,
+//                ),
+//                color: _page == 2
+//                    ? Theme.of(context).accentColor
+//                    : Theme.of(context).textTheme.caption.color,
+//                onPressed: () => _pageController.jumpToPage(2),
+//              ),
+//              IconButton(
+//                icon: IconBadge(
+//                  icon: Icons.shopping_cart,
+//                  size: 24.0,
+//                ),
+//                color: _page == 3
+//                    ? Theme.of(context).accentColor
+//                    : Theme.of(context).textTheme.caption.color,
+//                onPressed: () => _pageController.jumpToPage(3),
+//              ),
+//              IconButton(
+//                icon: Icon(
+//                  Icons.person,
+//                  size: 24.0,
+//                ),
+//                color: _page == 4
+//                    ? Theme.of(context).accentColor
+//                    : Theme.of(context).textTheme.caption.color,
+//                onPressed: () => _pageController.jumpToPage(4),
+//              ),
+//              SizedBox(width: 7),
+//            ],
+//          ),
+//          color: Theme.of(context).primaryColor,
+//          shape: CircularNotchedRectangle(),
+//        ),
+//        floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
+//        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+//        floatingActionButton: FloatingActionButton(
+//          elevation: 4.0,
+//          child: Icon(
+//            Icons.search,
+//          ),
+//          onPressed: () => _pageController.jumpToPage(2),
+//        ),
       ),
     );
   }

@@ -220,7 +220,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
               onPressed: () {
-                _loginUser();
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) {
+                      return MainScreen();
+                    },
+                  ),
+                );
               },
               color: Theme.of(context).accentColor,
             ),

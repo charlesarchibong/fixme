@@ -365,7 +365,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
               onPressed: () {
-                registerForm.enableForm ? _registerUser() : null;
+                registerForm.enableForm
+                    ? {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (BuildContext context) {
+                              return MainScreen();
+                            },
+                          ),
+                        )
+                      }
+                    : null;
               },
               color: Theme.of(context).accentColor,
             ),
