@@ -1,6 +1,8 @@
+import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:quickfix/screens/join.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:quickfix/util/const.dart';
 //import 'package:introduction_screen/introduction_screen.dart';
 
 class Walkthrough extends StatefulWidget {
@@ -11,6 +13,8 @@ class Walkthrough extends StatefulWidget {
 class _WalkthroughState extends State<Walkthrough> {
   @override
   Widget build(BuildContext context) {
+    FlutterStatusbarcolor.setStatusBarColor(Constants.darkAccent);
+    FlutterStatusbarcolor.setNavigationBarColor(Constants.darkAccent);
     List<PageViewModel> pages = [
       PageViewModel(
         // title: "Get Technicain",

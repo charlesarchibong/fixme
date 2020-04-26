@@ -101,7 +101,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
             child: Image.asset(
               "assets/cat.png",
-              height: 100,
+              width: 200,
             ),
           ),
           SizedBox(height: 15.0),

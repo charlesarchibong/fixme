@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:quickfix/screens/walkthrough.dart';
 import 'package:quickfix/util/const.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +36,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    FlutterStatusbarcolor.setStatusBarColor(Constants.darkAccent);
+    FlutterStatusbarcolor.setNavigationBarColor(Constants.darkAccent);
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       body: Container(

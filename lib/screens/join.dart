@@ -1,3 +1,4 @@
+import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:quickfix/screens/login.dart';
 import 'package:quickfix/screens/register.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,8 @@ class _JoinAppState extends State<JoinApp> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
+    FlutterStatusbarcolor.setNavigationBarWhiteForeground(true);
     return WillPopScope(
       onWillPop: () async {
         return false;
