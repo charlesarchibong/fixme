@@ -1,8 +1,8 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:quickfix/providers/app_provider.dart';
 import 'package:quickfix/screens/splash.dart';
 import 'package:quickfix/util/const.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -37,7 +37,7 @@ class _ProfileState extends State<Profile> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Text(
-                            "Jane Doe",
+                            "Charles",
                             style: TextStyle(
                               fontSize: 20.0,
                               fontWeight: FontWeight.bold,
