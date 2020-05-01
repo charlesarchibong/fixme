@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_shimmer/flutter_shimmer.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:quickfix/screens/cart.dart';
 import 'package:quickfix/screens/favorite_screen.dart';
@@ -9,6 +10,7 @@ import 'package:quickfix/screens/notifications.dart';
 import 'package:quickfix/screens/post_job.dart';
 import 'package:quickfix/screens/profile.dart';
 import 'package:quickfix/screens/search.dart';
+import 'package:quickfix/util/Utils.dart';
 import 'package:quickfix/util/const.dart';
 import 'package:quickfix/widgets/badge.dart';
 
@@ -25,6 +27,8 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     FlutterStatusbarcolor.setStatusBarColor(Constants.darkAccent);
     FlutterStatusbarcolor.setNavigationBarColor(Constants.darkAccent);
+    FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
+    FlutterStatusbarcolor.setNavigationBarWhiteForeground(true);
     // FlutterStatusbarcolor
     // final user = Utils.getUserSession();
     // print(user);
@@ -74,45 +78,35 @@ class _MainScreenState extends State<MainScreen> {
           elevation: 10.0,
           child: ListView(
             children: <Widget>[
-              UserAccountsDrawerHeader(
-                accountName: Text('Charles Archibong'),
-                accountEmail: Text('charlesarchibong10@gmail.com'),
-                currentAccountPicture: Container(
-                  height: 200,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border:
-                          Border.all(color: Constants.lightAccent, width: 1)),
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+              FutureBuilder(
+                future: Utils.getUserSession(),
+                builder: (context, snapshot) {
+                  return snapshot.hasData
+                      ? UserAccountsDrawerHeader(
+                          accountName: Text(
+                            snapshot.data.firstName.toUpperCase() +
+                                ' ' +
+                                snapshot.data.lastName.toUpperCase(),
+                          ),
+                          accountEmail: Text(snapshot.data.email),
+                          currentAccountPicture: Container(
+                            height: 200,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                    color: Constants.lightAccent, width: 1)),
+                            padding: EdgeInsets.symmetric(horizontal: 16.0),
 //                  width: MediaQuery.of(context).size.width * 10.6,
-                  child: ClipOval(
-                    child: Image(
-                      fit: BoxFit.contain,
-                      image: NetworkImage(
-                        'https://www.pngarts.com/files/3/Cool-Avatar-Transparent-Image.png',
-                      ),
-                    ),
-                  ),
-                ),
-                otherAccountsPictures: <Widget>[
-                  Container(
-                    height: 200,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border:
-                            Border.all(color: Constants.lightAccent, width: 1)),
-                    padding: EdgeInsets.symmetric(horizontal: 16.0),
-//                  width: MediaQuery.of(context).size.width * 10.6,
-                    child: ClipOval(
-                      child: Image(
-                        fit: BoxFit.contain,
-                        image: NetworkImage(
-                          'https://www.pngarts.com/files/3/Cool-Avatar-Transparent-Image.png',
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+                            child: ClipOval(
+                              child: Image(
+                                fit: BoxFit.contain,
+                                image: AssetImage('assets/dp.png'),
+                              ),
+                            ),
+                          ),
+                        )
+                      : ProfileShimmer();
+                },
               ),
               ListTile(
                 title: Text('Jobs'),

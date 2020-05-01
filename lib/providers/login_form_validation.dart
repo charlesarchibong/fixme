@@ -63,10 +63,10 @@ class LoginFormValidation extends ChangeNotifier {
         final apiReponse = jsonDecode(response.body);
         print(apiReponse);
         if (response.statusCode == 200) {
-          if (apiReponse['upldRes'] == "false") {
-            throw new Exception(apiReponse['errorMsg']);
+          if (apiReponse['reqRes'] == "false") {
+            throw new Exception('Invalid phone number, please try again!');
           } else {
-            String apiKey = response.headers['Bearer'];
+            String apiKey = response.headers['bearer'];
             print(apiKey);
             Utils.setApiKey(apiKey);
             return new User.fromjson(apiReponse);
@@ -78,6 +78,7 @@ class LoginFormValidation extends ChangeNotifier {
         throw new SocketException('No internet connection');
       }
     } catch (e) {
+      print(e.toString());
       throw e;
     }
   }

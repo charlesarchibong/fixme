@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
-import 'package:quickfix/screens/walkthrough.dart';
-import 'package:quickfix/util/const.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:quickfix/models/user.dart';
+import 'package:quickfix/screens/main_screen.dart';
+import 'package:quickfix/screens/walkthrough.dart';
+import 'package:quickfix/util/Utils.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -17,65 +17,59 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   changeScreen() async {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (BuildContext context) {
-          return Walkthrough();
-        },
-      ),
-    );
+    User user = await Utils.getUserSession();
+    if (user != null) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (BuildContext context) {
+            return MainScreen();
+          },
+        ),
+      );
+    } else {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (BuildContext context) {
+            return Walkthrough();
+          },
+        ),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
   void initState() {
     super.initState();
-    SystemChrome.setEnabledSystemUIOverlays([]);
     // startTimeout();
     startTimeout();
   }
 
   @override
   Widget build(BuildContext context) {
-    FlutterStatusbarcolor.setStatusBarColor(Constants.darkAccent);
-    FlutterStatusbarcolor.setNavigationBarColor(Constants.darkAccent);
-    return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
-      body: Container(
-        margin: EdgeInsets.only(left: 40.0, right: 40.0),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Image.asset(
-                'assets/logo.png',
-                width: 300,
-                height: 200,
-              ),
-              SizedBox(width: 40.0),
-              Container(
+    return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('assets/splashscreen.jpg'),
+          fit: BoxFit.cover,
+        ),
+      ),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Container(
                 alignment: Alignment.center,
                 margin: EdgeInsets.only(
-                  top: 15.0,
+                  top: 50.0,
                 ),
-                child: Text(
-                  "${Constants.appName}",
-                  style: TextStyle(
-                    fontSize: 25.0,
-                    fontWeight: FontWeight.w700,
-                    color: Theme.of(context).accentColor,
-                  ),
-                ),
-              ),
-              SizedBox(width: 40.0),
-              Container(
-                  alignment: Alignment.center,
-                  margin: EdgeInsets.only(
-                    top: 15.0,
-                  ),
-                  child: CircularProgressIndicator()),
-            ],
-          ),
+                child: CircularProgressIndicator()),
+          ],
         ),
       ),
     );

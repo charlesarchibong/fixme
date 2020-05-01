@@ -34,9 +34,19 @@ class Utils {
     return User.fromjson(jsonDecode(sp.get("user")));
   }
 
+  static Future<bool> clearUserSession() async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    return sp.remove('user');
+  }
+
   static Future<User> getApiKey() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
     return User.fromjson(jsonDecode(sp.get("apiKey")));
+  }
+
+  static Future<bool> clearApiKey() async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    return sp.remove('apiKey');
   }
 
   static void showAlert(BuildContext context, String title, String message) {}

@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -14,6 +13,8 @@ class RegisterScreen extends StatefulWidget {
   @override
   _RegisterScreenState createState() => _RegisterScreenState();
 }
+
+final _scaffoldKey = GlobalKey<ScaffoldState>();
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _firstNameController =
@@ -51,15 +52,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
           // Alert(title: 'Error', description: onError.toString());
 //          _showAlert(context, onError.toString().split(':')[1]);
           String message = onError.toString().split(':')[1];
-          Flushbar(
-            title: 'Error',
-            message: message,
-            duration: Duration(
-              seconds: 5,
-            ),
-          )..show(context);
+
           registerForm.setNotLoading();
           print(onError);
+          _scaffoldKey.currentState.showSnackBar(
+            SnackBar(
+              content: Text(message),
+              duration: Duration(seconds: 5),
+            ),
+          );
         });
       }
     }
@@ -90,240 +91,243 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     final registerForm = Provider.of<RegisterFormValidation>(context);
-    return Padding(
-      padding: EdgeInsets.fromLTRB(20.0, 0, 20, 0),
-      child: ListView(
-        shrinkWrap: true,
-        children: <Widget>[
-          Container(
-            alignment: Alignment.center,
-            margin: EdgeInsets.only(
-              top: 25.0,
-            ),
-            child: Image.asset(
-              "assets/cat.png",
-              width: 200,
-            ),
-          ),
-          SizedBox(height: 15.0),
-          Card(
-            elevation: 3.0,
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(5.0),
-                ),
+    return Scaffold(
+      key: _scaffoldKey,
+      body: Padding(
+        padding: EdgeInsets.fromLTRB(20.0, 0, 20, 0),
+        child: ListView(
+          shrinkWrap: true,
+          children: <Widget>[
+            Container(
+              alignment: Alignment.center,
+              margin: EdgeInsets.only(
+                top: 25.0,
               ),
-              child: TextField(
-                enabled: registerForm.enableForm,
-                style: TextStyle(
-                  fontSize: 15.0,
-                  color: Colors.black,
+              child: Image.asset(
+                "assets/cat.png",
+                width: 200,
+              ),
+            ),
+            SizedBox(height: 15.0),
+            Card(
+              elevation: 3.0,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(5.0),
+                  ),
                 ),
-                decoration: InputDecoration(
-                  errorText: registerForm.firstName
-                      ? 'First Name field cannot be empty'
-                      : null,
-                  contentPadding: EdgeInsets.all(10.0),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                    borderSide: BorderSide(
-                      color: Colors.white,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.white,
-                    ),
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                  hintText: "First Name",
-                  prefixIcon: Icon(
-                    Icons.perm_identity,
-                    color: Colors.black,
-                  ),
-                  hintStyle: TextStyle(
+                child: TextField(
+                  enabled: registerForm.enableForm,
+                  style: TextStyle(
                     fontSize: 15.0,
                     color: Colors.black,
                   ),
-                ),
-                maxLines: 1,
-                controller: _firstNameController,
-              ),
-            ),
-          ),
-          SizedBox(height: 10.0),
-          Card(
-            elevation: 3.0,
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(5.0),
-                ),
-              ),
-              child: TextField(
-                enabled: registerForm.enableForm,
-                style: TextStyle(
-                  fontSize: 15.0,
-                  color: Colors.black,
-                ),
-                decoration: InputDecoration(
-                  errorText: registerForm.lastName
-                      ? 'Last name field cannot be empty'
-                      : null,
-                  contentPadding: EdgeInsets.all(10.0),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                    borderSide: BorderSide(
-                      color: Colors.white,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.white,
-                    ),
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                  hintText: "Last Name",
-                  prefixIcon: Icon(
-                    Icons.perm_identity,
-                    color: Colors.black,
-                  ),
-                  hintStyle: TextStyle(
-                    fontSize: 15.0,
-                    color: Colors.black,
-                  ),
-                ),
-                maxLines: 1,
-                controller: _lastNameController,
-              ),
-            ),
-          ),
-          SizedBox(height: 10.0),
-          Card(
-            elevation: 3.0,
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(5.0),
-                ),
-              ),
-              child: TextField(
-                enabled: registerForm.enableForm,
-                style: TextStyle(
-                  fontSize: 15.0,
-                  color: Colors.black,
-                ),
-                keyboardType: TextInputType.emailAddress,
-                textCapitalization: TextCapitalization.none,
-                decoration: InputDecoration(
-                  errorText: registerForm.email
-                      ? 'Email address field can not be empty'
-                      : registerForm.invalidEmail
-                          ? 'Invalid email address'
-                          : null,
-                  contentPadding: EdgeInsets.all(10.0),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                    borderSide: BorderSide(
-                      color: Colors.white,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.white,
-                    ),
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                  hintText: "Email",
-                  prefixIcon: Icon(
-                    Icons.mail_outline,
-                    color: Colors.black,
-                  ),
-                  hintStyle: TextStyle(
-                    fontSize: 15.0,
-                    color: Colors.black,
-                  ),
-                ),
-                maxLines: 1,
-                controller: _emailControl,
-              ),
-            ),
-          ),
-          SizedBox(height: 10.0),
-          Card(
-            elevation: 3.0,
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(5.0),
-                ),
-              ),
-              child: TextField(
-                enabled: registerForm.enableForm,
-                style: TextStyle(
-                  fontSize: 15.0,
-                  color: Colors.black,
-                ),
-                decoration: InputDecoration(
-                  errorText: registerForm.phoneNumber
-                      ? 'Phone number can not be empty'
-                      : null,
-                  contentPadding: EdgeInsets.all(10.0),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                    borderSide: BorderSide(
-                      color: Colors.white,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.white,
-                    ),
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                  hintText: "Phone Number",
-                  prefixIcon: Icon(
-                    Icons.contact_phone,
-                    color: Colors.black,
-                  ),
-                  hintStyle: TextStyle(
-                    fontSize: 15.0,
-                    color: Colors.black,
-                  ),
-                ),
-                maxLines: 1,
-                keyboardType: TextInputType.number,
-                inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
-                controller: _phoneControl,
-              ),
-            ),
-          ),
-          SizedBox(height: 10.0),
-          SizedBox(height: 40.0),
-          Container(
-            height: 50.0,
-            child: RaisedButton(
-              elevation: 5.0,
-              child: registerForm.loading
-                  ? CircularProgressIndicator(backgroundColor: Colors.white)
-                  : Text(
-                      "Register".toUpperCase(),
-                      style: TextStyle(
+                  decoration: InputDecoration(
+                    errorText: registerForm.firstName
+                        ? 'First Name field cannot be empty'
+                        : null,
+                    contentPadding: EdgeInsets.all(10.0),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                      borderSide: BorderSide(
                         color: Colors.white,
                       ),
                     ),
-              onPressed: () {
-                _registerUser();
-              },
-              color: Theme.of(context).accentColor,
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.white,
+                      ),
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    hintText: "First Name",
+                    prefixIcon: Icon(
+                      Icons.perm_identity,
+                      color: Colors.black,
+                    ),
+                    hintStyle: TextStyle(
+                      fontSize: 15.0,
+                      color: Colors.black,
+                    ),
+                  ),
+                  maxLines: 1,
+                  controller: _firstNameController,
+                ),
+              ),
             ),
-          ),
-        ],
+            SizedBox(height: 10.0),
+            Card(
+              elevation: 3.0,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(5.0),
+                  ),
+                ),
+                child: TextField(
+                  enabled: registerForm.enableForm,
+                  style: TextStyle(
+                    fontSize: 15.0,
+                    color: Colors.black,
+                  ),
+                  decoration: InputDecoration(
+                    errorText: registerForm.lastName
+                        ? 'Last name field cannot be empty'
+                        : null,
+                    contentPadding: EdgeInsets.all(10.0),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                      borderSide: BorderSide(
+                        color: Colors.white,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.white,
+                      ),
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    hintText: "Last Name",
+                    prefixIcon: Icon(
+                      Icons.perm_identity,
+                      color: Colors.black,
+                    ),
+                    hintStyle: TextStyle(
+                      fontSize: 15.0,
+                      color: Colors.black,
+                    ),
+                  ),
+                  maxLines: 1,
+                  controller: _lastNameController,
+                ),
+              ),
+            ),
+            SizedBox(height: 10.0),
+            Card(
+              elevation: 3.0,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(5.0),
+                  ),
+                ),
+                child: TextField(
+                  enabled: registerForm.enableForm,
+                  style: TextStyle(
+                    fontSize: 15.0,
+                    color: Colors.black,
+                  ),
+                  keyboardType: TextInputType.emailAddress,
+                  textCapitalization: TextCapitalization.none,
+                  decoration: InputDecoration(
+                    errorText: registerForm.email
+                        ? 'Email address field can not be empty'
+                        : registerForm.invalidEmail
+                            ? 'Invalid email address'
+                            : null,
+                    contentPadding: EdgeInsets.all(10.0),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                      borderSide: BorderSide(
+                        color: Colors.white,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.white,
+                      ),
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    hintText: "Email",
+                    prefixIcon: Icon(
+                      Icons.mail_outline,
+                      color: Colors.black,
+                    ),
+                    hintStyle: TextStyle(
+                      fontSize: 15.0,
+                      color: Colors.black,
+                    ),
+                  ),
+                  maxLines: 1,
+                  controller: _emailControl,
+                ),
+              ),
+            ),
+            SizedBox(height: 10.0),
+            Card(
+              elevation: 3.0,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(5.0),
+                  ),
+                ),
+                child: TextField(
+                  enabled: registerForm.enableForm,
+                  style: TextStyle(
+                    fontSize: 15.0,
+                    color: Colors.black,
+                  ),
+                  decoration: InputDecoration(
+                    errorText: registerForm.phoneNumber
+                        ? 'Phone number can not be empty'
+                        : null,
+                    contentPadding: EdgeInsets.all(10.0),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                      borderSide: BorderSide(
+                        color: Colors.white,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.white,
+                      ),
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    hintText: "Phone Number",
+                    prefixIcon: Icon(
+                      Icons.contact_phone,
+                      color: Colors.black,
+                    ),
+                    hintStyle: TextStyle(
+                      fontSize: 15.0,
+                      color: Colors.black,
+                    ),
+                  ),
+                  maxLines: 1,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+                  controller: _phoneControl,
+                ),
+              ),
+            ),
+            SizedBox(height: 10.0),
+            SizedBox(height: 40.0),
+            Container(
+              height: 50.0,
+              child: RaisedButton(
+                elevation: 5.0,
+                child: registerForm.loading
+                    ? CircularProgressIndicator(backgroundColor: Colors.white)
+                    : Text(
+                        "Register".toUpperCase(),
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                onPressed: () {
+                  _registerUser();
+                },
+                color: Theme.of(context).accentColor,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
