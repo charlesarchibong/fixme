@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:quickfix/models/user.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:quickfix/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Utils {
@@ -24,9 +24,19 @@ class Utils {
     sp.setString("user", user);
   }
 
+  static void setApiKey(String apiKey) async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    sp.setString("apiKey", apiKey);
+  }
+
   static Future<User> getUserSession() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
     return User.fromjson(jsonDecode(sp.get("user")));
+  }
+
+  static Future<User> getApiKey() async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    return User.fromjson(jsonDecode(sp.get("apiKey")));
   }
 
   static void showAlert(BuildContext context, String title, String message) {}

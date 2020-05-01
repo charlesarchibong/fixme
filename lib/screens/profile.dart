@@ -143,7 +143,7 @@ class _ProfileState extends State<Profile> {
                 ),
               ),
               subtitle: Text(
-                "+1 816-926-6241",
+                "+234 816-926-6241",
               ),
             ),
             ListTile(

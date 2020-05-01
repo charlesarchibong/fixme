@@ -17,12 +17,13 @@ class _JoinAppState extends State<JoinApp> with SingleTickerProviderStateMixin {
     super.initState();
     _tabController = TabController(vsync: this, initialIndex: 1, length: 2);
     SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+
+    FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
+    FlutterStatusbarcolor.setNavigationBarWhiteForeground(true);
   }
 
   @override
   Widget build(BuildContext context) {
-    FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
-    FlutterStatusbarcolor.setNavigationBarWhiteForeground(true);
     return WillPopScope(
       onWillPop: () async {
         return false;

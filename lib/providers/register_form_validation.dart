@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
 import 'package:quickfix/models/user.dart';
 import 'package:quickfix/util/Utils.dart';
 import 'package:quickfix/util/const.dart';
-import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as http;
 
 class RegisterFormValidation extends ChangeNotifier {
   RegisterFormValidation() {
@@ -17,7 +17,6 @@ class RegisterFormValidation extends ChangeNotifier {
   bool phoneNumber = false;
   bool lastName = false;
   bool email = false;
-  bool password = false;
   bool invalidEmail = false;
   bool enableForm = true;
 
@@ -32,8 +31,7 @@ class RegisterFormValidation extends ChangeNotifier {
   }
 
 //  bool  = false;
-  bool validate(String firstName, String lastName, String phone, String email,
-      String password) {
+  bool validate(String firstName, String lastName, String phone, String email) {
     bool error = false;
     if (firstName.isEmpty) {
       this.firstName = true;
@@ -61,13 +59,6 @@ class RegisterFormValidation extends ChangeNotifier {
       error = true;
     } else {
       this.email = false;
-      error = false;
-    }
-    if (password.isEmpty) {
-      this.password = true;
-      error = true;
-    } else {
-      this.password = false;
       error = false;
     }
     notifyListeners();
@@ -115,6 +106,9 @@ class RegisterFormValidation extends ChangeNotifier {
           if (response.statusCode == 200) {
             var json = jsonDecode(response.body);
             if (json["upldRes"] == "true") {
+              String apiKey = response.headers['Bearer'];
+              print(apiKey);
+              Utils.setApiKey(apiKey);
               return new User.fromjson(json);
             } else {
               throw new Exception("incorrect email");

@@ -1,30 +1,32 @@
 List comments = [
   {
     "img": "assets/cm1.jpeg",
-    "comment": "Nulla porttitor accumsan tincidunt. Vestibulum ante "
-        "ipsum primis in faucibus orci luctus et ultrices posuere "
-        "cubilia Curae",
-    "name": "Jane Doe"
+    "comment": "I love the fact that you're trust worthy\n\n\n",
+    "name": "Jane Henry"
   },
   {
     "img": "assets/cm2.jpeg",
-    "comment": "Nulla porttitor accumsan tincidunt. Vestibulum ante "
-        "ipsum primis in faucibus orci luctus et ultrices posuere "
-        "cubilia Curae",
-    "name": "Jane Joe"
+    "comment": "You're so affordaable and reliable\n\n\n",
+    "name": "Mary bassey  "
   },
   {
-    "img": "assets/cm3.jpeg",
-    "comment": "Nulla porttitor accumsan tincidunt. Vestibulum ante "
-        "ipsum primis in faucibus orci luctus et ultrices posuere "
-        "cubilia Curae",
-    "name": "Mary Jane"
+    "img": "assets/cm2.jpeg",
+    "comment": "You're so affordaable and reliable\n\n\n",
+    "name": "Mary bassey"
   },
   {
-    "img": "assets/cm4.jpeg",
-    "comment": "Nulla porttitor accumsan tincidunt. Vestibulum ante "
-        "ipsum primis in faucibus orci luctus et ultrices posuere "
-        "cubilia Curae",
-    "name": "Jane Jones"
+    "img": "assets/cm2.jpeg",
+    "comment": "You're so affordaable and reliable\n\n\n",
+    "name": "Mary bassey"
+  },
+  {
+    "img": "assets/cm2.jpeg",
+    "comment": "You're so affordaable and reliable\n\n\n",
+    "name": "Mary bassey"
+  },
+  {
+    "img": "assets/cm2.jpeg",
+    "comment": "You're so affordaable and reliable\n\n\n",
+    "name": "Mary bassey"
   }
 ];

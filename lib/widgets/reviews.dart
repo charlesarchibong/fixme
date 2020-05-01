@@ -22,6 +22,7 @@ class Reviews extends StatelessWidget {
           ),
           title: Text("${comment['name']}"),
           subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Row(
                 children: <Widget>[

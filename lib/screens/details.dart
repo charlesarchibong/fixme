@@ -120,7 +120,7 @@ class _ProductDetailsState extends State<ProductDetails> {
               child: Row(
                 children: <Widget>[
                   Text(
-                    "20 Pieces",
+                    "20 Stars",
                     style: TextStyle(
                       fontSize: 11.0,
                       fontWeight: FontWeight.w300,
@@ -128,7 +128,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                   ),
                   SizedBox(width: 10.0),
                   Text(
-                    r"$90",
+                    r"N90",
                     style: TextStyle(
                       fontSize: 14.0,
                       fontWeight: FontWeight.w900,
@@ -149,17 +149,10 @@ class _ProductDetailsState extends State<ProductDetails> {
             ),
             SizedBox(height: 10.0),
             Text(
-              "Nulla quis lorem ut libero malesuada feugiat. Lorem ipsum dolor "
-              "sit amet, consectetur adipiscing elit. Curabitur aliquet quam "
-              "id dui posuere blandit. Pellentesque in ipsum id orci porta "
-              "dapibus. Vestibulum ante ipsum primis in faucibus orci luctus "
-              "et ultrices posuere cubilia Curae; Donec velit neque, auctor "
-              "sit amet aliquam vel, ullamcorper sit amet ligula. Donec"
-              " rutrum congue leo eget malesuada. Vivamus magna justo,"
-              " lacinia eget consectetur sed, convallis at tellus."
-              " Vivamus suscipit tortor eget felis porttitor volutpat."
-              " Donec rutrum congue leo eget malesuada."
-              " Pellentesque in ipsum id orci porta dapibus.",
+              "Am a skilled electrician with over 8 years of experience."
+              "I have over the years aided in the wiring of over 30 houses. "
+              "I do general repairs also and I have a flair for paying attention to details. "
+              "I am also self sufficient which means I can make rational decisions when necessary. Can’t wait to work with you.",
               style: TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.w300,

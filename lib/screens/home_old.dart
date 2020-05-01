@@ -37,7 +37,7 @@ class _HomeState extends State<HomeW>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  "Technicians around you ",
+                  "Artisans around you ",
                   style: TextStyle(
                     fontSize: 19,
                     fontWeight: FontWeight.w800,
@@ -128,7 +128,7 @@ class _HomeState extends State<HomeW>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  "Popular Technicians",
+                  "Popular Artisans",
                   style: TextStyle(
                     fontSize: 19,
                     fontWeight: FontWeight.w800,

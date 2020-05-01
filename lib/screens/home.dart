@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
-import 'package:responsive_container/responsive_container.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -93,8 +91,10 @@ class _HomeState extends State<Home> {
           height: MediaQuery.of(context).size.height - 50.0,
           width: MediaQuery.of(context).size.width,
           child: GoogleMap(
-            initialCameraPosition:
-                CameraPosition(target: _lastMapPosition, zoom: 12.0),
+            initialCameraPosition: CameraPosition(
+              target: _lastMapPosition,
+              zoom: 12.0,
+            ),
             onMapCreated: (controller) {
               setState(() {
                 _mapController = controller;

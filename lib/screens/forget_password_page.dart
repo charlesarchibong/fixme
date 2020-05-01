@@ -1,9 +1,6 @@
-import 'dart:convert';
-
-import 'package:quickfix/providers/login_form_validation.dart';
-import 'package:quickfix/util/Utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:quickfix/providers/login_form_validation.dart';
 
 class ForgetPassword extends StatefulWidget {
   @override
@@ -15,7 +12,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
 
   void _recoverUser() {
     final loginForm = Provider.of<LoginFormValidation>(context, listen: false);
-    if (loginForm.validateEmail(_usernameControl.text)) {
+    if (loginForm.validate(_usernameControl.text)) {
       loginForm.setLoading();
       loginForm.recoverUser(_usernameControl.text).then((user) {
         loginForm.setNotLoading();
@@ -101,11 +98,9 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                       color: Colors.black,
                     ),
                     decoration: InputDecoration(
-                      errorText: loginForm.email
+                      errorText: loginForm.phone
                           ? 'Email field can not be empty'
-                          : loginForm.invalidEmail
-                              ? 'Email address is invalid'
-                              : null,
+                          : loginForm.phone ? 'Email address is invalid' : null,
                       contentPadding: EdgeInsets.all(10.0),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5.0),
