@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Constants {
-  static String appName = "QuickFix";
+  static String appName = "QuickFix Artisan";
   static String baseUrl = "https://quickfixnaija.com/";
   static String createUserUrl = "reg-user";
   static String loginUserUrl = "auth-user";
