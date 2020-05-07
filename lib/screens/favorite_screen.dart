@@ -1,6 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:quickfix/util/foods.dart';
 import 'package:quickfix/widgets/grid_product.dart';
-import 'package:flutter/material.dart';
 
 class FavoriteScreen extends StatefulWidget {
   @override
@@ -35,10 +35,10 @@ class _FavoriteScreenState extends State<FavoriteScreen>
                 childAspectRatio: MediaQuery.of(context).size.width /
                     (MediaQuery.of(context).size.height / 1.25),
               ),
-              itemCount: foods == null ? 0 : foods.length,
+              itemCount: technicians == null ? 0 : technicians.length,
               itemBuilder: (BuildContext context, int index) {
 //                Food food = Food.fromJson(foods[index]);
-                Map food = foods[index];
+                Map food = technicians[index];
 //                print(foods);
 //                print(foods.length);
                 return GridProduct(

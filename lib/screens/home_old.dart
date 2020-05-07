@@ -1,11 +1,11 @@
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/material.dart';
 import 'package:quickfix/screens/dishes.dart';
 import 'package:quickfix/util/categories.dart';
 import 'package:quickfix/util/foods.dart';
 import 'package:quickfix/widgets/grid_product.dart';
 import 'package:quickfix/widgets/home_category.dart';
 import 'package:quickfix/widgets/slider_item.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/material.dart';
 
 class HomeW extends StatefulWidget {
   @override
@@ -72,9 +72,9 @@ class _HomeState extends State<HomeW>
             CarouselSlider(
               height: MediaQuery.of(context).size.height / 2.4,
               items: map<Widget>(
-                foods,
+                technicians,
                 (index, i) {
-                  Map food = foods[index];
+                  Map food = technicians[index];
                   return SliderItem(
                     img: food['img'],
                     isFav: true,
@@ -158,10 +158,10 @@ class _HomeState extends State<HomeW>
                 childAspectRatio: MediaQuery.of(context).size.width /
                     (MediaQuery.of(context).size.height / 1.25),
               ),
-              itemCount: foods == null ? 0 : foods.length,
+              itemCount: technicians == null ? 0 : technicians.length,
               itemBuilder: (BuildContext context, int index) {
 //                Food food = Food.fromJson(foods[index]);
-                Map food = foods[index];
+                Map food = technicians[index];
 //                print(foods);
 //                print(foods.length);
                 return GridProduct(

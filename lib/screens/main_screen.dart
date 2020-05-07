@@ -1,17 +1,19 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_shimmer/flutter_shimmer.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
-import 'package:quickfix/screens/cart.dart';
 import 'package:quickfix/screens/favorite_screen.dart';
 import 'package:quickfix/screens/home_old.dart';
 import 'package:quickfix/screens/notifications.dart';
+import 'package:quickfix/screens/pending_appointment.dart';
 import 'package:quickfix/screens/post_job.dart';
 import 'package:quickfix/screens/profile.dart';
 import 'package:quickfix/screens/search.dart';
 import 'package:quickfix/util/Utils.dart';
 import 'package:quickfix/util/const.dart';
+import 'package:quickfix/util/pending_request.dart';
 import 'package:quickfix/widgets/badge.dart';
 
 class MainScreen extends StatefulWidget {
@@ -184,7 +186,7 @@ class _MainScreenState extends State<MainScreen> {
             HomeW(),
             FavoriteScreen(),
             SearchScreen(),
-            CartScreen(),
+            PendingAppointment(),
             Profile(),
           ],
         ),
@@ -225,15 +227,20 @@ class _MainScreenState extends State<MainScreen> {
                     : Theme.of(context).textTheme.caption.color,
                 onPressed: () => _pageController.jumpToPage(2),
               ),
-              IconButton(
-                icon: IconBadge(
-                  icon: Icons.shopping_cart,
-                  size: 24.0,
+              InkWell(
+                onTap: () => _pageController.jumpToPage(3),
+                child: Badge(
+                  badgeContent: Text(requests.length.toString()),
+                  badgeColor: Colors.red,
+                  animationType: BadgeAnimationType.slide,
+                  toAnimate: true,
+                  child: Icon(
+                    Icons.shopping_cart,
+                    color: _page == 3
+                        ? Theme.of(context).accentColor
+                        : Theme.of(context).textTheme.caption.color,
+                  ),
                 ),
-                color: _page == 3
-                    ? Theme.of(context).accentColor
-                    : Theme.of(context).textTheme.caption.color,
-                onPressed: () => _pageController.jumpToPage(3),
               ),
               IconButton(
                 icon: Icon(

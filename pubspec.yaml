@@ -32,6 +32,9 @@ dependencies:
   sliding_up_panel: ^1.0.2
   location: ^3.0.0
   flutter_shimmer: ^1.2.0
+  badges: ^1.1.1
+  image_picker: ^0.6.5+3
+  firebase_auth:
   responsive_container:
 
 

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class Constants {
   static String appName = "QuickFix Artisan";
-  static String baseUrl = "https://quickfixnaija.com/";
+  static String baseUrl = "https://manager.quickfixnaija.com.ng/";
   static String createUserUrl = "reg-user";
-  static String loginUserUrl = "auth-user";
+  static String loginUserUrl = "m-login";
 
   //Colors for theme
 //  Color(0xfffcfcff);

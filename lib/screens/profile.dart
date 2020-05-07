@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_shimmer/flutter_shimmer.dart';
 import 'package:provider/provider.dart';
 import 'package:quickfix/providers/app_provider.dart';
-import 'package:quickfix/screens/join.dart';
+import 'package:quickfix/providers/profile_provider.dart';
+import 'package:quickfix/screens/login.dart';
 import 'package:quickfix/util/Utils.dart';
 import 'package:quickfix/util/const.dart';
+import 'package:quickfix/widgets/service_images.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -12,9 +14,11 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  final _profileScaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _profileScaffoldKey,
       body: FutureBuilder(
         future: Utils.getUserSession(),
         builder: (context, snapshot) {
@@ -28,12 +32,38 @@ class _ProfileState extends State<Profile> {
                         children: <Widget>[
                           Padding(
                             padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                            child: Image.asset(
-                              "assets/dp.png",
-                              fit: BoxFit.cover,
-                              width: 100.0,
-                              height: 100.0,
-                            ),
+                            child: Consumer<ProfileProvider>(
+                                builder: (context, profileProvider, child) {
+                              return Stack(
+                                alignment: Alignment.bottomCenter,
+                                children: <Widget>[
+                                  profileProvider.profilePicture == null
+                                      ? Image.asset(
+                                          "assets/dp.png",
+                                          fit: BoxFit.cover,
+                                          width: 100.0,
+                                          height: 100.0,
+                                        )
+                                      : Image.file(
+                                          profileProvider.profilePicture,
+                                          fit: BoxFit.cover,
+                                          width: 100.0,
+                                          height: 100.0,
+                                        ),
+                                  RaisedButton(
+                                    onPressed: () {
+                                      profileProvider.getImage();
+                                    },
+                                    child: Icon(
+                                      Icons.photo_camera,
+                                      color: Colors.white,
+                                    ),
+                                    elevation: 5,
+                                    color: Colors.red,
+                                  )
+                                ],
+                              );
+                            }),
                           ),
                           Expanded(
                             child: Column(
@@ -80,7 +110,7 @@ class _ProfileState extends State<Profile> {
                                         Navigator.of(context).push(
                                           MaterialPageRoute(
                                             builder: (BuildContext context) {
-                                              return JoinApp();
+                                              return LoginScreen();
                                             },
                                           ),
                                         );
@@ -161,6 +191,113 @@ class _ProfileState extends State<Profile> {
                           snapshot.data.phoneNumber,
                         ),
                       ),
+                      Divider(),
+                      Container(height: 15.0),
+                      Padding(
+                        padding: EdgeInsets.all(5.0),
+                        child: Text(
+                          "Service Information".toUpperCase(),
+                          style: TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        height: 20,
+                      ),
+                      ListTile(
+                        title: Text(
+                          "Service Category",
+                          style: TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        subtitle: Text(
+                          'Home Service',
+                        ),
+                      ),
+                      ListTile(
+                        title: Text(
+                          "Service Subcategories",
+                          style: TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        subtitle: Text(
+                          'Washing, Cleaning, Cooking',
+                        ),
+                        trailing: InkWell(
+                          onTap: () {
+                            _profileScaffoldKey.currentState
+                                .showSnackBar(SnackBar(
+                              content: Text('New Subcategory added'),
+                              elevation: 5,
+                              duration: Duration(seconds: 5),
+                            ));
+                          },
+                          child: Icon(
+                            Icons.add,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Consumer<ProfileProvider>(
+                            builder: (context, profileProvider, child) {
+                              return Column(
+                                children: <Widget>[
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Text(
+                                        "Service Images",
+                                        style: TextStyle(
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                          if (profileProvider.images.length <=
+                                              5) {
+                                            profileProvider.getServiceImage();
+                                          } else {
+                                            _profileScaffoldKey.currentState
+                                                .showSnackBar(SnackBar(
+                                              content: Text(
+                                                  'You have reach your service images limit'),
+                                              duration: Duration(seconds: 7),
+                                            ));
+                                          }
+                                        },
+                                        child: Icon(
+                                          Icons.add,
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 30,
+                                  ),
+                                  profileProvider.images.length == 0
+                                      ? Center(
+                                          child: Text('No images uploaded yet'),
+                                        )
+                                      : ServicesImages(),
+                                ],
+                              );
+                            },
+                          )),
+                      Divider(),
                       ListTile(
                         title: Text(
                           "Dark Theme",
@@ -186,6 +323,9 @@ class _ProfileState extends State<Profile> {
                           activeColor: Theme.of(context).accentColor,
                         ),
                       ),
+                      Container(
+                        height: 50,
+                      ),
                     ],
                   )
                 : Column(
@@ -203,5 +343,12 @@ class _ProfileState extends State<Profile> {
         },
       ),
     );
+  }
+}
+
+class MyBottomSheetLayout extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(); // return your bottomSheetLayout
   }
 }

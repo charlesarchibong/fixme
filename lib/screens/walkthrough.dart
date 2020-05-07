@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-import 'package:quickfix/screens/join.dart';
+import 'package:quickfix/screens/login.dart';
 import 'package:quickfix/util/const.dart';
 //import 'package:introduction_screen/introduction_screen.dart';
 
@@ -112,7 +112,7 @@ class _WalkthroughState extends State<Walkthrough> {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (BuildContext context) {
-                    return JoinApp();
+                    return LoginScreen();
                   },
                 ),
               );
@@ -121,7 +121,7 @@ class _WalkthroughState extends State<Walkthrough> {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (BuildContext context) {
-                    return JoinApp();
+                    return LoginScreen();
                   },
                 ),
               );

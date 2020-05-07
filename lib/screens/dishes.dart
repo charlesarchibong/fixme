@@ -1,8 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:quickfix/screens/notifications.dart';
 import 'package:quickfix/util/foods.dart';
 import 'package:quickfix/widgets/badge.dart';
 import 'package:quickfix/widgets/grid_product.dart';
-import 'package:flutter/material.dart';
 
 class DishesScreen extends StatefulWidget {
   @override
@@ -68,7 +68,7 @@ class _DishesScreenState extends State<DishesScreen> {
               ),
               itemCount: 4,
               itemBuilder: (BuildContext context, int index) {
-                Map food = foods[index];
+                Map food = technicians[index];
                 return GridProduct(
                   img: food['img'],
                   isFav: false,
@@ -99,7 +99,7 @@ class _DishesScreenState extends State<DishesScreen> {
               ),
               itemCount: 4,
               itemBuilder: (BuildContext context, int index) {
-                Map food = foods[index];
+                Map food = technicians[index];
                 return GridProduct(
                   img: food['img'],
                   isFav: false,
@@ -130,7 +130,7 @@ class _DishesScreenState extends State<DishesScreen> {
               ),
               itemCount: 4,
               itemBuilder: (BuildContext context, int index) {
-                Map food = foods[index];
+                Map food = technicians[index];
                 return GridProduct(
                   img: food['img'],
                   isFav: false,

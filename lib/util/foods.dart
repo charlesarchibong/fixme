@@ -1,4 +1,4 @@
-List<Map> foods = [
+List<Map> technicians = [
   {"img": "assets/food1.jpeg", "name": "Charles Archibong"},
   {"img": "assets/food2.jpeg", "name": "Joshua Uzor"},
   {"img": "assets/food3.jpeg", "name": "John Joe"},

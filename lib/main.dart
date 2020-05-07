@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:quickfix/providers/app_provider.dart';
 import 'package:quickfix/providers/login_form_validation.dart';
 import 'package:quickfix/providers/post_job_provider.dart';
+import 'package:quickfix/providers/profile_provider.dart';
 import 'package:quickfix/screens/splash.dart';
 import 'package:quickfix/util/const.dart';
 
@@ -17,6 +18,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => RegisterFormValidation()),
         ChangeNotifierProvider(create: (_) => LoginFormValidation()),
         ChangeNotifierProvider(create: (_) => PostJobProvider()),
+        ChangeNotifierProvider(create: (_) => ProfileProvider()),
       ],
       child: MyApp(),
     ),

@@ -1,10 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:quickfix/screens/notifications.dart';
 import 'package:quickfix/util/const.dart';
 import 'package:quickfix/util/foods.dart';
 import 'package:quickfix/widgets/badge.dart';
 import 'package:quickfix/widgets/reviews.dart';
 import 'package:quickfix/widgets/smooth_star_rating.dart';
-import 'package:flutter/material.dart';
 
 class ProductDetails extends StatefulWidget {
   @override
@@ -60,7 +60,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8.0),
                     child: Image.asset(
-                      "${foods[1]['img']}",
+                      "${technicians[1]['img']}",
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -87,7 +87,7 @@ class _ProductDetailsState extends State<ProductDetails> {
             ),
             SizedBox(height: 10.0),
             Text(
-              "${foods[1]['name']}",
+              "${technicians[1]['name']}",
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w800,

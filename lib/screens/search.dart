@@ -1,7 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:quickfix/util/const.dart';
 import 'package:quickfix/util/foods.dart';
 import 'package:quickfix/widgets/smooth_star_rating.dart';
-import 'package:flutter/material.dart';
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -79,9 +79,9 @@ class _SearchScreenState extends State<SearchScreen>
               shrinkWrap: true,
               primary: false,
               physics: NeverScrollableScrollPhysics(),
-              itemCount: foods == null ? 0 : foods.length,
+              itemCount: technicians == null ? 0 : technicians.length,
               itemBuilder: (BuildContext context, int index) {
-                Map food = foods[index];
+                Map food = technicians[index];
                 if (index >= 3) {
                   return null;
                 } else {

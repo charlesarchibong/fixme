@@ -31,7 +31,9 @@ class Utils {
 
   static Future<User> getUserSession() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
-    return User.fromjson(jsonDecode(sp.get("user")));
+    return sp.get('user') != null
+        ? User.fromjson(jsonDecode(sp.get("user")))
+        : null;
   }
 
   static Future<bool> clearUserSession() async {
@@ -41,7 +43,9 @@ class Utils {
 
   static Future<User> getApiKey() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
-    return User.fromjson(jsonDecode(sp.get("apiKey")));
+    return sp.get('apiKey') != null
+        ? User.fromjson(jsonDecode(sp.get("apiKey")))
+        : null;
   }
 
   static Future<bool> clearApiKey() async {

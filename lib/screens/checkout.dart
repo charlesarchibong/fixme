@@ -1,7 +1,6 @@
-import 'package:quickfix/util/foods.dart';
-import 'package:quickfix/widgets/cart_item.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:quickfix/util/foods.dart';
 
 class Checkout extends StatefulWidget {
   @override
@@ -117,19 +116,13 @@ class _CheckoutState extends State<Checkout> {
             ListView.builder(
               primary: false,
               shrinkWrap: true,
-              itemCount: foods == null ? 0 : foods.length,
+              itemCount: technicians == null ? 0 : technicians.length,
               itemBuilder: (BuildContext context, int index) {
 //                Food food = Food.fromJson(foods[index]);
-                Map food = foods[index];
+                Map food = technicians[index];
 //                print(foods);
 //                print(foods.length);
-                return CartItem(
-                  img: food['img'],
-                  isFav: false,
-                  name: food['name'],
-                  rating: 5.0,
-                  raters: 23,
-                );
+                return;
               },
             ),
           ],

@@ -1,10 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:quickfix/screens/notifications.dart';
 import 'package:quickfix/util/categories.dart';
 import 'package:quickfix/util/foods.dart';
 import 'package:quickfix/widgets/badge.dart';
 import 'package:quickfix/widgets/grid_product.dart';
 import 'package:quickfix/widgets/home_category.dart';
-import 'package:flutter/material.dart';
 
 class CategoriesScreen extends StatefulWidget {
   @override
@@ -93,9 +93,9 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 childAspectRatio: MediaQuery.of(context).size.width /
                     (MediaQuery.of(context).size.height / 1.25),
               ),
-              itemCount: foods == null ? 0 : foods.length,
+              itemCount: technicians == null ? 0 : technicians.length,
               itemBuilder: (BuildContext context, int index) {
-                Map food = foods[index];
+                Map food = technicians[index];
                 return GridProduct(
                   img: food['img'],
                   isFav: false,
