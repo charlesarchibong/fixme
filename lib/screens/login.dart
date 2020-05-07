@@ -108,28 +108,6 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-//  void _showAlert(BuildContext context, String message) {
-//    showDialog(
-//        context: context,
-//        builder: (context) => AlertDialog(
-//              title: Text("Error"),
-//              content: Text(message),
-//              shape: RoundedRectangleBorder(
-//                  borderRadius: BorderRadius.circular(10.0)),
-//              actions: <Widget>[
-//                FlatButton(
-//                  child: Text("Try again"),
-//                  padding: EdgeInsets.all(10.0),
-//                  textColor: Colors.white,
-//                  color: Theme.of(context).accentColor,
-//                  onPressed: () {
-//                    Navigator.of(context).pop();
-//                  },
-//                )
-//              ],
-//            ));
-//  }
-
   @override
   void initState() {
     FlutterStatusbarcolor.setStatusBarWhiteForeground(true);

@@ -231,12 +231,8 @@ class _ProfileState extends State<Profile> {
                         ),
                         trailing: InkWell(
                           onTap: () {
-                            _profileScaffoldKey.currentState
-                                .showSnackBar(SnackBar(
-                              content: Text('New Subcategory added'),
-                              elevation: 5,
-                              duration: Duration(seconds: 5),
-                            ));
+                            _showSubCategoryDialog(
+                                context, _profileScaffoldKey);
                           },
                           child: Icon(
                             Icons.add,
@@ -269,14 +265,7 @@ class _ProfileState extends State<Profile> {
                                           if (profileProvider.images.length <=
                                               5) {
                                             profileProvider.getServiceImage();
-                                          } else {
-                                            _profileScaffoldKey.currentState
-                                                .showSnackBar(SnackBar(
-                                              content: Text(
-                                                  'You have reach your service images limit'),
-                                              duration: Duration(seconds: 7),
-                                            ));
-                                          }
+                                          } else {}
                                         },
                                         child: Icon(
                                           Icons.add,
@@ -344,6 +333,63 @@ class _ProfileState extends State<Profile> {
       ),
     );
   }
+}
+
+_showSubCategoryDialog(
+    BuildContext context, GlobalKey<ScaffoldState> profileScaffoldKey) {
+  showDialog(
+      context: context,
+      builder: (context) => Dialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)), //this right here
+            child: Container(
+              height: 200,
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Card(
+                      elevation: 3.0,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(5.0),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 5.0, right: 5.0),
+                          child: TextField(
+                            decoration: InputDecoration(
+                                hintText: 'Enter subcategory',
+                                hintStyle: TextStyle(color: Colors.grey),
+                                border: InputBorder.none),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    FlatButton(
+                      child: Text("Save"),
+                      padding: EdgeInsets.all(10.0),
+                      textColor: Colors.white,
+                      color: Theme.of(context).accentColor,
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        profileScaffoldKey.currentState.showSnackBar(SnackBar(
+                          content: Text('Subcategory was added'),
+                          duration: Duration(seconds: 5),
+                        ));
+                      },
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ));
 }
 
 class MyBottomSheetLayout extends StatelessWidget {
