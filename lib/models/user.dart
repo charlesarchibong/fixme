@@ -3,8 +3,14 @@ class User {
   String lastName;
   String phoneNumber;
   String email;
+  String serviceArea;
 
-  User.name({this.firstName, this.lastName, this.phoneNumber, this.email});
+  User.name(
+      {this.firstName,
+      this.lastName,
+      this.phoneNumber,
+      this.email,
+      this.serviceArea});
 
   Map<String, dynamic> toJson() {
     var map = new Map<String, dynamic>();
@@ -12,6 +18,7 @@ class User {
     map['lastName'] = lastName;
     map['phoneNumber'] = phoneNumber;
     map['email'] = email;
+    map['serviceArea'] = serviceArea;
     return map;
   }
 
@@ -20,5 +27,6 @@ class User {
     lastName = json['lastName'];
     phoneNumber = json['phoneNumber'];
     email = json['email'];
+    serviceArea = json['serviceArea'];
   }
 }

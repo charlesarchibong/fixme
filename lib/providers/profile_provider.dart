@@ -26,4 +26,8 @@ class ProfileProvider extends ChangeNotifier {
     _images.removeAt(index);
     notifyListeners();
   }
+
+  Future<void> addSubCategory(String subCategory) {
+    print(subCategory);
+  }
 }

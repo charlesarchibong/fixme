@@ -23,18 +23,17 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> _sendCodeToPhoneNumber(User user) async {
     final loginForm = Provider.of<LoginFormValidation>(context, listen: false);
     final PhoneVerificationCompleted verificationCompleted =
-        (AuthCredential user) {
-      SnackBar(
-        content: Text("Phone number verified"),
-        duration: Duration(seconds: 5),
-      );
-
-      Utils.setUserSession(jsonEncode(user));
-      Navigator.of(context).push(
-        MaterialPageRoute(builder: (BuildContext context) {
-          return MainScreen();
-        }),
-      );
+        (AuthCredential authUser) {
+      setState(() {
+        print('phone number verifieds');
+        loginForm.setNotLoading();
+        Utils.setUserSession(jsonEncode(user));
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (BuildContext context) {
+            return MainScreen();
+          }),
+        );
+      });
     };
 
     final PhoneVerificationFailed verificationFailed =
@@ -88,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
       loginForm.loginUser(_phoneControl.text).then((user) {
         print(user.toJson());
         if (user != null) {
-          Utils.setUserSession(jsonEncode(user));
+          // Utils.setUserSession(jsonEncode(user));
           _sendCodeToPhoneNumber(user);
         } else {
           throw new Exception('Invalid phone number, please try again!');

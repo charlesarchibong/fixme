@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_shimmer/flutter_shimmer.dart';
 import 'package:provider/provider.dart';
 import 'package:quickfix/providers/app_provider.dart';
@@ -204,7 +205,7 @@ class _ProfileState extends State<Profile> {
                         ),
                       ),
                       Container(
-                        height: 20,
+                        height: 14,
                       ),
                       ListTile(
                         title: Text(
@@ -215,7 +216,7 @@ class _ProfileState extends State<Profile> {
                           ),
                         ),
                         subtitle: Text(
-                          'Home Service',
+                          snapshot.data.serviceArea,
                         ),
                       ),
                       ListTile(
@@ -337,6 +338,9 @@ class _ProfileState extends State<Profile> {
 
 _showSubCategoryDialog(
     BuildContext context, GlobalKey<ScaffoldState> profileScaffoldKey) {
+  final profileProvider = Provider.of<ProfileProvider>(context, listen: false);
+  final _formKey = GlobalKey<FormState>();
+  TextEditingController _controller = TextEditingController();
   showDialog(
       context: context,
       builder: (context) => Dialog(
@@ -360,11 +364,20 @@ _showSubCategoryDialog(
                         ),
                         child: Padding(
                           padding: const EdgeInsets.only(left: 5.0, right: 5.0),
-                          child: TextField(
-                            decoration: InputDecoration(
-                                hintText: 'Enter subcategory',
-                                hintStyle: TextStyle(color: Colors.grey),
-                                border: InputBorder.none),
+                          child: Form(
+                            key: _formKey,
+                            child: TextFormField(
+                              controller: _controller,
+                              validator: (value) {
+                                return value.isEmpty
+                                    ? 'Subcategory can not be empty'
+                                    : null;
+                              },
+                              decoration: InputDecoration(
+                                  hintText: 'Enter subcategory',
+                                  hintStyle: TextStyle(color: Colors.grey),
+                                  border: InputBorder.none),
+                            ),
                           ),
                         ),
                       ),
@@ -378,11 +391,20 @@ _showSubCategoryDialog(
                       textColor: Colors.white,
                       color: Theme.of(context).accentColor,
                       onPressed: () {
-                        Navigator.of(context).pop();
-                        profileScaffoldKey.currentState.showSnackBar(SnackBar(
-                          content: Text('Subcategory was added'),
-                          duration: Duration(seconds: 5),
-                        ));
+                        if (_formKey.currentState.validate()) {
+                          profileProvider
+                              .addSubCategory(_controller.text)
+                              .then((value) {
+                            Navigator.of(context).pop();
+                            profileScaffoldKey.currentState
+                                .showSnackBar(SnackBar(
+                              content: Text('Subcategory was added'),
+                              duration: Duration(seconds: 5),
+                            ));
+                          }).catchError((e) {
+                            print(e);
+                          });
+                        }
                       },
                     )
                   ],
