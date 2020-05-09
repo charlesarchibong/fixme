@@ -1,0 +1,100 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:connectivity/connectivity.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
+import 'package:quickfix/interceptors/dio_connectivity_request_retrier.dart';
+import 'package:quickfix/interceptors/retry_request_interceptor.dart';
+
+class NetworkService {
+  static Dio dio;
+
+  Future<Response> post(
+      {@required String url, Map headers, @required Map body}) async {
+    dio = Dio();
+    dio.interceptors.add(
+      RetryOnConnectionChangeInterceptor(
+        requestRetrier: DioConnectivityRequestRetrier(
+          dio: Dio(),
+          connectivity: Connectivity(),
+        ),
+      ),
+    );
+
+    Response response = await dio.post(
+      url,
+      data: body,
+      options: Options(
+        contentType: "application/x-www-form-urlencoded",
+        headers: headers,
+      ),
+    );
+    return response;
+  }
+
+  Future<dynamic> getRequest(
+      {@required String url, Map headers, Map queryParam}) async {
+    dio = Dio();
+    dio.interceptors.add(
+      RetryOnConnectionChangeInterceptor(
+        requestRetrier: DioConnectivityRequestRetrier(
+          dio: Dio(),
+          connectivity: Connectivity(),
+        ),
+      ),
+    );
+    dio.options.headers = headers;
+    Response response = await dio.get(
+      url,
+      queryParameters: queryParam,
+      options: Options(
+        contentType: "application/x-www-form-urlencoded",
+        headers: headers,
+      ),
+    );
+    return response;
+  }
+
+  Future<dynamic> delete(
+      {@required String url, Map headers, Map queryParam}) async {
+    dio = Dio();
+    dio.interceptors.add(
+      RetryOnConnectionChangeInterceptor(
+        requestRetrier: DioConnectivityRequestRetrier(
+          dio: Dio(),
+          connectivity: Connectivity(),
+        ),
+      ),
+    );
+    dio.options.headers = headers;
+    Response response = await dio.delete(url,
+        queryParameters: queryParam,
+        options: Options(
+          contentType: "application/x-www-form-urlencoded",
+          headers: headers,
+        ));
+    return response;
+  }
+
+  Future<dynamic> put(
+      {@required String url, Map headers, @required Map data}) async {
+    dio = Dio();
+    dio.interceptors.add(
+      RetryOnConnectionChangeInterceptor(
+        requestRetrier: DioConnectivityRequestRetrier(
+          dio: Dio(),
+          connectivity: Connectivity(),
+        ),
+      ),
+    );
+    dio.options.headers = headers;
+    Response response = await dio.put(url,
+        data: data,
+        options: Options(
+          contentType: "application/x-www-form-urlencoded",
+          headers: headers,
+        ));
+    return response;
+  }
+}

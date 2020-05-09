@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -85,17 +86,18 @@ class _LoginScreenState extends State<LoginScreen> {
     if (loginForm.validate(_phoneControl.text)) {
       loginForm.setLoading();
       loginForm.loginUser(_phoneControl.text).then((user) {
-        print(user.toJson());
+        // print(user.toJson());
         if (user != null) {
-          // Utils.setUserSession(jsonEncode(user));
           _sendCodeToPhoneNumber(user);
         } else {
           throw new Exception('Invalid phone number, please try again!');
         }
       }).catchError((error) {
         loginForm.setNotLoading();
-        print(error.toString().split(":")[1]);
-        String message = error.toString().split(":")[1];
+        // print(error.toString().split(":")[1]);
+        String message = error is SocketException
+            ? 'No Internet connection available'
+            : error.toString().split(":")[1];
 //        _showAlert(context, error.toString().split(":")[1]);
         _scaffoldKey.currentState.showSnackBar(
           SnackBar(

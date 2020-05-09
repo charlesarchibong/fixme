@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:quickfix/models/user.dart';
+import 'package:quickfix/services/network_service.dart';
 import 'package:quickfix/util/Utils.dart';
 import 'package:quickfix/util/const.dart';
 
@@ -52,33 +54,28 @@ class LoginFormValidation extends ChangeNotifier {
 
   Future<User> loginUser(String phone) async {
     try {
-      bool connected = await Utils.checkInternetConn();
-      if (connected) {
-        Map<String, String> header = {
-          "Content-type": "application/x-www-form-urlencoded"
-        };
-        Map<String, String> body = {'phoneNumber': phone};
-        String url = Constants.baseUrl + Constants.loginUserUrl;
-        final response = await http.post(url, headers: header, body: body);
-        final apiReponse = jsonDecode(response.body);
-        print(apiReponse);
-        if (response.statusCode == 200) {
-          if (apiReponse['reqRes'] == "false") {
-            throw new Exception('Invalid phone number, please try again!');
-          } else {
-            String apiKey = response.headers['bearer'];
-            print(apiKey);
-            Utils.setApiKey(apiKey);
-            return new User.fromjson(apiReponse);
-          }
+      Map<String, String> headers = {
+        "Content-type": "application/x-www-form-urlencoded"
+      };
+      Map<String, String> body = {'phoneNumber': phone};
+      String url = Constants.baseUrl + Constants.loginUserUrl;
+      //
+      final response =
+          await NetworkService().post(url: url, headers: headers, body: body);
+      print(response.data);
+      if (response.statusCode == 200) {
+        if (response.data['reqRes'] == "false") {
+          throw new Exception('Invalid phone number, please try again!');
         } else {
-          throw new Exception('Something wnt wrong, please try again!');
+          // String apiKey = response.headers;
+          print(response.headers);
+          // Utils.setApiKey(apiKey);
+          return new User.fromjson(response.data);
         }
       } else {
-        throw new SocketException('No internet connection');
+        throw new Exception('Something wnt wrong, please try again!');
       }
     } catch (e) {
-      print(e.toString());
       throw e;
     }
   }
