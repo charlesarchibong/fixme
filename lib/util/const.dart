@@ -27,13 +27,7 @@ class Constants {
     cursorColor: lightAccent,
     scaffoldBackgroundColor: lightBG,
     appBarTheme: AppBarTheme(
-      textTheme: TextTheme(
-        title: TextStyle(
-          color: lightBG,
-          fontSize: 18.0,
-          fontWeight: FontWeight.w800,
-        ),
-      ),
+      textTheme: TextTheme(),
 //      iconTheme: IconThemeData(
 //        color: lightAccent,
 //      ),
@@ -48,13 +42,7 @@ class Constants {
     scaffoldBackgroundColor: darkBG,
     cursorColor: darkAccent,
     appBarTheme: AppBarTheme(
-      textTheme: TextTheme(
-        title: TextStyle(
-          color: lightBG,
-          fontSize: 18.0,
-          fontWeight: FontWeight.w800,
-        ),
-      ),
+      textTheme: TextTheme(),
 //      iconTheme: IconThemeData(
 //        color: darkAccent,
 //      ),
