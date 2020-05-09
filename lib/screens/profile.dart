@@ -368,6 +368,7 @@ _showSubCategoryDialog(
                             key: _formKey,
                             child: TextFormField(
                               controller: _controller,
+                              keyboardType: TextInputType.text,
                               validator: (value) {
                                 return value.isEmpty
                                     ? 'Subcategory can not be empty'
@@ -386,15 +387,26 @@ _showSubCategoryDialog(
                       height: 10,
                     ),
                     FlatButton(
-                      child: Text("Save"),
+                      child: profileProvider.loading
+                          ? Container(
+                              alignment: Alignment.center,
+                              width: 50,
+                              height: 50,
+                              child: CircularProgressIndicator(
+                                backgroundColor: Colors.white,
+                              ),
+                            )
+                          : Text("Save"),
                       padding: EdgeInsets.all(10.0),
                       textColor: Colors.white,
                       color: Theme.of(context).accentColor,
                       onPressed: () {
                         if (_formKey.currentState.validate()) {
+                          profileProvider.setLoading();
                           profileProvider
                               .addSubCategory(_controller.text)
                               .then((value) {
+                            profileProvider.setNotLoading();
                             Navigator.of(context).pop();
                             profileScaffoldKey.currentState
                                 .showSnackBar(SnackBar(
@@ -406,7 +418,7 @@ _showSubCategoryDialog(
                           });
                         }
                       },
-                    )
+                    ),
                   ],
                 ),
               ),

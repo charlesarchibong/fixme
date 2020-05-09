@@ -41,11 +41,9 @@ class Utils {
     return sp.remove('user');
   }
 
-  static Future<User> getApiKey() async {
+  static Future<String> getApiKey() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
-    return sp.get('apiKey') != null
-        ? User.fromjson(jsonDecode(sp.get("apiKey")))
-        : null;
+    return sp.get('apiKey') != null ? sp.get("apiKey") : null;
   }
 
   static Future<bool> clearApiKey() async {

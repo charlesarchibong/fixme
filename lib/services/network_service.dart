@@ -10,8 +10,12 @@ import 'package:quickfix/interceptors/retry_request_interceptor.dart';
 class NetworkService {
   static Dio dio;
 
-  Future<Response> post(
-      {@required String url, Map headers, @required Map body}) async {
+  Future<Response> post({
+    @required String url,
+    Map headers,
+    @required Map body,
+    @required contentType,
+  }) async {
     dio = Dio();
     dio.interceptors.add(
       RetryOnConnectionChangeInterceptor(
@@ -26,15 +30,19 @@ class NetworkService {
       url,
       data: body,
       options: Options(
-        contentType: "application/x-www-form-urlencoded",
+        contentType: contentType,
         headers: headers,
       ),
     );
     return response;
   }
 
-  Future<dynamic> getRequest(
-      {@required String url, Map headers, Map queryParam}) async {
+  Future<dynamic> getRequest({
+    @required String url,
+    Map headers,
+    Map queryParam,
+    @required contentType,
+  }) async {
     dio = Dio();
     dio.interceptors.add(
       RetryOnConnectionChangeInterceptor(
@@ -49,15 +57,19 @@ class NetworkService {
       url,
       queryParameters: queryParam,
       options: Options(
-        contentType: "application/x-www-form-urlencoded",
+        contentType: contentType,
         headers: headers,
       ),
     );
     return response;
   }
 
-  Future<dynamic> delete(
-      {@required String url, Map headers, Map queryParam}) async {
+  Future<dynamic> delete({
+    @required String url,
+    Map headers,
+    Map queryParam,
+    @required contentType,
+  }) async {
     dio = Dio();
     dio.interceptors.add(
       RetryOnConnectionChangeInterceptor(
@@ -71,14 +83,18 @@ class NetworkService {
     Response response = await dio.delete(url,
         queryParameters: queryParam,
         options: Options(
-          contentType: "application/x-www-form-urlencoded",
+          contentType: contentType,
           headers: headers,
         ));
     return response;
   }
 
-  Future<dynamic> put(
-      {@required String url, Map headers, @required Map data}) async {
+  Future<dynamic> put({
+    @required String url,
+    Map headers,
+    @required Map data,
+    @required contentType,
+  }) async {
     dio = Dio();
     dio.interceptors.add(
       RetryOnConnectionChangeInterceptor(
@@ -92,7 +108,7 @@ class NetworkService {
     Response response = await dio.put(url,
         data: data,
         options: Options(
-          contentType: "application/x-www-form-urlencoded",
+          contentType: contentType,
           headers: headers,
         ));
     return response;

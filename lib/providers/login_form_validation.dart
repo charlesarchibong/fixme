@@ -8,6 +8,7 @@ import 'package:quickfix/models/user.dart';
 import 'package:quickfix/services/network_service.dart';
 import 'package:quickfix/util/Utils.dart';
 import 'package:quickfix/util/const.dart';
+import 'package:quickfix/util/content_type.dart';
 
 class LoginFormValidation extends ChangeNotifier {
 //  LoginFormValidation() {}
@@ -60,16 +61,17 @@ class LoginFormValidation extends ChangeNotifier {
       Map<String, String> body = {'phoneNumber': phone};
       String url = Constants.baseUrl + Constants.loginUserUrl;
       //
-      final response =
-          await NetworkService().post(url: url, headers: headers, body: body);
-      print(response.data);
+      final response = await NetworkService().post(
+          url: url,
+          headers: headers,
+          body: body,
+          contentType: ContentType.URL_ENCODED);
       if (response.statusCode == 200) {
         if (response.data['reqRes'] == "false") {
           throw new Exception('Invalid phone number, please try again!');
         } else {
-          // String apiKey = response.headers;
-          print(response.headers);
-          // Utils.setApiKey(apiKey);
+          String apiKey = response.headers.value('bearer');
+          Utils.setApiKey(apiKey);
           return new User.fromjson(response.data);
         }
       } else {

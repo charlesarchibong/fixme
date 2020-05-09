@@ -53,6 +53,9 @@ class _MainScreenState extends State<MainScreen> {
           iconTheme: IconThemeData(color: Colors.white),
           title: Text(
             Constants.appName,
+            style: TextStyle(
+              color: Colors.white,
+            ),
           ),
           elevation:
               defaultTargetPlatform == TargetPlatform.android ? 1.0 : 0.0,
