@@ -4,8 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_shimmer/flutter_shimmer.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
+import 'package:quickfix/screens/dashboard.dart';
 import 'package:quickfix/screens/favorite_screen.dart';
-import 'package:quickfix/screens/home_old.dart';
 import 'package:quickfix/screens/notifications.dart';
 import 'package:quickfix/screens/pending_appointment.dart';
 import 'package:quickfix/screens/post_job.dart';
@@ -186,7 +186,7 @@ class _MainScreenState extends State<MainScreen> {
           controller: _pageController,
           onPageChanged: onPageChanged,
           children: <Widget>[
-            HomeW(),
+            Dashboard(),
             FavoriteScreen(),
             SearchScreen(),
             PendingAppointment(),
