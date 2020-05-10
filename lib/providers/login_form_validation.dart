@@ -1,9 +1,6 @@
-import 'dart:convert';
 import 'dart:io';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as http;
 import 'package:quickfix/models/user.dart';
 import 'package:quickfix/services/network_service.dart';
 import 'package:quickfix/util/Utils.dart';
@@ -82,5 +79,7 @@ class LoginFormValidation extends ChangeNotifier {
     }
   }
 
-  Future<bool> recoverUser(String email) async {}
+  Future<bool> recoverUser(String email) async {
+    return true;
+  }
 }

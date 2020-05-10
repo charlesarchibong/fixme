@@ -1,10 +1,9 @@
-import 'package:quickfix/models/job_category.dart';
-import 'package:quickfix/providers/login_form_validation.dart';
-import 'package:quickfix/providers/post_job_provider.dart';
-import 'package:quickfix/util/const.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:quickfix/models/job_category.dart';
+import 'package:quickfix/providers/post_job_provider.dart';
+import 'package:quickfix/util/const.dart';
 
 class PostJob extends StatefulWidget {
   @override

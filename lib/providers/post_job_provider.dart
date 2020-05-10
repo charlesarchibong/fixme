@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 class PostJobProvider extends ChangeNotifier {
-  PostJob() {}
+  PostJobProvider();
 
   bool title = false;
   bool description = false;

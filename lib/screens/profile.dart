@@ -425,10 +425,3 @@ _showSubCategoryDialog(
             ),
           ));
 }
-
-class MyBottomSheetLayout extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(); // return your bottomSheetLayout
-  }
-}

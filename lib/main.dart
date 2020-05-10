@@ -8,14 +8,11 @@ import 'package:quickfix/providers/profile_provider.dart';
 import 'package:quickfix/screens/splash.dart';
 import 'package:quickfix/util/const.dart';
 
-import 'providers/register_form_validation.dart';
-
 void main() {
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AppProvider()),
-        ChangeNotifierProvider(create: (_) => RegisterFormValidation()),
         ChangeNotifierProvider(create: (_) => LoginFormValidation()),
         ChangeNotifierProvider(create: (_) => PostJobProvider()),
         ChangeNotifierProvider(create: (_) => ProfileProvider()),

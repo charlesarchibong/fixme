@@ -16,12 +16,12 @@ class ProfileProvider extends ChangeNotifier {
   File get profilePicture => _profilePicture;
   bool loading = false;
 
-  bool setNotLoading() {
+  void setNotLoading() {
     loading = false;
     notifyListeners();
   }
 
-  bool setLoading() {
+  void setLoading() {
     loading = true;
     notifyListeners();
   }
@@ -61,12 +61,14 @@ class ProfileProvider extends ChangeNotifier {
       print(headers);
       Response response = await NetworkService().post(
           url: url,
-          body: body,
+          body: {},
+          queryParam: body,
           headers: headers,
-          contentType: ContentType.JSON);
+          contentType: ContentType.URL_ENCODED);
+      print(response);
     } catch (e) {
       if (e is DioError) {
-        print(e.message);
+        print(e.toString() + ' bby');
       } else {
         throw e;
       }

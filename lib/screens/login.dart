@@ -213,6 +213,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                     onPressed: () {
+                      // ignore: unnecessary_statements
                       loginForm.loading ? null : _loginUser();
                     },
                     color: Theme.of(context).accentColor,

@@ -119,7 +119,7 @@ class _CheckoutState extends State<Checkout> {
               itemCount: technicians == null ? 0 : technicians.length,
               itemBuilder: (BuildContext context, int index) {
 //                Food food = Food.fromJson(foods[index]);
-                Map food = technicians[index];
+//                Map food = technicians[index];
 //                print(foods);
 //                print(foods.length);
                 return;

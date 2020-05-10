@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:connectivity/connectivity.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -15,6 +12,7 @@ class NetworkService {
     Map headers,
     @required Map body,
     @required contentType,
+    Map queryParam,
   }) async {
     dio = Dio();
     dio.interceptors.add(
@@ -29,6 +27,7 @@ class NetworkService {
     Response response = await dio.post(
       url,
       data: body,
+      queryParameters: queryParam,
       options: Options(
         contentType: contentType,
         headers: headers,
