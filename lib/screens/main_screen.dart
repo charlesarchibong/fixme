@@ -66,6 +66,23 @@ class MainScreenState extends State<MainScreen> {
             IconButton(
               color: Colors.white,
               icon: IconBadge(
+                icon: Icons.chat,
+                size: 22.0,
+              ),
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) {
+                      return;
+                    },
+                  ),
+                );
+              },
+              tooltip: "Chats",
+            ),
+            IconButton(
+              color: Colors.white,
+              icon: IconBadge(
                 icon: Icons.notifications,
                 size: 22.0,
               ),
