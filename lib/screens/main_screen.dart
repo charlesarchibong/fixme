@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_shimmer/flutter_shimmer.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:quickfix/providers/dashboard_provider.dart';
 import 'package:quickfix/screens/dashboard.dart';
@@ -16,7 +17,6 @@ import 'package:quickfix/screens/search.dart';
 import 'package:quickfix/util/Utils.dart';
 import 'package:quickfix/util/const.dart';
 import 'package:quickfix/util/pending_request.dart';
-import 'package:quickfix/widgets/badge.dart';
 
 class MainScreen extends StatefulWidget {
   MainScreenState mainScreenState = new MainScreenState();
@@ -65,9 +65,19 @@ class MainScreenState extends State<MainScreen> {
           actions: <Widget>[
             IconButton(
               color: Colors.white,
-              icon: IconBadge(
-                icon: Icons.chat,
-                size: 22.0,
+              icon: Badge(
+                badgeContent: Text(
+                  requests.length.toString(),
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                ),
+                badgeColor: Colors.white,
+                animationType: BadgeAnimationType.slide,
+                toAnimate: true,
+                child: FaIcon(
+                  FontAwesomeIcons.comment,
+                ),
               ),
               onPressed: () {
                 Navigator.of(context).push(
@@ -82,9 +92,19 @@ class MainScreenState extends State<MainScreen> {
             ),
             IconButton(
               color: Colors.white,
-              icon: IconBadge(
-                icon: Icons.notifications,
-                size: 22.0,
+              icon: Badge(
+                badgeContent: Text(
+                  requests.length.toString(),
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                ),
+                badgeColor: Colors.white,
+                animationType: BadgeAnimationType.slide,
+                toAnimate: true,
+                child: FaIcon(
+                  FontAwesomeIcons.bell,
+                ),
               ),
               onPressed: () {
                 Navigator.of(context).push(
@@ -261,7 +281,12 @@ class MainScreenState extends State<MainScreen> {
                   InkWell(
                     onTap: () => navigationTapped(3),
                     child: Badge(
-                      badgeContent: Text(requests.length.toString()),
+                      badgeContent: Text(
+                        requests.length.toString(),
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
                       badgeColor: Colors.red,
                       animationType: BadgeAnimationType.slide,
                       toAnimate: true,

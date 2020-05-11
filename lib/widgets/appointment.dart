@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:quickfix/screens/details.dart';
 import 'package:quickfix/widgets/popup_button.dart';
 
 class PendingAppointments extends StatelessWidget {
   final String title;
   final String subtitle;
-  final IconData icon;
+  final String status;
 
   PendingAppointments({
     Key key,
     @required this.title,
     @required this.subtitle,
-    @required this.icon,
+    @required this.status,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,13 @@ class PendingAppointments extends StatelessWidget {
           );
         },
         child: ListTile(
-          leading: Icon(this.icon),
+          leading: CircleAvatar(
+            backgroundColor: Colors.orange,
+            child: FaIcon(
+              FontAwesomeIcons.ellipsisH,
+              color: Colors.white,
+            ),
+          ),
           title: Text(
             this.title,
             style: TextStyle(

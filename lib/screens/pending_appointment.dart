@@ -51,7 +51,7 @@ class _PendingAppointmentState extends State<PendingAppointment>
                   return PendingAppointments(
                     title: requests[index]['title'],
                     subtitle: requests[index]['subtitle'],
-                    icon: Icons.cached,
+                    status: requests[index]['status'],
                   );
                 },
               ),
