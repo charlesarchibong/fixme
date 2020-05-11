@@ -4,6 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_shimmer/flutter_shimmer.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
+import 'package:provider/provider.dart';
+import 'package:quickfix/providers/dashboard_provider.dart';
 import 'package:quickfix/screens/dashboard.dart';
 import 'package:quickfix/screens/favorite_screen.dart';
 import 'package:quickfix/screens/notifications.dart';
@@ -17,12 +19,13 @@ import 'package:quickfix/util/pending_request.dart';
 import 'package:quickfix/widgets/badge.dart';
 
 class MainScreen extends StatefulWidget {
+  MainScreenState mainScreenState = new MainScreenState();
   @override
-  _MainScreenState createState() => _MainScreenState();
+  MainScreenState createState() => mainScreenState;
 }
 
-class _MainScreenState extends State<MainScreen> {
-  PageController _pageController;
+class MainScreenState extends State<MainScreen> {
+  PageController pageController;
   int _page = 0;
 
   @override
@@ -181,113 +184,127 @@ class _MainScreenState extends State<MainScreen> {
             ],
           ),
         ),
-        body: PageView(
-          physics: NeverScrollableScrollPhysics(),
-          controller: _pageController,
-          onPageChanged: onPageChanged,
-          children: <Widget>[
-            Dashboard(),
-            FavoriteScreen(),
-            SearchScreen(),
-            PendingAppointment(),
-            Profile(),
-          ],
+        body: Consumer<DashBoardProvider>(
+          builder: (context, dashboardProvider, child) {
+            return PageView(
+              physics: NeverScrollableScrollPhysics(),
+              controller: pageController,
+              onPageChanged: onPageChanged,
+              children: <Widget>[
+                Dashboard(
+                  pageController: pageController,
+                ),
+                FavoriteScreen(),
+                SearchScreen(),
+                PendingAppointment(),
+                Profile(),
+              ],
+            );
+          },
         ),
         bottomNavigationBar: BottomAppBar(
-          child: new Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              SizedBox(width: 7),
-              IconButton(
-                icon: Icon(
-                  Icons.home,
-                  size: 24.0,
-                ),
-                color: _page == 0
-                    ? Theme.of(context).accentColor
-                    : Theme.of(context).textTheme.caption.color,
-                onPressed: () => _pageController.jumpToPage(0),
-              ),
-              IconButton(
-                icon: Icon(
-                  Icons.favorite,
-                  size: 24.0,
-                ),
-                color: _page == 1
-                    ? Theme.of(context).accentColor
-                    : Theme.of(context).textTheme.caption.color,
-                onPressed: () => _pageController.jumpToPage(1),
-              ),
-              IconButton(
-                icon: Icon(
-                  Icons.search,
-                  size: 24.0,
-                  color: Theme.of(context).primaryColor,
-                ),
-                color: _page == 2
-                    ? Theme.of(context).accentColor
-                    : Theme.of(context).textTheme.caption.color,
-                onPressed: () => _pageController.jumpToPage(2),
-              ),
-              InkWell(
-                onTap: () => _pageController.jumpToPage(3),
-                child: Badge(
-                  badgeContent: Text(requests.length.toString()),
-                  badgeColor: Colors.red,
-                  animationType: BadgeAnimationType.slide,
-                  toAnimate: true,
-                  child: Icon(
-                    Icons.shopping_cart,
-                    color: _page == 3
+          child: Consumer<DashBoardProvider>(
+            builder: (context, dashboardProvider, child) {
+              return Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  SizedBox(width: 7),
+                  IconButton(
+                    icon: Icon(
+                      Icons.home,
+                      size: 24.0,
+                    ),
+                    color: _page == 0
                         ? Theme.of(context).accentColor
                         : Theme.of(context).textTheme.caption.color,
+                    onPressed: () => navigationTapped(0),
                   ),
-                ),
-              ),
-              IconButton(
-                icon: Icon(
-                  Icons.person,
-                  size: 24.0,
-                ),
-                color: _page == 4
-                    ? Theme.of(context).accentColor
-                    : Theme.of(context).textTheme.caption.color,
-                onPressed: () => _pageController.jumpToPage(4),
-              ),
-              SizedBox(width: 7),
-            ],
+                  IconButton(
+                    icon: Icon(
+                      Icons.favorite,
+                      size: 24.0,
+                    ),
+                    color: _page == 1
+                        ? Theme.of(context).accentColor
+                        : Theme.of(context).textTheme.caption.color,
+                    onPressed: () => navigationTapped(1),
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      Icons.search,
+                      size: 24.0,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    color: _page == 2
+                        ? Theme.of(context).accentColor
+                        : Theme.of(context).textTheme.caption.color,
+                    onPressed: () => navigationTapped(2),
+                  ),
+                  InkWell(
+                    onTap: () => navigationTapped(3),
+                    child: Badge(
+                      badgeContent: Text(requests.length.toString()),
+                      badgeColor: Colors.red,
+                      animationType: BadgeAnimationType.slide,
+                      toAnimate: true,
+                      child: Icon(
+                        Icons.shopping_cart,
+                        color: _page == 3
+                            ? Theme.of(context).accentColor
+                            : Theme.of(context).textTheme.caption.color,
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      Icons.person,
+                      size: 24.0,
+                    ),
+                    color: _page == 4
+                        ? Theme.of(context).accentColor
+                        : Theme.of(context).textTheme.caption.color,
+                    onPressed: () => navigationTapped(4),
+                  ),
+                  SizedBox(width: 7),
+                ],
+              );
+            },
           ),
           color: Theme.of(context).primaryColor,
           shape: CircularNotchedRectangle(),
         ),
         floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: FloatingActionButton(
-          elevation: 4.0,
-          child: Icon(
-            Icons.search,
-          ),
-          onPressed: () => _pageController.jumpToPage(2),
+        floatingActionButton: Consumer<DashBoardProvider>(
+          builder: (context, dashboardProvider, child) {
+            return FloatingActionButton(
+              elevation: 4.0,
+              child: Icon(
+                Icons.search,
+              ),
+              onPressed: () => navigationTapped(2),
+            );
+          },
         ),
       ),
     );
   }
 
   void navigationTapped(int page) {
-    _pageController.jumpToPage(page);
+    pageController.jumpToPage(page);
   }
 
   @override
   void initState() {
     super.initState();
-    _pageController = PageController();
+    pageController = PageController();
   }
 
   @override
   void dispose() {
     super.dispose();
-    _pageController.dispose();
+    pageController.dispose();
   }
 
   void onPageChanged(int page) {

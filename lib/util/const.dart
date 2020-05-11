@@ -25,6 +25,7 @@ class Constants {
     backgroundColor: darkAccent,
     primaryColor: lightPrimary,
     accentColor: lightAccent,
+    fontFamily: 'Popins',
     cursorColor: lightAccent,
     brightness: Brightness.light,
     textSelectionColor: Colors.red,

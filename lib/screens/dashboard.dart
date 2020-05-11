@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sparkline/flutter_sparkline.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:provider/provider.dart';
+import 'package:quickfix/providers/dashboard_provider.dart';
 import 'package:quickfix/util/graph.dart';
 
 class Dashboard extends StatefulWidget {
   @override
   _DashboardState createState() => _DashboardState();
+  final PageController pageController;
+  Dashboard({@required this.pageController});
 }
 
 class _DashboardState extends State<Dashboard> {
@@ -16,6 +20,11 @@ class _DashboardState extends State<Dashboard> {
   ];
   String actualDropdown = chartDropdownItems[0];
   int actualChart = 0;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +46,6 @@ class _DashboardState extends State<Dashboard> {
             'Dashboard',
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              color: Colors.black,
               fontSize: 30,
             ),
           ),
@@ -60,9 +68,7 @@ class _DashboardState extends State<Dashboard> {
                       Text(
                         '265K',
                         style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 34.0),
+                            fontWeight: FontWeight.w700, fontSize: 34.0),
                       ),
                     ],
                   ),
@@ -116,7 +122,6 @@ class _DashboardState extends State<Dashboard> {
                   Text(
                     'Ratings',
                     style: TextStyle(
-                      color: Colors.black,
                       fontWeight: FontWeight.w700,
                       fontSize: 24.0,
                     ),
@@ -124,7 +129,7 @@ class _DashboardState extends State<Dashboard> {
                   Text(
                     '50',
                     style: TextStyle(
-                      color: Colors.black45,
+                      color: Colors.grey,
                     ),
                   ),
                 ]),
@@ -160,15 +165,13 @@ class _DashboardState extends State<Dashboard> {
                   ),
                   Text(
                     'Reviews',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 24.0),
+                    style:
+                        TextStyle(fontWeight: FontWeight.w700, fontSize: 24.0),
                   ),
                   Text(
                     '10 ',
                     style: TextStyle(
-                      color: Colors.black45,
+                      color: Colors.grey,
                     ),
                   ),
                 ]),
@@ -194,11 +197,9 @@ class _DashboardState extends State<Dashboard> {
                           style: TextStyle(color: Colors.green),
                         ),
                         Text(
-                          '\N16K',
+                          'N16K',
                           style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 34.0),
+                              fontWeight: FontWeight.w700, fontSize: 34.0),
                         ),
                       ],
                     ),
@@ -234,88 +235,95 @@ class _DashboardState extends State<Dashboard> {
             ),
           ),
         ),
-        _buildTile(
-          Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+        Consumer<DashBoardProvider>(
+          builder: (context, dashboardProvider, child) {
+            return _buildTile(
+              Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Text(
-                        'Wallet Balance',
-                        style: TextStyle(color: Colors.blueAccent),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            'Wallet Balance',
+                            style: TextStyle(color: Colors.blueAccent),
+                          ),
+                          Text(
+                            'N3000',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w700, fontSize: 34.0),
+                          ),
+                        ],
                       ),
-                      Text(
-                        'N3000',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 34.0),
-                      ),
-                    ],
-                  ),
-                  Material(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(24.0),
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(
-                          16.0,
+                      Material(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(24.0),
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(
+                              16.0,
+                            ),
+                            child: Icon(
+                              Icons.account_balance_wallet,
+                              color: Colors.white,
+                              size: 30.0,
+                            ),
+                          ),
                         ),
-                        child: Icon(
-                          Icons.account_balance_wallet,
-                          color: Colors.white,
-                          size: 30.0,
-                        ),
                       ),
-                    ),
-                  ),
-                ]),
-          ),
+                    ]),
+              ),
+              onTap: () {
+                widget.pageController.jumpToPage(4);
+              },
+            );
+          },
         ),
-        _buildTile(
-          Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+        Consumer<DashBoardProvider>(
+          builder: (context, dashboardProvider, child) {
+            return _buildTile(
+              Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Text(
-                      'Requests',
-                      style: TextStyle(color: Colors.redAccent),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          'Requests',
+                          style: TextStyle(color: Colors.redAccent),
+                        ),
+                        Text(
+                          '173',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w700, fontSize: 34.0),
+                        ),
+                      ],
                     ),
-                    Text(
-                      '173',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 34.0),
+                    Material(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(24.0),
+                      child: Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(16.0),
+                          child: Icon(Icons.shopping_cart,
+                              color: Colors.white, size: 30.0),
+                        ),
+                      ),
                     ),
                   ],
                 ),
-                Material(
-                  color: Colors.red,
-                  borderRadius: BorderRadius.circular(24.0),
-                  child: Center(
-                    child: Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Icon(Icons.shopping_cart,
-                          color: Colors.white, size: 30.0),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          onTap: () => null,
+              ),
+              onTap: () => widget.pageController.jumpToPage(3),
+            );
+          },
         ),
         _buildTile(
           Padding(
@@ -335,9 +343,7 @@ class _DashboardState extends State<Dashboard> {
                     Text(
                       '13',
                       style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 34.0),
+                          fontWeight: FontWeight.w700, fontSize: 34.0),
                     ),
                   ],
                 ),

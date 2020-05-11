@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:provider/provider.dart';
 import 'package:quickfix/providers/app_provider.dart';
+import 'package:quickfix/providers/dashboard_provider.dart';
 import 'package:quickfix/providers/login_form_validation.dart';
 import 'package:quickfix/providers/post_job_provider.dart';
 import 'package:quickfix/providers/profile_provider.dart';
@@ -16,6 +17,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => LoginFormValidation()),
         ChangeNotifierProvider(create: (_) => PostJobProvider()),
         ChangeNotifierProvider(create: (_) => ProfileProvider()),
+        ChangeNotifierProvider(create: (_) => DashBoardProvider()),
       ],
       child: MyApp(),
     ),
@@ -23,10 +25,13 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+
+
   @override
   Widget build(BuildContext context) {
     FlutterStatusbarcolor.setStatusBarColor(Constants.darkAccent);
     FlutterStatusbarcolor.setNavigationBarColor(Constants.darkAccent);
+
     return Consumer<AppProvider>(
       builder: (BuildContext context, AppProvider appProvider, Widget child) {
         return MaterialApp(

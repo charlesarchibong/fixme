@@ -51,9 +51,10 @@ class _ProfileState extends State<Profile> {
                             ' ' +
                             snapshot.data.lastName,
                         hasTrailing: true,
-                        trailingIcon: Icon(
-                          Icons.edit,
-                          size: 20.0,
+                        trailingIcon: FaIcon(
+                          FontAwesomeIcons.edit,
+                          size: 25.0,
+                          color: Colors.grey,
                         ),
                         toolTip: 'Edit',
                       ),
@@ -65,6 +66,40 @@ class _ProfileState extends State<Profile> {
                       _profileDetailsTiles(
                         title: 'Phone',
                         subTitle: snapshot.data.phoneNumber,
+                        hasTrailing: false,
+                      ),
+                      Divider(),
+                      Container(height: 15.0),
+                      Padding(
+                        padding: EdgeInsets.all(5.0),
+                        child: Text(
+                          "Transaction Information".toUpperCase(),
+                          style: TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      _profileDetailsTiles(
+                        title: 'Wallet Balance',
+                        subTitle: 'N3000',
+                        hasTrailing: false,
+                      ),
+                      _profileDetailsTiles(
+                        title: 'Account Number',
+                        subTitle: '0348861021',
+                        hasTrailing: true,
+                        trailingIcon: FaIcon(
+                          FontAwesomeIcons.edit,
+                          size: 25.0,
+                          color: Colors.grey,
+                        ),
+                        toolTip: 'Edit Account Details',
+                        onPressed: () {},
+                      ),
+                      _profileDetailsTiles(
+                        title: 'Bank Name',
+                        subTitle: 'GTBank',
                         hasTrailing: false,
                       ),
                       Divider(),
@@ -92,8 +127,9 @@ class _ProfileState extends State<Profile> {
                         subTitle: 'Washing, Cleaning, Cooking',
                         hasTrailing: true,
                         trailingIcon: FaIcon(
-                          FontAwesomeIcons.plusCircle,
-                          color: Colors.red,
+                          FontAwesomeIcons.plus,
+                          color: Colors.grey,
+                          size: 25.0,
                         ),
                         toolTip: 'Add Subcategory',
                         onPressed: () {
@@ -101,7 +137,7 @@ class _ProfileState extends State<Profile> {
                         },
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 10,
                       ),
                       _servicesImages(),
                       Divider(),
@@ -157,7 +193,10 @@ class _ProfileState extends State<Profile> {
 
   Widget _servicesImages() {
     return Padding(
-      padding: const EdgeInsets.all(15.0),
+      padding: const EdgeInsets.only(
+        left: 15.0,
+        right: 30.0,
+      ),
       child: Consumer<ProfileProvider>(
         builder: (context, profileProvider, child) {
           return Column(
@@ -178,9 +217,10 @@ class _ProfileState extends State<Profile> {
                         profileProvider.getServiceImage();
                       } else {}
                     },
-                    child: Icon(
-                      Icons.add,
-                      color: Colors.red,
+                    child: FaIcon(
+                      FontAwesomeIcons.plus,
+                      color: Colors.grey,
+                      size: 25.0,
                     ),
                   ),
                 ],
