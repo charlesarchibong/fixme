@@ -248,20 +248,14 @@ class MainScreenState extends State<MainScreen> {
                 children: <Widget>[
                   SizedBox(width: 7),
                   IconButton(
-                    icon: Icon(
-                      Icons.home,
-                      size: 24.0,
-                    ),
+                    icon: FaIcon(FontAwesomeIcons.home),
                     color: _page == 0
                         ? Theme.of(context).accentColor
                         : Theme.of(context).textTheme.caption.color,
                     onPressed: () => navigationTapped(0),
                   ),
                   IconButton(
-                    icon: Icon(
-                      Icons.favorite,
-                      size: 24.0,
-                    ),
+                    icon: FaIcon(FontAwesomeIcons.heart),
                     color: _page == 1
                         ? Theme.of(context).accentColor
                         : Theme.of(context).textTheme.caption.color,
@@ -290,8 +284,8 @@ class MainScreenState extends State<MainScreen> {
                       badgeColor: Colors.red,
                       animationType: BadgeAnimationType.slide,
                       toAnimate: true,
-                      child: Icon(
-                        Icons.shopping_cart,
+                      child: FaIcon(
+                        FontAwesomeIcons.luggageCart,
                         color: _page == 3
                             ? Theme.of(context).accentColor
                             : Theme.of(context).textTheme.caption.color,
@@ -299,10 +293,7 @@ class MainScreenState extends State<MainScreen> {
                     ),
                   ),
                   IconButton(
-                    icon: Icon(
-                      Icons.person,
-                      size: 24.0,
-                    ),
+                    icon: FaIcon(FontAwesomeIcons.user),
                     color: _page == 4
                         ? Theme.of(context).accentColor
                         : Theme.of(context).textTheme.caption.color,
