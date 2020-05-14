@@ -4,12 +4,12 @@ import 'package:quickfix/util/foods.dart';
 import 'package:quickfix/widgets/badge.dart';
 import 'package:quickfix/widgets/grid_product.dart';
 
-class DishesScreen extends StatefulWidget {
+class Aritsans extends StatefulWidget {
   @override
-  _DishesScreenState createState() => _DishesScreenState();
+  _AritsansState createState() => _AritsansState();
 }
 
-class _DishesScreenState extends State<DishesScreen> {
+class _AritsansState extends State<Aritsans> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

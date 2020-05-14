@@ -1,6 +1,5 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_shimmer/flutter_shimmer.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
@@ -9,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:quickfix/providers/dashboard_provider.dart';
 import 'package:quickfix/screens/dashboard.dart';
 import 'package:quickfix/screens/favorite_screen.dart';
+import 'package:quickfix/screens/home_old.dart';
 import 'package:quickfix/screens/notifications.dart';
 import 'package:quickfix/screens/pending_appointment.dart';
 import 'package:quickfix/screens/post_job.dart';
@@ -52,7 +52,7 @@ class MainScreenState extends State<MainScreen> {
         appBar: AppBar(
           backgroundColor: Constants.lightAccent,
 //          automaticallyImplyLeading: false,
-          centerTitle: true,
+//          centerTitle: true,
           iconTheme: IconThemeData(color: Colors.white),
           title: Text(
             Constants.appName,
@@ -60,8 +60,7 @@ class MainScreenState extends State<MainScreen> {
               color: Colors.white,
             ),
           ),
-          elevation:
-              defaultTargetPlatform == TargetPlatform.android ? 1.0 : 0.0,
+
           actions: <Widget>[
             IconButton(
               color: Colors.white,
@@ -77,6 +76,7 @@ class MainScreenState extends State<MainScreen> {
                 toAnimate: true,
                 child: FaIcon(
                   FontAwesomeIcons.comment,
+                  size: 17.0,
                 ),
               ),
               onPressed: () {
@@ -104,6 +104,7 @@ class MainScreenState extends State<MainScreen> {
                 toAnimate: true,
                 child: FaIcon(
                   FontAwesomeIcons.bell,
+                  size: 17.0,
                 ),
               ),
               onPressed: () {
@@ -123,54 +124,33 @@ class MainScreenState extends State<MainScreen> {
           elevation: 10.0,
           child: ListView(
             children: <Widget>[
-              FutureBuilder(
-                future: Utils.getUserSession(),
-                builder: (context, snapshot) {
-                  return snapshot.hasData
-                      ? UserAccountsDrawerHeader(
-                          accountName: Text(
-                            snapshot.data.firstName.toUpperCase() +
-                                ' ' +
-                                snapshot.data.lastName.toUpperCase(),
-                          ),
-                          accountEmail: Text(snapshot.data.email),
-                          currentAccountPicture: Container(
-                            height: 200,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                    color: Constants.lightAccent, width: 1)),
-                            padding: EdgeInsets.symmetric(horizontal: 16.0),
-//                  width: MediaQuery.of(context).size.width * 10.6,
-                            child: ClipOval(
-                              child: Image(
-                                fit: BoxFit.contain,
-                                image: AssetImage('assets/dp.png'),
-                              ),
-                            ),
-                          ),
-                        )
-                      : ProfileShimmer();
+              _drawwerImage(),
+              ListTile(
+                title: Text('Dashboard'),
+                leading: FaIcon(FontAwesomeIcons.chartPie),
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => Dashboard(
+                            pageController: pageController,
+                          )));
                 },
               ),
               ListTile(
                 title: Text('Jobs'),
-                trailing: Icon(Icons.work),
+                leading: FaIcon(FontAwesomeIcons.briefcase),
                 onTap: () {},
               ),
               ListTile(
-                title: Text('Post Job(s)'),
-                trailing: Icon(Icons.add_circle_outline),
+                title: Text('Post Job'),
+                leading: FaIcon(FontAwesomeIcons.plusCircle),
                 onTap: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (BuildContext context) {
-                    return PostJob();
-                  }));
+                  Navigator.of(context).pop();
+                  navigationTapped(2);
                 },
               ),
               ListTile(
                 title: Text('Search Artisan'),
-                trailing: Icon(Icons.search),
+                leading: FaIcon(FontAwesomeIcons.search),
                 onTap: () {
                   Navigator.of(context)
                       .push(MaterialPageRoute(builder: (BuildContext context) {
@@ -180,7 +160,7 @@ class MainScreenState extends State<MainScreen> {
               ),
               ListTile(
                 title: Text('Favourite Artisan'),
-                trailing: Icon(Icons.favorite),
+                leading: FaIcon(FontAwesomeIcons.heart),
                 onTap: () {
                   Navigator.of(context)
                       .push(MaterialPageRoute(builder: (BuildContext context) {
@@ -189,34 +169,14 @@ class MainScreenState extends State<MainScreen> {
                 },
               ),
               ListTile(
-                title: Text('Post Job(s)'),
-                trailing: Icon(Icons.add_circle_outline),
-                onTap: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (BuildContext context) {
-                    return PostJob();
-                  }));
-                },
+                title: Text('About'),
+                leading: FaIcon(FontAwesomeIcons.exclamationTriangle),
+                onTap: () {},
               ),
               ListTile(
-                title: Text('Post Job(s)'),
-                trailing: Icon(Icons.add_circle_outline),
-                onTap: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (BuildContext context) {
-                    return PostJob();
-                  }));
-                },
-              ),
-              ListTile(
-                title: Text('Post Job(s)'),
-                trailing: Icon(Icons.add_circle_outline),
-                onTap: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (BuildContext context) {
-                    return PostJob();
-                  }));
-                },
+                title: Text('Setting'),
+                leading: FaIcon(FontAwesomeIcons.cogs),
+                onTap: () {},
               ),
             ],
           ),
@@ -228,11 +188,9 @@ class MainScreenState extends State<MainScreen> {
               controller: pageController,
               onPageChanged: onPageChanged,
               children: <Widget>[
-                Dashboard(
-                  pageController: pageController,
-                ),
-                FavoriteScreen(),
+                HomeW(),
                 SearchScreen(),
+                PostJob(),
                 PendingAppointment(),
                 Profile(),
               ],
@@ -255,7 +213,7 @@ class MainScreenState extends State<MainScreen> {
                     onPressed: () => navigationTapped(0),
                   ),
                   IconButton(
-                    icon: FaIcon(FontAwesomeIcons.heart),
+                    icon: FaIcon(FontAwesomeIcons.search),
                     color: _page == 1
                         ? Theme.of(context).accentColor
                         : Theme.of(context).textTheme.caption.color,
@@ -313,9 +271,7 @@ class MainScreenState extends State<MainScreen> {
           builder: (context, dashboardProvider, child) {
             return FloatingActionButton(
               elevation: 4.0,
-              child: Icon(
-                Icons.search,
-              ),
+              child: FaIcon(FontAwesomeIcons.plusCircle),
               onPressed: () => navigationTapped(2),
             );
           },
@@ -326,6 +282,39 @@ class MainScreenState extends State<MainScreen> {
 
   void navigationTapped(int page) {
     pageController.jumpToPage(page);
+  }
+
+  Widget _drawwerImage() {
+    return FutureBuilder(
+      future: Utils.getUserSession(),
+      builder: (context, snapshot) {
+        return snapshot.hasData
+            ? UserAccountsDrawerHeader(
+                accountName: Text(
+                  snapshot.data.firstName.toUpperCase() +
+                      ' ' +
+                      snapshot.data.lastName.toUpperCase(),
+                ),
+                accountEmail: Text(snapshot.data.email),
+                currentAccountPicture: Container(
+                  height: 200,
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border:
+                          Border.all(color: Constants.lightAccent, width: 1)),
+                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+//                  width: MediaQuery.of(context).size.width * 10.6,
+                  child: ClipOval(
+                    child: Image(
+                      fit: BoxFit.contain,
+                      image: AssetImage('assets/dp.png'),
+                    ),
+                  ),
+                ),
+              )
+            : ProfileShimmer();
+      },
+    );
   }
 
   @override
