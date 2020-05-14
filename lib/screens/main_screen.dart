@@ -34,18 +34,6 @@ class MainScreenState extends State<MainScreen> {
     FlutterStatusbarcolor.setNavigationBarColor(Constants.darkAccent);
     FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
     FlutterStatusbarcolor.setNavigationBarWhiteForeground(true);
-    // FlutterStatusbarcolor
-    // final user = Utils.getUserSession();
-    // print(user);
-    // if (user == null) {
-    //   Navigator.of(context).push(
-    //     MaterialPageRoute(
-    //       builder: (BuildContext context) {
-    //         return JoinApp();
-    //       },
-    //     ),
-    //   );
-    // }
     return WillPopScope(
       onWillPop: () => Future.value(false),
       child: Scaffold(
