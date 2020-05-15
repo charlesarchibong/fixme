@@ -9,6 +9,7 @@ import 'package:quickfix/providers/dashboard_provider.dart';
 import 'package:quickfix/screens/dashboard.dart';
 import 'package:quickfix/screens/favorite_screen.dart';
 import 'package:quickfix/screens/home_old.dart';
+import 'package:quickfix/screens/my_requests.dart';
 import 'package:quickfix/screens/notifications.dart';
 import 'package:quickfix/screens/pending_appointment.dart';
 import 'package:quickfix/screens/post_job.dart';
@@ -26,6 +27,7 @@ class MainScreen extends StatefulWidget {
 
 class MainScreenState extends State<MainScreen> {
   PageController pageController;
+  final _scaffoledKey = GlobalKey<ScaffoldState>();
   int _page = 0;
 
   @override
@@ -37,6 +39,7 @@ class MainScreenState extends State<MainScreen> {
     return WillPopScope(
       onWillPop: () => Future.value(false),
       child: Scaffold(
+        key: _scaffoledKey,
         appBar: AppBar(
           backgroundColor: Constants.lightAccent,
 //          automaticallyImplyLeading: false,
@@ -124,9 +127,20 @@ class MainScreenState extends State<MainScreen> {
                 },
               ),
               ListTile(
-                title: Text('Jobs'),
-                leading: FaIcon(FontAwesomeIcons.briefcase),
-                onTap: () {},
+                title: Text('User Requests'),
+                leading: FaIcon(FontAwesomeIcons.luggageCart),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  navigationTapped(3);
+                },
+              ),
+              ListTile(
+                title: Text('My Request(s)'),
+                leading: FaIcon(FontAwesomeIcons.luggageCart),
+                onTap: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (_) => MyRequests()));
+                },
               ),
               ListTile(
                 title: Text('Post Job'),
@@ -140,11 +154,8 @@ class MainScreenState extends State<MainScreen> {
                 title: Text('Search Artisan'),
                 leading: FaIcon(FontAwesomeIcons.search),
                 onTap: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (BuildContext context) {
-                    return SearchScreen();
-                  }));
-                },
+                  Navigator.of(context).pop();
+                  navigationTapped(1);}
               ),
               ListTile(
                 title: Text('Favourite Artisan'),
@@ -162,7 +173,7 @@ class MainScreenState extends State<MainScreen> {
                 onTap: () {},
               ),
               ListTile(
-                title: Text('Setting'),
+                title: Text('Settings'),
                 leading: FaIcon(FontAwesomeIcons.cogs),
                 onTap: () {},
               ),

@@ -2,16 +2,17 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_shimmer/flutter_shimmer.dart';
+import 'package:quickfix/util/const.dart';
 import 'package:quickfix/util/pending_request.dart';
-import 'package:quickfix/widgets/appointment.dart';
+import 'package:quickfix/widgets/my_request.dart';
 
-class PendingAppointment extends StatefulWidget {
+class MyRequests extends StatefulWidget {
   @override
-  _PendingAppointmentState createState() => _PendingAppointmentState();
+  _MyRequestsState createState() => _MyRequestsState();
 }
 
-class _PendingAppointmentState extends State<PendingAppointment>
-    with AutomaticKeepAliveClientMixin<PendingAppointment> {
+class _MyRequestsState extends State<MyRequests>
+    with AutomaticKeepAliveClientMixin<MyRequests> {
   bool isloading = true;
   startTimeout() {
     return Timer(Duration(seconds: 5), setNotLoadin);
@@ -34,24 +35,24 @@ class _PendingAppointmentState extends State<PendingAppointment>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Constants.lightAccent,
+//          automaticallyImplyLeading: false,
+//          centerTitle: true,
+        iconTheme: IconThemeData(color: Colors.white),
+        title: Text(
+          'My Request(s)',
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+      ),
       body: Padding(
         padding: EdgeInsets.fromLTRB(10.0, 0, 10.0, 0),
         child: isloading
             ? Column(
                 children: <Widget>[
                   SizedBox(height: 10.0),
-                  Center(
-                    child: Text(
-                      "Request From User(s)",
-                      style: TextStyle(
-                        fontSize: 19,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
                   ListTileShimmer(),
                   ListTileShimmer(),
                   ListTileShimmer(),
@@ -61,23 +62,11 @@ class _PendingAppointmentState extends State<PendingAppointment>
             : Column(
                 children: <Widget>[
                   SizedBox(height: 10.0),
-                  Center(
-                    child: Text(
-                      "Request(s) From User(s)",
-                      style: TextStyle(
-                        fontSize: 19,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
                   Expanded(
                     child: ListView.builder(
                       itemCount: requests == null ? 0 : requests.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return PendingAppointments(
+                        return MyRequestWidget(
                           title: requests[index]['title'],
                           subtitle: requests[index]['subtitle'],
                           status: requests[index]['status'],

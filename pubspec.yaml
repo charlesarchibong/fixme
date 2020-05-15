@@ -31,6 +31,7 @@ dependencies:
   google_maps_flutter:
   sliding_up_panel: ^1.0.2
   location: ^3.0.2
+  flutter_polyline_points: ^0.2.1
   flutter_shimmer: ^1.3.0
   badges: ^1.1.1
   image_picker: ^0.6.6+1
@@ -94,6 +95,10 @@ flutter:
     - assets/cm4.jpeg
     - assets/cm4.jpeg
     - assets/splashscreen.jpg
+    - assets/destination_map_marker.png
+    - assets/driving_pin.png
+    - assets/friend1.jpg
+    - assets/friend2.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

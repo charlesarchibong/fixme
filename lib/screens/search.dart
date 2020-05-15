@@ -21,6 +21,16 @@ class _SearchScreenState extends State<SearchScreen>
         child: ListView(
           children: <Widget>[
             SizedBox(height: 10.0),
+            Center(
+              child: Text(
+                "Search Artisan",
+                style: TextStyle(
+                  fontSize: 19,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+            SizedBox(height: 10.0),
             Card(
               elevation: 6.0,
               child: Container(
