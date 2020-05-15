@@ -32,6 +32,26 @@ class ProfileProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> uploadImage(File file, User user) async {
+    String fileName = file.path.split('/').last;
+    FormData formData = FormData.fromMap({
+      "ifo": await MultipartFile.fromFile(file.path, filename: fileName),
+      'firstName': user.firstName,
+      'mobile': user.phoneNumber,
+      'uploadType': 'servicePictures',
+    });
+
+    String key = await Utils.getApiKey();
+    Map<String, String> headers = {
+      HttpHeaders.authorizationHeader: 'Bearer $key'
+    };
+    Response response = await NetworkService().upload(
+        url: 'https://uploads.quickfixnaija.com/uploads-processing',
+        body: formData,
+        headers: headers,
+        contentType: ContentType.URL_ENCODED);
+  }
+
   Future<void> getServiceImage() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
     image != null ? _images.add(image) : print('no file seleected');
@@ -63,10 +83,9 @@ class ProfileProvider extends ChangeNotifier {
           queryParam: body,
           headers: headers,
           contentType: ContentType.URL_ENCODED);
-      print(response);
+      print(response.data);
     } catch (e) {
       if (e is DioError) {
-        print(e.toString() + ' bby');
       } else {
         throw e;
       }

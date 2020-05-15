@@ -36,6 +36,35 @@ class NetworkService {
     return response;
   }
 
+  Future<Response> upload({
+    @required String url,
+    Map headers,
+    @required dynamic body,
+    @required contentType,
+    Map queryParam,
+  }) async {
+    dio = Dio();
+    dio.interceptors.add(
+      RetryOnConnectionChangeInterceptor(
+        requestRetrier: DioConnectivityRequestRetrier(
+          dio: Dio(),
+          connectivity: Connectivity(),
+        ),
+      ),
+    );
+
+    Response response = await dio.post(
+      url,
+      data: body,
+      queryParameters: queryParam,
+      options: Options(
+        contentType: contentType,
+        headers: headers,
+      ),
+    );
+    return response;
+  }
+
   Future<dynamic> getRequest({
     @required String url,
     Map headers,
