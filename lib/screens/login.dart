@@ -73,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
     };
 
     await FirebaseAuth.instance.verifyPhoneNumber(
-        phoneNumber: _phoneControl.text,
+        phoneNumber: user.fullNumber,
         timeout: const Duration(seconds: 10),
         verificationCompleted: verificationCompleted,
         verificationFailed: verificationFailed,
@@ -177,7 +177,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           borderRadius: BorderRadius.circular(5.0),
                         ),
-                        hintText: "Phone Number (+2349330234334)",
+                        hintText: "Phone Number (09033393439)",
                         hintStyle: TextStyle(
                           fontSize: 15.0,
                           color: Colors.grey,

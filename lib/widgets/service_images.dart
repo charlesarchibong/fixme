@@ -25,7 +25,7 @@ class _ServicesImagesState extends State<ServicesImages> {
         itemCount:
             profileProvider.images == null ? 0 : profileProvider.images.length,
         itemBuilder: (BuildContext context, int index) {
-          File image = profileProvider.images[index];
+          String image = profileProvider.images[index];
           return Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
@@ -33,7 +33,7 @@ class _ServicesImagesState extends State<ServicesImages> {
                 width: 500,
                 padding: EdgeInsets.only(left: 10, right: 10),
                 decoration: BoxDecoration(),
-                child: Image.file(
+                child: Image.network(
                   image,
                   width: 250,
                 ),

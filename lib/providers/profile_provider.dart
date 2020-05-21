@@ -10,10 +10,10 @@ import 'package:quickfix/util/const.dart';
 import 'package:quickfix/util/content_type.dart';
 
 class ProfileProvider extends ChangeNotifier {
-  File _profilePicture;
-  List<File> _images = List();
-  List<File> get images => _images;
-  File get profilePicture => _profilePicture;
+  String _profilePicture;
+  List<String> _images = List();
+  List<String> get images => _images;
+  String get profilePicture => _profilePicture;
   bool loading = false;
 
   void setNotLoading() {
@@ -28,39 +28,47 @@ class ProfileProvider extends ChangeNotifier {
 
   Future<void> getImage() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
-    _profilePicture = image ?? null;
+    var uploaded = await uploadImageToServer('profilePicture', image);
+    String uploadUrl = 'https://uploads.quickfixnaija.com/thumbnails/';
+    _profilePicture = uploadUrl + uploaded['imageFileName'] ?? null;
+    print(_profilePicture);
     notifyListeners();
-  }
-
-  Future<void> uploadImage(File file, User user) async {
-    String fileName = file.path.split('/').last;
-    FormData formData = FormData.fromMap({
-      "ifo": await MultipartFile.fromFile(file.path, filename: fileName),
-      'firstName': user.firstName,
-      'mobile': user.phoneNumber,
-      'uploadType': 'servicePictures',
-    });
-
-    String key = await Utils.getApiKey();
-    Map<String, String> headers = {
-      HttpHeaders.authorizationHeader: 'Bearer $key'
-    };
-    Response response = await NetworkService().upload(
-        url: 'https://uploads.quickfixnaija.com/uploads-processing',
-        body: formData,
-        headers: headers,
-        contentType: ContentType.URL_ENCODED);
   }
 
   Future<void> getServiceImage() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
-    image != null ? _images.add(image) : print('no file seleected');
+    var uploaded = await uploadImageToServer('servicePicture', image);
+    String uploadUrl = 'https://uploads.quickfixnaija.com/thumbnails/';
+    String imageUrl = uploadUrl + uploaded['imageFileName'] ?? null;
+    image != null ? _images.add(imageUrl) : print('no file seleected');
     notifyListeners();
   }
 
   Future<void> removeImage(int index) async {
     _images.removeAt(index);
     notifyListeners();
+  }
+
+  Future<Map> uploadImageToServer(String uploadType, File file) async {
+    final user = await Utils.getUserSession();
+    String fileName = file.path.split('/').last;
+    String apiKey = await Utils.getApiKey();
+    String url = 'https://uploads.quickfixnaija.com/uploads-processing';
+    Map<String, String> headers = {'Bearer': '$apiKey'};
+    FormData formData = FormData.fromMap({
+      "mobile": user.phoneNumber,
+      "uploadType": uploadType,
+      "firstName": user.firstName,
+      "file": await MultipartFile.fromFile(file.path, filename: fileName)
+    });
+    final response = await NetworkService().post(
+      url: url,
+      body: formData,
+      contentType: ContentType.FORM_DATA,
+      headers: headers,
+    );
+    print(response.data);
+    return response.data;
   }
 
   Future<void> addSubCategory(String subCategory) async {
@@ -73,19 +81,19 @@ class ProfileProvider extends ChangeNotifier {
         'email': currentUser.email,
         'subservice': subCategory
       };
-      Map<String, String> headers = {
-        HttpHeaders.authorizationHeader: 'Bearer $apiKey'
-      };
+      Map<String, String> headers = {'Bearer': '$apiKey'};
       print(headers);
       Response response = await NetworkService().post(
           url: url,
           body: {},
           queryParam: body,
           headers: headers,
-          contentType: ContentType.URL_ENCODED);
+          contentType: ContentType.JSON);
       print(response.data);
     } catch (e) {
+      print(e);
       if (e is DioError) {
+        throw new Exception(e.message);
       } else {
         throw e;
       }

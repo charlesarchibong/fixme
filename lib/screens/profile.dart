@@ -9,6 +9,7 @@ import 'package:quickfix/screens/login.dart';
 import 'package:quickfix/util/Utils.dart';
 import 'package:quickfix/util/const.dart';
 import 'package:quickfix/widgets/service_images.dart';
+import 'package:quickfix/widgets/spinner.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -65,7 +66,7 @@ class _ProfileState extends State<Profile> {
                       ),
                       _profileDetailsTiles(
                         title: 'Phone',
-                        subTitle: snapshot.data.phoneNumber,
+                        subTitle: snapshot.data.fullNumber,
                         hasTrailing: false,
                       ),
                       Divider(),
@@ -214,14 +215,24 @@ class _ProfileState extends State<Profile> {
                   InkWell(
                     onTap: () {
                       if (profileProvider.images.length <= 5) {
-                        profileProvider.getServiceImage();
+                        profileProvider.setLoading();
+                        profileProvider.getServiceImage().then((value) {
+                          profileProvider.setNotLoading();
+                        }).catchError((onError) {
+                          profileProvider.setNotLoading();
+                        });
                       } else {}
                     },
-                    child: FaIcon(
-                      FontAwesomeIcons.plus,
-                      color: Colors.grey,
-                      size: 25.0,
-                    ),
+                    child: profileProvider.loading
+                        ? Spinner(
+                            icon: FontAwesomeIcons.spinner,
+                            color: Colors.grey,
+                          )
+                        : FaIcon(
+                            FontAwesomeIcons.plus,
+                            color: Colors.grey,
+                            size: 25.0,
+                          ),
                   ),
                 ],
               ),
@@ -356,7 +367,7 @@ Widget _profileImage(ProfileProvider profileProvider) {
               width: 100.0,
               height: 100.0,
             )
-          : Image.file(
+          : Image.network(
               profileProvider.profilePicture,
               fit: BoxFit.cover,
               width: 100.0,
@@ -364,12 +375,22 @@ Widget _profileImage(ProfileProvider profileProvider) {
             ),
       RaisedButton(
         onPressed: () {
-          profileProvider.getImage();
+          profileProvider.setLoading();
+          profileProvider.getImage().then((value) {
+            profileProvider.setNotLoading();
+          }).catchError((e) {
+            profileProvider.setNotLoading();
+          });
         },
-        child: FaIcon(
-          FontAwesomeIcons.upload,
-          color: Colors.white,
-        ),
+        child: profileProvider.loading
+            ? Spinner(
+                icon: FontAwesomeIcons.spinner,
+                color: Colors.white,
+              )
+            : FaIcon(
+                FontAwesomeIcons.upload,
+                color: Colors.white,
+              ),
         elevation: 5,
         color: Colors.red,
       )
@@ -455,6 +476,17 @@ _showSubCategoryDialog(
                       ));
                     }).catchError((e) {
                       print(e);
+                      profileProvider.setNotLoading();
+                      Navigator.of(context).pop();
+                      profileScaffoldKey.currentState.showSnackBar(SnackBar(
+                        content: Text(
+                          e.toString().split(':')[1],
+                          style: TextStyle(
+                            color: Colors.red,
+                          ),
+                        ),
+                        duration: Duration(seconds: 5),
+                      ));
                     });
                   }
                 },

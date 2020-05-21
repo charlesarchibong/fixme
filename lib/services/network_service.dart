@@ -10,7 +10,7 @@ class NetworkService {
   Future<Response> post({
     @required String url,
     Map headers,
-    @required Map body,
+    @required dynamic body,
     @required contentType,
     Map queryParam,
   }) async {

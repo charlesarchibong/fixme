@@ -4,6 +4,7 @@ class User {
   String phoneNumber;
   String email;
   String serviceArea;
+  String fullNumber;
 
   User.name(
       {this.firstName,
@@ -19,6 +20,7 @@ class User {
     map['phoneNumber'] = phoneNumber;
     map['email'] = email;
     map['serviceArea'] = serviceArea;
+    map['fullNumber'] = fullNumber;
     return map;
   }
 
@@ -28,5 +30,6 @@ class User {
     phoneNumber = json['phoneNumber'];
     email = json['email'];
     serviceArea = json['serviceArea'];
+    fullNumber = json['fullNumber'];
   }
 }
