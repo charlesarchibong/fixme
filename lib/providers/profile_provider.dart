@@ -15,6 +15,8 @@ class ProfileProvider extends ChangeNotifier {
   List<String> get images => _images;
   String get profilePicture => _profilePicture;
   bool loading = false;
+  String _subService;
+  String get subService => _subService;
 
   void setNotLoading() {
     loading = false;
@@ -31,8 +33,56 @@ class ProfileProvider extends ChangeNotifier {
     var uploaded = await uploadImageToServer('profilePicture', image);
     String uploadUrl = 'https://uploads.quickfixnaija.com/thumbnails/';
     _profilePicture = uploadUrl + uploaded['imageFileName'] ?? null;
-    print(_profilePicture);
+    Utils.setProfilePicture(_profilePicture);
     notifyListeners();
+  }
+
+  Future<String> getSubService() async {
+    String subService = await Utils.getSubService();
+    _subService = subService;
+    notifyListeners();
+    return subService;
+  }
+
+  Future<String> getSubServiceFromServer() async {
+    try {
+      final user = await Utils.getUserSession();
+      String apiKey = await Utils.getApiKey();
+      Map<String, String> headers = {'Bearer': '$apiKey'};
+      Map<String, String> body = {'mobile': user.phoneNumber};
+      String url = Constants.baseUrl + Constants.userInfo;
+      Response response = await NetworkService().post(
+        url: url,
+        body: {},
+        queryParam: body,
+        headers: headers,
+        contentType: ContentType.FORM_DATA,
+      );
+      print(response.data);
+      List list = response.data['subServices'] as List;
+      String subServices = arrayToString(list);
+      Utils.setSubService(subServices);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  String arrayToString(List list) {
+    String string = '';
+    List<String> stringList = List();
+    list.forEach((element) {
+      String e = element['subservice'];
+      stringList.add(e);
+    });
+    print(stringList.toString());
+    return stringList.toString();
+  }
+
+  Future<String> myProfilePicture() async {
+    String image = await Utils.getProfilePicture();
+    _profilePicture = image;
+    notifyListeners();
+    return image;
   }
 
   Future<void> getServiceImage() async {
@@ -50,28 +100,32 @@ class ProfileProvider extends ChangeNotifier {
   }
 
   Future<Map> uploadImageToServer(String uploadType, File file) async {
-    final user = await Utils.getUserSession();
-    String fileName = file.path.split('/').last;
-    String apiKey = await Utils.getApiKey();
-    String url = 'https://uploads.quickfixnaija.com/uploads-processing';
-    Map<String, String> headers = {'Bearer': '$apiKey'};
-    FormData formData = FormData.fromMap({
-      "mobile": user.phoneNumber,
-      "uploadType": uploadType,
-      "firstName": user.firstName,
-      "file": await MultipartFile.fromFile(file.path, filename: fileName)
-    });
-    final response = await NetworkService().post(
-      url: url,
-      body: formData,
-      contentType: ContentType.FORM_DATA,
-      headers: headers,
-    );
-    print(response.data);
-    return response.data;
+    try {
+      final user = await Utils.getUserSession();
+      String fileName = file.path.split('/').last;
+      String apiKey = await Utils.getApiKey();
+      String url = 'https://uploads.quickfixnaija.com/uploads-processing';
+      Map<String, String> headers = {'Bearer': '$apiKey'};
+      FormData formData = FormData.fromMap({
+        "mobile": user.phoneNumber,
+        "uploadType": uploadType,
+        "firstName": user.firstName,
+        "file": await MultipartFile.fromFile(file.path, filename: fileName)
+      });
+      final response = await NetworkService().post(
+        url: url,
+        body: formData,
+        contentType: ContentType.FORM_DATA,
+        headers: headers,
+      );
+      return response.data;
+    } catch (e) {
+      print(e);
+    }
   }
 
   Future<void> addSubCategory(String subCategory) async {
+    print(subCategory);
     try {
       User currentUser = await Utils.getUserSession();
       String apiKey = await Utils.getApiKey();
@@ -83,13 +137,14 @@ class ProfileProvider extends ChangeNotifier {
       };
       Map<String, String> headers = {'Bearer': '$apiKey'};
       print(headers);
+
       Response response = await NetworkService().post(
           url: url,
           body: {},
           queryParam: body,
           headers: headers,
           contentType: ContentType.JSON);
-      print(response.data);
+      getSubServiceFromServer();
     } catch (e) {
       print(e);
       if (e is DioError) {

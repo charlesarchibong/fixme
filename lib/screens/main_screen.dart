@@ -6,6 +6,7 @@ import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:quickfix/providers/dashboard_provider.dart';
+import 'package:quickfix/providers/profile_provider.dart';
 import 'package:quickfix/screens/dashboard.dart';
 import 'package:quickfix/screens/favorite_screen.dart';
 import 'package:quickfix/screens/home_old.dart';
@@ -21,6 +22,7 @@ import 'package:quickfix/util/pending_request.dart';
 
 class MainScreen extends StatefulWidget {
   MainScreenState mainScreenState = new MainScreenState();
+
   @override
   MainScreenState createState() => mainScreenState;
 }
@@ -32,12 +34,12 @@ class MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    FlutterStatusbarcolor.setStatusBarColor(Constants.darkAccent);
-    FlutterStatusbarcolor.setNavigationBarColor(Constants.darkAccent);
-    FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
-    FlutterStatusbarcolor.setNavigationBarWhiteForeground(true);
+    setStatusBar();
     return WillPopScope(
-      onWillPop: () => Future.value(false),
+      onWillPop: () {
+        setStatusBar();
+        return Future.value(false);
+      },
       child: Scaffold(
         key: _scaffoledKey,
         appBar: AppBar(
@@ -151,12 +153,12 @@ class MainScreenState extends State<MainScreen> {
                 },
               ),
               ListTile(
-                title: Text('Search Artisan'),
-                leading: FaIcon(FontAwesomeIcons.search),
-                onTap: () {
-                  Navigator.of(context).pop();
-                  navigationTapped(1);}
-              ),
+                  title: Text('Search Artisan'),
+                  leading: FaIcon(FontAwesomeIcons.search),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    navigationTapped(1);
+                  }),
               ListTile(
                 title: Text('Favourite Artisan'),
                 leading: FaIcon(FontAwesomeIcons.heart),
@@ -303,11 +305,25 @@ class MainScreenState extends State<MainScreen> {
                           Border.all(color: Constants.lightAccent, width: 1)),
                   padding: EdgeInsets.symmetric(horizontal: 16.0),
 //                  width: MediaQuery.of(context).size.width * 10.6,
-                  child: ClipOval(
-                    child: Image(
-                      fit: BoxFit.contain,
-                      image: AssetImage('assets/dp.png'),
-                    ),
+                  child: Consumer<ProfileProvider>(
+                    builder: (BuildContext context,
+                        ProfileProvider profileProvider, Widget child) {
+                      return ClipOval(
+                        child: profileProvider.profilePicture == null
+                            ? Image.asset(
+                                "assets/dp.png",
+                                fit: BoxFit.cover,
+                                width: 100.0,
+                                height: 100.0,
+                              )
+                            : Image.network(
+                                profileProvider.profilePicture,
+                                fit: BoxFit.cover,
+                                width: 100.0,
+                                height: 100.0,
+                              ),
+                      );
+                    },
                   ),
                 ),
               )
@@ -318,8 +334,17 @@ class MainScreenState extends State<MainScreen> {
 
   @override
   void initState() {
-    super.initState();
+    setStatusBar();
     pageController = PageController();
+    super.initState();
+//    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
+//        statusBarColor: Constants.darkAccent, // Color for Android
+//        systemNavigationBarColor: Constants.darkAccent,
+//        statusBarIconBrightness: Brightness.dark,
+//        systemNavigationBarIconBrightness: Brightness.dark,
+//        statusBarBrightness:
+//            Brightness.dark // Dark == white status bar -- for IOS.
+//        ));
   }
 
   @override
@@ -328,7 +353,15 @@ class MainScreenState extends State<MainScreen> {
     pageController.dispose();
   }
 
+  void setStatusBar() async {
+    await FlutterStatusbarcolor.setStatusBarColor(Constants.darkAccent);
+    await FlutterStatusbarcolor.setNavigationBarColor(Constants.darkAccent);
+    await FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
+    await FlutterStatusbarcolor.setNavigationBarWhiteForeground(true);
+  }
+
   void onPageChanged(int page) {
+//    setStatusBar();
     setState(() {
       this._page = page;
     });

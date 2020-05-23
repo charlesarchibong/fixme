@@ -10,6 +10,10 @@ import 'package:quickfix/screens/splash.dart';
 import 'package:quickfix/util/const.dart';
 
 void main() {
+  FlutterStatusbarcolor.setStatusBarColor(Constants.darkAccent);
+  FlutterStatusbarcolor.setNavigationBarColor(Constants.darkAccent);
+  FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
+  FlutterStatusbarcolor.setNavigationBarWhiteForeground(true);
   runApp(
     MultiProvider(
       providers: [
@@ -25,12 +29,12 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-
-
   @override
   Widget build(BuildContext context) {
     FlutterStatusbarcolor.setStatusBarColor(Constants.darkAccent);
     FlutterStatusbarcolor.setNavigationBarColor(Constants.darkAccent);
+    FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
+    FlutterStatusbarcolor.setNavigationBarWhiteForeground(true);
 
     return Consumer<AppProvider>(
       builder: (BuildContext context, AppProvider appProvider, Widget child) {

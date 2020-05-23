@@ -6,6 +6,7 @@ class Constants {
   static String createUserUrl = "reg-user";
   static String loginUserUrl = "m-login";
   static String addSubService = "add-sub-service";
+  static String userInfo = "user-info";
 
   //Colors for theme
 //  Color(0xfffcfcff);

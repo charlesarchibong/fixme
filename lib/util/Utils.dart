@@ -24,9 +24,19 @@ class Utils {
     sp.setString("user", user);
   }
 
+  static void setProfilePicture(String imagePath) async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    sp.setString("profilePicture", imagePath);
+  }
+
   static void setApiKey(String apiKey) async {
     SharedPreferences sp = await SharedPreferences.getInstance();
     sp.setString("apiKey", apiKey);
+  }
+
+  static void setSubService(String subService) async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    sp.setString("subService", subService);
   }
 
   static Future<User> getUserSession() async {
@@ -34,6 +44,16 @@ class Utils {
     return sp.get('user') != null
         ? User.fromjson(jsonDecode(sp.get("user")))
         : null;
+  }
+
+  static Future<String> getProfilePicture() async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    return sp.get('profilePicture') ?? null;
+  }
+
+  static Future<String> getSubService() async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    return sp.get('subService') ?? null;
   }
 
   static Future<bool> clearUserSession() async {

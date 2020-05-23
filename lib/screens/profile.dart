@@ -123,18 +123,26 @@ class _ProfileState extends State<Profile> {
                         subTitle: snapshot.data.serviceArea,
                         hasTrailing: false,
                       ),
-                      _profileDetailsTiles(
-                        title: 'Service Subcategories',
-                        subTitle: 'Washing, Cleaning, Cooking',
-                        hasTrailing: true,
-                        trailingIcon: FaIcon(
-                          FontAwesomeIcons.plus,
-                          color: Colors.grey,
-                          size: 25.0,
-                        ),
-                        toolTip: 'Add Subcategory',
-                        onPressed: () {
-                          _showSubCategoryDialog(context, _profileScaffoldKey);
+                      FutureBuilder(
+                        future: ProfileProvider().getSubService(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<dynamic> snapshot) {
+                          return _profileDetailsTiles(
+                            title: 'Service Subcategories',
+                            subTitle:
+                                snapshot.data ?? 'No Subcategory available yet',
+                            hasTrailing: true,
+                            trailingIcon: FaIcon(
+                              FontAwesomeIcons.plus,
+                              color: Colors.grey,
+                              size: 25.0,
+                            ),
+                            toolTip: 'Add Subcategory',
+                            onPressed: () {
+                              _showSubCategoryDialog(
+                                  context, _profileScaffoldKey);
+                            },
+                          );
                         },
                       ),
                       SizedBox(
@@ -322,12 +330,13 @@ Widget _profileName(AsyncSnapshot snapshot, BuildContext context) {
             ),
           ],
         ),
-        SizedBox(height: 20.0),
+        SizedBox(height: 10.0),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            InkWell(
-              onTap: () async {
+            RaisedButton(
+              color: Theme.of(context).accentColor,
+              onPressed: () async {
                 Utils.clearUserSession();
                 Utils.clearApiKey();
                 Navigator.of(context).push(
@@ -343,7 +352,7 @@ Widget _profileName(AsyncSnapshot snapshot, BuildContext context) {
                 style: TextStyle(
                   fontSize: 13.0,
                   fontWeight: FontWeight.w400,
-                  color: Theme.of(context).accentColor,
+                  color: Colors.white,
                 ),
                 overflow: TextOverflow.ellipsis,
               ),
@@ -357,44 +366,49 @@ Widget _profileName(AsyncSnapshot snapshot, BuildContext context) {
 }
 
 Widget _profileImage(ProfileProvider profileProvider) {
-  return Stack(
-    alignment: Alignment.bottomCenter,
-    children: <Widget>[
-      profileProvider.profilePicture == null
-          ? Image.asset(
-              "assets/dp.png",
-              fit: BoxFit.cover,
-              width: 100.0,
-              height: 100.0,
-            )
-          : Image.network(
-              profileProvider.profilePicture,
-              fit: BoxFit.cover,
-              width: 100.0,
-              height: 100.0,
-            ),
-      RaisedButton(
-        onPressed: () {
-          profileProvider.setLoading();
-          profileProvider.getImage().then((value) {
-            profileProvider.setNotLoading();
-          }).catchError((e) {
-            profileProvider.setNotLoading();
-          });
-        },
-        child: profileProvider.loading
-            ? Spinner(
-                icon: FontAwesomeIcons.spinner,
-                color: Colors.white,
-              )
-            : FaIcon(
-                FontAwesomeIcons.upload,
-                color: Colors.white,
-              ),
-        elevation: 5,
-        color: Colors.red,
-      )
-    ],
+  return FutureBuilder(
+    future: profileProvider.myProfilePicture(),
+    builder: (context, snapshot) {
+      return Stack(
+        alignment: Alignment.bottomCenter,
+        children: <Widget>[
+          profileProvider.profilePicture == null
+              ? Image.asset(
+                  "assets/dp.png",
+                  fit: BoxFit.cover,
+                  width: 100.0,
+                  height: 100.0,
+                )
+              : Image.network(
+                  profileProvider.profilePicture,
+                  fit: BoxFit.cover,
+                  width: 100.0,
+                  height: 100.0,
+                ),
+          RaisedButton(
+            onPressed: () {
+              profileProvider.setLoading();
+              profileProvider.getImage().then((value) {
+                profileProvider.setNotLoading();
+              }).catchError((e) {
+                profileProvider.setNotLoading();
+              });
+            },
+            child: profileProvider.loading
+                ? Spinner(
+                    icon: FontAwesomeIcons.spinner,
+                    color: Colors.white,
+                  )
+                : FaIcon(
+                    FontAwesomeIcons.upload,
+                    color: Colors.white,
+                  ),
+            elevation: 5,
+            color: Colors.red,
+          )
+        ],
+      );
+    },
   );
 }
 
@@ -403,6 +417,7 @@ _showSubCategoryDialog(
   final profileProvider = Provider.of<ProfileProvider>(context, listen: false);
   final _formKey = GlobalKey<FormState>();
   TextEditingController _controller = TextEditingController();
+  String input = '';
   showDialog(
     context: context,
     builder: (context) => Dialog(
@@ -436,6 +451,9 @@ _showSubCategoryDialog(
                               ? 'Subcategory can not be empty'
                               : null;
                         },
+                        onChanged: (value) {
+                          input = value;
+                        },
                         decoration: InputDecoration(
                             hintText: 'Enter subcategory',
                             hintStyle: TextStyle(color: Colors.grey),
@@ -465,9 +483,7 @@ _showSubCategoryDialog(
                 onPressed: () {
                   if (_formKey.currentState.validate()) {
                     profileProvider.setLoading();
-                    profileProvider
-                        .addSubCategory(_controller.text)
-                        .then((value) {
+                    profileProvider.addSubCategory(input).then((value) {
                       profileProvider.setNotLoading();
                       Navigator.of(context).pop();
                       profileScaffoldKey.currentState.showSnackBar(SnackBar(
