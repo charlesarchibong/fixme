@@ -12,8 +12,8 @@ import 'package:quickfix/util/content_type.dart';
 
 class ProfileProvider extends ChangeNotifier {
   String _profilePicture;
-  List<String> _images = List();
-  List<String> get images => _images;
+  List<ServiceImage> _images = List();
+  List<ServiceImage> get images => _images;
   String get profilePicture => _profilePicture;
   bool loading = false;
   String _subService;
@@ -87,14 +87,12 @@ class ProfileProvider extends ChangeNotifier {
   Future<void> getServiceImage() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
     var uploaded = await uploadImageToServer('servicePicture', image);
-    String uploadUrl = 'https://uploads.quickfixnaija.com/thumbnails/';
-    String imageUrl = uploadUrl + uploaded['imageFileName'] ?? null;
-    image != null ? _images.add(imageUrl) : print('no file seleected');
+    getServiceImagesFromServer();
     notifyListeners();
   }
 
   //Codes to get images from server and display dem on the profile screen
-  Future<List<String>> getServiceImagesFromServer() async {
+  Future<List<ServiceImage>> getServiceImagesFromServer() async {
     try {
       final user = await Utils.getUserSession();
       final String apiKey = await Utils.getApiKey();
@@ -106,10 +104,15 @@ class ProfileProvider extends ChangeNotifier {
           body: body,
           contentType: ContentType.URL_ENCODED,
           headers: headers);
+      print(response.data);
       if (response.statusCode == 200) {
         List images = response.data['servicesPictures'] as List;
         List<ServiceImage> servicesImages =
             images.map((map) => ServiceImage().fromMap(map));
+        _images = servicesImages;
+        print(servicesImages.toString());
+        notifyListeners();
+        return servicesImages;
       } else {
         print('No response');
       }

@@ -297,36 +297,30 @@ class MainScreenState extends State<MainScreen> {
                       snapshot.data.lastName.toUpperCase(),
                 ),
                 accountEmail: Text(snapshot.data.email),
-                currentAccountPicture: Container(
-                  height: 200,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border:
-                          Border.all(color: Constants.lightAccent, width: 1)),
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
-//                  width: MediaQuery.of(context).size.width * 10.6,
-                  child: Consumer<ProfileProvider>(
-                    builder: (BuildContext context,
-                        ProfileProvider profileProvider, Widget child) {
-                      return ClipOval(
-                        child: profileProvider.profilePicture == null
-                            ? Image.asset(
-                                "assets/dp.png",
-                                fit: BoxFit.cover,
-                                width: 100.0,
-                                height: 100.0,
-                              )
-                            : Image.network(
-                                profileProvider.profilePicture,
-                                fit: BoxFit.cover,
-                                width: 100.0,
-                                height: 100.0,
-                              ),
-                      );
-                    },
-                  ),
-                ),
-              )
+                currentAccountPicture: Consumer<ProfileProvider>(
+                  builder: (BuildContext context,
+                      ProfileProvider profileProvider, Widget child) {
+                    return Container(
+                      height: 200,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            fit: BoxFit.fill,
+                            image: profileProvider.profilePicture == null
+                                ? AssetImage(
+                                    "assets/dp.png",
+                                  )
+                                : NetworkImage(
+                                    profileProvider.profilePicture,
+                                  ),
+                          ),
+                          border: Border.all(
+                              color: Constants.lightAccent, width: 1)),
+                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                      width: MediaQuery.of(context).size.width * 10.6,
+                    );
+                  },
+                ))
             : ProfileShimmer();
       },
     );
