@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:quickfix/models/service_image.dart';
 import 'package:quickfix/models/user.dart';
 import 'package:quickfix/services/network_service.dart';
 import 'package:quickfix/util/Utils.dart';
@@ -93,7 +94,32 @@ class ProfileProvider extends ChangeNotifier {
   }
 
   //Codes to get images from server and display dem on the profile screen
-  Future<List<String>> getServiceImagesFromServer() {}
+  Future<List<String>> getServiceImagesFromServer() async {
+    try {
+      final user = await Utils.getUserSession();
+      final String apiKey = await Utils.getApiKey();
+      String url = Constants.serviceImageUrl;
+      Map<String, String> headers = {'Bearer': '$apiKey'};
+      Map<String, String> body = {'mobile': user.phoneNumber};
+      final response = await NetworkService().post(
+          url: url,
+          body: body,
+          contentType: ContentType.URL_ENCODED,
+          headers: headers);
+      if (response.statusCode == 200) {
+        List images = response.data['servicesPictures'] as List;
+        List<ServiceImage> servicesImages =
+            images.map((map) => ServiceImage().fromMap(map));
+      } else {
+        print('No response');
+      }
+    } catch (e) {
+      if (e is DioError) {
+        print(e.message);
+      }
+      print(e.toString());
+    }
+  }
 
   Future<void> removeImage(int index) async {
     _images.removeAt(index);

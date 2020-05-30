@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 class Constants {
   static String appName = "QuickFix Business";
   static String baseUrl = "https://manager.quickfixnaija.com.ng/";
+  static String serviceImageUrl =
+      "https://manager.quickfixnaija.com.ng/service-images";
   static String createUserUrl = "reg-user";
   static String loginUserUrl = "m-login";
   static String addSubService = "add-sub-service";
