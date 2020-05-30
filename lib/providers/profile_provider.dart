@@ -92,6 +92,9 @@ class ProfileProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  //Codes to get images from server and display dem on the profile screen
+  Future<List<String>> getServiceImagesFromServer() {}
+
   Future<void> removeImage(int index) async {
     _images.removeAt(index);
     notifyListeners();
