@@ -58,7 +58,6 @@ class ProfileProvider extends ChangeNotifier {
         headers: headers,
         contentType: ContentType.FORM_DATA,
       );
-      print(response.data);
       List list = response.data['subServices'] as List;
       String subServices = arrayToString(list);
       Utils.setSubService(subServices);
@@ -74,7 +73,6 @@ class ProfileProvider extends ChangeNotifier {
       String e = element['subservice'];
       stringList.add(e);
     });
-    print(stringList.toString());
     return stringList.toString();
   }
 

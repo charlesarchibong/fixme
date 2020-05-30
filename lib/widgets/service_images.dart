@@ -20,8 +20,9 @@ class _ServicesImagesState extends State<ServicesImages> {
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           childAspectRatio: MediaQuery.of(context).size.width /
-              (MediaQuery.of(context).size.height / 0.9),
+              (MediaQuery.of(context).size.height / 2),
         ),
+
         itemCount:
             profileProvider.images == null ? 0 : profileProvider.images.length,
         itemBuilder: (BuildContext context, int index) {
@@ -35,7 +36,7 @@ class _ServicesImagesState extends State<ServicesImages> {
                 decoration: BoxDecoration(),
                 child: Image.network(
                   image,
-                  width: 250,
+                  width: 500,
                 ),
               ),
               RaisedButton(
