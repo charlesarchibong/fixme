@@ -10,10 +10,6 @@ import 'package:quickfix/screens/splash.dart';
 import 'package:quickfix/util/const.dart';
 
 void main() {
-  FlutterStatusbarcolor.setStatusBarColor(Constants.darkAccent);
-  FlutterStatusbarcolor.setNavigationBarColor(Constants.darkAccent);
-  FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
-  FlutterStatusbarcolor.setNavigationBarWhiteForeground(true);
   runApp(
     MultiProvider(
       providers: [

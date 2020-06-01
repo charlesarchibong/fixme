@@ -148,32 +148,7 @@ class _HomeState extends State<HomeW>
               ],
             ),
             SizedBox(height: 10.0),
-
-            GridView.builder(
-              shrinkWrap: true,
-              primary: false,
-              physics: NeverScrollableScrollPhysics(),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: MediaQuery.of(context).size.width /
-                    (MediaQuery.of(context).size.height / 1.25),
-              ),
-              itemCount: technicians == null ? 0 : technicians.length,
-              itemBuilder: (BuildContext context, int index) {
-//                Food food = Food.fromJson(foods[index]);
-                Map technician = technicians[index];
-//                print(foods);
-//                print(foods.length);
-                return GridProduct(
-                  img: technician['img'],
-                  isFav: false,
-                  name: technician['name'],
-                  rating: 5.0,
-                  raters: 23,
-                );
-              },
-            ),
-
+            _serviceProvidersAroundMe(),
             SizedBox(height: 30),
           ],
         ),
@@ -183,4 +158,31 @@ class _HomeState extends State<HomeW>
 
   @override
   bool get wantKeepAlive => true;
+
+  Widget _serviceProvidersAroundMe() {
+    return GridView.builder(
+      shrinkWrap: true,
+      primary: false,
+      physics: NeverScrollableScrollPhysics(),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: MediaQuery.of(context).size.width /
+            (MediaQuery.of(context).size.height / 1.25),
+      ),
+      itemCount: technicians == null ? 0 : technicians.length,
+      itemBuilder: (BuildContext context, int index) {
+//                Food food = Food.fromJson(foods[index]);
+        Map technician = technicians[index];
+//                print(foods);
+//                print(foods.length);
+        return GridProduct(
+          img: technician['img'],
+          isFav: false,
+          name: technician['name'],
+          rating: 5.0,
+          raters: 23,
+        );
+      },
+    );
+  }
 }

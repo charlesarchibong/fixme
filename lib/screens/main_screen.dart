@@ -175,14 +175,20 @@ class MainScreenState extends State<MainScreen> {
                 },
               ),
               ListTile(
-                title: Text('About'),
-                leading: FaIcon(FontAwesomeIcons.exclamationTriangle),
-                onTap: () {},
-              ),
-              ListTile(
                 title: Text('Settings'),
                 leading: FaIcon(FontAwesomeIcons.cogs),
                 onTap: () {},
+              ),
+              AboutListTile(
+                applicationIcon: Image.asset(
+                  "assets/icon-logo.png",
+                  width: 50,
+                ),
+                applicationName: Constants.appName,
+                applicationVersion: Constants.appVersion,
+                applicationLegalese: Constants.lagelSee,
+                icon: FaIcon(FontAwesomeIcons.exclamationTriangle),
+                child: Text('About'),
               ),
             ],
           ),

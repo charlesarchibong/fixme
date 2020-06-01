@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 class Constants {
   static String appName = "QuickFix Business";
+  static String appVersion = "1.0.3";
+  static String lagelSee =
+      "All Right Reserved, and all information store in this application is secure and is only use for Identification";
   static String baseUrl = "https://manager.quickfixnaija.com.ng/";
   static String serviceImageUrl =
       "https://manager.quickfixnaija.com.ng/service-images";

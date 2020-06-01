@@ -97,6 +97,7 @@ flutter:
     - assets/splashscreen.jpg
     - assets/destination_map_marker.png
     - assets/driving_pin.png
+    - assets/icon-logo.png
     - assets/friend1.jpg
     - assets/friend2.jpg
 
