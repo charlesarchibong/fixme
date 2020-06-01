@@ -1,9 +1,11 @@
 import 'package:badges/badges.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_shimmer/flutter_shimmer.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:quickfix/providers/dashboard_provider.dart';
 import 'package:quickfix/providers/profile_provider.dart';
@@ -16,8 +18,10 @@ import 'package:quickfix/screens/pending_appointment.dart';
 import 'package:quickfix/screens/post_job.dart';
 import 'package:quickfix/screens/profile.dart';
 import 'package:quickfix/screens/search.dart';
+import 'package:quickfix/services/network_service.dart';
 import 'package:quickfix/util/Utils.dart';
 import 'package:quickfix/util/const.dart';
+import 'package:quickfix/util/content_type.dart';
 import 'package:quickfix/util/pending_request.dart';
 
 class MainScreen extends StatefulWidget {
@@ -31,6 +35,7 @@ class MainScreenState extends State<MainScreen> {
   PageController pageController;
   final _scaffoledKey = GlobalKey<ScaffoldState>();
   int _page = 0;
+  Location location;
 
   @override
   Widget build(BuildContext context) {
@@ -330,6 +335,10 @@ class MainScreenState extends State<MainScreen> {
   void initState() {
     setStatusBar();
     pageController = PageController();
+    location = new Location();
+    location.onLocationChanged.listen((LocationData locationData) {
+      sendLocationToServer(locationData);
+    });
     super.initState();
 //    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
 //        statusBarColor: Constants.darkAccent, // Color for Android
@@ -352,6 +361,31 @@ class MainScreenState extends State<MainScreen> {
     await FlutterStatusbarcolor.setNavigationBarColor(Constants.darkAccent);
     await FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
     await FlutterStatusbarcolor.setNavigationBarWhiteForeground(true);
+  }
+
+  Future sendLocationToServer(LocationData locationData) async {
+    try {
+      final user = await Utils.getUserSession();
+      final apiKey = await Utils.getApiKey();
+      final String url = Constants.updateLocationUrl;
+      Map<String, String> headers = {'Bearer': '$apiKey'};
+      Map<String, dynamic> body = {
+        'mobile': user.phoneNumber,
+        'latitude': locationData.latitude,
+        'longitude': locationData.longitude,
+      };
+      final response = await NetworkService().post(
+          url: url,
+          body: body,
+          contentType: ContentType.URL_ENCODED,
+          headers: headers);
+      print(response.data);
+    } catch (e) {
+      if (e is DioError) {
+        print(e.message);
+      }
+      print(e.toString());
+    }
   }
 
   void onPageChanged(int page) {

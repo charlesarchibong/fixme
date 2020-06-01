@@ -7,6 +7,7 @@ class Constants {
       "https://manager.quickfixnaija.com.ng/service-images";
   static String createUserUrl = "reg-user";
   static String uploadUrl = 'https://uploads.quickfixnaija.com/thumbnails/';
+  static String updateLocationUrl = 'https://manager.quickfixnaija.com.ng/gpsl';
   static String loginUserUrl = "m-login";
   static String addSubService = "add-sub-service";
   static String userInfo = "user-info";
