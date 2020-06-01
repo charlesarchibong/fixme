@@ -367,6 +367,8 @@ class MainScreenState extends State<MainScreen> {
     try {
       final user = await Utils.getUserSession();
       final apiKey = await Utils.getApiKey();
+      print(locationData.latitude);
+      print(locationData.longitude);
       final String url = Constants.updateLocationUrl;
       Map<String, String> headers = {'Bearer': '$apiKey'};
       Map<String, dynamic> body = {
