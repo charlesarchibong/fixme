@@ -1,7 +1,14 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_shimmer/flutter_shimmer.dart';
+import 'package:location/location.dart';
+import 'package:quickfix/models/user.dart';
 import 'package:quickfix/screens/dishes.dart';
+import 'package:quickfix/services/network_service.dart';
+import 'package:quickfix/util/Utils.dart';
 import 'package:quickfix/util/categories.dart';
+import 'package:quickfix/util/const.dart';
+import 'package:quickfix/util/content_type.dart';
 import 'package:quickfix/util/foods.dart';
 import 'package:quickfix/widgets/grid_product.dart';
 import 'package:quickfix/widgets/home_category.dart';
@@ -24,6 +31,54 @@ class _HomeState extends State<HomeW>
   }
 
   int _current = 0;
+  Location location;
+  LocationData locationData;
+  List users = List();
+
+  @override
+  void initState() {
+    location = new Location();
+    location.getLocation().then((value) {
+      locationData = value;
+    });
+    location.onLocationChanged.listen((LocationData loc) {
+      setState(() {
+        locationData = loc;
+      });
+      getArtisanByLocation();
+    });
+    getArtisanByLocation();
+    super.initState();
+  }
+
+  Future<List> getArtisanByLocation() async {
+    try {
+      final user = await Utils.getUserSession();
+      String apiKey = await Utils.getApiKey();
+      Map<String, String> headers = {'Bearer': '$apiKey'};
+      Map<String, dynamic> body = {
+        'mobile': user.phoneNumber,
+        'latitude': locationData.latitude,
+        'longitude': locationData.longitude
+      };
+      String url = Constants.getArtisanByLocationUrl;
+      final response = await NetworkService().post(
+        url: url,
+        body: body,
+        contentType: ContentType.URL_ENCODED,
+        headers: headers,
+      );
+      var artisans = response.data['sortedUsers'] as List;
+      print('bby');
+      setState(() {
+        users = artisans;
+        print(users);
+      });
+      return artisans;
+    } catch (error) {
+      print(error.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -160,29 +215,31 @@ class _HomeState extends State<HomeW>
   bool get wantKeepAlive => true;
 
   Widget _serviceProvidersAroundMe() {
-    return GridView.builder(
-      shrinkWrap: true,
-      primary: false,
-      physics: NeverScrollableScrollPhysics(),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: MediaQuery.of(context).size.width /
-            (MediaQuery.of(context).size.height / 1.25),
-      ),
-      itemCount: technicians == null ? 0 : technicians.length,
-      itemBuilder: (BuildContext context, int index) {
-//                Food food = Food.fromJson(foods[index]);
-        Map technician = technicians[index];
-//                print(foods);
-//                print(foods.length);
-        return GridProduct(
-          img: technician['img'],
-          isFav: false,
-          name: technician['name'],
-          rating: 5.0,
-          raters: 23,
-        );
-      },
-    );
+    return users.isNotEmpty
+        ? GridView.builder(
+            shrinkWrap: true,
+            primary: false,
+            physics: NeverScrollableScrollPhysics(),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: MediaQuery.of(context).size.width /
+                  (MediaQuery.of(context).size.height / 1.25),
+            ),
+            itemCount: users == null ? 0 : users.length,
+            itemBuilder: (BuildContext context, int index) {
+              Map technician = users[index];
+              return GridProduct(
+                userData: technician,
+                mobile: technician['user_mobile'],
+                img: Constants.uploadUrl + technician['profile_pic_file_name'],
+                isFav: false,
+                name:
+                    '${technician['user_first_name']} ${technician['user_last_name']}',
+                rating: 5.0,
+                raters: 23,
+              );
+            },
+          )
+        : VideoShimmer();
   }
 }

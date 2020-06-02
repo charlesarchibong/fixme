@@ -9,15 +9,19 @@ class GridProduct extends StatelessWidget {
   final bool isFav;
   final double rating;
   final int raters;
+  final String mobile;
+  final Map userData;
 
-  GridProduct(
-      {Key key,
-      @required this.name,
-      @required this.img,
-      @required this.isFav,
-      @required this.rating,
-      @required this.raters})
-      : super(key: key);
+  GridProduct({
+    Key key,
+    @required this.name,
+    @required this.img,
+    @required this.isFav,
+    @required this.rating,
+    @required this.raters,
+    @required this.mobile,
+    @required this.userData,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +37,7 @@ class GridProduct extends StatelessWidget {
                 width: MediaQuery.of(context).size.width / 2.2,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
-                  child: Image.asset(
+                  child: Image.network(
                     "$img",
                     fit: BoxFit.cover,
                   ),

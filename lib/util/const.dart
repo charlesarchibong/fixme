@@ -11,6 +11,8 @@ class Constants {
   static String createUserUrl = "reg-user";
   static String uploadUrl = 'https://uploads.quickfixnaija.com/thumbnails/';
   static String updateLocationUrl = 'https://manager.quickfixnaija.com.ng/gpsl';
+  static String getArtisanByLocationUrl =
+      'https://manager.quickfixnaija.com.ng/near-artisans';
   static String loginUserUrl = "m-login";
   static String addSubService = "add-sub-service";
   static String userInfo = "user-info";
