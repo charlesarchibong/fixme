@@ -6,12 +6,13 @@ class User {
   String serviceArea;
   String fullNumber;
 
-  User.name(
-      {this.firstName,
-      this.lastName,
-      this.phoneNumber,
-      this.email,
-      this.serviceArea});
+  User.name({
+    this.firstName,
+    this.lastName,
+    this.phoneNumber,
+    this.email,
+    this.serviceArea,
+  });
 
   Map<String, dynamic> toJson() {
     var map = new Map<String, dynamic>();
