@@ -62,13 +62,13 @@ class ProfileProvider extends ChangeNotifier {
       List list = response.data['subServices'] as List;
       String subServices = arrayToString(list);
       Utils.setSubService(subServices);
+      return subServices;
     } catch (e) {
       print(e);
     }
   }
 
   String arrayToString(List list) {
-    String string = '';
     List<String> stringList = List();
     list.forEach((element) {
       String e = element['subservice'];
