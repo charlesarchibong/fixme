@@ -3,7 +3,7 @@ import 'package:quickfix/screens/notifications.dart';
 import 'package:quickfix/util/categories.dart';
 import 'package:quickfix/util/foods.dart';
 import 'package:quickfix/widgets/badge.dart';
-import 'package:quickfix/widgets/grid_product.dart';
+import 'package:quickfix/widgets/grid_artisans.dart';
 import 'package:quickfix/widgets/home_category.dart';
 
 class CategoriesScreen extends StatefulWidget {
@@ -96,7 +96,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
               itemCount: technicians == null ? 0 : technicians.length,
               itemBuilder: (BuildContext context, int index) {
                 Map food = technicians[index];
-                return GridProduct(
+                return GridTechnician(
                   img: food['img'],
                   isFav: false,
                   name: food['name'],

@@ -2,15 +2,14 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_shimmer/flutter_shimmer.dart';
 import 'package:location/location.dart';
-import 'package:quickfix/models/user.dart';
-import 'package:quickfix/screens/dishes.dart';
+import 'package:quickfix/screens/artisans.dart';
 import 'package:quickfix/services/network_service.dart';
 import 'package:quickfix/util/Utils.dart';
 import 'package:quickfix/util/categories.dart';
 import 'package:quickfix/util/const.dart';
 import 'package:quickfix/util/content_type.dart';
 import 'package:quickfix/util/foods.dart';
-import 'package:quickfix/widgets/grid_product.dart';
+import 'package:quickfix/widgets/grid_artisans.dart';
 import 'package:quickfix/widgets/home_category.dart';
 import 'package:quickfix/widgets/slider_item.dart';
 
@@ -236,7 +235,7 @@ class _HomeState extends State<HomeW>
                           users.removeAt(index);
                           return null;
                         } else {
-                          return GridProduct(
+                          return GridTechnician(
                             userData: technician,
                             mobile: technician['user_mobile'],
                             img: Constants.uploadUrl +

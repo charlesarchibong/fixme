@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quickfix/util/foods.dart';
-import 'package:quickfix/widgets/grid_product.dart';
+import 'package:quickfix/widgets/grid_artisans.dart';
 
 class FavoriteScreen extends StatefulWidget {
   @override
@@ -41,7 +41,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>
                 Map food = technicians[index];
 //                print(foods);
 //                print(foods.length);
-                return GridProduct(
+                return GridTechnician(
                   img: food['img'],
                   isFav: true,
                   name: food['name'],

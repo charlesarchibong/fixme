@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quickfix/screens/notifications.dart';
 import 'package:quickfix/util/foods.dart';
 import 'package:quickfix/widgets/badge.dart';
-import 'package:quickfix/widgets/grid_product.dart';
+import 'package:quickfix/widgets/grid_artisans.dart';
 
 class Aritsans extends StatefulWidget {
   @override
