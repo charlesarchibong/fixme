@@ -1,3 +1,4 @@
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:quickfix/screens/details.dart';
 import 'package:quickfix/util/const.dart';
 import 'package:quickfix/widgets/smooth_star_rating.dart';
@@ -51,14 +52,13 @@ class GridProduct extends StatelessWidget {
                   fillColor: Colors.white,
                   shape: CircleBorder(),
                   elevation: 4.0,
-                  child: Padding(
-                    padding: EdgeInsets.all(5),
-                    child: Icon(
-                      isFav ? Icons.favorite : Icons.favorite_border,
-                      color: Colors.red,
-                      size: 15,
-                    ),
-                  ),
+                  child: isFav
+                      ? Icon(
+                          Icons.star,
+                          color: Colors.red,
+                          size: 35,
+                        )
+                      : Text(''),
                 ),
               ),
             ],

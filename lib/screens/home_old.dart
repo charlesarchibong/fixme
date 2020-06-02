@@ -69,10 +69,8 @@ class _HomeState extends State<HomeW>
         headers: headers,
       );
       var artisans = response.data['sortedUsers'] as List;
-      print('bby');
       setState(() {
         users = artisans;
-        print(users);
       });
       return artisans;
     } catch (error) {
@@ -232,7 +230,7 @@ class _HomeState extends State<HomeW>
                 userData: technician,
                 mobile: technician['user_mobile'],
                 img: Constants.uploadUrl + technician['profile_pic_file_name'],
-                isFav: false,
+                isFav: technician['status'] == "verified",
                 name:
                     '${technician['user_first_name']} ${technician['user_last_name']}',
                 rating: 5.0,
