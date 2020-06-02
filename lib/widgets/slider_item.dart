@@ -1,4 +1,4 @@
-import 'package:quickfix/screens/details.dart';
+import 'package:quickfix/modules/artisan/view/details.dart';
 import 'package:quickfix/util/const.dart';
 import 'package:quickfix/widgets/smooth_star_rating.dart';
 import 'package:flutter/material.dart';

@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
-import 'package:quickfix/models/user.dart';
+import 'package:quickfix/modules/profile/model/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Utils {

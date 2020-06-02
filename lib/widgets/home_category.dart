@@ -1,5 +1,5 @@
-import 'package:quickfix/screens/categories_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:quickfix/modules/artisan/view/categories_screen.dart';
 
 class HomeCategory extends StatefulWidget {
   final IconData icon;

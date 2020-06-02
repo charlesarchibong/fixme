@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:provider/provider.dart';
+import 'package:quickfix/modules/auth/provider/login_form_validation.dart';
+import 'package:quickfix/modules/custom/view/splash.dart';
+import 'package:quickfix/modules/dashboard/provider/dashboard_provider.dart';
+import 'package:quickfix/modules/job/provider/post_job_provider.dart';
+import 'package:quickfix/modules/profile/provider/profile_provider.dart';
 import 'package:quickfix/providers/app_provider.dart';
-import 'package:quickfix/providers/dashboard_provider.dart';
-import 'package:quickfix/providers/login_form_validation.dart';
-import 'package:quickfix/providers/post_job_provider.dart';
-import 'package:quickfix/screens/profile/provider/profile_provider.dart';
-import 'package:quickfix/screens/splash.dart';
 import 'package:quickfix/util/const.dart';
 
 void main() {
