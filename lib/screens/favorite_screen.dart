@@ -42,6 +42,8 @@ class _FavoriteScreenState extends State<FavoriteScreen>
 //                print(foods);
 //                print(foods.length);
                 return GridTechnician(
+                  mobile: "Null",
+                  userData: food,
                   img: food['img'],
                   isFav: true,
                   name: food['name'],

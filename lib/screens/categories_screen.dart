@@ -97,6 +97,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
               itemBuilder: (BuildContext context, int index) {
                 Map food = technicians[index];
                 return GridTechnician(
+                  mobile: "Null",
+                  userData: food,
                   img: food['img'],
                   isFav: false,
                   name: food['name'],

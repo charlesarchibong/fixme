@@ -70,6 +70,8 @@ class _AritsansState extends State<Aritsans> {
               itemBuilder: (BuildContext context, int index) {
                 Map food = technicians[index];
                 return GridTechnician(
+                  mobile: "Null",
+                  userData: food,
                   img: food['img'],
                   isFav: false,
                   name: food['name'],
@@ -101,6 +103,8 @@ class _AritsansState extends State<Aritsans> {
               itemBuilder: (BuildContext context, int index) {
                 Map food = technicians[index];
                 return GridTechnician(
+                  mobile: "Null",
+                  userData: food,
                   img: food['img'],
                   isFav: false,
                   name: food['name'],
@@ -132,6 +136,8 @@ class _AritsansState extends State<Aritsans> {
               itemBuilder: (BuildContext context, int index) {
                 Map food = technicians[index];
                 return GridTechnician(
+                  mobile: "Null",
+                  userData: food,
                   img: food['img'],
                   isFav: false,
                   name: food['name'],
