@@ -1,10 +1,9 @@
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter/material.dart';
 import 'package:quickfix/screens/details.dart';
 import 'package:quickfix/util/const.dart';
 import 'package:quickfix/widgets/smooth_star_rating.dart';
-import 'package:flutter/material.dart';
 
-class GridProduct extends StatelessWidget {
+class GridTechnician extends StatelessWidget {
   final String name;
   final String img;
   final bool isFav;
@@ -13,7 +12,7 @@ class GridProduct extends StatelessWidget {
   final String mobile;
   final Map userData;
 
-  GridProduct({
+  GridTechnician({
     Key key,
     @required this.name,
     @required this.img,

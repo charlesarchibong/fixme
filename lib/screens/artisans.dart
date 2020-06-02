@@ -23,7 +23,7 @@ class _AritsansState extends State<Aritsans> {
         ),
         centerTitle: true,
         title: Text(
-          "Dishes",
+          "Artisans",
         ),
         elevation: 0.0,
         actions: <Widget>[
@@ -49,7 +49,7 @@ class _AritsansState extends State<Aritsans> {
         child: ListView(
           children: <Widget>[
             Text(
-              "Chinese",
+              "Popular Artisan",
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w800,
@@ -69,7 +69,7 @@ class _AritsansState extends State<Aritsans> {
               itemCount: 4,
               itemBuilder: (BuildContext context, int index) {
                 Map food = technicians[index];
-                return GridProduct(
+                return GridTechnician(
                   img: food['img'],
                   isFav: false,
                   name: food['name'],
@@ -100,7 +100,7 @@ class _AritsansState extends State<Aritsans> {
               itemCount: 4,
               itemBuilder: (BuildContext context, int index) {
                 Map food = technicians[index];
-                return GridProduct(
+                return GridTechnician(
                   img: food['img'],
                   isFav: false,
                   name: food['name'],
@@ -111,7 +111,7 @@ class _AritsansState extends State<Aritsans> {
             ),
             SizedBox(height: 20.0),
             Text(
-              "African",
+              "Artisan Around You",
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w800,
@@ -131,7 +131,7 @@ class _AritsansState extends State<Aritsans> {
               itemCount: 4,
               itemBuilder: (BuildContext context, int index) {
                 Map food = technicians[index];
-                return GridProduct(
+                return GridTechnician(
                   img: food['img'],
                   isFav: false,
                   name: food['name'],
