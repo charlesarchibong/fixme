@@ -214,28 +214,43 @@ class _HomeState extends State<HomeW>
 
   Widget _serviceProvidersAroundMe() {
     return users.isNotEmpty
-        ? GridView.builder(
-            shrinkWrap: true,
-            primary: false,
-            physics: NeverScrollableScrollPhysics(),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: MediaQuery.of(context).size.width /
-                  (MediaQuery.of(context).size.height / 1.25),
-            ),
-            itemCount: users == null ? 0 : users.length,
-            itemBuilder: (BuildContext context, int index) {
-              Map technician = users[index];
-              return GridProduct(
-                userData: technician,
-                mobile: technician['user_mobile'],
-                img: Constants.uploadUrl + technician['profile_pic_file_name'],
-                isFav: technician['status'] == "verified",
-                name:
-                    '${technician['user_first_name']} ${technician['user_last_name']}',
-                rating: 5.0,
-                raters: 23,
-              );
+        ? FutureBuilder(
+            future: Utils.getUserSession(),
+            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+              return snapshot.hasData
+                  ? GridView.builder(
+                      shrinkWrap: true,
+                      primary: false,
+                      physics: NeverScrollableScrollPhysics(),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: MediaQuery.of(context).size.width /
+                            (MediaQuery.of(context).size.height / 1.25),
+                      ),
+                      itemCount: users == null ? 0 : users.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        Map technician = users[index];
+                        if (technician['profile_pic_file_name'] == '' ||
+                            snapshot.data.phoneNumber ==
+                                technician['user_mobile']) {
+                          users.removeAt(index);
+                          return null;
+                        } else {
+                          return GridProduct(
+                            userData: technician,
+                            mobile: technician['user_mobile'],
+                            img: Constants.uploadUrl +
+                                technician['profile_pic_file_name'],
+                            isFav: technician['status'] == "verified",
+                            name:
+                                '${technician['user_first_name']} ${technician['user_last_name']}',
+                            rating: 5.0,
+                            raters: 23,
+                          );
+                        }
+                      },
+                    )
+                  : VideoShimmer();
             },
           )
         : VideoShimmer();

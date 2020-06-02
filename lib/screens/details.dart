@@ -7,6 +7,10 @@ import 'package:quickfix/widgets/reviews.dart';
 import 'package:quickfix/widgets/smooth_star_rating.dart';
 
 class ProductDetails extends StatefulWidget {
+  final Map userData;
+
+  const ProductDetails({Key key, this.userData}) : super(key: key);
+
   @override
   _ProductDetailsState createState() => _ProductDetailsState();
 }
@@ -26,7 +30,7 @@ class _ProductDetailsState extends State<ProductDetails> {
         ),
         centerTitle: true,
         title: Text(
-          "Technician's Profile",
+          "Artisan's Profile",
         ),
         elevation: 0.0,
         actions: <Widget>[
@@ -59,8 +63,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                   width: MediaQuery.of(context).size.width,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8.0),
-                    child: Image.asset(
-                      "${technicians[1]['img']}",
+                    child: Image.network(
+                      "${Constants.uploadUrl + widget.userData['profile_pic_file_name']}",
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -75,11 +79,13 @@ class _ProductDetailsState extends State<ProductDetails> {
                     elevation: 4.0,
                     child: Padding(
                       padding: EdgeInsets.all(5),
-                      child: Icon(
-                        isFav ? Icons.favorite : Icons.favorite_border,
-                        color: Colors.red,
-                        size: 17,
-                      ),
+                      child: widget.userData['status'] == "verified"
+                          ? Icon(
+                              Icons.star,
+                              color: Colors.red,
+                              size: 35,
+                            )
+                          : Text(''),
                     ),
                   ),
                 ),
@@ -87,7 +93,7 @@ class _ProductDetailsState extends State<ProductDetails> {
             ),
             SizedBox(height: 10.0),
             Text(
-              "${technicians[1]['name']}",
+              "${widget.userData['user_first_name']} ${widget.userData['user_last_name']}",
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w800,
@@ -126,21 +132,32 @@ class _ProductDetailsState extends State<ProductDetails> {
                       fontWeight: FontWeight.w300,
                     ),
                   ),
-                  SizedBox(width: 10.0),
-                  Text(
-                    r"N90",
-                    style: TextStyle(
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w900,
-                      color: Theme.of(context).accentColor,
-                    ),
-                  ),
                 ],
               ),
             ),
-            SizedBox(height: 20.0),
+            // SizedBox(height: 20.0),
+            // Text(
+            //   "Bio",
+            //   style: TextStyle(
+            //     fontSize: 18,
+            //     fontWeight: FontWeight.w800,
+            //   ),
+            //   maxLines: 2,
+            // ),
+            // SizedBox(height: 10.0),
+            // Text(
+            //   "Am a skilled electrician with over 8 years of experience."
+            //   "I have over the years aided in the wiring of over 30 houses. "
+            //   "I do general repairs also and I have a flair for paying attention to details. "
+            //   "I am also self sufficient which means I can make rational decisions when necessary. Can’t wait to work with you.",
+            //   style: TextStyle(
+            //     fontSize: 13,
+            //     fontWeight: FontWeight.w300,
+            //   ),
+            // ),
+            SizedBox(height: 10.0),
             Text(
-              "Bio",
+              "Service Area",
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w800,
@@ -149,10 +166,7 @@ class _ProductDetailsState extends State<ProductDetails> {
             ),
             SizedBox(height: 10.0),
             Text(
-              "Am a skilled electrician with over 8 years of experience."
-              "I have over the years aided in the wiring of over 30 houses. "
-              "I do general repairs also and I have a flair for paying attention to details. "
-              "I am also self sufficient which means I can make rational decisions when necessary. Can’t wait to work with you.",
+              "${widget.userData['service_area']}",
               style: TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.w300,
