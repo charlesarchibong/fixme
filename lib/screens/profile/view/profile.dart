@@ -4,11 +4,12 @@ import 'package:flutter_shimmer/flutter_shimmer.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:quickfix/providers/app_provider.dart';
-import 'package:quickfix/providers/profile_provider.dart';
+
 import 'package:quickfix/screens/login.dart';
+import 'package:quickfix/screens/profile/provider/profile_provider.dart';
+import 'package:quickfix/screens/profile/widget/service_images.dart';
 import 'package:quickfix/util/Utils.dart';
 import 'package:quickfix/util/const.dart';
-import 'package:quickfix/widgets/service_images.dart';
 import 'package:quickfix/widgets/spinner.dart';
 
 class Profile extends StatefulWidget {

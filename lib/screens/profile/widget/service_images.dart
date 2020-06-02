@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_shimmer/flutter_shimmer.dart';
 import 'package:provider/provider.dart';
-import 'package:quickfix/providers/profile_provider.dart';
+import 'package:quickfix/screens/profile/provider/profile_provider.dart';
 import 'package:quickfix/util/const.dart';
 
 class ServicesImages extends StatefulWidget {

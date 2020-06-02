@@ -5,7 +5,7 @@ import 'package:quickfix/providers/app_provider.dart';
 import 'package:quickfix/providers/dashboard_provider.dart';
 import 'package:quickfix/providers/login_form_validation.dart';
 import 'package:quickfix/providers/post_job_provider.dart';
-import 'package:quickfix/providers/profile_provider.dart';
+import 'package:quickfix/screens/profile/provider/profile_provider.dart';
 import 'package:quickfix/screens/splash.dart';
 import 'package:quickfix/util/const.dart';
 
