@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:quickfix/modules/auth/view/login.dart';
 import 'package:quickfix/modules/profile/provider/profile_provider.dart';
+import 'package:quickfix/modules/profile/widget/edit_profile.dart';
 import 'package:quickfix/modules/profile/widget/service_images.dart';
 import 'package:quickfix/providers/app_provider.dart';
 import 'package:quickfix/util/Utils.dart';
@@ -58,6 +59,10 @@ class _ProfileState extends State<Profile> {
                           color: Colors.grey,
                         ),
                         toolTip: 'Edit',
+                        onPressed: () {
+                          showProfilePopUp(context, _profileScaffoldKey,
+                              snapshot.data.firstName, snapshot.data.lastName);
+                        },
                       ),
                       _profileDetailsTiles(
                         title: 'Email',

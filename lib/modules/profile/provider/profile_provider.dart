@@ -184,4 +184,9 @@ class ProfileProvider extends ChangeNotifier {
       }
     }
   }
+
+  Future<bool> updateProfile(String firstName, String lastName) {
+    print(firstName);
+    print(lastName);
+  }
 }
