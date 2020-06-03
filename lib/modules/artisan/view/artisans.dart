@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:quickfix/modules/job/widget/grid_artisans.dart';
+import 'package:quickfix/modules/artisan/widget/grid_artisans.dart';
 import 'package:quickfix/modules/notification/view/notifications.dart';
 import 'package:quickfix/util/foods.dart';
 import 'package:quickfix/widgets/badge.dart';
