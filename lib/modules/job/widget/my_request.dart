@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:quickfix/screens/details.dart';
-import 'package:quickfix/screens/track_artisan.dart';
+import 'package:quickfix/modules/artisan/view/details.dart';
+import 'package:quickfix/modules/artisan/view/track_artisan.dart';
 
 class MyRequestWidget extends StatelessWidget {
   final String title;

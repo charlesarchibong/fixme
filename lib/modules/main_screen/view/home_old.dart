@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_shimmer/flutter_shimmer.dart';
 import 'package:location/location.dart';
 import 'package:quickfix/modules/artisan/view/artisans.dart';
-import 'package:quickfix/modules/job/widget/grid_artisans.dart';
+import 'package:quickfix/modules/artisan/widget/grid_artisans.dart';
 import 'package:quickfix/services/network_service.dart';
 import 'package:quickfix/util/Utils.dart';
 import 'package:quickfix/util/categories.dart';
