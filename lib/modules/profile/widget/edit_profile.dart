@@ -136,10 +136,12 @@ showProfilePopUp(
                               //   profileProvider.setNotLoading();
                               await profileProvider.updateProfile(
                                   firstName, lastName);
+                              _firstNameController.dispose();
+                              _lastNameController.dispose();
                               Navigator.of(context).pop();
                               profileScaffoldKey.currentState
                                   .showSnackBar(SnackBar(
-                                content: Text('Profile was added'),
+                                content: Text('Profile was updated'),
                                 duration: Duration(seconds: 5),
                               ));
                               // }).catchError((e) {
