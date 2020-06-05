@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:quickfix/models/failure.dart';
 import 'package:quickfix/modules/profile/provider/profile_provider.dart';
 
 class EditProfilePopUp extends StatefulWidget {
@@ -134,16 +135,26 @@ showProfilePopUp(
                               //     .addSubCategory(input)
                               //     .then((value) {
                               //   profileProvider.setNotLoading();
-                              await profileProvider.updateProfile(
-                                  firstName, lastName);
+                              final updated = await profileProvider
+                                  .updateProfile(firstName, lastName);
+                              updated.fold((Failure failure) {
+                                Navigator.of(context).pop();
+                                profileScaffoldKey.currentState
+                                    .showSnackBar(SnackBar(
+                                  content: Text(failure.message),
+                                  duration: Duration(seconds: 5),
+                                ));
+                              }, (bool) {
+                                Navigator.of(context).pop();
+                                profileScaffoldKey.currentState
+                                    .showSnackBar(SnackBar(
+                                  content: Text('Profile was updated'),
+                                  duration: Duration(seconds: 5),
+                                ));
+                              });
                               _firstNameController.dispose();
                               _lastNameController.dispose();
-                              Navigator.of(context).pop();
-                              profileScaffoldKey.currentState
-                                  .showSnackBar(SnackBar(
-                                content: Text('Profile was updated'),
-                                duration: Duration(seconds: 5),
-                              ));
+
                               // }).catchError((e) {
                               //   print(e);
                               //   profileProvider.setNotLoading();

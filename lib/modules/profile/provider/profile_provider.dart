@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:quickfix/models/failure.dart';
 import 'package:quickfix/modules/profile/model/bank_code.dart';
 import 'package:quickfix/modules/profile/model/service_image.dart';
 import 'package:quickfix/modules/profile/model/user.dart';
@@ -187,9 +189,32 @@ class ProfileProvider extends ChangeNotifier {
     }
   }
 
-  Future<bool> updateProfile(String firstName, String lastName) {
-    print(firstName);
-    print(lastName);
+  Future<Either<Failure, bool>> updateProfile(
+      String firstName, String lastName) async {
+    try {
+      String url = 'http://manager.quickfixnaija.com.ng/e-f-n';
+      User currentUser = await Utils.getUserSession();
+      String apiKey = await Utils.getApiKey();
+      Map<String, String> body = {
+        'mobile': currentUser.phoneNumber,
+        'firstName': firstName,
+        'lastName': lastName
+      };
+      Map<String, String> headers = {'Bearer': '$apiKey'};
+      final response = await NetworkService().post(
+        url: url,
+        body: body,
+        contentType: ContentType.URL_ENCODED,
+        headers: headers,
+      );
+      if (response.data['reqRes'] == 'true') {
+        return Right(true);
+      } else {
+        return Left(Failure(message: 'Your profile was not updated'));
+      }
+    } catch (e) {
+      return Left(Failure(message: e.toString().split(':')[1]));
+    }
   }
 
   Future<List> getBankCodes() async {

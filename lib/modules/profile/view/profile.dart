@@ -117,6 +117,9 @@ class _ProfileState extends State<Profile> {
                             context,
                             listen: false,
                           );
+                          setState(() {
+                            selected = null;
+                          });
                           List codes = await profileProvider.getBankCodes();
                           List<BankCode> listOfBank = List();
                           listOfBank.clear();
