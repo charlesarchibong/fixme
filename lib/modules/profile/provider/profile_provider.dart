@@ -218,7 +218,6 @@ class ProfileProvider extends ChangeNotifier {
   }
 
   Future<List> getBankCodes() async {
-    print('Ran');
     String url = 'http://manager.quickfixnaija.com.ng/g-b-info';
     User currentUser = await Utils.getUserSession();
     String apiKey = await Utils.getApiKey();
@@ -237,5 +236,33 @@ class ProfileProvider extends ChangeNotifier {
     List bankInfo = response.data['bankInfo'] as List;
     // print(bankInfo);
     return bankInfo;
+  }
+
+  Future<Either<Failure, bool>> updateBankDetails(
+      BankCode bankCode, String accountNumber) async {
+    try {
+      String url = 'http://manager.quickfixnaija.com.ng/s-u-b-i';
+      User currentUser = await Utils.getUserSession();
+      String apiKey = await Utils.getApiKey();
+      Map<String, String> body = {
+        'mobile': currentUser.phoneNumber,
+        'bankCode': bankCode.code,
+        'accountNumber': accountNumber,
+      };
+      Map<String, String> headers = {'Bearer': '$apiKey'};
+      final response = await NetworkService().post(
+        url: url,
+        body: body,
+        contentType: ContentType.URL_ENCODED,
+        headers: headers,
+      );
+      if (response.data['reqRes'] == 'true') {
+        return Right(true);
+      } else {
+        return Left(Failure(message: response.data['message']));
+      }
+    } catch (e) {
+      return Left(Failure(message: e.toString().split(':')[1]));
+    }
   }
 }
