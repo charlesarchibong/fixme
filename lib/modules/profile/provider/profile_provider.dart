@@ -19,6 +19,7 @@ class ProfileProvider extends ChangeNotifier {
   bool loading = false;
   String _subService;
   String get subService => _subService;
+  List<Map> bankCodes = List();
 
   void setNotLoading() {
     loading = false;
@@ -191,7 +192,8 @@ class ProfileProvider extends ChangeNotifier {
     print(lastName);
   }
 
-  Future<List<BankCode>> getBankCodes() async {
+  Future<List> getBankCodes() async {
+    print('Ran');
     String url = 'http://manager.quickfixnaija.com.ng/g-b-info';
     User currentUser = await Utils.getUserSession();
     String apiKey = await Utils.getApiKey();
@@ -202,12 +204,13 @@ class ProfileProvider extends ChangeNotifier {
     Map<String, String> headers = {'Bearer': '$apiKey'};
     final response = await NetworkService().post(
       url: url,
-      body: {},
+      body: body,
       contentType: ContentType.URL_ENCODED,
       headers: headers,
     );
-    print(response.data);
+    // print(response.data);
     List bankInfo = response.data['bankInfo'] as List;
-    return bankInfo.map((map) => BankCode.fromMap(map));
+    // print(bankInfo);
+    return bankInfo;
   }
 }

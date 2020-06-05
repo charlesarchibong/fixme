@@ -28,8 +28,6 @@ class BankCode {
   }
 
   factory BankCode.fromMap(Map<String, dynamic> map) {
-    if (map == null) return null;
-
     return BankCode(
       id: map['id'],
       slug: map['slug'],
