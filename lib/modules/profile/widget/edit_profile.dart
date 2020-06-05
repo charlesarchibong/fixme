@@ -152,24 +152,6 @@ showProfilePopUp(
                                   duration: Duration(seconds: 5),
                                 ));
                               });
-                              _firstNameController.dispose();
-                              _lastNameController.dispose();
-
-                              // }).catchError((e) {
-                              //   print(e);
-                              //   profileProvider.setNotLoading();
-                              //   Navigator.of(context).pop();
-                              //   profileScaffoldKey.currentState
-                              //       .showSnackBar(SnackBar(
-                              //     content: Text(
-                              //       e.toString().split(':')[1],
-                              //       style: TextStyle(
-                              //         color: Colors.red,
-                              //       ),
-                              //     ),
-                              //     duration: Duration(seconds: 5),
-                              //   ));
-                              // });
                             }
                           },
                         ),

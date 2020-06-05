@@ -207,6 +207,8 @@ class ProfileProvider extends ChangeNotifier {
         contentType: ContentType.URL_ENCODED,
         headers: headers,
       );
+      print(response.data);
+
       if (response.data['reqRes'] == 'true') {
         return Right(true);
       } else {
@@ -256,6 +258,7 @@ class ProfileProvider extends ChangeNotifier {
         contentType: ContentType.URL_ENCODED,
         headers: headers,
       );
+      print(response.data);
       if (response.data['reqRes'] == 'true') {
         return Right(true);
       } else {
