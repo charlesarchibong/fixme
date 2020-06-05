@@ -259,7 +259,10 @@ class ProfileProvider extends ChangeNotifier {
       if (response.data['reqRes'] == 'true') {
         return Right(true);
       } else {
-        return Left(Failure(message: response.data['message']));
+        String message = response.data['message'] != null
+            ? response.data['message']
+            : 'Bank details was not updated, please try again';
+        return Left(Failure(message: message));
       }
     } catch (e) {
       return Left(Failure(message: e.toString().split(':')[1]));

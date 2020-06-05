@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_shimmer/flutter_shimmer.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:quickfix/models/failure.dart';
 import 'package:quickfix/modules/auth/view/login.dart';
 import 'package:quickfix/modules/profile/model/bank_code.dart';
 import 'package:quickfix/modules/profile/provider/profile_provider.dart';
@@ -296,44 +297,46 @@ class _ProfileState extends State<Profile> {
                                                               if (_formKey
                                                                   .currentState
                                                                   .validate()) {
-                                                                // profileProvider.setLoading();
-                                                                // profileProvider
-                                                                //     .addSubCategory(input)
-                                                                //     .then((value) {
-                                                                //   profileProvider.setNotLoading();
-                                                                // await profileProvider.updateProfile(
-                                                                //     firstName, lastName);
+                                                                final updated =
+                                                                    await profileProvider.updateBankDetails(
+                                                                        selected,
+                                                                        _accountNumberController
+                                                                            .text);
+                                                                updated.fold(
+                                                                    (Failure
+                                                                        failure) {
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .pop();
+                                                                  _profileScaffoldKey
+                                                                      .currentState
+                                                                      .showSnackBar(
+                                                                          SnackBar(
+                                                                    content: Text(
+                                                                        failure
+                                                                            .message),
+                                                                    duration: Duration(
+                                                                        seconds:
+                                                                            5),
+                                                                  ));
+                                                                }, (bool
+                                                                        updated) {
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .pop();
+                                                                  _profileScaffoldKey
+                                                                      .currentState
+                                                                      .showSnackBar(
+                                                                          SnackBar(
+                                                                    content: Text(
+                                                                        'Account Details was updated'),
+                                                                    duration: Duration(
+                                                                        seconds:
+                                                                            5),
+                                                                  ));
+                                                                });
                                                                 listOfBank
                                                                     .clear();
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .pop();
-                                                                _profileScaffoldKey
-                                                                    .currentState
-                                                                    .showSnackBar(
-                                                                        SnackBar(
-                                                                  content: Text(
-                                                                      'Account Details was updated'),
-                                                                  duration:
-                                                                      Duration(
-                                                                          seconds:
-                                                                              5),
-                                                                ));
-                                                                // }).catchError((e) {
-                                                                //   print(e);
-                                                                //   profileProvider.setNotLoading();
-                                                                //   Navigator.of(context).pop();
-                                                                //   profileScaffoldKey.currentState
-                                                                //       .showSnackBar(SnackBar(
-                                                                //     content: Text(
-                                                                //       e.toString().split(':')[1],
-                                                                //       style: TextStyle(
-                                                                //         color: Colors.red,
-                                                                //       ),
-                                                                //     ),
-                                                                //     duration: Duration(seconds: 5),
-                                                                //   ));
-                                                                // });
                                                               }
                                                             },
                                                           ),
