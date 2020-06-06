@@ -43,7 +43,7 @@ class ProfileProvider extends ChangeNotifier {
   }
 
   Future<String> getSubService() async {
-    String subService = await Utils.getSubService();
+    String subService = await getSubServiceFromServer();
     _subService = subService;
     notifyListeners();
     return subService;
@@ -69,6 +69,7 @@ class ProfileProvider extends ChangeNotifier {
       return subServices;
     } catch (e) {
       print(e);
+      return '';
     }
   }
 
@@ -91,12 +92,13 @@ class ProfileProvider extends ChangeNotifier {
   Future<void> getServiceImage() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
     var uploaded = await uploadImageToServer('servicePicture', image);
-    getServiceImagesFromServer();
+    // getServiceImagesFromServer();
     notifyListeners();
   }
 
   //Codes to get images from server and display dem on the profile screen
-  Future<List<ServiceImage>> getServiceImagesFromServer() async {
+  Future<Either<Failure, List<ServiceImage>>>
+      getServiceImagesFromServer() async {
     try {
       final user = await Utils.getUserSession();
       final String apiKey = await Utils.getApiKey();
@@ -104,27 +106,31 @@ class ProfileProvider extends ChangeNotifier {
       Map<String, String> headers = {'Bearer': '$apiKey'};
       Map<String, String> body = {'mobile': user.phoneNumber};
       final response = await NetworkService().post(
-          url: url,
-          body: body,
-          contentType: ContentType.URL_ENCODED,
-          headers: headers);
+        url: url,
+        body: body,
+        contentType: ContentType.URL_ENCODED,
+        headers: headers,
+      );
       print(response.data);
       if (response.statusCode == 200) {
         List images = response.data['servicesPictures'] as List;
         List<ServiceImage> servicesImages =
             images.map((map) => ServiceImage().fromMap(map));
-        _images = servicesImages;
-        print(servicesImages.toString());
-        notifyListeners();
-        return servicesImages;
+        if (servicesImages.length <= 0) {
+          return Left(Failure(message: 'No images found'));
+        } else {
+          return Right(servicesImages);
+        }
       } else {
-        print('No response');
+        return Left(Failure(message: 'No images found'));
       }
     } catch (e) {
       if (e is DioError) {
         print(e.message);
+        return Left(Failure(message: 'No images found'));
       }
       print(e.toString());
+      return Left(Failure(message: 'No images found'));
     }
   }
 
@@ -158,7 +164,7 @@ class ProfileProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> addSubCategory(String subCategory) async {
+  Future<Either<Failure, bool>> addSubCategory(String subCategory) async {
     print(subCategory);
     try {
       User currentUser = await Utils.getUserSession();
@@ -173,18 +179,24 @@ class ProfileProvider extends ChangeNotifier {
       print(headers);
 
       Response response = await NetworkService().post(
-          url: url,
-          body: {},
-          queryParam: body,
-          headers: headers,
-          contentType: ContentType.JSON);
-      getSubServiceFromServer();
+        url: url,
+        body: {},
+        queryParam: body,
+        headers: headers,
+        contentType: ContentType.JSON,
+      );
+      if (response.statusCode == 200) {
+        return Right(true);
+      } else {
+        return Left(
+            Failure(message: 'Subservice was not added, please try again'));
+      }
     } catch (e) {
       print(e);
       if (e is DioError) {
-        throw new Exception(e.message);
+        return Left(Failure(message: e.message));
       } else {
-        throw e;
+        return Left(Failure(message: e.toString()));
       }
     }
   }

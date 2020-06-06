@@ -3,9 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_shimmer/flutter_shimmer.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:quickfix/helpers/flush_bar.dart';
 import 'package:quickfix/models/failure.dart';
 import 'package:quickfix/modules/auth/view/login.dart';
 import 'package:quickfix/modules/profile/model/bank_code.dart';
+import 'package:quickfix/modules/profile/model/service_image.dart';
 import 'package:quickfix/modules/profile/provider/profile_provider.dart';
 import 'package:quickfix/modules/profile/widget/edit_profile.dart';
 import 'package:quickfix/modules/profile/widget/service_images.dart';
@@ -24,7 +26,28 @@ BankCode selected;
 class _ProfileState extends State<Profile> {
   final _profileScaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
+  String subServices;
+  List<ServiceImage> serviceImages = List();
   TextEditingController _accountNumberController = TextEditingController();
+
+  getSubService() async {
+    final profileProvider =
+        Provider.of<ProfileProvider>(context, listen: false);
+    subServices = await profileProvider.getSubService();
+  }
+
+  getServiceImages() async {
+    final profileProvider =
+        Provider.of<ProfileProvider>(context, listen: false);
+    final images = await profileProvider.getServiceImagesFromServer();
+    images.fold((Failure failure) {
+      print(failure.message);
+      serviceImages = List();
+    }, (List<ServiceImage> list) {
+      serviceImages = list;
+    });
+  }
+
   @override
   void dispose() {
     _accountNumberController.dispose();
@@ -32,7 +55,15 @@ class _ProfileState extends State<Profile> {
   }
 
   @override
+  void initState() {
+    getSubService();
+    getServiceImages();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final profileProiver = Provider.of<ProfileProvider>(context, listen: false);
     return Scaffold(
       key: _profileScaffoldKey,
       body: FutureBuilder(
@@ -137,248 +168,13 @@ class _ProfileState extends State<Profile> {
                             );
                             listOfBank.add(bankCode);
                           }
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return StatefulBuilder(
-                                  builder: (context, setState) {
-                                    return listOfBank.length > 0
-                                        ? Dialog(
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        20.0)), //this right here
-                                            child: Container(
-                                              height: 400,
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(12.0),
-                                                child: Column(
-                                                  children: [
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                        left: 9,
-                                                        right: 9,
-                                                      ),
-                                                      child: Column(
-                                                        children: <Widget>[
-                                                          SizedBox(
-                                                            height: 20,
-                                                          ),
-                                                          Container(
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              color:
-                                                                  Colors.white,
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .all(
-                                                                Radius.circular(
-                                                                    5.0),
-                                                              ),
-                                                            ),
-                                                            child: Form(
-                                                                key: _formKey,
-                                                                child: Column(
-                                                                  children: <
-                                                                      Widget>[
-                                                                    SizedBox(
-                                                                      height:
-                                                                          15,
-                                                                    ),
-                                                                    Card(
-                                                                      elevation:
-                                                                          4.0,
-                                                                      child:
-                                                                          Padding(
-                                                                        padding: const EdgeInsets.only(
-                                                                            left:
-                                                                                5.0,
-                                                                            right:
-                                                                                5.0),
-                                                                        child:
-                                                                            TextFormField(
-                                                                          controller:
-                                                                              _accountNumberController,
-                                                                          keyboardType:
-                                                                              TextInputType.text,
-                                                                          validator:
-                                                                              (value) {
-                                                                            return value == ''
-                                                                                ? 'Account Number can not be empty'
-                                                                                : null;
-                                                                          },
-                                                                          decoration:
-                                                                              InputDecoration(
-                                                                            hintText:
-                                                                                'Enter Account Number',
-                                                                            hintStyle:
-                                                                                TextStyle(
-                                                                              color: Colors.grey,
-                                                                            ),
-                                                                            border:
-                                                                                InputBorder.none,
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                    SizedBox(
-                                                                      height:
-                                                                          15,
-                                                                    ),
-                                                                    Card(
-                                                                      elevation:
-                                                                          4.0,
-                                                                      child:
-                                                                          Padding(
-                                                                        padding: const EdgeInsets.only(
-                                                                            left:
-                                                                                5.0,
-                                                                            right:
-                                                                                5.0),
-                                                                        child: DropdownButton<
-                                                                            BankCode>(
-                                                                          value:
-                                                                              selected,
-                                                                          hint:
-                                                                              Text(
-                                                                            'Select Bank Name',
-                                                                            style:
-                                                                                TextStyle(
-                                                                              color: Colors.grey,
-                                                                            ),
-                                                                          ),
-                                                                          isExpanded:
-                                                                              true,
-                                                                          underline:
-                                                                              SizedBox(),
-                                                                          icon: Icon(
-                                                                              Icons.arrow_downward,
-                                                                              color: Colors.black),
-                                                                          items:
-                                                                              listOfBank.map((BankCode v) {
-                                                                            return DropdownMenuItem<BankCode>(
-                                                                              value: v,
-                                                                              child: Text(v.name),
-                                                                            );
-                                                                          }).toList(),
-                                                                          onChanged:
-                                                                              (BankCode newValue) {
-                                                                            setState(() {
-                                                                              selected = newValue;
-                                                                            });
-                                                                          },
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                    SizedBox(
-                                                                      height:
-                                                                          20,
-                                                                    ),
-                                                                  ],
-                                                                )),
-                                                          ),
-                                                          SizedBox(
-                                                            height: 10,
-                                                          ),
-                                                          FlatButton(
-                                                            child: Text("Save"),
-                                                            padding:
-                                                                EdgeInsets.all(
-                                                                    10.0),
-                                                            textColor:
-                                                                Colors.white,
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .accentColor,
-                                                            onPressed:
-                                                                () async {
-                                                              if (_formKey
-                                                                  .currentState
-                                                                  .validate()) {
-                                                                final updated =
-                                                                    await profileProvider.updateBankDetails(
-                                                                        selected,
-                                                                        _accountNumberController
-                                                                            .text);
-                                                                updated.fold(
-                                                                    (Failure
-                                                                        failure) {
-                                                                  Navigator.of(
-                                                                          context)
-                                                                      .pop();
-                                                                  _profileScaffoldKey
-                                                                      .currentState
-                                                                      .showSnackBar(
-                                                                          SnackBar(
-                                                                    content: Text(
-                                                                        failure
-                                                                            .message),
-                                                                    duration: Duration(
-                                                                        seconds:
-                                                                            5),
-                                                                  ));
-                                                                }, (bool
-                                                                        updated) {
-                                                                  Navigator.of(
-                                                                          context)
-                                                                      .pop();
-                                                                  _profileScaffoldKey
-                                                                      .currentState
-                                                                      .showSnackBar(
-                                                                          SnackBar(
-                                                                    content: Text(
-                                                                        'Account Details was updated'),
-                                                                    duration: Duration(
-                                                                        seconds:
-                                                                            5),
-                                                                  ));
-                                                                });
-                                                                listOfBank
-                                                                    .clear();
-                                                              }
-                                                            },
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          )
-                                        : Dialog(
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        20.0)), //this right here
-                                            child: Container(
-                                              height: 400,
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(12.0),
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                    left: 9,
-                                                    right: 9,
-                                                  ),
-                                                  child: Container(
-                                                    width: 40,
-                                                    height: 40,
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                      strokeWidth: 1,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          );
-                                  },
-                                );
-                              });
+                          showEditAccountDetails(
+                            context,
+                            listOfBank,
+                            _accountNumberController,
+                            _formKey,
+                            profileProvider,
+                          );
                         },
                       ),
                       _profileDetailsTiles(
@@ -406,32 +202,25 @@ class _ProfileState extends State<Profile> {
                         subTitle: snapshot.data.serviceArea,
                         hasTrailing: false,
                       ),
-                      FutureBuilder(
-                        future: ProfileProvider().getSubService(),
-                        builder: (BuildContext context,
-                            AsyncSnapshot<dynamic> snapshot) {
-                          return _profileDetailsTiles(
-                            title: 'Service Subcategories',
-                            subTitle:
-                                snapshot.data ?? 'No Subcategory available yet',
-                            hasTrailing: true,
-                            trailingIcon: FaIcon(
-                              FontAwesomeIcons.plus,
-                              color: Colors.grey,
-                              size: 25.0,
-                            ),
-                            toolTip: 'Add Subcategory',
-                            onPressed: () {
-                              _showSubCategoryDialog(
-                                  context, _profileScaffoldKey);
-                            },
-                          );
+                      _profileDetailsTiles(
+                        title: 'Service Subcategories',
+                        subTitle: subServices ?? 'No Subcategory available yet',
+                        hasTrailing: true,
+                        trailingIcon: FaIcon(
+                          FontAwesomeIcons.plus,
+                          color: Colors.grey,
+                          size: 25.0,
+                        ),
+                        toolTip: 'Add Subcategory',
+                        onPressed: () async {
+                          _showSubCategoryDialog(context, _profileScaffoldKey);
+                          await getSubService();
                         },
                       ),
                       SizedBox(
                         height: 10,
                       ),
-                      _servicesImages(),
+                      _servicesImages(serviceImages, profileProiver),
                       Divider(),
                       _darkTheme(),
                       Container(
@@ -483,62 +272,75 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  Widget _servicesImages() {
-    return Padding(
-      padding: const EdgeInsets.only(
-        left: 15.0,
-        right: 30.0,
-      ),
-      child: Consumer<ProfileProvider>(
-        builder: (context, profileProvider, child) {
-          return Column(
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    "Service Images",
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w700,
+  Widget _servicesImages(
+      List<ServiceImage> list, ProfileProvider profileProvider) {
+    return StatefulBuilder(
+      builder: (BuildContext context, void Function(void Function()) setState) {
+        return Padding(
+            padding: const EdgeInsets.only(
+              left: 15.0,
+              right: 30.0,
+            ),
+            child: Column(
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "Service Images",
+                      style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      if (profileProvider.images.length <= 5) {
-                        profileProvider.setLoading();
-                        profileProvider.getServiceImage().then((value) {
-                          profileProvider.setNotLoading();
-                        }).catchError((onError) {
-                          profileProvider.setNotLoading();
-                        });
-                      } else {}
-                    },
-                    child: profileProvider.loading
-                        ? Spinner(
-                            icon: FontAwesomeIcons.spinner,
-                            color: Colors.grey,
-                          )
-                        : FaIcon(
-                            FontAwesomeIcons.plus,
-                            color: Colors.grey,
-                            size: 25.0,
-                          ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              profileProvider.images.length == 0
-                  ? Center(
-                      child: Text('No images uploaded yet'),
-                    )
-                  : ServicesImages(),
-            ],
-          );
-        },
-      ),
+                    InkWell(
+                      onTap: () async {
+                        if (list.length <= 5) {
+                          profileProvider.setLoading();
+                          profileProvider.getServiceImage().then((value) {
+                            profileProvider.setNotLoading();
+                          }).catchError((onError) {
+                            profileProvider.setNotLoading();
+                          });
+                          final images = await profileProvider
+                              .getServiceImagesFromServer();
+
+                          setState(() {
+                            images.fold((Failure failure) {
+                              print(failure.message);
+                              list = List();
+                            }, (List<ServiceImage> imges) {
+                              list = imges;
+                            });
+                          });
+                        } else {}
+                      },
+                      child: profileProvider.loading
+                          ? Spinner(
+                              icon: FontAwesomeIcons.spinner,
+                              color: Colors.grey,
+                            )
+                          : FaIcon(
+                              FontAwesomeIcons.plus,
+                              color: Colors.grey,
+                              size: 25.0,
+                            ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                list.length == 0
+                    ? Center(
+                        child: Text('No images uploaded yet'),
+                      )
+                    : ServicesImages(
+                        listImages: list,
+                      ),
+              ],
+            ));
+      },
     );
   }
 
@@ -695,6 +497,189 @@ Widget _profileImage(ProfileProvider profileProvider) {
   );
 }
 
+void showEditAccountDetails(
+    BuildContext context,
+    List<BankCode> listOfBank,
+    TextEditingController accountNumberController,
+    GlobalKey<FormState> formKey,
+    ProfileProvider profileProvider) {
+  showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return listOfBank.length > 0
+                ? Dialog(
+                    shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(20.0)), //this right here
+                    child: Container(
+                      height: 400,
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                left: 9,
+                                right: 9,
+                              ),
+                              child: Column(
+                                children: <Widget>[
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(5.0),
+                                      ),
+                                    ),
+                                    child: Form(
+                                        key: formKey,
+                                        child: Column(
+                                          children: <Widget>[
+                                            SizedBox(
+                                              height: 15,
+                                            ),
+                                            Card(
+                                              elevation: 4.0,
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 5.0, right: 5.0),
+                                                child: TextFormField(
+                                                  controller:
+                                                      accountNumberController,
+                                                  keyboardType:
+                                                      TextInputType.text,
+                                                  validator: (value) {
+                                                    return value == ''
+                                                        ? 'Account Number can not be empty'
+                                                        : null;
+                                                  },
+                                                  decoration: InputDecoration(
+                                                    hintText:
+                                                        'Enter Account Number',
+                                                    hintStyle: TextStyle(
+                                                      color: Colors.grey,
+                                                    ),
+                                                    border: InputBorder.none,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 15,
+                                            ),
+                                            Card(
+                                              elevation: 4.0,
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 5.0, right: 5.0),
+                                                child: DropdownButton<BankCode>(
+                                                  value: selected,
+                                                  hint: Text(
+                                                    'Select Bank Name',
+                                                    style: TextStyle(
+                                                      color: Colors.grey,
+                                                    ),
+                                                  ),
+                                                  isExpanded: true,
+                                                  underline: SizedBox(),
+                                                  icon: Icon(
+                                                      Icons.arrow_downward,
+                                                      color: Colors.black),
+                                                  items: listOfBank
+                                                      .map((BankCode v) {
+                                                    return DropdownMenuItem<
+                                                        BankCode>(
+                                                      value: v,
+                                                      child: Text(v.name),
+                                                    );
+                                                  }).toList(),
+                                                  onChanged:
+                                                      (BankCode newValue) {
+                                                    setState(() {
+                                                      selected = newValue;
+                                                    });
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 20,
+                                            ),
+                                          ],
+                                        )),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  FlatButton(
+                                    child: Text("Save"),
+                                    padding: EdgeInsets.all(10.0),
+                                    textColor: Colors.white,
+                                    color: Theme.of(context).accentColor,
+                                    onPressed: () async {
+                                      if (formKey.currentState.validate()) {
+                                        final updated = await profileProvider
+                                            .updateBankDetails(selected,
+                                                accountNumberController.text);
+                                        updated.fold((Failure failure) {
+                                          Navigator.of(context).pop();
+                                          FlushBarCustomHelper
+                                              .showErrorFlushbar(context,
+                                                  'Error', failure.message);
+                                        }, (bool updated) {
+                                          Navigator.of(context).pop();
+
+                                          FlushBarCustomHelper.showInfoFlushbar(
+                                              context,
+                                              'Success',
+                                              'Account Details was updated');
+                                        });
+                                        listOfBank.clear();
+                                      }
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
+                : Dialog(
+                    shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(20.0)), //this right here
+                    child: Container(
+                      height: 400,
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            left: 9,
+                            right: 9,
+                          ),
+                          child: Container(
+                            width: 40,
+                            height: 40,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 1,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+          },
+        );
+      });
+}
+
 _showSubCategoryDialog(
     BuildContext context, GlobalKey<ScaffoldState> profileScaffoldKey) {
   final profileProvider = Provider.of<ProfileProvider>(context, listen: false);
@@ -763,29 +748,20 @@ _showSubCategoryDialog(
                 padding: EdgeInsets.all(10.0),
                 textColor: Colors.white,
                 color: Theme.of(context).accentColor,
-                onPressed: () {
+                onPressed: () async {
                   if (_formKey.currentState.validate()) {
                     profileProvider.setLoading();
-                    profileProvider.addSubCategory(input).then((value) {
-                      profileProvider.setNotLoading();
-                      Navigator.of(context).pop();
-                      profileScaffoldKey.currentState.showSnackBar(SnackBar(
-                        content: Text('Subcategory was added'),
-                        duration: Duration(seconds: 5),
-                      ));
-                    }).catchError((e) {
-                      print(e);
-                      profileProvider.setNotLoading();
-                      Navigator.of(context).pop();
-                      profileScaffoldKey.currentState.showSnackBar(SnackBar(
-                        content: Text(
-                          e.toString().split(':')[1],
-                          style: TextStyle(
-                            color: Colors.red,
-                          ),
-                        ),
-                        duration: Duration(seconds: 5),
-                      ));
+
+                    final added = await profileProvider.addSubCategory(input);
+                    Navigator.of(context).pop();
+
+                    profileProvider.setNotLoading();
+                    added.fold((Failure failure) {
+                      FlushBarCustomHelper.showErrorFlushbar(
+                          context, 'Error', failure.message);
+                    }, (bool added) {
+                      FlushBarCustomHelper.showInfoFlushbar(
+                          context, 'Success', 'Subservice was added');
                     });
                   }
                 },
