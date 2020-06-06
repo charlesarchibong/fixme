@@ -92,7 +92,7 @@ class ProfileProvider extends ChangeNotifier {
   Future<void> getServiceImage() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
     var uploaded = await uploadImageToServer('servicePicture', image);
-    // getServiceImagesFromServer();
+    getServiceImagesFromServer();
     notifyListeners();
   }
 
@@ -111,11 +111,16 @@ class ProfileProvider extends ChangeNotifier {
         contentType: ContentType.URL_ENCODED,
         headers: headers,
       );
-      print(response.data);
       if (response.statusCode == 200) {
-        List images = response.data['servicesPictures'] as List;
-        List<ServiceImage> servicesImages =
-            images.map((map) => ServiceImage().fromMap(map));
+        List images = response.data['servicePictures'] as List;
+        // print(images.length);
+        // print(images.length);
+        // print(images.length);
+        List<ServiceImage> servicesImages = List();
+        for (var i = 0; i < images.length; i++) {
+          ServiceImage image = ServiceImage().fromMap(images[i]);
+          servicesImages.add(image);
+        }
         if (servicesImages.length <= 0) {
           return Left(Failure(message: 'No images found'));
         } else {

@@ -33,7 +33,10 @@ class _ProfileState extends State<Profile> {
   getSubService() async {
     final profileProvider =
         Provider.of<ProfileProvider>(context, listen: false);
-    subServices = await profileProvider.getSubService();
+    String service = await profileProvider.getSubService();
+    setState(() {
+      subServices = service;
+    });
   }
 
   getServiceImages() async {
@@ -42,9 +45,13 @@ class _ProfileState extends State<Profile> {
     final images = await profileProvider.getServiceImagesFromServer();
     images.fold((Failure failure) {
       print(failure.message);
-      serviceImages = List();
+      setState(() {
+        serviceImages = List();
+      });
     }, (List<ServiceImage> list) {
-      serviceImages = list;
+      setState(() {
+        serviceImages = list;
+      });
     });
   }
 
@@ -299,7 +306,10 @@ class _ProfileState extends State<Profile> {
                           profileProvider.setLoading();
                           profileProvider.getServiceImage().then((value) {
                             profileProvider.setNotLoading();
+                            print('s');
                           }).catchError((onError) {
+                            print('e');
+
                             profileProvider.setNotLoading();
                           });
                           final images = await profileProvider
@@ -335,9 +345,7 @@ class _ProfileState extends State<Profile> {
                     ? Center(
                         child: Text('No images uploaded yet'),
                       )
-                    : ServicesImages(
-                        listImages: list,
-                      ),
+                    : ServicesImages(),
               ],
             ));
       },

@@ -1,5 +1,5 @@
 class ServiceImage {
-  final String id;
+  final int id;
   final String mobile;
   final String imageFileName;
   final String status;

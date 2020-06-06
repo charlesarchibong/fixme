@@ -3,23 +3,35 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_shimmer/flutter_shimmer.dart';
 import 'package:provider/provider.dart';
+import 'package:quickfix/models/failure.dart';
 
 import 'package:quickfix/modules/profile/model/service_image.dart';
 import 'package:quickfix/modules/profile/provider/profile_provider.dart';
 import 'package:quickfix/util/const.dart';
 
 class ServicesImages extends StatefulWidget {
-  final List<ServiceImage> listImages;
-  const ServicesImages({
-    Key key,
-    this.listImages,
-  }) : super(key: key);
-
   @override
   _ServicesImagesState createState() => _ServicesImagesState();
 }
 
 class _ServicesImagesState extends State<ServicesImages> {
+  List<ServiceImage> listImages = List();
+  getServiceImages() async {
+    final profileProvider =
+        Provider.of<ProfileProvider>(context, listen: false);
+    final images = await profileProvider.getServiceImagesFromServer();
+    images.fold((Failure failure) {
+      print(failure.message);
+      setState(() {
+        listImages = List();
+      });
+    }, (List<ServiceImage> list) {
+      setState(() {
+        listImages = list;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<ProfileProvider>(
@@ -32,12 +44,23 @@ class _ServicesImagesState extends State<ServicesImages> {
           childAspectRatio: MediaQuery.of(context).size.width /
               (MediaQuery.of(context).size.height / 2),
         ),
-        itemCount: widget.listImages == null ? 0 : widget.listImages,
+        itemCount: listImages.length == null ? 0 : listImages.length,
         itemBuilder: (BuildContext context, int index) {
-          String image =
-              Constants.uploadUrl + widget.listImages[index].imageFileName;
+          String image = Constants.uploadUrl + listImages[index].imageFileName;
+          print(image);
+          print(image);
+          print(image);
+          print(image);
+          print(image);
+          print(image);
+          print(image);
+          print(listImages[index].mobile);
+          print(listImages[index].mobile);
+          print(listImages[index].mobile);
+          print(listImages[index].mobile);
+          print(image);
 
-          return widget.listImages.isNotEmpty
+          return listImages.isNotEmpty
               ? Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
