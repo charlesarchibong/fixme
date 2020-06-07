@@ -1,4 +1,6 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:quickfix/modules/notification/view/notifications.dart';
 import 'package:quickfix/util/const.dart';
 import 'package:quickfix/widgets/badge.dart';
@@ -20,23 +22,68 @@ class _ProductDetailsState extends State<ProductDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.red,
         automaticallyImplyLeading: false,
         leading: IconButton(
           icon: Icon(
             Icons.keyboard_backspace,
+            color: Colors.white,
           ),
           onPressed: () => Navigator.pop(context),
         ),
         centerTitle: true,
         title: Text(
           "Artisan's Profile",
+          style: TextStyle(
+            color: Colors.white,
+          ),
         ),
         elevation: 0.0,
         actions: <Widget>[
           IconButton(
-            icon: IconBadge(
-              icon: Icons.notifications,
-              size: 22.0,
+            color: Colors.white,
+            icon: Badge(
+              badgeContent: Text(
+                '3',
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+              ),
+              badgeColor: Colors.white,
+              animationType: BadgeAnimationType.slide,
+              toAnimate: true,
+              child: FaIcon(
+                FontAwesomeIcons.comment,
+                size: 17.0,
+              ),
+            ),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) {
+                    return;
+                  },
+                ),
+              );
+            },
+            tooltip: "Chats",
+          ),
+          IconButton(
+            color: Colors.white,
+            icon: Badge(
+              badgeContent: Text(
+                '2',
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+              ),
+              badgeColor: Colors.white,
+              animationType: BadgeAnimationType.slide,
+              toAnimate: true,
+              child: FaIcon(
+                FontAwesomeIcons.bell,
+                size: 17.0,
+              ),
             ),
             onPressed: () {
               Navigator.of(context).push(
@@ -47,6 +94,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                 ),
               );
             },
+            tooltip: "Notifications",
           ),
         ],
       ),
@@ -80,7 +128,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                       padding: EdgeInsets.all(5),
                       child: widget.userData['status'] == "verified"
                           ? Icon(
-                              Icons.star,
+                              Icons.verified_user,
                               color: Colors.red,
                               size: 35,
                             )
@@ -92,7 +140,7 @@ class _ProductDetailsState extends State<ProductDetails> {
             ),
             SizedBox(height: 10.0),
             Text(
-              "${widget.userData['user_first_name']} ${widget.userData['user_last_name']}",
+              "${widget.userData['user_first_name']} ${widget.userData['user_last_name']} (${widget.userData['service_area']})",
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w800,
@@ -156,7 +204,7 @@ class _ProductDetailsState extends State<ProductDetails> {
             // ),
             SizedBox(height: 10.0),
             Text(
-              "Service Area",
+              "Subservices Offered",
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w800,

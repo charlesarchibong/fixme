@@ -53,7 +53,7 @@ class GridTechnician extends StatelessWidget {
                   elevation: 4.0,
                   child: isFav
                       ? Icon(
-                          Icons.star,
+                          Icons.verified_user,
                           color: Colors.red,
                           size: 35,
                         )
