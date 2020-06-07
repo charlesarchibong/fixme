@@ -109,8 +109,9 @@ class _PostJobState extends State<PostJob> {
         }, (bool upload) {
           FlushBarCustomHelper.showInfoFlushbarWithAction(
               context, 'Success', 'Job was uploaded successfully', 'View', () {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (_) => MyRequests()));
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => MyRequests()),
+            );
           });
         });
       }
