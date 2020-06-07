@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:quickfix/models/failure.dart';
+import 'package:quickfix/modules/job/model/job.dart';
 import 'package:quickfix/modules/job/model/job_category.dart';
 import 'package:quickfix/modules/profile/model/user.dart';
 import 'package:quickfix/services/network_service.dart';
@@ -51,6 +52,39 @@ class PostJobProvider extends ChangeNotifier {
     } catch (e) {
       print(e.toString());
       return Left(Failure(message: 'No service list fetched'));
+    }
+  }
+
+  Future<Either<Failure, bool>> uploadJob(Job job) async {
+    try {
+      User currentUser = await Utils.getUserSession();
+      String apiKey = await Utils.getApiKey();
+      String url = 'https://manager.quickfixnaija.com.ng/new-project';
+      Map<String, dynamic> body = {
+        'mobile': currentUser.phoneNumber,
+        'job_title': job.jobTitle,
+        'job_description': job.description,
+        'service_category': job.serviceCategory,
+        'budget': job.price,
+        'latitude': job.latitude,
+        'longitude': job.longitude,
+      };
+      Map<String, String> headers = {'Bearer': '$apiKey'};
+      Response response = await NetworkService().post(
+        url: url,
+        body: body,
+        headers: headers,
+        contentType: ContentType.JSON,
+      );
+      if (response.statusCode == 200 && response.data['reqRes'] == 'true') {
+        return Right(true);
+      } else {
+        return Left(
+            Failure(message: 'Job was not uploaded, please try again!'));
+      }
+    } catch (e) {
+      print(e.toString());
+      return Left(Failure(message: 'Job was not uploaded, please try again!'));
     }
   }
 }

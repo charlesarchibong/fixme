@@ -3,7 +3,7 @@ import 'dart:convert';
 class Job {
   final int id;
   final String jobTitle;
-  final String serviceCategory;
+  final int serviceCategory;
   final String price;
   final String description;
   final double latitude;

@@ -4,6 +4,7 @@ import 'package:geocoder/geocoder.dart';
 import 'package:provider/provider.dart';
 import 'package:quickfix/helpers/flush_bar.dart';
 import 'package:quickfix/models/failure.dart';
+import 'package:quickfix/modules/job/model/job.dart';
 import 'package:quickfix/modules/job/model/job_category.dart';
 import 'package:quickfix/modules/job/provider/post_job_provider.dart';
 
@@ -86,6 +87,31 @@ class _PostJobState extends State<PostJob> {
           );
           return;
         }
+        Job job = Job(
+          description: _jobDescriptionController.text,
+          jobTitle: _jobTitleController.text,
+          latitude: first.coordinates.latitude,
+          longitude: first.coordinates.longitude,
+          price: _jobPriceController.text,
+          serviceCategory: jobCategory.id,
+        );
+        final uploaded = await postJob.uploadJob(job);
+        setState(() {
+          loading = false;
+        });
+        uploaded.fold((Failure failure) {
+          FlushBarCustomHelper.showErrorFlushbar(
+            context,
+            'Error',
+            failure.message,
+          );
+        }, (bool upload) {
+          FlushBarCustomHelper.showInfoFlushbar(
+            context,
+            'Success',
+            'Job was uploaded successfully',
+          );
+        });
       }
     }
 
