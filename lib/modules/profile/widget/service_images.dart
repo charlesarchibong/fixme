@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_shimmer/flutter_shimmer.dart';
 import 'package:provider/provider.dart';
@@ -47,21 +45,9 @@ class _ServicesImagesState extends State<ServicesImages> {
         itemCount: listImages.length == null ? 0 : listImages.length,
         itemBuilder: (BuildContext context, int index) {
           String image = Constants.uploadUrl + listImages[index].imageFileName;
-          print(image);
-          print(image);
-          print(image);
-          print(image);
-          print(image);
-          print(image);
-          print(image);
-          print(listImages[index].mobile);
-          print(listImages[index].mobile);
-          print(listImages[index].mobile);
-          print(listImages[index].mobile);
-          print(listImages);
-          print(listImages);
-          print(listImages);
-          print(listImages);
+          print(listImages[index].imageFileName);
+          print(listImages[index].imageFileName);
+          print(listImages[index].imageFileName);
 
           return listImages.isNotEmpty
               ? Column(
