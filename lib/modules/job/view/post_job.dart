@@ -7,6 +7,7 @@ import 'package:quickfix/models/failure.dart';
 import 'package:quickfix/modules/job/model/job.dart';
 import 'package:quickfix/modules/job/model/job_category.dart';
 import 'package:quickfix/modules/job/provider/post_job_provider.dart';
+import 'package:quickfix/modules/job/view/my_requests.dart';
 
 class PostJob extends StatefulWidget {
   @override
@@ -24,7 +25,7 @@ class _PostJobState extends State<PostJob> {
   TextEditingController _jobDescriptionController = TextEditingController();
   TextEditingController _jobPriceController = TextEditingController();
   TextEditingController _jobAddressController = TextEditingController();
-
+  bool loading = false;
   Future getJobCategory() async {
     final postJob = Provider.of<PostJobProvider>(context, listen: false);
     final fetched = await postJob.getJobCategories();
@@ -63,18 +64,18 @@ class _PostJobState extends State<PostJob> {
     final postJob = Provider.of<PostJobProvider>(context);
     final _scaffoldKey = GlobalKey<ScaffoldState>();
     final _formKey = GlobalKey<FormState>();
-    bool loading = false;
 
     Future uploadJob() async {
       final postJob = Provider.of<PostJobProvider>(context, listen: false);
+      setState(() {
+        loading = true;
+      });
       if (_formKey.currentState.validate()) {
         var addresses = await Geocoder.local
             .findAddressesFromQuery(_jobAddressController.text);
         var first = addresses.first;
         print("${first.featureName} : ${first.coordinates}");
-        setState(() {
-          loading = true;
-        });
+
         if (jobCategory == null) {
           setState(() {
             loading = false;
@@ -106,11 +107,11 @@ class _PostJobState extends State<PostJob> {
             failure.message,
           );
         }, (bool upload) {
-          FlushBarCustomHelper.showInfoFlushbar(
-            context,
-            'Success',
-            'Job was uploaded successfully',
-          );
+          FlushBarCustomHelper.showInfoFlushbarWithAction(
+              context, 'Success', 'Job was uploaded successfully', 'View', () {
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (_) => MyRequests()));
+          });
         });
       }
     }
@@ -405,7 +406,7 @@ class _PostJobState extends State<PostJob> {
                                 width: 50,
                                 height: 50,
                                 child: CircularProgressIndicator(
-                                  backgroundColor: Colors.black,
+                                  backgroundColor: Colors.white,
                                 ),
                               )
                             : Text(
