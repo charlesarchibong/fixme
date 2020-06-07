@@ -2,7 +2,7 @@ import 'dart:convert';
 
 class JobCategory {
   final String service;
-  final String id;
+  final int id;
 
   JobCategory({this.service, this.id});
 

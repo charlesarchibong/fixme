@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:quickfix/helpers/flush_bar.dart';
+import 'package:quickfix/models/failure.dart';
 import 'package:quickfix/modules/job/model/job_category.dart';
 import 'package:quickfix/modules/job/provider/post_job_provider.dart';
 
@@ -13,30 +15,68 @@ JobCategory jobCategory;
 
 List<JobCategory> jobCategories = List();
 
+String error = '';
+
 class _PostJobState extends State<PostJob> {
+  TextEditingController _jobTitleController = TextEditingController();
+  TextEditingController _jobDescriptionController = TextEditingController();
+  TextEditingController _jobPriceController = TextEditingController();
+  TextEditingController _jobAddressController = TextEditingController();
+
   Future getJobCategory() async {
     final postJob = Provider.of<PostJobProvider>(context, listen: false);
+    final fetched = await postJob.getJobCategories();
+    fetched.fold((Failure failure) {
+      setState(() {
+        error = 'An error occured, please try again!';
+      });
+      FlushBarCustomHelper.showErrorFlushbar(
+          context, 'Error', 'An error occured, please try again!');
+    }, (List<JobCategory> list) {
+      setState(() {
+        jobCategories = list;
+      });
+    });
   }
 
   @override
   void initState() {
+    error = '';
     getJobCategory();
+    jobCategory = null;
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    jobCategory = null;
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final postJob = Provider.of<PostJobProvider>(context);
     final _scaffoldKey = GlobalKey<ScaffoldState>();
+    final _formKey = GlobalKey<FormState>();
+    bool loading = false;
     return Scaffold(
-        key: _scaffoldKey,
-        body: Padding(
-          padding: EdgeInsets.fromLTRB(20.0, 0, 20, 0),
-          child: jobCategories.isEmpty
-              ? Center(
-                  child: CircularProgressIndicator(),
-                )
-              : ListView(
+      key: _scaffoldKey,
+      body: Padding(
+        padding: EdgeInsets.fromLTRB(20.0, 0, 20, 0),
+        child: jobCategories.isEmpty
+            ? Center(
+                child: error.isEmpty
+                    ? CircularProgressIndicator()
+                    : Text(
+                        error,
+                        style: TextStyle(
+                          fontSize: 17.0,
+                        ),
+                      ),
+              )
+            : Form(
+                key: _formKey,
+                child: ListView(
                   shrinkWrap: true,
                   children: <Widget>[
                     SizedBox(height: 10.0),
@@ -59,7 +99,7 @@ class _PostJobState extends State<PostJob> {
                             Radius.circular(5.0),
                           ),
                         ),
-                        child: TextField(
+                        child: TextFormField(
                           textCapitalization: TextCapitalization.none,
                           style: TextStyle(
                             fontSize: 15.0,
@@ -85,16 +125,16 @@ class _PostJobState extends State<PostJob> {
                             hintText: "Job Title",
                             hintStyle: TextStyle(
                               fontSize: 15.0,
-                              color: Colors.black,
+                              color: Colors.grey,
                             ),
                             prefixIcon: Icon(
                               Icons.add_comment,
-                              color: Colors.black,
+                              color: Colors.grey,
                             ),
                           ),
                           maxLines: 1,
                           autocorrect: true,
-                          // controller: _usernameControl,
+                          controller: _jobTitleController,
                         ),
                       ),
                     ),
@@ -107,7 +147,7 @@ class _PostJobState extends State<PostJob> {
                             Radius.circular(5.0),
                           ),
                         ),
-                        child: TextField(
+                        child: TextFormField(
                           textCapitalization: TextCapitalization.none,
                           keyboardType: TextInputType.multiline,
                           style: TextStyle(
@@ -134,16 +174,16 @@ class _PostJobState extends State<PostJob> {
                             hintText: "Job Description",
                             hintStyle: TextStyle(
                               fontSize: 15.0,
-                              color: Colors.black,
+                              color: Colors.grey,
                             ),
                             prefixIcon: Icon(
                               Icons.description,
-                              color: Colors.black,
+                              color: Colors.grey,
                             ),
                           ),
                           maxLines: null,
                           autocorrect: true,
-                          // controller: _usernameControl,
+                          controller: _jobDescriptionController,
                         ),
                       ),
                     ),
@@ -163,13 +203,15 @@ class _PostJobState extends State<PostJob> {
                             hint: Text(
                               'Select Job Category',
                               style: TextStyle(
-                                color: Colors.black,
+                                color: Colors.grey,
                               ),
                             ),
                             isExpanded: true,
                             underline: SizedBox(),
-                            icon:
-                                Icon(Icons.arrow_downward, color: Colors.black),
+                            icon: Icon(
+                              Icons.arrow_downward,
+                              color: Colors.grey,
+                            ),
                             items: jobCategories.map((JobCategory value) {
                               return DropdownMenuItem<JobCategory>(
                                 value: value,
@@ -180,7 +222,7 @@ class _PostJobState extends State<PostJob> {
                               setState(() {
                                 jobCategory = newValue;
                               });
-                              // print(jobCategory.id);
+                              print(jobCategory.service);
                             },
                           )),
                     ),
@@ -193,7 +235,7 @@ class _PostJobState extends State<PostJob> {
                             Radius.circular(5.0),
                           ),
                         ),
-                        child: TextField(
+                        child: TextFormField(
                           textCapitalization: TextCapitalization.none,
                           keyboardType: TextInputType.number,
                           inputFormatters: [
@@ -223,16 +265,16 @@ class _PostJobState extends State<PostJob> {
                             hintText: "Job Price",
                             hintStyle: TextStyle(
                               fontSize: 15.0,
-                              color: Colors.black,
+                              color: Colors.grey,
                             ),
                             prefixIcon: Icon(
                               Icons.monetization_on,
-                              color: Colors.black,
+                              color: Colors.grey,
                             ),
                           ),
                           maxLines: null,
                           autocorrect: true,
-                          // controller: _usernameControl,
+                          controller: _jobPriceController,
                         ),
                       ),
                     ),
@@ -245,9 +287,9 @@ class _PostJobState extends State<PostJob> {
                             Radius.circular(5.0),
                           ),
                         ),
-                        child: TextField(
+                        child: TextFormField(
                           textCapitalization: TextCapitalization.none,
-                          keyboardType: TextInputType.text,
+                          keyboardType: TextInputType.multiline,
                           style: TextStyle(
                             fontSize: 15.0,
                             color: Colors.black,
@@ -272,16 +314,16 @@ class _PostJobState extends State<PostJob> {
                             hintText: "Job Address location",
                             hintStyle: TextStyle(
                               fontSize: 15.0,
-                              color: Colors.black,
+                              color: Colors.grey,
                             ),
                             prefixIcon: Icon(
                               Icons.location_on,
-                              color: Colors.black,
+                              color: Colors.grey,
                             ),
                           ),
                           maxLines: null,
                           autocorrect: true,
-                          // controller: _usernameControl,
+                          controller: _jobAddressController,
                         ),
                       ),
                     ),
@@ -289,7 +331,7 @@ class _PostJobState extends State<PostJob> {
                     Container(
                       height: 50.0,
                       child: RaisedButton(
-                        child: postJob.loading
+                        child: loading
                             ? Container(
                                 alignment: Alignment.center,
                                 width: 50,
@@ -312,6 +354,8 @@ class _PostJobState extends State<PostJob> {
                     ),
                   ],
                 ),
-        ));
+              ),
+      ),
+    );
   }
 }
