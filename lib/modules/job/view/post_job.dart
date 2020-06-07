@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:geocoder/geocoder.dart';
 import 'package:provider/provider.dart';
 import 'package:quickfix/helpers/flush_bar.dart';
 import 'package:quickfix/models/failure.dart';
@@ -31,7 +32,10 @@ class _PostJobState extends State<PostJob> {
         error = 'An error occured, please try again!';
       });
       FlushBarCustomHelper.showErrorFlushbar(
-          context, 'Error', 'An error occured, please try again!');
+        context,
+        'Error',
+        'An error occured, please try again!',
+      );
     }, (List<JobCategory> list) {
       setState(() {
         jobCategories = list;
@@ -59,6 +63,32 @@ class _PostJobState extends State<PostJob> {
     final _scaffoldKey = GlobalKey<ScaffoldState>();
     final _formKey = GlobalKey<FormState>();
     bool loading = false;
+
+    Future uploadJob() async {
+      final postJob = Provider.of<PostJobProvider>(context, listen: false);
+      if (_formKey.currentState.validate()) {
+        var addresses = await Geocoder.local
+            .findAddressesFromQuery(_jobAddressController.text);
+        var first = addresses.first;
+        print("${first.featureName} : ${first.coordinates}");
+        setState(() {
+          loading = true;
+        });
+        if (jobCategory == null) {
+          setState(() {
+            loading = false;
+          });
+          debugPrint('Error');
+          FlushBarCustomHelper.showErrorFlushbar(
+            context,
+            'Error',
+            'Please select a job category!',
+          );
+          return;
+        }
+      }
+    }
+
     return Scaffold(
       key: _scaffoldKey,
       body: Padding(
@@ -105,6 +135,9 @@ class _PostJobState extends State<PostJob> {
                             fontSize: 15.0,
                             color: Colors.black,
                           ),
+                          validator: (value) => value.isEmpty
+                              ? 'Job title can not be empty'
+                              : null,
                           decoration: InputDecoration(
                             errorText: postJob.title
                                 ? 'Job title can not be empty'
@@ -150,6 +183,9 @@ class _PostJobState extends State<PostJob> {
                         child: TextFormField(
                           textCapitalization: TextCapitalization.none,
                           keyboardType: TextInputType.multiline,
+                          validator: (value) => value.isEmpty
+                              ? 'Job description can not be empty'
+                              : null,
                           style: TextStyle(
                             fontSize: 15.0,
                             color: Colors.black,
@@ -238,6 +274,9 @@ class _PostJobState extends State<PostJob> {
                         child: TextFormField(
                           textCapitalization: TextCapitalization.none,
                           keyboardType: TextInputType.number,
+                          validator: (value) => value.isEmpty
+                              ? 'Job price can not be empty'
+                              : null,
                           inputFormatters: [
                             WhitelistingTextInputFormatter.digitsOnly
                           ],
@@ -290,6 +329,9 @@ class _PostJobState extends State<PostJob> {
                         child: TextFormField(
                           textCapitalization: TextCapitalization.none,
                           keyboardType: TextInputType.multiline,
+                          validator: (value) => value.isEmpty
+                              ? 'Job address can not be empty'
+                              : null,
                           style: TextStyle(
                             fontSize: 15.0,
                             color: Colors.black,
@@ -327,17 +369,17 @@ class _PostJobState extends State<PostJob> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 50.0),
+                    SizedBox(height: 40.0),
                     Container(
                       height: 50.0,
                       child: RaisedButton(
-                        child: loading
+                        child: loading == true
                             ? Container(
                                 alignment: Alignment.center,
                                 width: 50,
                                 height: 50,
                                 child: CircularProgressIndicator(
-                                  backgroundColor: Colors.white,
+                                  backgroundColor: Colors.black,
                                 ),
                               )
                             : Text(
@@ -346,8 +388,8 @@ class _PostJobState extends State<PostJob> {
                                   color: Colors.white,
                                 ),
                               ),
-                        onPressed: () {
-                          // _recoverUser();
+                        onPressed: () async {
+                          await uploadJob();
                         },
                         color: Theme.of(context).accentColor,
                       ),
