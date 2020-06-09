@@ -7,6 +7,7 @@ import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
+import 'package:quickfix/helpers/notification.dart';
 import 'package:quickfix/modules/artisan/view/favorite_screen.dart';
 import 'package:quickfix/modules/dashboard/provider/dashboard_provider.dart';
 import 'package:quickfix/modules/dashboard/view/dashboard.dart';
@@ -387,7 +388,10 @@ class MainScreenState extends State<MainScreen> {
           body: body,
           contentType: ContentType.URL_ENCODED,
           headers: headers);
-      print(response.data);
+      final token = await NotificationHelper().getToken();
+      print(token);
+      print(token);
+      print(token);
     } catch (e) {
       if (e is DioError) {
         print(e.message);

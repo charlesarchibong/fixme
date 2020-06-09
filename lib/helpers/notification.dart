@@ -1,6 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 
-class Notification {
+class NotificationHelper {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   Future<String> getToken() async {
