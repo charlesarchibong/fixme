@@ -370,6 +370,12 @@ class MainScreenState extends State<MainScreen> {
     await FlutterStatusbarcolor.setNavigationBarWhiteForeground(true);
   }
 
+  Future sendDeviceDetails() async {
+    final token = await NotificationHelper().getToken();
+    String divice_os;
+    String device_type;
+  }
+
   Future sendLocationToServer(LocationData locationData) async {
     try {
       final user = await Utils.getUserSession();
@@ -388,10 +394,6 @@ class MainScreenState extends State<MainScreen> {
           body: body,
           contentType: ContentType.URL_ENCODED,
           headers: headers);
-      final token = await NotificationHelper().getToken();
-      print(token);
-      print(token);
-      print(token);
     } catch (e) {
       if (e is DioError) {
         print(e.message);
