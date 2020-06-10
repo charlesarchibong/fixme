@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class JobCategory {
   final String service;
   final int id;

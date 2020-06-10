@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class BankCode {
   final String id;
   final String slug;

@@ -23,7 +23,6 @@ class _DashboardState extends State<Dashboard> {
   int actualChart = 0;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 

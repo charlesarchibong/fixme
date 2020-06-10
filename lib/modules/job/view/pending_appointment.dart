@@ -25,7 +25,6 @@ class _PendingAppointmentState extends State<PendingAppointment>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     startTimeout();
   }

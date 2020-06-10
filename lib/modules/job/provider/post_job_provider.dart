@@ -7,7 +7,6 @@ import 'package:quickfix/modules/job/model/job_category.dart';
 import 'package:quickfix/modules/profile/model/user.dart';
 import 'package:quickfix/services/network_service.dart';
 import 'package:quickfix/util/Utils.dart';
-import 'package:quickfix/util/const.dart';
 import 'package:quickfix/util/content_type.dart';
 
 class PostJobProvider extends ChangeNotifier {

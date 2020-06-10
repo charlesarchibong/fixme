@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class Job {
   final int id;
   final String jobTitle;

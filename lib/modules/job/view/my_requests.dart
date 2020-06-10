@@ -26,7 +26,6 @@ class _MyRequestsState extends State<MyRequests>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     startTimeout();
   }
