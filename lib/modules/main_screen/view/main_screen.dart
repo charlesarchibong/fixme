@@ -382,9 +382,9 @@ class MainScreenState extends State<MainScreen> {
       DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
       if (Platform.isAndroid) {
         AndroidDeviceInfo androidDeviceInfo = await deviceInfo.androidInfo;
-        AndroidBuildVersion androidBuildVersion = androidDeviceInfo.version;
-        device_os = 'Android ' + androidBuildVersion.baseOS;
-        device_type = androidDeviceInfo.manufacturer;
+        device_os = 'Android';
+        device_type =
+            androidDeviceInfo.manufacturer + ' - ' + androidDeviceInfo.model;
       } else if (Platform.isIOS) {
         IosDeviceInfo iosDeviceInfo = await deviceInfo.iosInfo;
         device_type = 'IOS ' + iosDeviceInfo.model;

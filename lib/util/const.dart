@@ -9,12 +9,13 @@ class Constants {
   static String savedDeviceDetails =
       "http://manager.quickfixnaija.com.ng/mtk-details-update/";
   static String serviceImageUrl =
-      "https://manager.quickfixnaija.com.ng/service-images";
+      "https://manager.quickfixnaija.com.ng/service-images/";
   static String createUserUrl = "reg-user";
   static String uploadUrl = 'https://uploads.quickfixnaija.com/thumbnails/';
-  static String updateLocationUrl = 'https://manager.quickfixnaija.com.ng/gpsl';
+  static String updateLocationUrl =
+      'https://manager.quickfixnaija.com.ng/gpsl/';
   static String getArtisanByLocationUrl =
-      'https://manager.quickfixnaija.com.ng/near-artisans';
+      'https://manager.quickfixnaija.com.ng/near-artisans/';
   static String loginUserUrl = "m-login";
   static String addSubService = "add-sub-service";
   static String userInfo = "user-info";
