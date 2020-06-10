@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:badges/badges.dart';
+import 'package:device_info/device_info.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -371,17 +374,46 @@ class MainScreenState extends State<MainScreen> {
   }
 
   Future sendDeviceDetails() async {
-    final token = await NotificationHelper().getToken();
-    String divice_os;
-    String device_type;
+    try {
+      final token = await NotificationHelper().getToken();
+      String device_os;
+      String device_type;
+      if (Platform.isAndroid) {
+        // AndroidDeviceInfo androidDeviceInfo =
+      } else if (Platform.isIOS) {
+        // IosDeviceInfo iosDeviceInfo =
+      }
+      final user = await Utils.getUserSession();
+      final apiKey = await Utils.getApiKey();
+      final String url = Constants.updateLocationUrl;
+      Map<String, String> headers = {'Bearer': '$apiKey'};
+      Map<String, dynamic> body = {
+        'mobile': user.phoneNumber,
+        'token': token,
+        'device_os': device_os,
+        'device_type': device_type,
+      };
+      final response = await NetworkService().post(
+        url: url,
+        body: body,
+        contentType: ContentType.URL_ENCODED,
+        headers: headers,
+      );
+      print(response.data);
+      print(response.data);
+      print(response.data);
+    } catch (e) {
+      if (e is DioError) {
+        print(e.message);
+      }
+      print(e.toString());
+    }
   }
 
   Future sendLocationToServer(LocationData locationData) async {
     try {
       final user = await Utils.getUserSession();
       final apiKey = await Utils.getApiKey();
-      print(locationData.latitude);
-      print(locationData.longitude);
       final String url = Constants.updateLocationUrl;
       Map<String, String> headers = {'Bearer': '$apiKey'};
       Map<String, dynamic> body = {
@@ -390,10 +422,11 @@ class MainScreenState extends State<MainScreen> {
         'longitude': locationData.longitude,
       };
       final response = await NetworkService().post(
-          url: url,
-          body: body,
-          contentType: ContentType.URL_ENCODED,
-          headers: headers);
+        url: url,
+        body: body,
+        contentType: ContentType.URL_ENCODED,
+        headers: headers,
+      );
     } catch (e) {
       if (e is DioError) {
         print(e.message);
