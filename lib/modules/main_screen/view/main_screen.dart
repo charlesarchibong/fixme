@@ -346,6 +346,7 @@ class MainScreenState extends State<MainScreen> {
     setStatusBar();
     pageController = PageController();
     location = new Location();
+    sendDeviceDetails();
     location.onLocationChanged.listen((LocationData locationData) {
       sendLocationToServer(locationData);
     });
@@ -378,18 +379,26 @@ class MainScreenState extends State<MainScreen> {
       final token = await NotificationHelper().getToken();
       String device_os;
       String device_type;
+      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
       if (Platform.isAndroid) {
-        // AndroidDeviceInfo androidDeviceInfo =
+        AndroidDeviceInfo androidDeviceInfo = await deviceInfo.androidInfo;
+        AndroidBuildVersion androidBuildVersion = androidDeviceInfo.version;
+        device_os = 'Android ' + androidBuildVersion.baseOS;
+        device_type = androidDeviceInfo.manufacturer;
       } else if (Platform.isIOS) {
-        // IosDeviceInfo iosDeviceInfo =
+        IosDeviceInfo iosDeviceInfo = await deviceInfo.iosInfo;
+        device_type = 'IOS ' + iosDeviceInfo.model;
+        device_os = iosDeviceInfo.systemName;
       }
+      print(device_os);
+      print(device_type);
       final user = await Utils.getUserSession();
       final apiKey = await Utils.getApiKey();
-      final String url = Constants.updateLocationUrl;
+      final String url = Constants.savedDeviceDetails;
       Map<String, String> headers = {'Bearer': '$apiKey'};
       Map<String, dynamic> body = {
         'mobile': user.phoneNumber,
-        'token': token,
+        'device_token': token,
         'device_os': device_os,
         'device_type': device_type,
       };

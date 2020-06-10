@@ -6,6 +6,8 @@ class Constants {
   static String lagelSee =
       "All Right Reserved, and all information store in this application is secure and is only use for Identification";
   static String baseUrl = "https://manager.quickfixnaija.com.ng/";
+  static String savedDeviceDetails =
+      "http://manager.quickfixnaija.com.ng/mtk-details-update/";
   static String serviceImageUrl =
       "https://manager.quickfixnaija.com.ng/service-images";
   static String createUserUrl = "reg-user";
