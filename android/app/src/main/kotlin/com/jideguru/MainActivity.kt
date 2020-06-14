@@ -1,18 +1,21 @@
 package com.jideguru.restaurant_ui_kit
 
-import android.os.Bundle
-
-import io.flutter.app.FlutterActivity
-import io.flutter.plugins.GeneratedPluginRegistrant
-
 import android.os.Build
+import android.os.Bundle
 import android.view.ViewTreeObserver
 import android.view.WindowManager
-class MainActivity: FlutterActivity() {
+import io.flutter.app.FlutterActivity
+import io.flutter.plugin.common.PluginRegistry
+import io.flutter.plugin.common.PluginRegistry.PluginRegistrantCallback
+import io.flutter.plugins.GeneratedPluginRegistrant
+import io.flutter.plugins.firebasemessaging.FlutterFirebaseMessagingService
+
+class MainActivity : FlutterActivity(), PluginRegistrantCallback {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    FlutterFirebaseMessagingService.setPluginRegistrant(this)
     val flutter_native_splash = true
-    var originalStatusBarColor = 0
+    var originalStatusBarColor = 1
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
         originalStatusBarColor = window.statusBarColor
         window.statusBarColor = 0xffeaeaea.toInt()
@@ -30,6 +33,8 @@ class MainActivity: FlutterActivity() {
         }
       }
     })
-
   }
+  override fun registerWith(registry: PluginRegistry) {
+    FirebaseCloudMessagingPluginRegistrant.registerWith(registry)
+}
 }
