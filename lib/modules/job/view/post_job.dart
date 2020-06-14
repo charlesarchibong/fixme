@@ -67,9 +67,7 @@ class _PostJobState extends State<PostJob> {
 
     Future uploadJob() async {
       final postJob = Provider.of<PostJobProvider>(context, listen: false);
-      setState(() {
-        loading = true;
-      });
+
       if (_formKey.currentState.validate()) {
         var addresses = await Geocoder.local
             .findAddressesFromQuery(_jobAddressController.text);
@@ -400,27 +398,30 @@ class _PostJobState extends State<PostJob> {
                     SizedBox(height: 40.0),
                     Container(
                       height: 50.0,
-                      child: RaisedButton(
-                        child: loading == true
-                            ? Container(
-                                alignment: Alignment.center,
-                                width: 50,
-                                height: 50,
-                                child: CircularProgressIndicator(
-                                  backgroundColor: Colors.white,
-                                ),
-                              )
-                            : Text(
+                      child: loading
+                          ? Container(
+                              alignment: Alignment.center,
+                              width: 50,
+                              height: 50,
+                              child: CircularProgressIndicator(
+                                backgroundColor: Colors.white,
+                              ),
+                            )
+                          : RaisedButton(
+                              child: Text(
                                 "Add Job".toUpperCase(),
                                 style: TextStyle(
                                   color: Colors.white,
                                 ),
                               ),
-                        onPressed: () async {
-                          await uploadJob();
-                        },
-                        color: Theme.of(context).accentColor,
-                      ),
+                              onPressed: () async {
+                                setState(() {
+                                  loading = true;
+                                });
+                                await uploadJob();
+                              },
+                              color: Theme.of(context).accentColor,
+                            ),
                     ),
                   ],
                 ),

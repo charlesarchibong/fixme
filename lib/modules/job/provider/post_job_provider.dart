@@ -83,6 +83,9 @@ class PostJobProvider extends ChangeNotifier {
             Failure(message: 'Job was not uploaded, please try again!'));
       }
     } catch (e) {
+      if (e is DioError) {
+        debugPrint(e.response.data);
+      }
       print(e.toString());
       return Left(Failure(message: 'Job was not uploaded, please try again!'));
     }
