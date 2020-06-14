@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:badges/badges.dart';
 import 'package:device_info/device_info.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_shimmer/flutter_shimmer.dart';
@@ -28,6 +29,20 @@ import 'package:quickfix/util/const.dart';
 import 'package:quickfix/util/content_type.dart';
 import 'package:quickfix/util/pending_request.dart';
 
+Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) {
+  if (message.containsKey('data')) {
+    // Handle data message
+    final dynamic data = message['data'];
+  }
+
+  if (message.containsKey('notification')) {
+    // Handle notification message
+    final dynamic notification = message['notification'];
+  }
+
+  // Or do other work.
+}
+
 class MainScreen extends StatefulWidget {
   MainScreenState mainScreenState = new MainScreenState();
 
@@ -40,6 +55,31 @@ class MainScreenState extends State<MainScreen> {
   final _scaffoledKey = GlobalKey<ScaffoldState>();
   int _page = 0;
   Location location;
+  FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
+
+  void getMessage() {
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print("onMessage: $message");
+        //_showItemDialog(message);
+      },
+      onBackgroundMessage: myBackgroundMessageHandler,
+      onLaunch: (Map<String, dynamic> message) async {
+        print("onLaunch: $message");
+        //_navigateToItemDetail(message);
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print("onResume: $message");
+        //_navigateToItemDetail(message);
+      },
+    );
+
+    _firebaseMessaging.requestNotificationPermissions(
+        const IosNotificationSettings(sound: true, badge: true, alert: true));
+    _firebaseMessaging.getToken().then((token) {
+      print(token);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -343,6 +383,10 @@ class MainScreenState extends State<MainScreen> {
 
   @override
   void initState() {
+    _firebaseMessaging.getToken().then((token) {
+      print('on message $token');
+    });
+    getMessage();
     setStatusBar();
     pageController = PageController();
     location = new Location();
