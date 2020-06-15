@@ -91,7 +91,7 @@ class ProfileProvider extends ChangeNotifier {
 
   Future<void> getServiceImage() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
-    var uploaded = await uploadImageToServer('servicePicture', image);
+    await uploadImageToServer('servicePicture', image);
     getServiceImagesFromServer();
     notifyListeners();
   }

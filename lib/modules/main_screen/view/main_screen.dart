@@ -474,7 +474,7 @@ class MainScreenState extends State<MainScreen> {
         'latitude': locationData.latitude,
         'longitude': locationData.longitude,
       };
-      final response = await NetworkService().post(
+      await NetworkService().post(
         url: url,
         body: body,
         contentType: ContentType.URL_ENCODED,

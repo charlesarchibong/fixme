@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:quickfix/modules/profile/provider/profile_provider.dart';
 
 class EditBankInfoPopUp extends StatefulWidget {
   @override
@@ -18,8 +16,8 @@ showBankEditPopUp(
     {BuildContext context,
     GlobalKey<ScaffoldState> profileScaffoldKey,
     String accountNumber}) {
-  final profileProvider = Provider.of<ProfileProvider>(context, listen: false);
-  final _formKey = GlobalKey<FormState>();
-  TextEditingController _accountNumberController =
-      TextEditingController(text: accountNumber);
+  // final profileProvider = Provider.of<ProfileProvider>(context, listen: false);
+  // final _formKey = GlobalKey<FormState>();
+  // TextEditingController _accountNumberController =
+  // TextEditingController(text: accountNumber);
 }
