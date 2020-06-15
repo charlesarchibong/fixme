@@ -62,6 +62,7 @@ class MainScreenState extends State<MainScreen> {
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
         //_showItemDialog(message);
+        // FlushBarCustomHelper.
       },
       onBackgroundMessage: myBackgroundMessageHandler,
       onLaunch: (Map<String, dynamic> message) async {
