@@ -628,7 +628,9 @@ void showEditAccountDetails(
                                   ),
                                   FlatButton(
                                     child: loading
-                                        ? CircularProgressIndicator()
+                                        ? CircularProgressIndicator(
+                                            backgroundColor: Colors.white,
+                                          )
                                         : Text("Save"),
                                     padding: EdgeInsets.all(10.0),
                                     textColor: Colors.white,
