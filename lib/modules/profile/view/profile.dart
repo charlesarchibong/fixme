@@ -27,6 +27,7 @@ class _ProfileState extends State<Profile> {
   final _profileScaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
   String subServices;
+  bool savingBankDetails = false;
   List<ServiceImage> serviceImages = List();
   TextEditingController _accountNumberController = TextEditingController();
 
@@ -511,6 +512,7 @@ void showEditAccountDetails(
     TextEditingController accountNumberController,
     GlobalKey<FormState> formKey,
     ProfileProvider profileProvider) {
+  bool loading = false;
   showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -625,21 +627,33 @@ void showEditAccountDetails(
                                     height: 10,
                                   ),
                                   FlatButton(
-                                    child: Text("Save"),
+                                    child: loading
+                                        ? CircularProgressIndicator()
+                                        : Text("Save"),
                                     padding: EdgeInsets.all(10.0),
                                     textColor: Colors.white,
                                     color: Theme.of(context).accentColor,
                                     onPressed: () async {
                                       if (formKey.currentState.validate()) {
+                                        setState(() {
+                                          loading = true;
+                                        });
                                         final updated = await profileProvider
                                             .updateBankDetails(selected,
                                                 accountNumberController.text);
                                         updated.fold((Failure failure) {
+                                          setState(() {
+                                            loading = true;
+                                          });
                                           Navigator.of(context).pop();
+
                                           FlushBarCustomHelper
                                               .showErrorFlushbar(context,
                                                   'Error', failure.message);
                                         }, (bool updated) {
+                                          setState(() {
+                                            loading = true;
+                                          });
                                           Navigator.of(context).pop();
 
                                           FlushBarCustomHelper.showInfoFlushbar(
