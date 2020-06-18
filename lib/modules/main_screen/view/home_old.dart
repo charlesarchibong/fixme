@@ -1,17 +1,11 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_shimmer/flutter_shimmer.dart';
 import 'package:location/location.dart';
-import 'package:quickfix/modules/artisan/view/artisans.dart';
 import 'package:quickfix/modules/artisan/widget/grid_artisans.dart';
 import 'package:quickfix/services/network_service.dart';
 import 'package:quickfix/util/Utils.dart';
-import 'package:quickfix/util/categories.dart';
 import 'package:quickfix/util/const.dart';
 import 'package:quickfix/util/content_type.dart';
-import 'package:quickfix/util/foods.dart';
-import 'package:quickfix/widgets/home_category.dart';
-import 'package:quickfix/widgets/slider_item.dart';
 
 class HomeW extends StatefulWidget {
   @override
@@ -34,6 +28,7 @@ class _HomeState extends State<HomeW>
   LocationData locationData;
   List users = List();
   String phoneNumber = '';
+  final TextEditingController _searchControl = new TextEditingController();
 
   @override
   void initState() {
@@ -94,96 +89,106 @@ class _HomeState extends State<HomeW>
         padding: EdgeInsets.fromLTRB(10.0, 0, 10.0, 0),
         child: ListView(
           children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  "Popular Artisans",
-                  style: TextStyle(
-                    fontSize: 19,
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-                FlatButton(
-                  child: Text(
-                    "View More",
-                    style: TextStyle(
-                      fontSize: 12,
-//                      fontWeight: FontWeight.w800,
-                      color: Theme.of(context).accentColor,
-                    ),
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (BuildContext context) {
-                          return Aritsans();
-                        },
-                      ),
-                    );
-                  },
-                ),
-              ],
-            ),
-
             SizedBox(height: 10.0),
 
             //Slider Here
 
-            CarouselSlider(
-              options: CarouselOptions(
-                autoPlay: true,
-                viewportFraction: 1.0,
-                height: MediaQuery.of(context).size.height / 2.4,
-                onPageChanged: (index, reason) {
-                  setState(() {
-                    _current = index;
-                  });
-                },
-              ),
-              items: map<Widget>(
-                technicians,
-                (index, i) {
-                  Map food = technicians[index];
-                  return SliderItem(
-                    img: food['img'],
-                    isFav: true,
-                    name: food['name'],
-                    rating: 5.0,
-                    raters: 23,
-                  );
-                },
-              ).toList(),
-            ),
-            SizedBox(height: 20.0),
+            // CarouselSlider(
+            //   options: CarouselOptions(
+            //     autoPlay: true,
+            //     viewportFraction: 1.0,
+            //     height: MediaQuery.of(context).size.height / 2.4,
+            //     onPageChanged: (index, reason) {
+            //       setState(() {
+            //         _current = index;
+            //       });
+            //     },
+            //   ),
+            //   items: map<Widget>(
+            //     technicians,
+            //     (index, i) {
+            //       Map food = technicians[index];
+            //       return SliderItem(
+            //         img: food['img'],
+            //         isFav: true,
+            //         name: food['name'],
+            //         rating: 5.0,
+            //         raters: 23,
+            //       );
+            //     },
+            //   ).toList(),
+            // ),
+            // SizedBox(height: 20.0),
 
-            Text(
-              "Jobs Categories",
-              style: TextStyle(
-                fontSize: 19,
-                fontWeight: FontWeight.w800,
+            // Text(
+            //   "Search Service or Business",
+            //   style: TextStyle(
+            //     fontSize: 19,
+            //     fontWeight: FontWeight.w800,
+            //   ),
+            // ),
+            // Container(
+            //   height: 65.0,
+            //   child: ListView.builder(
+            //     scrollDirection: Axis.horizontal,
+            //     shrinkWrap: true,
+            //     itemCount: categories == null ? 0 : categories.length,
+            //     itemBuilder: (BuildContext context, int index) {
+            //       Map cat = categories[index];
+            //       return HomeCategory(
+            //         icon: cat['icon'],
+            //         title: cat['name'],
+            //         items: cat['items'].toString(),
+            //         isHome: true,
+            //       );
+            //     },
+            //   ),
+            // ),
+            Card(
+              elevation: 6.0,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(5.0),
+                  ),
+                ),
+                child: TextField(
+                  style: TextStyle(
+                    fontSize: 15.0,
+                    color: Colors.black,
+                  ),
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.all(10.0),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                      borderSide: BorderSide(
+                        color: Colors.white,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.white,
+                      ),
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    hintText: "Search Nearby Service Providers & Businesses..",
+                    suffixIcon: Icon(
+                      Icons.search,
+                      color: Colors.black,
+                    ),
+                    hintStyle: TextStyle(
+                      fontSize: 15.0,
+                      color: Colors.black,
+                    ),
+                  ),
+                  maxLines: 1,
+                  controller: _searchControl,
+                ),
               ),
             ),
+
             SizedBox(height: 10.0),
-            Container(
-              height: 65.0,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                shrinkWrap: true,
-                itemCount: categories == null ? 0 : categories.length,
-                itemBuilder: (BuildContext context, int index) {
-                  Map cat = categories[index];
-                  return HomeCategory(
-                    icon: cat['icon'],
-                    title: cat['name'],
-                    items: cat['items'].toString(),
-                    isHome: true,
-                  );
-                },
-              ),
-            ),
-
-            SizedBox(height: 20.0),
 
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -238,7 +243,7 @@ class _HomeState extends State<HomeW>
                 userData: technician,
                 mobile: technician['user_mobile'],
                 img: Constants.uploadUrl + technician['profile_pic_file_name'],
-                isFav: technician['status'] == "verified",
+                distance: technician['distance'],
                 name:
                     '${technician['user_first_name']} ${technician['user_last_name']} (${technician['service_area']})',
                 rating: 5.0,

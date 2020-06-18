@@ -64,6 +64,7 @@ class LoginFormValidation extends ChangeNotifier {
           body: body,
           contentType: ContentType.URL_ENCODED);
       if (response.statusCode == 200) {
+        debugPrint(response.data.toString());
         if (response.data['reqRes'] == "false") {
           throw new Exception('Invalid phone number, please try again!');
         } else {

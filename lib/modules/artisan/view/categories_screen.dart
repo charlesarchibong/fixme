@@ -100,7 +100,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                   mobile: "Null",
                   userData: food,
                   img: food['img'],
-                  isFav: false,
+                  distance: 312,
                   name: food['name'],
                   rating: 5.0,
                   raters: 23,

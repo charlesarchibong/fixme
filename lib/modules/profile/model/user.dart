@@ -5,6 +5,7 @@ class User {
   String email;
   String serviceArea;
   String fullNumber;
+  int serviceId;
 
   User.name({
     this.firstName,
@@ -12,6 +13,7 @@ class User {
     this.phoneNumber,
     this.email,
     this.serviceArea,
+    this.serviceId,
   });
 
   Map<String, dynamic> toJson() {
@@ -22,6 +24,7 @@ class User {
     map['email'] = email;
     map['serviceArea'] = serviceArea;
     map['fullNumber'] = fullNumber;
+    map['service_id'] = serviceId;
     return map;
   }
 
@@ -32,5 +35,6 @@ class User {
     email = json['email'];
     serviceArea = json['serviceArea'];
     fullNumber = json['fullNumber'];
+    serviceId = json['service_id'];
   }
 }

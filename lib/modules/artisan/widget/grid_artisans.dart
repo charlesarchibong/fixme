@@ -6,7 +6,7 @@ import 'package:quickfix/widgets/smooth_star_rating.dart';
 class GridTechnician extends StatelessWidget {
   final String name;
   final String img;
-  final bool isFav;
+  final int distance;
   final double rating;
   final int raters;
   final String mobile;
@@ -16,7 +16,7 @@ class GridTechnician extends StatelessWidget {
     Key key,
     @required this.name,
     @required this.img,
-    @required this.isFav,
+    @required this.distance,
     @required this.rating,
     @required this.raters,
     @required this.mobile,
@@ -46,18 +46,17 @@ class GridTechnician extends StatelessWidget {
               Positioned(
                 right: -10.0,
                 bottom: 3.0,
-                child: RawMaterialButton(
-                  onPressed: () {},
-                  fillColor: Colors.white,
-                  shape: CircleBorder(),
-                  elevation: 4.0,
-                  child: isFav
-                      ? Icon(
-                          Icons.verified_user,
-                          color: Colors.red,
-                          size: 35,
-                        )
-                      : Text(''),
+                child: Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                  ),
+                  child: Text(
+                    '${distance.toString()}00KM',
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
                 ),
               ),
             ],

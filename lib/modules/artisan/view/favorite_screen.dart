@@ -45,7 +45,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>
                   mobile: "Null",
                   userData: food,
                   img: food['img'],
-                  isFav: true,
+                  distance: 12,
                   name: food['name'],
                   rating: 5.0,
                   raters: 23,
