@@ -44,17 +44,24 @@ class GridTechnician extends StatelessWidget {
                 ),
               ),
               Positioned(
-                right: -10.0,
+                right: 30,
                 bottom: 3.0,
-                child: Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                  ),
-                  child: Text(
-                    '${distance.toString()}00KM',
-                    style: TextStyle(
-                      color: Colors.red,
-                      fontWeight: FontWeight.normal,
+                child: Card(
+                  elevation: 7,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(3.0),
+                      child: Text(
+                        '${distance.toString()}00KM',
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
                 ),

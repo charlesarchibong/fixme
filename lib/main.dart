@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:quickfix/modules/auth/provider/login_form_validation.dart';
 import 'package:quickfix/modules/custom/view/splash.dart';
 import 'package:quickfix/modules/dashboard/provider/dashboard_provider.dart';
+import 'package:quickfix/modules/job/provider/pending_job_provider.dart';
 import 'package:quickfix/modules/job/provider/post_job_provider.dart';
 import 'package:quickfix/modules/profile/provider/profile_provider.dart';
 import 'package:quickfix/providers/app_provider.dart';
@@ -18,6 +19,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => PostJobProvider()),
         ChangeNotifierProvider(create: (_) => ProfileProvider()),
         ChangeNotifierProvider(create: (_) => DashBoardProvider()),
+        ChangeNotifierProvider(create: (_) => PendingJobProvider()),
       ],
       child: MyApp(),
     ),
