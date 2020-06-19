@@ -18,6 +18,7 @@ class PendingJobProvider extends ChangeNotifier {
         'mobile': currentUser.phoneNumber,
         'service_id': currentUser.serviceId,
       };
+      print(body);
       Map<String, String> headers = {'Bearer': '$apiKey'};
       Response response = await NetworkService().post(
         url: url,
@@ -26,9 +27,16 @@ class PendingJobProvider extends ChangeNotifier {
         headers: headers,
         contentType: ContentType.JSON,
       );
-      debugPrint(response.data.toString());
+      print(response.data.toString());
       if (response.statusCode == 200 && response.data['reqRes'] == 'true') {
+        List projects = response.data['projects'] as List;
         List<Job> jobs = List();
+        if (projects.length > 0) {
+          for (var i = 0; i < projects.length; i++) {
+            Job job = Job.fromMap(projects[i]);
+            jobs.add(job);
+          }
+        }
         return Right(jobs);
       } else {
         return Left(

@@ -56,7 +56,7 @@ class GridTechnician extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(3.0),
                       child: Text(
-                        '${distance.toString()}00KM',
+                        '${distance.toString()}km',
                         style: TextStyle(
                           color: Colors.red,
                           fontWeight: FontWeight.bold,

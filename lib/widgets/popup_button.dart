@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:quickfix/modules/job/model/job.dart';
 
 class CustomPopupButton extends StatelessWidget {
+  final Job job;
+
+  const CustomPopupButton({Key key, this.job}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton(
       onSelected: (value) {
-        print(value);
-        if (value == 4) {}
+        if (value == 1) {
+          print('bby');
+        }
       },
       icon: Icon(
         Icons.more_vert,
@@ -24,37 +29,7 @@ class CustomPopupButton extends StatelessWidget {
               SizedBox(
                 width: 10.0,
               ),
-              Text('Accept Request'),
-            ],
-          ),
-        ),
-        PopupMenuItem(
-          value: 4,
-          child: Row(
-            children: <Widget>[
-              Icon(
-                Icons.remove_circle,
-                color: Colors.red,
-              ),
-              SizedBox(
-                width: 10.0,
-              ),
-              Text('Decline Request'),
-            ],
-          ),
-        ),
-        PopupMenuItem(
-          value: 4,
-          child: Row(
-            children: <Widget>[
-              Icon(
-                Icons.remove_red_eye,
-                color: Colors.black45,
-              ),
-              SizedBox(
-                width: 10.0,
-              ),
-              Text('View Details'),
+              Text('Bid'),
             ],
           ),
         ),

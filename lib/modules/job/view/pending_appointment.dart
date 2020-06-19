@@ -5,7 +5,6 @@ import 'package:quickfix/models/failure.dart';
 import 'package:quickfix/modules/job/model/job.dart';
 import 'package:quickfix/modules/job/provider/pending_job_provider.dart';
 import 'package:quickfix/modules/job/widget/appointment.dart';
-import 'package:quickfix/util/pending_request.dart';
 
 class PendingAppointment extends StatefulWidget {
   @override
@@ -16,8 +15,10 @@ class _PendingAppointmentState extends State<PendingAppointment>
     with AutomaticKeepAliveClientMixin<PendingAppointment> {
   bool isloading = true;
   String error = '';
+  List<Job> jobsAround = List();
 
-  getPendingRequest() async {
+  Future<void> getPendingRequest() async {
+    // print('snjfna');
     final pendingJobProvider =
         Provider.of<PendingJobProvider>(context, listen: false);
     final fetched = await pendingJobProvider.getPendingRequest();
@@ -29,6 +30,7 @@ class _PendingAppointmentState extends State<PendingAppointment>
     }, (List<Job> jobs) {
       setState(() {
         isloading = false;
+        jobsAround = jobs;
       });
     });
   }
@@ -83,16 +85,37 @@ class _PendingAppointmentState extends State<PendingAppointment>
                     height: 10,
                   ),
                   Expanded(
-                    child: ListView.builder(
-                      itemCount: requests == null ? 0 : requests.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return PendingAppointments(
-                          title: requests[index]['title'],
-                          subtitle: requests[index]['subtitle'],
-                          status: requests[index]['status'],
-                        );
-                      },
-                    ),
+                    child: jobsAround.length > 0
+                        ? RefreshIndicator(
+                            onRefresh: () {
+                              return getPendingRequest();
+                            },
+                            child: ListView.builder(
+                              itemCount: jobsAround.length == null
+                                  ? 0
+                                  : jobsAround.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return PendingAppointments(
+                                  job: jobsAround[index],
+                                  title: jobsAround[index].jobTitle,
+                                  subtitle:
+                                      '${jobsAround[index].description} - N${double.parse(jobsAround[index].price.toString())}',
+                                  status: jobsAround[index].status,
+                                );
+                              },
+                            ),
+                          )
+                        : Center(
+                            child: Text(
+                              error,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ),
                   ),
                 ],
               ),
