@@ -11,10 +11,14 @@ import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
+import 'package:quickfix/helpers/flush_bar.dart';
 import 'package:quickfix/helpers/notification.dart';
+import 'package:quickfix/models/failure.dart';
 import 'package:quickfix/modules/artisan/view/favorite_screen.dart';
 import 'package:quickfix/modules/dashboard/provider/dashboard_provider.dart';
 import 'package:quickfix/modules/dashboard/view/dashboard.dart';
+import 'package:quickfix/modules/job/model/job.dart';
+import 'package:quickfix/modules/job/provider/pending_job_provider.dart';
 import 'package:quickfix/modules/job/view/my_requests.dart';
 import 'package:quickfix/modules/job/view/pending_appointment.dart';
 import 'package:quickfix/modules/job/view/post_job.dart';
@@ -54,23 +58,60 @@ class MainScreenState extends State<MainScreen> {
   PageController pageController;
   final _scaffoledKey = GlobalKey<ScaffoldState>();
   int _page = 0;
+  int jobLength = 0;
   Location location;
   FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
+  Future<void> getPendingRequest() async {
+    // print('snjfna');
+    final pendingJobProvider =
+        Provider.of<PendingJobProvider>(context, listen: false);
+    final fetched = await pendingJobProvider.getPendingRequest();
+    fetched.fold((Failure failure) {
+      setState(() {
+        error = failure.message;
+      });
+    }, (List<Job> jobs) {
+      setState(() {
+        jobLength = jobs.length;
+      });
+    });
+  }
 
   void getMessage() {
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
-        print("onMessage: $message");
+        print("onMessage:  7777");
+        print("onMessage: $message  7777");
         //_showItemDialog(message);
-        // FlushBarCustomHelper.sh
+        print(message['data']['notification_type']);
+        FlushBarCustomHelper.showInfoFlushbarWithAction(
+            context,
+            'Job Around you',
+            'New job is available around you',
+            'View Job',
+            () {});
       },
       onBackgroundMessage: myBackgroundMessageHandler,
       onLaunch: (Map<String, dynamic> message) async {
         print("onLaunch: $message");
         //_navigateToItemDetail(message);
+        print(message['data']['notification_type']);
+        FlushBarCustomHelper.showInfoFlushbarWithAction(
+            context,
+            'Job Around you33',
+            'New job is available around you',
+            'View Job',
+            () {});
       },
       onResume: (Map<String, dynamic> message) async {
         print("onResume: $message");
+        print(message['data']['notification_type']);
+        FlushBarCustomHelper.showInfoFlushbarWithAction(
+            context,
+            'Job Around you22',
+            'New job is available around you',
+            'View Job',
+            () {});
         //_navigateToItemDetail(message);
       },
     );
@@ -179,8 +220,24 @@ class MainScreenState extends State<MainScreen> {
                 },
               ),
               ListTile(
-                title: Text('User Requests'),
-                leading: FaIcon(FontAwesomeIcons.luggageCart),
+                title: Text('Jobs Around me'),
+                leading: Badge(
+                  badgeContent: Text(
+                    jobLength.toString(),
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                  badgeColor: Colors.red,
+                  animationType: BadgeAnimationType.slide,
+                  toAnimate: true,
+                  child: FaIcon(
+                    FontAwesomeIcons.luggageCart,
+                    color: _page == 3
+                        ? Theme.of(context).accentColor
+                        : Theme.of(context).textTheme.caption.color,
+                  ),
+                ),
                 onTap: () {
                   Navigator.of(context).pop();
                   navigationTapped(3);
@@ -196,27 +253,56 @@ class MainScreenState extends State<MainScreen> {
               ),
               ListTile(
                 title: Text('Post Job'),
-                leading: FaIcon(FontAwesomeIcons.plusCircle),
+                leading: FaIcon(
+                  FontAwesomeIcons.plusCircle,
+                  color: _page == 2
+                      ? Theme.of(context).accentColor
+                      : Theme.of(context).textTheme.caption.color,
+                ),
                 onTap: () {
                   Navigator.of(context).pop();
                   navigationTapped(2);
                 },
               ),
               ListTile(
-                  title: Text('Search Artisan'),
-                  leading: FaIcon(FontAwesomeIcons.search),
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    navigationTapped(1);
-                  }),
+                title: Text('Search Artisan'),
+                leading: FaIcon(
+                  FontAwesomeIcons.search,
+                  color: _page == 1
+                      ? Theme.of(context).accentColor
+                      : Theme.of(context).textTheme.caption.color,
+                ),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  navigationTapped(1);
+                },
+              ),
               ListTile(
                 title: Text('Favourite Artisan'),
                 leading: FaIcon(FontAwesomeIcons.heart),
                 onTap: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (BuildContext context) {
-                    return FavoriteScreen();
-                  }));
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (
+                        BuildContext context,
+                      ) {
+                        return FavoriteScreen();
+                      },
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                title: Text('My Profile'),
+                leading: FaIcon(
+                  FontAwesomeIcons.userCircle,
+                  color: _page == 4
+                      ? Theme.of(context).accentColor
+                      : Theme.of(context).textTheme.caption.color,
+                ),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  navigationTapped(4);
                 },
               ),
               ListTile(
@@ -291,7 +377,7 @@ class MainScreenState extends State<MainScreen> {
                     onTap: () => navigationTapped(3),
                     child: Badge(
                       badgeContent: Text(
-                        requests.length.toString(),
+                        jobLength.toString(),
                         style: TextStyle(
                           color: Colors.white,
                         ),
@@ -388,6 +474,7 @@ class MainScreenState extends State<MainScreen> {
       print('on message $token');
     });
     getMessage();
+    getPendingRequest();
     setStatusBar();
     pageController = PageController();
     location = new Location();

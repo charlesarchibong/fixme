@@ -10,13 +10,13 @@ class PendingAppointments extends StatelessWidget {
   final String subtitle;
   final String status;
 
-  PendingAppointments(
-      {Key key,
-      @required this.title,
-      @required this.subtitle,
-      @required this.status,
-      @required this.job})
-      : super(key: key);
+  PendingAppointments({
+    Key key,
+    @required this.title,
+    @required this.subtitle,
+    @required this.status,
+    @required this.job,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Padding(
