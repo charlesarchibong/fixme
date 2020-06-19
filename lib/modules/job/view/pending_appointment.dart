@@ -1,7 +1,9 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_shimmer/flutter_shimmer.dart';
+import 'package:provider/provider.dart';
+import 'package:quickfix/models/failure.dart';
+import 'package:quickfix/modules/job/model/job.dart';
+import 'package:quickfix/modules/job/provider/pending_job_provider.dart';
 import 'package:quickfix/modules/job/widget/appointment.dart';
 import 'package:quickfix/util/pending_request.dart';
 
@@ -13,25 +15,28 @@ class PendingAppointment extends StatefulWidget {
 class _PendingAppointmentState extends State<PendingAppointment>
     with AutomaticKeepAliveClientMixin<PendingAppointment> {
   bool isloading = true;
-  startTimeout() {
-    return Timer(
-      Duration(
-        seconds: 5,
-      ),
-      setNotLoadin,
-    );
-  }
+  String error = '';
 
-  setNotLoadin() {
-    setState(() {
-      isloading = false;
+  getPendingRequest() async {
+    final pendingJobProvider =
+        Provider.of<PendingJobProvider>(context, listen: false);
+    final fetched = await pendingJobProvider.getPendingRequest();
+    fetched.fold((Failure failure) {
+      setState(() {
+        error = failure.message;
+        isloading = false;
+      });
+    }, (List<Job> jobs) {
+      setState(() {
+        isloading = false;
+      });
     });
   }
 
   @override
   void initState() {
+    getPendingRequest();
     super.initState();
-    startTimeout();
   }
 
   @override
@@ -46,7 +51,7 @@ class _PendingAppointmentState extends State<PendingAppointment>
                   SizedBox(height: 10.0),
                   Center(
                     child: Text(
-                      "Request From User(s)",
+                      "Jobs Around You",
                       style: TextStyle(
                         fontSize: 19,
                         fontWeight: FontWeight.w800,
@@ -67,7 +72,7 @@ class _PendingAppointmentState extends State<PendingAppointment>
                   SizedBox(height: 10.0),
                   Center(
                     child: Text(
-                      "Request(s) From User(s)",
+                      "Jobs Around You",
                       style: TextStyle(
                         fontSize: 19,
                         fontWeight: FontWeight.w800,
