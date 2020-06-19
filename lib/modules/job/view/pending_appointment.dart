@@ -14,7 +14,12 @@ class _PendingAppointmentState extends State<PendingAppointment>
     with AutomaticKeepAliveClientMixin<PendingAppointment> {
   bool isloading = true;
   startTimeout() {
-    return Timer(Duration(seconds: 5), setNotLoadin);
+    return Timer(
+      Duration(
+        seconds: 5,
+      ),
+      setNotLoadin,
+    );
   }
 
   setNotLoadin() {
