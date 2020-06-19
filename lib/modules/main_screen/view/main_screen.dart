@@ -80,39 +80,43 @@ class MainScreenState extends State<MainScreen> {
   void getMessage() {
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
-        print("onMessage:  7777");
-        print("onMessage: $message  7777");
-        //_showItemDialog(message);
-        print(message['data']['notification_type']);
-        FlushBarCustomHelper.showInfoFlushbarWithAction(
-            context,
-            'Job Around you',
-            'New job is available around you',
-            'View Job',
-            () {});
+        if (message['data']['notification_type'] == 'new_project') {
+          FlushBarCustomHelper.showInfoFlushbarWithActionNot(
+              context,
+              'Job Around you',
+              'New job is available around you',
+              'View Job', () {
+            navigationTapped(3);
+          });
+        }
       },
       onBackgroundMessage: myBackgroundMessageHandler,
       onLaunch: (Map<String, dynamic> message) async {
         print("onLaunch: $message");
         //_navigateToItemDetail(message);
         print(message['data']['notification_type']);
-        FlushBarCustomHelper.showInfoFlushbarWithAction(
-            context,
-            'Job Around you33',
-            'New job is available around you',
-            'View Job',
-            () {});
+        if (message['data']['notification_type'] == 'new_project') {
+          FlushBarCustomHelper.showInfoFlushbarWithActionNot(
+              context,
+              'Job Around you',
+              'New job is available around you',
+              'View Job', () {
+            navigationTapped(3);
+          });
+        }
       },
       onResume: (Map<String, dynamic> message) async {
         print("onResume: $message");
         print(message['data']['notification_type']);
-        FlushBarCustomHelper.showInfoFlushbarWithAction(
-            context,
-            'Job Around you22',
-            'New job is available around you',
-            'View Job',
-            () {});
-        //_navigateToItemDetail(message);
+        if (message['data']['notification_type'] == 'new_project') {
+          FlushBarCustomHelper.showInfoFlushbarWithActionNot(
+              context,
+              'Job Around you',
+              'New job is available around you',
+              'View Job', () {
+            navigationTapped(3);
+          });
+        }
       },
     );
 

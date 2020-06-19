@@ -57,4 +57,45 @@ class PendingJobProvider extends ChangeNotifier {
       );
     }
   }
+
+  Future<Either<Failure, bool>> bidJob(Job job, double biddingPrice) async {
+    try {
+      User currentUser = await Utils.getUserSession();
+      String apiKey = await Utils.getApiKey();
+      String url = 'https://manager.quickfixnaija.com.ng/bid-project';
+      Map<String, dynamic> body = {
+        'mobile': currentUser.phoneNumber,
+        'job_id': job.id,
+        'bidding_price': biddingPrice,
+      };
+      Map<String, String> headers = {'Bearer': '$apiKey'};
+      Response response = await NetworkService().post(
+        url: url,
+        body: {},
+        queryParam: body,
+        headers: headers,
+        contentType: ContentType.JSON,
+      );
+      print(response.data.toString());
+      if (response.statusCode == 200 && response.data['reqRes'] == 'true') {
+        return Right(true);
+      } else {
+        return Left(
+          Failure(
+            message: 'Action was not successful, please try again',
+          ),
+        );
+      }
+    } catch (e) {
+      if (e is DioError) {
+        debugPrint(e.response.data);
+      }
+      print(e.toString());
+      return Left(
+        Failure(
+          message: 'An error occured while trying to bid this project',
+        ),
+      );
+    }
+  }
 }
