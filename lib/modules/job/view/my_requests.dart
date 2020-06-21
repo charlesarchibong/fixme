@@ -2,6 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_shimmer/flutter_shimmer.dart';
+import 'package:provider/provider.dart';
+import 'package:quickfix/models/failure.dart';
+import 'package:quickfix/modules/job/model/job.dart';
+import 'package:quickfix/modules/job/provider/my_request_provider.dart';
 import 'package:quickfix/modules/job/widget/my_request.dart';
 import 'package:quickfix/util/const.dart';
 import 'package:quickfix/util/pending_request.dart';
@@ -14,20 +18,31 @@ class MyRequests extends StatefulWidget {
 class _MyRequestsState extends State<MyRequests>
     with AutomaticKeepAliveClientMixin<MyRequests> {
   bool isloading = true;
-  startTimeout() {
-    return Timer(Duration(seconds: 5), setNotLoadin);
-  }
+  String error = '';
+  List<Job> myJobs = List();
 
-  setNotLoadin() {
-    setState(() {
-      isloading = false;
+  Future<void> getMyRequest() async {
+    // print('snjfna');
+    final pendingJobProvider =
+        Provider.of<MyRequestProvider>(context, listen: false);
+    final fetched = await pendingJobProvider.getMyRequests();
+    fetched.fold((Failure failure) {
+      setState(() {
+        error = failure.message;
+        isloading = false;
+      });
+    }, (List<Job> jobs) {
+      setState(() {
+        isloading = false;
+        myJobs = jobs;
+      });
     });
   }
 
   @override
   void initState() {
     super.initState();
-    startTimeout();
+    getMyRequest();
   }
 
   @override
@@ -40,7 +55,7 @@ class _MyRequestsState extends State<MyRequests>
 //          centerTitle: true,
         iconTheme: IconThemeData(color: Colors.white),
         title: Text(
-          'My Request(s)',
+          'My Jobs',
           style: TextStyle(
             color: Colors.white,
           ),
