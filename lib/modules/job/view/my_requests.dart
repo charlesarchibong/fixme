@@ -8,7 +8,6 @@ import 'package:quickfix/modules/job/model/job.dart';
 import 'package:quickfix/modules/job/provider/my_request_provider.dart';
 import 'package:quickfix/modules/job/widget/my_request.dart';
 import 'package:quickfix/util/const.dart';
-import 'package:quickfix/util/pending_request.dart';
 
 class MyRequests extends StatefulWidget {
   @override
@@ -77,16 +76,31 @@ class _MyRequestsState extends State<MyRequests>
                 children: <Widget>[
                   SizedBox(height: 10.0),
                   Expanded(
-                    child: ListView.builder(
-                      itemCount: requests == null ? 0 : requests.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return MyRequestWidget(
-                          title: requests[index]['title'],
-                          subtitle: requests[index]['subtitle'],
-                          status: requests[index]['status'],
-                        );
-                      },
-                    ),
+                    child: myJobs.length > 0
+                        ? RefreshIndicator(
+                            onRefresh: () => getMyRequest(),
+                            child: ListView.builder(
+                              itemCount: myJobs == null ? 0 : myJobs.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return MyRequestWidget(
+                                  title: myJobs[index].jobTitle,
+                                  subtitle: myJobs[index].description,
+                                  status: myJobs[index].status,
+                                );
+                              },
+                            ),
+                          )
+                        : Center(
+                            child: Text(
+                              error,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ),
                   ),
                 ],
               ),
