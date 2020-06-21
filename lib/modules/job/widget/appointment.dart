@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:quickfix/helpers/flush_bar.dart';
 import 'package:quickfix/modules/job/model/job.dart';
+import 'package:quickfix/modules/job/view/job_details.dart';
 import 'package:quickfix/widgets/popup_button.dart';
 
 class PendingAppointments extends StatelessWidget {
@@ -40,10 +40,13 @@ class PendingAppointments extends StatelessWidget {
           job: job,
         ),
         onTap: () {
-          FlushBarCustomHelper.showInfoFlushbar(
-            context,
-            'Message',
-            'Click the three dot button beside to bid this job',
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (_) => JobDetails(
+                isOwner: false,
+                job: job,
+              ),
+            ),
           );
         },
       ),
