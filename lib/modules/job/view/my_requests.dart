@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_shimmer/flutter_shimmer.dart';
+import 'package:quickfix/modules/job/widget/my_request.dart';
 import 'package:quickfix/util/const.dart';
 import 'package:quickfix/util/pending_request.dart';
-import 'package:quickfix/modules/job/widget/my_request.dart';
 
 class MyRequests extends StatefulWidget {
   @override

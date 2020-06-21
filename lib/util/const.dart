@@ -18,6 +18,8 @@ class Constants {
   static String loginUserUrl = "m-login";
   static String addSubService = "add-sub-service";
   static String userInfo = "user-info";
+  static String getMyRequestEndpoint =
+      'https://manager.quickfixnaija.com.ng/user-projects';
 
   //Colors for theme
 //  Color(0xfffcfcff);
