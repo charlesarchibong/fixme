@@ -20,6 +20,7 @@ class Constants {
   static String userInfo = "user-info";
   static String getMyRequestEndpoint =
       'https://manager.quickfixnaija.com.ng/user-projects';
+  static String getJobBidders = 'https://manager.quickfixnaija.com.ng/get-bids';
 
   //Colors for theme
 //  Color(0xfffcfcff);
