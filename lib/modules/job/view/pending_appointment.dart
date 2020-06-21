@@ -84,38 +84,52 @@ class _PendingAppointmentState extends State<PendingAppointment>
                   SizedBox(
                     height: 10,
                   ),
-                  Expanded(
-                    child: jobsAround.length > 0
-                        ? RefreshIndicator(
-                            onRefresh: () {
-                              return getPendingRequest();
-                            },
-                            child: ListView.builder(
-                              itemCount: jobsAround.length == null
-                                  ? 0
-                                  : jobsAround.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return PendingAppointments(
-                                  job: jobsAround[index],
-                                  title: jobsAround[index].jobTitle,
-                                  subtitle:
-                                      '${jobsAround[index].description} - N${double.parse(jobsAround[index].price.toString())}',
-                                  status: jobsAround[index].status,
-                                );
-                              },
-                            ),
-                          )
-                        : Center(
-                            child: Text(
-                              error,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Colors.red,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
+                  Consumer<PendingJobProvider>(
+                    builder: (
+                      BuildContext context,
+                      PendingJobProvider pendingJobProvider,
+                      Widget child,
+                    ) {
+                      return Expanded(
+                        child: jobsAround.length > 0
+                            ? RefreshIndicator(
+                                onRefresh: () {
+                                  return getPendingRequest();
+                                },
+                                child: ListView.builder(
+                                  itemCount: pendingJobProvider
+                                              .listOfJobs.length ==
+                                          null
+                                      ? 0
+                                      : pendingJobProvider.listOfJobs.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return PendingAppointments(
+                                      job: pendingJobProvider.listOfJobs[index],
+                                      title: pendingJobProvider
+                                          .listOfJobs[index].jobTitle,
+                                      subtitle:
+                                          '${pendingJobProvider.listOfJobs[index].description} - N${double.parse(pendingJobProvider.listOfJobs[index].price.toString())}',
+                                      status: pendingJobProvider
+                                          .listOfJobs[index].status,
+                                      index: index,
+                                    );
+                                  },
+                                ),
+                              )
+                            : Center(
+                                child: Text(
+                                  error,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
+                      );
+                    },
                   ),
                 ],
               ),

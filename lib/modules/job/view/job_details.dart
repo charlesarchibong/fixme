@@ -46,10 +46,63 @@ class _JobDetailsState extends State<JobDetails> {
   }
 
   Widget jobDetails() {
-    return Container();
+    return Column(
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.all(5.0),
+          child: Text(
+            "Job Details".toUpperCase(),
+            style: TextStyle(
+              fontSize: 16.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        jobListTile(
+          'Job Title',
+          widget.job.jobTitle,
+        ),
+        jobListTile(
+          'Job Description',
+          widget.job.description,
+        ),
+        jobListTile(
+          'Job Budget',
+          widget.job.price.toString(),
+        ),
+        jobListTile(
+          'Job Status',
+          widget.job.status,
+        ),
+        // jobListTile('Job Status', widget.job.,),
+        SizedBox(
+          height: 10,
+        ),
+      ],
+    );
   }
 
   Widget jobBidders() {
     return Container();
   }
+
+  Widget jobListTile(String title, String subTitle) {
+    return ListTile(
+      title: Text(
+        title,
+        style: TextStyle(
+          fontSize: 17,
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+      subtitle: Text(
+        subTitle,
+      ),
+    );
+  }
+
+  Widget jobBiddersListTile() {}
 }

@@ -7,8 +7,13 @@ import 'package:quickfix/modules/job/provider/pending_job_provider.dart';
 
 class CustomPopupButton extends StatefulWidget {
   final Job job;
+  final int index;
 
-  const CustomPopupButton({Key key, this.job}) : super(key: key);
+  const CustomPopupButton({
+    Key key,
+    this.job,
+    this.index,
+  }) : super(key: key);
 
   @override
   _CustomPopupButtonState createState() => _CustomPopupButtonState();
@@ -137,6 +142,8 @@ class _CustomPopupButtonState extends State<CustomPopupButton> {
                                               failure.message,
                                             );
                                           }, (bool bidded) {
+                                            _jobProvider.removeJobFromList(
+                                                widget.index);
                                             FlushBarCustomHelper
                                                 .showInfoFlushbar(
                                               context,

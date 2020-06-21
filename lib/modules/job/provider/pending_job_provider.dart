@@ -9,6 +9,8 @@ import 'package:quickfix/util/Utils.dart';
 import 'package:quickfix/util/content_type.dart';
 
 class PendingJobProvider extends ChangeNotifier {
+  List<Job> listOfJobs = List();
+
   Future<Either<Failure, List<Job>>> getPendingRequest() async {
     try {
       User currentUser = await Utils.getUserSession();
@@ -36,8 +38,16 @@ class PendingJobProvider extends ChangeNotifier {
             Job job = Job.fromMap(projects[i]);
             jobs.add(job);
           }
+          listOfJobs = jobs;
+          notifyListeners();
+          return Right(jobs);
+        } else {
+          return Left(
+            Failure(
+              message: 'No jobs available around you yet!',
+            ),
+          );
         }
-        return Right(jobs);
       } else {
         return Left(
           Failure(
@@ -97,5 +107,10 @@ class PendingJobProvider extends ChangeNotifier {
         ),
       );
     }
+  }
+
+  void removeJobFromList(int index) {
+    listOfJobs.removeAt(index);
+    notifyListeners();
   }
 }

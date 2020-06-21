@@ -13,11 +13,9 @@ import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:quickfix/helpers/flush_bar.dart';
 import 'package:quickfix/helpers/notification.dart';
-import 'package:quickfix/models/failure.dart';
 import 'package:quickfix/modules/artisan/view/favorite_screen.dart';
 import 'package:quickfix/modules/dashboard/provider/dashboard_provider.dart';
 import 'package:quickfix/modules/dashboard/view/dashboard.dart';
-import 'package:quickfix/modules/job/model/job.dart';
 import 'package:quickfix/modules/job/provider/pending_job_provider.dart';
 import 'package:quickfix/modules/job/view/my_requests.dart';
 import 'package:quickfix/modules/job/view/pending_appointment.dart';
@@ -58,24 +56,25 @@ class MainScreenState extends State<MainScreen> {
   PageController pageController;
   final _scaffoledKey = GlobalKey<ScaffoldState>();
   int _page = 0;
-  int jobLength = 0;
+  // int jobLength = 0;
   Location location;
   FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
-  Future<void> getPendingRequest() async {
-    // print('snjfna');
-    final pendingJobProvider =
-        Provider.of<PendingJobProvider>(context, listen: false);
-    final fetched = await pendingJobProvider.getPendingRequest();
-    fetched.fold((Failure failure) {
-      setState(() {
-        error = failure.message;
-      });
-    }, (List<Job> jobs) {
-      setState(() {
-        jobLength = jobs.length;
-      });
-    });
-  }
+
+  // Future<void> getPendingRequest() async {
+  //   // print('snjfna');
+  //   final pendingJobProvider =
+  //       Provider.of<PendingJobProvider>(context, listen: false);
+  //   final fetched = await pendingJobProvider.getPendingRequest();
+  //   fetched.fold((Failure failure) {
+  //     setState(() {
+  //       error = failure.message;
+  //     });
+  //   }, (List<Job> jobs) {
+  //     setState(() {
+  //       jobLength = jobs.length;
+  //     });
+  //   });
+  // }
 
   void getMessage() {
     _firebaseMessaging.configure(
@@ -226,11 +225,19 @@ class MainScreenState extends State<MainScreen> {
               ListTile(
                 title: Text('Jobs Around me'),
                 leading: Badge(
-                  badgeContent: Text(
-                    jobLength.toString(),
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
+                  badgeContent: Consumer<PendingJobProvider>(
+                    builder: (
+                      BuildContext context,
+                      PendingJobProvider pendingJobProvider,
+                      Widget child,
+                    ) {
+                      return Text(
+                        pendingJobProvider.listOfJobs.length.toString(),
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      );
+                    },
                   ),
                   badgeColor: Colors.red,
                   animationType: BadgeAnimationType.slide,
@@ -380,11 +387,19 @@ class MainScreenState extends State<MainScreen> {
                   InkWell(
                     onTap: () => navigationTapped(3),
                     child: Badge(
-                      badgeContent: Text(
-                        jobLength.toString(),
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
+                      badgeContent: Consumer<PendingJobProvider>(
+                        builder: (
+                          BuildContext context,
+                          PendingJobProvider pendingJobProvider,
+                          Widget child,
+                        ) {
+                          return Text(
+                            pendingJobProvider.listOfJobs.length.toString(),
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          );
+                        },
                       ),
                       badgeColor: Colors.red,
                       animationType: BadgeAnimationType.slide,
@@ -478,7 +493,6 @@ class MainScreenState extends State<MainScreen> {
       print('on message $token');
     });
     getMessage();
-    getPendingRequest();
     setStatusBar();
     pageController = PageController();
     location = new Location();

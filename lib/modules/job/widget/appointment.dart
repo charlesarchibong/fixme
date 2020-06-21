@@ -9,6 +9,7 @@ class PendingAppointments extends StatelessWidget {
   final String title;
   final String subtitle;
   final String status;
+  final int index;
 
   PendingAppointments({
     Key key,
@@ -16,6 +17,7 @@ class PendingAppointments extends StatelessWidget {
     @required this.subtitle,
     @required this.status,
     @required this.job,
+    @required this.index,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -38,6 +40,7 @@ class PendingAppointments extends StatelessWidget {
         subtitle: Text(this.subtitle),
         trailing: CustomPopupButton(
           job: job,
+          index: index,
         ),
         onTap: () {
           Navigator.of(context).push(
