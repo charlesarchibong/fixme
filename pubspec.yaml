@@ -105,6 +105,7 @@ flutter:
     - assets/icon-logo.png
     - assets/friend1.jpg
     - assets/friend2.jpg
+    - assets/job_details.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

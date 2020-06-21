@@ -56,25 +56,16 @@ class MainScreenState extends State<MainScreen> {
   PageController pageController;
   final _scaffoledKey = GlobalKey<ScaffoldState>();
   int _page = 0;
-  // int jobLength = 0;
+  int jobLength = 0;
   Location location;
   FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
 
-  // Future<void> getPendingRequest() async {
-  //   // print('snjfna');
-  //   final pendingJobProvider =
-  //       Provider.of<PendingJobProvider>(context, listen: false);
-  //   final fetched = await pendingJobProvider.getPendingRequest();
-  //   fetched.fold((Failure failure) {
-  //     setState(() {
-  //       error = failure.message;
-  //     });
-  //   }, (List<Job> jobs) {
-  //     setState(() {
-  //       jobLength = jobs.length;
-  //     });
-  //   });
-  // }
+  Future<void> getPendingRequest() async {
+    // print('snjfna');
+    final pendingJobProvider =
+        Provider.of<PendingJobProvider>(context, listen: false);
+    await pendingJobProvider.getPendingRequest();
+  }
 
   void getMessage() {
     _firebaseMessaging.configure(
@@ -255,11 +246,14 @@ class MainScreenState extends State<MainScreen> {
                 },
               ),
               ListTile(
-                title: Text('My Request(s)'),
+                title: Text('My Job(s)'),
                 leading: FaIcon(FontAwesomeIcons.luggageCart),
                 onTap: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (_) => MyRequests()));
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => MyRequests(),
+                    ),
+                  );
                 },
               ),
               ListTile(
@@ -493,6 +487,7 @@ class MainScreenState extends State<MainScreen> {
       print('on message $token');
     });
     getMessage();
+    getPendingRequest();
     setStatusBar();
     pageController = PageController();
     location = new Location();

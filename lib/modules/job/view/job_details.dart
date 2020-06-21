@@ -38,7 +38,12 @@ class _JobDetailsState extends State<JobDetails> {
         padding: EdgeInsets.fromLTRB(10.0, 0, 10.0, 0),
         child: Column(
           children: <Widget>[
-            SizedBox(height: 10.0),
+            Center(
+              child: Image.asset(
+                'assets/job_details.png',
+                width: 250,
+              ),
+            ),
             _jobDetails(),
             SizedBox(height: 10.0),
             widget.isOwner ? _jobBidders() : Text(''),
@@ -51,19 +56,6 @@ class _JobDetailsState extends State<JobDetails> {
   Widget _jobDetails() {
     return Column(
       children: <Widget>[
-        Padding(
-          padding: EdgeInsets.all(5.0),
-          child: Text(
-            "Job Details".toUpperCase(),
-            style: TextStyle(
-              fontSize: 16.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        SizedBox(
-          height: 10,
-        ),
         _jobListTile(
           'Job Title',
           widget.job.jobTitle,
@@ -74,7 +66,7 @@ class _JobDetailsState extends State<JobDetails> {
         ),
         _jobListTile(
           'Job Budget',
-          widget.job.price.toString(),
+          'N${widget.job.price.toString()}',
         ),
         _jobListTile(
           'Job Status',
