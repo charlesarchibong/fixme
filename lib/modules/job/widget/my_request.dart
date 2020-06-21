@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:quickfix/modules/artisan/view/details.dart';
 import 'package:quickfix/modules/artisan/view/track_artisan.dart';
 import 'package:quickfix/modules/job/model/job.dart';
+import 'package:quickfix/modules/job/view/job_details.dart';
 
 class MyRequestWidget extends StatelessWidget {
   final String title;
@@ -40,9 +40,10 @@ class MyRequestWidget extends StatelessWidget {
         onTap: () {
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (BuildContext context) {
-                return ProductDetails();
-              },
+              builder: (_) => JobDetails(
+                isOwner: true,
+                job: job,
+              ),
             ),
           );
         },
@@ -54,9 +55,6 @@ class MyRequestWidget extends StatelessWidget {
     return PopupMenuButton(
       onSelected: (value) {
         print(value);
-        if (value == 1) {
-          //Navigate to see Job details
-        }
       },
       icon: Icon(
         Icons.more_vert,
@@ -65,25 +63,40 @@ class MyRequestWidget extends StatelessWidget {
       itemBuilder: (context) => [
         PopupMenuItem(
           value: 1,
-          child: Row(
-            children: <Widget>[
-              FaIcon(
-                FontAwesomeIcons.eye,
-                color: Colors.green,
-              ),
-              SizedBox(
-                width: 10.0,
-              ),
-              Text('View Details'),
-            ],
+          child: InkWell(
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => JobDetails(
+                    isOwner: true,
+                    job: job,
+                  ),
+                ),
+              );
+            },
+            child: Row(
+              children: <Widget>[
+                FaIcon(
+                  FontAwesomeIcons.eye,
+                  color: Colors.green,
+                ),
+                SizedBox(
+                  width: 10.0,
+                ),
+                Text('View Job Details'),
+              ],
+            ),
           ),
         ),
         PopupMenuItem(
           value: 4,
           child: InkWell(
             onTap: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (_) => TrackArtisan()));
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => TrackArtisan(),
+                ),
+              );
             },
             child: Row(
               children: <Widget>[
