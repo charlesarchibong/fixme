@@ -39,13 +39,16 @@ class _JobDetailsState extends State<JobDetails> {
         child: Column(
           children: <Widget>[
             SizedBox(height: 10.0),
+            _jobDetails(),
+            SizedBox(height: 10.0),
+            widget.isOwner ? _jobBidders() : Text(''),
           ],
         ),
       ),
     );
   }
 
-  Widget jobDetails() {
+  Widget _jobDetails() {
     return Column(
       children: <Widget>[
         Padding(
@@ -61,23 +64,23 @@ class _JobDetailsState extends State<JobDetails> {
         SizedBox(
           height: 10,
         ),
-        jobListTile(
+        _jobListTile(
           'Job Title',
           widget.job.jobTitle,
         ),
-        jobListTile(
+        _jobListTile(
           'Job Description',
           widget.job.description,
         ),
-        jobListTile(
+        _jobListTile(
           'Job Budget',
           widget.job.price.toString(),
         ),
-        jobListTile(
+        _jobListTile(
           'Job Status',
           widget.job.status,
         ),
-        // jobListTile('Job Status', widget.job.,),
+        // _jobListTile('Job Status', widget.job.,),
         SizedBox(
           height: 10,
         ),
@@ -85,11 +88,11 @@ class _JobDetailsState extends State<JobDetails> {
     );
   }
 
-  Widget jobBidders() {
+  Widget _jobBidders() {
     return Container();
   }
 
-  Widget jobListTile(String title, String subTitle) {
+  Widget _jobListTile(String title, String subTitle) {
     return ListTile(
       title: Text(
         title,
@@ -104,5 +107,5 @@ class _JobDetailsState extends State<JobDetails> {
     );
   }
 
-  Widget jobBiddersListTile() {}
+  Widget _jobBiddersListTile() {}
 }
