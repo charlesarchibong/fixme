@@ -107,6 +107,7 @@ class GridTechnician extends StatelessWidget {
             builder: (BuildContext context) {
               return ProductDetails(
                 userData: userData,
+                distance: distance,
               );
             },
           ),

@@ -8,8 +8,10 @@ import 'package:quickfix/widgets/smooth_star_rating.dart';
 
 class ProductDetails extends StatefulWidget {
   final Map userData;
+  final int distance;
 
-  const ProductDetails({Key key, this.userData}) : super(key: key);
+  const ProductDetails({Key key, this.userData, this.distance})
+      : super(key: key);
 
   @override
   _ProductDetailsState createState() => _ProductDetailsState();
@@ -116,22 +118,25 @@ class _ProductDetailsState extends State<ProductDetails> {
                   ),
                 ),
                 Positioned(
-                  right: -10.0,
+                  right: 30,
                   bottom: 3.0,
-                  child: RawMaterialButton(
-                    onPressed: () {},
-                    fillColor: Colors.white,
-                    shape: CircleBorder(),
-                    elevation: 4.0,
-                    child: Padding(
-                      padding: EdgeInsets.all(5),
-                      child: widget.userData['status'] == "verified"
-                          ? Icon(
-                              Icons.verified_user,
-                              color: Colors.red,
-                              size: 35,
-                            )
-                          : Text(''),
+                  child: Card(
+                    elevation: 7,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(3.0),
+                        child: Text(
+                          '${widget.distance.toString()}km',
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ),
