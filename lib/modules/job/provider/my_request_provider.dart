@@ -68,6 +68,7 @@ class MyRequestProvider extends ChangeNotifier {
         'job_id': job.id,
       };
       Map<String, String> headers = {'Bearer': '$apiKey'};
+      print(headers);
       Response response = await NetworkService().post(
         url: url,
         body: {},
