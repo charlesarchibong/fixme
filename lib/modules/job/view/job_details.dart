@@ -91,7 +91,7 @@ class _JobDetailsState extends State<JobDetails> {
                 ),
               ),
               _jobDetails(),
-              SizedBox(height: 10.0),
+              // SizedBox(height: 4.0),
               widget.isOwner ? _jobBidders() : Text(''),
             ],
           ),
@@ -142,7 +142,7 @@ class _JobDetailsState extends State<JobDetails> {
                 ),
               ),
               SizedBox(
-                height: 5,
+                height: 10,
               ),
               biddersList != null && biddersList.length > 0
                   ? RefreshIndicator(
@@ -156,75 +156,80 @@ class _JobDetailsState extends State<JobDetails> {
                               biddersList == null ? 0 : biddersList.length,
                           itemBuilder: (BuildContext context, int index) {
                             Map bids = biddersList[index];
-                            return ListTile(
-                              title: Text(
-                                "${bids['bidder_info']['user_first_name']} ${bids['bidder_info']['user_last_name']}",
-                                style: TextStyle(
+                            return Container(
+                              margin: EdgeInsets.only(
+                                bottom: 10.0,
+                              ),
+                              child: ListTile(
+                                title: Text(
+                                  "${bids['bidder_info']['user_first_name']} ${bids['bidder_info']['user_last_name']}",
+                                  style: TextStyle(
 //                    fontSize: 15,
-                                  fontWeight: FontWeight.w900,
+                                    fontWeight: FontWeight.w900,
+                                  ),
                                 ),
-                              ),
-                              leading: CircleAvatar(
-                                radius: 25.0,
-                                backgroundImage: NetworkImage(
-                                  "${Constants.uploadUrl + bids['bidder_info']['profile_pic_file_name']}",
+                                leading: CircleAvatar(
+                                  radius: 25.0,
+                                  backgroundImage: NetworkImage(
+                                    "${Constants.uploadUrl + bids['bidder_info']['profile_pic_file_name']}",
+                                  ),
                                 ),
-                              ),
-                              trailing: jobDetailsPopButton(),
-                              subtitle: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Row(
-                                    children: <Widget>[
-                                      SmoothStarRating(
-                                        starCount: 1,
-                                        color: Constants.ratingBG,
-                                        allowHalfRating: true,
-                                        rating: 5.0,
-                                        size: 12.0,
-                                      ),
-                                      SizedBox(width: 6.0),
-                                      Text(
-                                        "5.0 (${bids['bidder_info']['reviews']} Reviews)",
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w300,
+                                trailing: jobDetailsPopButton(),
+                                subtitle: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Row(
+                                      children: <Widget>[
+                                        SmoothStarRating(
+                                          starCount: 1,
+                                          color: Constants.ratingBG,
+                                          allowHalfRating: true,
+                                          rating: 5.0,
+                                          size: 12.0,
                                         ),
+                                        SizedBox(width: 6.0),
+                                        Text(
+                                          "5.0 (${bids['bidder_info']['reviews']} Reviews)",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w300,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 6.0),
+                                    Text(
+                                      "Bid Price - N${bids['bidding_price']}",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
                                       ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 6.0),
-                                  Text(
-                                    "Bid Price - N${bids['bidding_price']}",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
                                     ),
-                                  ),
-                                  SizedBox(height: 6.0),
-                                  Text(
-                                    "Distance - ${bids['bidder_info']['distance']}km",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
+                                    SizedBox(height: 6.0),
+                                    Text(
+                                      "Distance - ${bids['bidder_info']['distance']}km",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (BuildContext context) {
+                                        return ProductDetails(
+                                          userData: bids['bidder_info'],
+                                          distance: bids['bidder_info']
+                                              ['distance'],
+                                        );
+                                      },
+                                    ),
+                                  );
+                                },
                               ),
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (BuildContext context) {
-                                      return ProductDetails(
-                                        userData: bids['bidder_info'],
-                                        distance: bids['bidder_info']
-                                            ['distance'],
-                                      );
-                                    },
-                                  ),
-                                );
-                              },
                             );
                           },
                         ),
