@@ -58,7 +58,7 @@ class MyRequestProvider extends ChangeNotifier {
     }
   }
 
-  Future<Either<Failure, List<Map>>> getJobBidders(Job job) async {
+  Future<Either<Failure, List>> getJobBidders(Job job) async {
     try {
       User currentUser = await Utils.getUserSession();
       String apiKey = await Utils.getApiKey();
@@ -76,16 +76,12 @@ class MyRequestProvider extends ChangeNotifier {
         headers: headers,
         contentType: ContentType.JSON,
       );
-      debugPrint(response.data.toString());
+      print(response.data);
       if (response.statusCode == 200 && response.data['reqRes'] == 'true') {
-        List projects = response.data['projects'] as List;
-        List<Job> jobs = List();
-        if (projects.length > 0) {
-          for (var i = 0; i < projects.length; i++) {
-            Job job = Job.fromMap(projects[i]);
-            jobs.add(job);
-          }
-
+        List bidders = response.data['projectBids'] as List;
+        // print('rrerh');
+        if (bidders.length > 0) {
+          return Right(bidders);
           //Return Right HEre
         } else {
           return Left(

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quickfix/helpers/flush_bar.dart';
 import 'package:quickfix/models/failure.dart';
+import 'package:quickfix/modules/artisan/view/details.dart';
 import 'package:quickfix/modules/job/model/job.dart';
 import 'package:quickfix/modules/job/provider/my_request_provider.dart';
 import 'package:quickfix/util/const.dart';
-import 'package:quickfix/util/foods.dart';
 import 'package:quickfix/widgets/smooth_star_rating.dart';
 
 class JobDetails extends StatefulWidget {
@@ -25,22 +25,27 @@ class JobDetails extends StatefulWidget {
 }
 
 class _JobDetailsState extends State<JobDetails> {
-  List<Map> biddersList = List();
+  List biddersList = List();
+  String error = '';
   bool loading = true;
-  Future getBidders() async {
+  Future<void> getBidders() async {
     final myRequestProvider = Provider.of<MyRequestProvider>(
       context,
       listen: false,
     );
     final gotten = await myRequestProvider.getJobBidders(widget.job);
     gotten.fold((Failure failure) {
+      setState(() {
+        loading = false;
+        error = failure.message;
+      });
       FlushBarCustomHelper.showErrorFlushbar(
         context,
         'Error',
         failure.message,
       );
-    }, (List<Map> bidders) {
-      debugPrint(bidders.toString());
+    }, (List bidders) {
+      print(bidders.toString());
       setState(() {
         loading = false;
         biddersList = bidders;
@@ -74,20 +79,22 @@ class _JobDetailsState extends State<JobDetails> {
           ),
         ),
       ),
-      body: Padding(
-        padding: EdgeInsets.fromLTRB(10.0, 0, 10.0, 0),
-        child: Column(
-          children: <Widget>[
-            Center(
-              child: Image.asset(
-                'assets/job_details.png',
-                width: 250,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(10.0, 0, 10.0, 0),
+          child: Column(
+            children: <Widget>[
+              Center(
+                child: Image.asset(
+                  'assets/job_details.png',
+                  width: 250,
+                ),
               ),
-            ),
-            _jobDetails(),
-            SizedBox(height: 10.0),
-            widget.isOwner ? _jobBidders() : Text(''),
-          ],
+              _jobDetails(),
+              SizedBox(height: 10.0),
+              widget.isOwner ? _jobBidders() : Text(''),
+            ],
+          ),
         ),
       ),
     );
@@ -123,59 +130,111 @@ class _JobDetailsState extends State<JobDetails> {
   Widget _jobBidders() {
     return loading
         ? CircularProgressIndicator()
-        : biddersList.length > 0
-            ? ListView.builder(
-                shrinkWrap: true,
-                primary: false,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: technicians == null ? 0 : technicians.length,
-                itemBuilder: (BuildContext context, int index) {
-                  Map food = technicians[index];
-                  if (index >= 3) {
-                    return null;
-                  } else {
-                    return ListTile(
-                      title: Text(
-                        "${food['name']}",
-                        style: TextStyle(
+        : Column(
+            children: <Widget>[
+              Center(
+                child: Text(
+                  'Job Bidders',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              biddersList != null && biddersList.length > 0
+                  ? RefreshIndicator(
+                      onRefresh: () => getBidders(),
+                      child: SingleChildScrollView(
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          primary: false,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount:
+                              biddersList == null ? 0 : biddersList.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            Map bids = biddersList[index];
+                            return ListTile(
+                              title: Text(
+                                "${bids['bidder_info']['user_first_name']} ${bids['bidder_info']['user_last_name']}",
+                                style: TextStyle(
 //                    fontSize: 15,
-                          fontWeight: FontWeight.w900,
+                                  fontWeight: FontWeight.w900,
+                                ),
+                              ),
+                              leading: CircleAvatar(
+                                radius: 25.0,
+                                backgroundImage: NetworkImage(
+                                  "${Constants.uploadUrl + bids['bidder_info']['profile_pic_file_name']}",
+                                ),
+                              ),
+                              trailing: jobDetailsPopButton(),
+                              subtitle: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Row(
+                                    children: <Widget>[
+                                      SmoothStarRating(
+                                        starCount: 1,
+                                        color: Constants.ratingBG,
+                                        allowHalfRating: true,
+                                        rating: 5.0,
+                                        size: 12.0,
+                                      ),
+                                      SizedBox(width: 6.0),
+                                      Text(
+                                        "5.0 (${bids['bidder_info']['reviews']} Reviews)",
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w300,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 6.0),
+                                  Text(
+                                    "Bid Price - N${bids['bidding_price']}",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(height: 6.0),
+                                  Text(
+                                    "Distance - ${bids['bidder_info']['distance']}km",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) {
+                                      return ProductDetails(
+                                        userData: bids['bidder_info'],
+                                        distance: bids['bidder_info']
+                                            ['distance'],
+                                      );
+                                    },
+                                  ),
+                                );
+                              },
+                            );
+                          },
                         ),
                       ),
-                      leading: CircleAvatar(
-                        radius: 25.0,
-                        backgroundImage: AssetImage(
-                          "${food['img']}",
-                        ),
-                      ),
-                      trailing: jobDetailsPopButton(),
-                      subtitle: Row(
-                        children: <Widget>[
-                          SmoothStarRating(
-                            starCount: 1,
-                            color: Constants.ratingBG,
-                            allowHalfRating: true,
-                            rating: 5.0,
-                            size: 12.0,
-                          ),
-                          SizedBox(width: 6.0),
-                          Text(
-                            "5.0 (23 Reviews)",
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w300,
-                            ),
-                          ),
-                        ],
-                      ),
-                      onTap: () {},
-                    );
-                  }
-                },
-              )
-            : Text(
-                'No Artisan has bid this job yet!',
-              );
+                    )
+                  : Text(
+                      'No Artisan has bid this job yet!',
+                    )
+            ],
+          );
   }
 
   Widget _jobListTile(String title, String subTitle) {
@@ -224,13 +283,13 @@ class _JobDetailsState extends State<JobDetails> {
           child: Row(
             children: <Widget>[
               Icon(
-                Icons.check,
-                color: Colors.green,
+                Icons.cancel,
+                color: Colors.red,
               ),
               SizedBox(
                 width: 10.0,
               ),
-              Text('Declined'),
+              Text('Decline'),
             ],
           ),
         ),
