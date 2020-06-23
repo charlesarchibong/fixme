@@ -30,7 +30,7 @@ class GridTechnician extends StatelessWidget {
         shrinkWrap: true,
         primary: false,
         children: <Widget>[
-          Stack(
+          Stack(  
             children: <Widget>[
               Container(
                 height: MediaQuery.of(context).size.height / 3.6,

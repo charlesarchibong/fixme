@@ -174,7 +174,10 @@ class _JobDetailsState extends State<JobDetails> {
                                     "${Constants.uploadUrl + bids['bidder_info']['profile_pic_file_name']}",
                                   ),
                                 ),
-                                trailing: jobDetailsPopButton(),
+                                trailing: jobDetailsPopButton(
+                                  bidderMobile: bids['bidder_info']['bid_id'],
+                                  bidId: bids['bidder_info']['id'],
+                                ),
                                 subtitle: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -208,7 +211,7 @@ class _JobDetailsState extends State<JobDetails> {
                                     ),
                                     SizedBox(height: 6.0),
                                     Text(
-                                      "Distance - ${bids['bidder_info']['distance']}km",
+                                      "Distance - ${bids['distance']}km",
                                       style: TextStyle(
                                         fontSize: 12,
                                         fontWeight: FontWeight.bold,
@@ -221,10 +224,8 @@ class _JobDetailsState extends State<JobDetails> {
                                     MaterialPageRoute(
                                       builder: (BuildContext context) {
                                         return ProductDetails(
-                                          userData: bids['bidder_info'],
-                                          distance: bids['bidder_info']
-                                              ['distance'],
-                                        );
+                                            userData: bids['bidder_info'],
+                                            distance: bids['distance']);
                                       },
                                     ),
                                   );
@@ -257,10 +258,40 @@ class _JobDetailsState extends State<JobDetails> {
     );
   }
 
-  Widget jobDetailsPopButton() {
+  Widget jobDetailsPopButton({
+    int bidId,
+    String bidderMobile,
+  }) {
+    final myRequestProvider = Provider.of<MyRequestProvider>(
+      context,
+      listen: false,
+    );
     return PopupMenuButton(
-      onSelected: (value) {
-        if (value == 1) {}
+      onSelected: (value) async {
+        if (value == 1) {
+          FlushBarCustomHelper.showInfoFlushbar(
+            context,
+            'Processing',
+            'Approving this bid',
+          );
+          final approved = await myRequestProvider.approveBidder(
+            bidId,
+            bidderMobile,
+          );
+          approved.fold((Failure failure) {
+            FlushBarCustomHelper.showErrorFlushbar(
+              context,
+              'Error',
+              failure.message,
+            );
+          }, (bool approved) {
+            FlushBarCustomHelper.showInfoFlushbar(
+              context,
+              'Success',
+              'Bid has been approved successfully!',
+            );
+          });
+        }
         if (value == 2) {}
       },
       icon: Icon(
@@ -279,7 +310,7 @@ class _JobDetailsState extends State<JobDetails> {
               SizedBox(
                 width: 10.0,
               ),
-              Text('Accept'),
+              Text('Approve this bid'),
             ],
           ),
         ),
