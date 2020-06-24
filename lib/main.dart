@@ -8,6 +8,7 @@ import 'package:quickfix/modules/job/provider/my_request_provider.dart';
 import 'package:quickfix/modules/job/provider/pending_job_provider.dart';
 import 'package:quickfix/modules/job/provider/post_job_provider.dart';
 import 'package:quickfix/modules/profile/provider/profile_provider.dart';
+import 'package:quickfix/modules/search/provider/search_provider.dart';
 import 'package:quickfix/providers/app_provider.dart';
 import 'package:quickfix/util/const.dart';
 
@@ -22,6 +23,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => DashBoardProvider()),
         ChangeNotifierProvider(create: (_) => PendingJobProvider()),
         ChangeNotifierProvider(create: (_) => MyRequestProvider()),
+        ChangeNotifierProvider(create: (_) => SearchProvider()),
       ],
       child: MyApp(),
     ),
