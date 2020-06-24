@@ -161,12 +161,27 @@ class _JobDetailsState extends State<JobDetails> {
                                 bottom: 10.0,
                               ),
                               child: ListTile(
-                                title: Text(
-                                  "${bids['bidder_info']['user_first_name']} ${bids['bidder_info']['user_last_name']}",
-                                  style: TextStyle(
-//                    fontSize: 15,
-                                    fontWeight: FontWeight.w900,
-                                  ),
+                                title: Row(
+                                  children: <Widget>[
+                                    Text(
+                                      "${bids['bidder_info']['user_first_name']} ${bids['bidder_info']['user_last_name']}",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w900,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      "(${bids['status'][0].toUpperCase()}${bids['status'].substring(1)})",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: _getBidStatusColor(
+                                          bids['status'],
+                                        ),
+                                      ),
+                                    )
+                                  ],
                                 ),
                                 leading: CircleAvatar(
                                   radius: 25.0,
@@ -175,8 +190,9 @@ class _JobDetailsState extends State<JobDetails> {
                                   ),
                                 ),
                                 trailing: jobDetailsPopButton(
-                                  bidderMobile: bids['bidder_info']['bid_id'],
-                                  bidId: bids['bidder_info']['id'],
+                                  bidderMobile: bids['bidder_mobile'],
+                                  bidId: bids['sn'],
+                                  index: index,
                                 ),
                                 subtitle: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
@@ -243,6 +259,16 @@ class _JobDetailsState extends State<JobDetails> {
           );
   }
 
+  Color _getBidStatusColor(String status) {
+    if (status == 'pending') {
+      return Colors.orange;
+    } else if (status == 'accepted') {
+      return Colors.green;
+    } else {
+      return Colors.red;
+    }
+  }
+
   Widget _jobListTile(String title, String subTitle) {
     return ListTile(
       title: Text(
@@ -261,6 +287,7 @@ class _JobDetailsState extends State<JobDetails> {
   Widget jobDetailsPopButton({
     int bidId,
     String bidderMobile,
+    int index,
   }) {
     final myRequestProvider = Provider.of<MyRequestProvider>(
       context,
@@ -292,7 +319,33 @@ class _JobDetailsState extends State<JobDetails> {
             );
           });
         }
-        if (value == 2) {}
+        if (value == 2) {
+          FlushBarCustomHelper.showInfoFlushbar(
+            context,
+            'Processing',
+            'Rejecting this bid',
+          );
+          final approved = await myRequestProvider.rejectBidder(
+            bidId,
+            bidderMobile,
+          );
+          approved.fold((Failure failure) {
+            FlushBarCustomHelper.showErrorFlushbar(
+              context,
+              'Error',
+              failure.message,
+            );
+          }, (bool approved) {
+            FlushBarCustomHelper.showInfoFlushbar(
+              context,
+              'Success',
+              'Bid has been rejected successfully!',
+            );
+            setState(() {
+              biddersList.removeAt(index);
+            });
+          });
+        }
       },
       icon: Icon(
         Icons.more_vert,

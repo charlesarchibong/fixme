@@ -22,6 +22,7 @@ class Constants {
       'https://manager.quickfixnaija.com.ng/user-projects';
   static String getJobBidders = 'https://manager.quickfixnaija.com.ng/get-bids';
   static String approveBid = 'https://manager.quickfixnaija.com.ng/approve-bid';
+  static String rejectBid = 'https://manager.quickfixnaija.com.ng/reject-bid';
 
   //Colors for theme
 //  Color(0xfffcfcff);

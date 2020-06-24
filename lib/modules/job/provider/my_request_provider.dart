@@ -155,4 +155,49 @@ class MyRequestProvider extends ChangeNotifier {
       );
     }
   }
+
+  Future<Either<Failure, bool>> rejectBidder(
+    int bidId,
+    String bidderMobile,
+  ) async {
+    try {
+      User currentUser = await Utils.getUserSession();
+      String apiKey = await Utils.getApiKey();
+      String url = Constants.rejectBid;
+      Map<String, dynamic> body = {
+        'mobile': currentUser.phoneNumber,
+        'bidder_mobile': bidderMobile,
+        'bid_id': bidId,
+      };
+      Map<String, String> headers = {'Bearer': '$apiKey'};
+      print(headers);
+      Response response = await NetworkService().post(
+        url: url,
+        body: {},
+        queryParam: body,
+        headers: headers,
+        contentType: ContentType.JSON,
+      );
+      print(response.data);
+      if (response.statusCode == 200 && response.data['reqRes'] == 'true') {
+        return Right(true);
+      } else {
+        return Left(
+          Failure(
+            message: 'Unable to reject bid, please try again.',
+          ),
+        );
+      }
+    } catch (e) {
+      if (e is DioError) {
+        debugPrint(e.response.data);
+      }
+      print(e.toString());
+      return Left(
+        Failure(
+          message: 'An error occured, please try again!',
+        ),
+      );
+    }
+  }
 }
