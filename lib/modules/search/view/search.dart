@@ -83,12 +83,17 @@ class _SearchScreenState extends State<SearchScreen>
                   ),
                   maxLines: 1,
                   controller: _searchControl,
+                  onSubmitted: (val) {
+                    _searchArtisans(val);
+                  },
                 ),
               ),
             ),
             SizedBox(height: 5.0),
             _loading
-                ? CircularProgressIndicator()
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
                 : Column(
                     children: <Widget>[
                       Padding(
@@ -168,21 +173,32 @@ class _SearchScreenState extends State<SearchScreen>
       listen: false,
     );
     final fetched = await searchProvider.searchArtisan(keyword);
-    fetched.fold((Failure failure) {
+    if (fetched == null) {
       setState(() {
         _loading = false;
       });
       FlushBarCustomHelper.showErrorFlushbar(
         context,
         'Error',
-        failure.message,
+        'No artisan information retrieved, please try again',
       );
-    }, (List artisans) {
-      setState(() {
-        _loading = false;
-        _artisans = artisans;
+    } else {
+      fetched.fold((Failure failure) {
+        setState(() {
+          _loading = false;
+        });
+        FlushBarCustomHelper.showErrorFlushbar(
+          context,
+          'Error',
+          failure.message,
+        );
+      }, (List artisans) {
+        setState(() {
+          _loading = false;
+          _artisans = artisans;
+        });
       });
-    });
+    }
   }
 
   @override
