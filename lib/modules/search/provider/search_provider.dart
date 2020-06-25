@@ -36,7 +36,8 @@ class SearchProvider extends ChangeNotifier {
       );
       print(response.data);
       if (response.statusCode == 200 && response.data['reqRes'] == 'true') {
-        // return Right(true);
+        List users = response.data['users'] as List;
+        return Right(users);
       } else {
         return Left(
           Failure(

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quickfix/helpers/flush_bar.dart';
 import 'package:quickfix/models/failure.dart';
+import 'package:quickfix/modules/artisan/view/details.dart';
 import 'package:quickfix/modules/search/provider/search_provider.dart';
 import 'package:quickfix/util/const.dart';
-import 'package:quickfix/util/foods.dart';
 import 'package:quickfix/widgets/smooth_star_rating.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -16,7 +16,9 @@ class _SearchScreenState extends State<SearchScreen>
     with AutomaticKeepAliveClientMixin<SearchScreen> {
   final TextEditingController _searchControl = new TextEditingController();
   bool _loading = false;
+  String defaultMsg = 'Please enter a name to search for service providers';
   List _artisans = List();
+  String error = '';
 
   @override
   Widget build(BuildContext context) {
@@ -94,69 +96,97 @@ class _SearchScreenState extends State<SearchScreen>
                 ? Center(
                     child: CircularProgressIndicator(),
                   )
-                : Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.all(20.0),
-                        child: Text(
-                          "History",
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ),
-                      ListView.builder(
-                        shrinkWrap: true,
-                        primary: false,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: technicians == null ? 0 : technicians.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          Map food = technicians[index];
-                          if (index >= 3) {
-                            return null;
-                          } else {
-                            return ListTile(
-                              title: Text(
-                                "${food['name']}",
-                                style: TextStyle(
-                                  //                    fontSize: 15,
-                                  fontWeight: FontWeight.w900,
-                                ),
-                              ),
-                              leading: CircleAvatar(
-                                radius: 25.0,
-                                backgroundImage: AssetImage(
-                                  "${food['img']}",
-                                ),
-                              ),
-                              trailing: Text(r"N10"),
-                              subtitle: Row(
-                                children: <Widget>[
-                                  SmoothStarRating(
-                                    starCount: 1,
-                                    color: Constants.ratingBG,
-                                    allowHalfRating: true,
-                                    rating: 5.0,
-                                    size: 12.0,
+                : error.isNotEmpty
+                    ? Center(
+                        child: Text(error),
+                      )
+                    : _artisans.length > 0
+                        ? Column(
+                            children: <Widget>[
+                              Padding(
+                                padding: EdgeInsets.all(20.0),
+                                child: Text(
+                                  "Results",
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w400,
                                   ),
-                                  SizedBox(width: 6.0),
-                                  Text(
-                                    "5.0 (23 Reviews)",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w300,
+                                ),
+                              ),
+                              ListView.builder(
+                                shrinkWrap: true,
+                                primary: false,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount:
+                                    _artisans == null ? 0 : _artisans.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  Map artisan = _artisans[index];
+                                  return ListTile(
+                                    title: Text(
+                                      "${artisan['user_first_name']} ${artisan['user_last_name']}",
+                                      style: TextStyle(
+                                        //                    fontSize: 15,
+                                        fontWeight: FontWeight.w900,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                    leading: CircleAvatar(
+                                      radius: 25.0,
+                                      backgroundImage: NetworkImage(
+                                        "${Constants.uploadUrl + artisan['profile_pic_file_name']}",
+                                      ),
+                                    ),
+                                    trailing: SmoothStarRating(
+                                      starCount: 1,
+                                      color: Constants.ratingBG,
+                                      allowHalfRating: true,
+                                      rating: 5.0,
+                                      size: 12.0,
+                                    ),
+                                    subtitle: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Row(
+                                          children: <Widget>[
+                                            SizedBox(width: 6.0),
+                                            Text(
+                                              "5.0 (${artisan['reviews']} Reviews)",
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w300,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(height: 6.0),
+                                        Text(
+                                          "Distance - ${artisan['distance']}km",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (BuildContext context) {
+                                            return ProductDetails(
+                                                userData: artisan,
+                                                distance: artisan['distance']);
+                                          },
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
                               ),
-                              onTap: () {},
-                            );
-                          }
-                        },
-                      ),
-                    ],
-                  ),
+                            ],
+                          )
+                        : Text(''),
             SizedBox(height: 30),
           ],
         ),
@@ -193,6 +223,15 @@ class _SearchScreenState extends State<SearchScreen>
           failure.message,
         );
       }, (List artisans) {
+        if (artisans.length <= 0) {
+          setState(() {
+            error = 'No artisan found, please search again';
+          });
+        } else {
+          setState(() {
+            error = '';
+          });
+        }
         setState(() {
           _loading = false;
           _artisans = artisans;
