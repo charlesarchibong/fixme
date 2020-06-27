@@ -1,4 +1,4 @@
-package com.jideguru
+package com.jideguru.restaurant_ui_kit
 
 import io.flutter.plugin.common.PluginRegistry
 import io.flutter.plugins.firebasemessaging.FirebaseMessagingPlugin

@@ -2,17 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:provider/provider.dart';
 import 'package:quickfix/modules/auth/provider/login_form_validation.dart';
-import 'package:quickfix/modules/custom/view/splash.dart';
+import 'package:quickfix/modules/custom/view/walkthrough.dart';
 import 'package:quickfix/modules/dashboard/provider/dashboard_provider.dart';
 import 'package:quickfix/modules/job/provider/my_request_provider.dart';
 import 'package:quickfix/modules/job/provider/pending_job_provider.dart';
 import 'package:quickfix/modules/job/provider/post_job_provider.dart';
+import 'package:quickfix/modules/main_screen/view/main_screen.dart';
 import 'package:quickfix/modules/profile/provider/profile_provider.dart';
 import 'package:quickfix/modules/search/provider/search_provider.dart';
 import 'package:quickfix/providers/app_provider.dart';
 import 'package:quickfix/util/const.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+
   runApp(
     MultiProvider(
       providers: [
@@ -25,12 +30,18 @@ void main() {
         ChangeNotifierProvider(create: (_) => MyRequestProvider()),
         ChangeNotifierProvider(create: (_) => SearchProvider()),
       ],
-      child: MyApp(),
+      child: MyApp(
+        sp: prefs,
+      ),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
+  final SharedPreferences sp;
+
+  const MyApp({Key key, this.sp}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     FlutterStatusbarcolor.setStatusBarColor(Constants.darkAccent);
@@ -46,7 +57,7 @@ class MyApp extends StatelessWidget {
           navigatorKey: appProvider.navigatorKey,
           title: Constants.appName,
           theme: appProvider.theme,
-          home: SplashScreen(),
+          home: sp.get('user') != null ? MainScreen() : Walkthrough(),
         );
       },
     );
