@@ -65,10 +65,11 @@ class PostJobProvider extends ChangeNotifier {
         'job_description': job.description,
         'service_id': job.serviceCategory,
         'budget': job.price,
-        'latitude': job.latitude.toString(),
-        'longitude': job.longitude.toString(),
+        // 'latitude': job.latitude.toString(),
+        // 'longitude': job.longitude.toString(),
         'job_address': job.address,
       };
+      print(body);
       Map<String, String> headers = {'Bearer': '$apiKey'};
       Response response = await NetworkService().post(
         url: url,

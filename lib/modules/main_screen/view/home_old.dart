@@ -44,7 +44,7 @@ class _HomeState extends State<HomeW>
       setState(() {
         locationData = loc;
       });
-      getArtisanByLocation();
+      // getArtisanByLocation();
     });
     getArtisanByLocation();
     getUserPhone();
@@ -285,33 +285,37 @@ class _HomeState extends State<HomeW>
 
   Widget _serviceProvidersAroundMe() {
     return users.isNotEmpty
-        ? GridView.builder(
-            shrinkWrap: true,
-            primary: false,
-            physics: NeverScrollableScrollPhysics(),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: MediaQuery.of(context).size.width /
-                  (MediaQuery.of(context).size.height / 1.25),
+        ? RefreshIndicator(
+            onRefresh: () => getArtisanByLocation(),
+            child: GridView.builder(
+              shrinkWrap: true,
+              primary: false,
+              physics: NeverScrollableScrollPhysics(),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: MediaQuery.of(context).size.width /
+                    (MediaQuery.of(context).size.height / 1.25),
+              ),
+              itemCount: users == null ? 0 : users.length,
+              itemBuilder: (BuildContext context, int index) {
+                Map technician = users[index];
+                return GridTechnician(
+                  userData: technician,
+                  mobile: technician['user_mobile'],
+                  img:
+                      Constants.uploadUrl + technician['profile_pic_file_name'],
+                  distance: technician['distance'],
+                  name:
+                      '${technician['user_first_name']} ${technician['user_last_name']}',
+                  rating: double.parse(
+                        technician['user_rating'].toString(),
+                      ) ??
+                      0.0,
+                  raters: technician['reviews'] ?? 0,
+                  serviceArea: technician['service_area'],
+                );
+              },
             ),
-            itemCount: users == null ? 0 : users.length,
-            itemBuilder: (BuildContext context, int index) {
-              Map technician = users[index];
-              return GridTechnician(
-                userData: technician,
-                mobile: technician['user_mobile'],
-                img: Constants.uploadUrl + technician['profile_pic_file_name'],
-                distance: technician['distance'],
-                name:
-                    '${technician['user_first_name']} ${technician['user_last_name']}',
-                rating: double.parse(
-                      technician['user_rating'].toString(),
-                    ) ??
-                    0.0,
-                raters: technician['reviews'] ?? 0,
-                serviceArea: technician['service_area'],
-              );
-            },
           )
         : VideoShimmer();
   }
