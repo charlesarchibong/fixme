@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_shimmer/flutter_shimmer.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:quickfix/helpers/flush_bar.dart';
@@ -8,6 +7,7 @@ import 'package:quickfix/models/failure.dart';
 import 'package:quickfix/modules/auth/view/login.dart';
 import 'package:quickfix/modules/profile/model/bank_code.dart';
 import 'package:quickfix/modules/profile/model/service_image.dart';
+import 'package:quickfix/modules/profile/model/user.dart';
 import 'package:quickfix/modules/profile/provider/profile_provider.dart';
 import 'package:quickfix/modules/profile/widget/edit_profile.dart';
 import 'package:quickfix/modules/profile/widget/service_images.dart';
@@ -30,7 +30,7 @@ class _ProfileState extends State<Profile> {
   bool savingBankDetails = false;
   List<ServiceImage> serviceImages = List();
   TextEditingController _accountNumberController = TextEditingController();
-
+  User user;
   getSubService() async {
     final profileProvider =
         Provider.of<ProfileProvider>(context, listen: false);
@@ -56,6 +56,10 @@ class _ProfileState extends State<Profile> {
     });
   }
 
+  void getUser() async {
+    user = await Utils.getUserSession();
+  }
+
   @override
   void dispose() {
     _accountNumberController.dispose();
@@ -66,6 +70,7 @@ class _ProfileState extends State<Profile> {
   void initState() {
     getSubService();
     getServiceImages();
+    getUser();
     super.initState();
   }
 
@@ -74,182 +79,162 @@ class _ProfileState extends State<Profile> {
     final profileProiver = Provider.of<ProfileProvider>(context, listen: false);
     return Scaffold(
       key: _profileScaffoldKey,
-      body: FutureBuilder(
-        future: Utils.getUserSession(),
-        builder: (context, snapshot) {
-          return Padding(
-            padding: EdgeInsets.fromLTRB(10.0, 15.0, 10.0, 0),
-            child: snapshot.hasData
-                ? ListView(
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                            child: Consumer<ProfileProvider>(
-                                builder: (context, profileProvider, child) {
-                              return _profileImage(profileProvider);
-                            }),
-                          ),
-                          _profileName(snapshot, context)
-                        ],
-                      ),
-                      Divider(),
-                      Container(height: 15.0),
-                      _accountInformation(),
-                      _profileDetailsTiles(
-                        title: 'Full Name',
-                        subTitle: snapshot.data.firstName +
-                            ' ' +
-                            snapshot.data.lastName,
-                        hasTrailing: true,
-                        trailingIcon: FaIcon(
-                          FontAwesomeIcons.edit,
-                          size: 25.0,
-                          color: Colors.grey,
-                        ),
-                        toolTip: 'Edit',
-                        onPressed: () {
-                          showProfilePopUp(context, _profileScaffoldKey,
-                              snapshot.data.firstName, snapshot.data.lastName);
-                        },
-                      ),
-                      _profileDetailsTiles(
-                        title: 'Email',
-                        subTitle: snapshot.data.email,
-                        hasTrailing: false,
-                      ),
-                      _profileDetailsTiles(
-                        title: 'Phone',
-                        subTitle: snapshot.data.fullNumber,
-                        hasTrailing: false,
-                      ),
-                      Divider(),
-                      Container(height: 15.0),
-                      Padding(
-                        padding: EdgeInsets.all(5.0),
-                        child: Text(
-                          "Transaction Information".toUpperCase(),
-                          style: TextStyle(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      _profileDetailsTiles(
-                        title: 'Wallet Balance',
-                        subTitle: 'N3000',
-                        hasTrailing: false,
-                      ),
-                      _profileDetailsTiles(
-                        title: 'Account Number',
-                        subTitle: '0348861021',
-                        hasTrailing: true,
-                        trailingIcon: FaIcon(
-                          FontAwesomeIcons.edit,
-                          size: 25.0,
-                          color: Colors.grey,
-                        ),
-                        toolTip: 'Edit Account Details',
-                        onPressed: () async {
-                          final profileProvider = Provider.of<ProfileProvider>(
-                            context,
-                            listen: false,
-                          );
-                          setState(() {
-                            selected = null;
-                          });
-                          List codes = await profileProvider.getBankCodes();
-                          List<BankCode> listOfBank = List();
-                          listOfBank.clear();
-                          print(codes.length);
-                          for (int i = 0; i < codes.length; i++) {
-                            // String id = codes[i]['id'];
-                            String code = codes[i]['code'];
-                            String name = codes[i]['name'];
-                            print(codes[i]['name']);
-                            BankCode bankCode = BankCode(
-                              code: code,
-                              name: name,
-                              id: 'id',
-                            );
-                            listOfBank.add(bankCode);
-                          }
-                          showEditAccountDetails(
-                            context,
-                            listOfBank,
-                            _accountNumberController,
-                            _formKey,
-                            profileProvider,
-                          );
-                        },
-                      ),
-                      _profileDetailsTiles(
-                        title: 'Bank Name',
-                        subTitle: 'GTBank',
-                        hasTrailing: false,
-                      ),
-                      Divider(),
-                      Container(height: 15.0),
-                      Padding(
-                        padding: EdgeInsets.all(5.0),
-                        child: Text(
-                          "Service Information".toUpperCase(),
-                          style: TextStyle(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        height: 14,
-                      ),
-                      _profileDetailsTiles(
-                        title: 'Service Category',
-                        subTitle: snapshot.data.serviceArea,
-                        hasTrailing: false,
-                      ),
-                      _profileDetailsTiles(
-                        title: 'Service Subcategories',
-                        subTitle: subServices ?? 'No Subcategory available yet',
-                        hasTrailing: true,
-                        trailingIcon: FaIcon(
-                          FontAwesomeIcons.plus,
-                          color: Colors.grey,
-                          size: 25.0,
-                        ),
-                        toolTip: 'Add Subcategory',
-                        onPressed: () async {
-                          _showSubCategoryDialog(context, _profileScaffoldKey);
-                          await getSubService();
-                        },
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      _servicesImages(serviceImages, profileProiver),
-                      Divider(),
-                      _darkTheme(),
-                      Container(
-                        height: 50,
-                      ),
-                    ],
-                  )
-                : Column(
-                    children: <Widget>[
-                      ProfileShimmer(),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      ListTileShimmer(),
-                      ListTileShimmer(),
-                      ListTileShimmer(),
-                    ],
+      body: Padding(
+          padding: EdgeInsets.fromLTRB(10.0, 15.0, 10.0, 0),
+          child: ListView(
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                    child: Consumer<ProfileProvider>(
+                        builder: (context, profileProvider, child) {
+                      return _profileImage(profileProvider);
+                    }),
                   ),
-          );
-        },
-      ),
+                  _profileName(user, context)
+                ],
+              ),
+              Divider(),
+              Container(height: 15.0),
+              _accountInformation(),
+              _profileDetailsTiles(
+                title: 'Full Name',
+                subTitle: '${user.firstName} ${user.lastName}',
+                hasTrailing: true,
+                trailingIcon: FaIcon(
+                  FontAwesomeIcons.edit,
+                  size: 25.0,
+                  color: Colors.grey,
+                ),
+                toolTip: 'Edit',
+                onPressed: () {
+                  showProfilePopUp(context, _profileScaffoldKey, user.firstName,
+                      user.lastName);
+                },
+              ),
+              _profileDetailsTiles(
+                title: 'Email',
+                subTitle: user.email,
+                hasTrailing: false,
+              ),
+              _profileDetailsTiles(
+                title: 'Phone',
+                subTitle: user.fullNumber,
+                hasTrailing: false,
+              ),
+              Divider(),
+              Container(height: 15.0),
+              Padding(
+                padding: EdgeInsets.all(5.0),
+                child: Text(
+                  "Transaction Information",
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              _profileDetailsTiles(
+                title: 'Wallet Balance',
+                subTitle: 'N3000',
+                hasTrailing: false,
+              ),
+              _profileDetailsTiles(
+                title: 'Account Number',
+                subTitle: '0348861021',
+                hasTrailing: true,
+                trailingIcon: FaIcon(
+                  FontAwesomeIcons.edit,
+                  size: 25.0,
+                  color: Colors.grey,
+                ),
+                toolTip: 'Edit Account Details',
+                onPressed: () async {
+                  final profileProvider = Provider.of<ProfileProvider>(
+                    context,
+                    listen: false,
+                  );
+                  setState(() {
+                    selected = null;
+                  });
+                  List codes = await profileProvider.getBankCodes();
+                  List<BankCode> listOfBank = List();
+                  listOfBank.clear();
+                  print(codes.length);
+                  for (int i = 0; i < codes.length; i++) {
+                    // String id = codes[i]['id'];
+                    String code = codes[i]['code'];
+                    String name = codes[i]['name'];
+                    print(codes[i]['name']);
+                    BankCode bankCode = BankCode(
+                      code: code,
+                      name: name,
+                      id: 'id',
+                    );
+                    listOfBank.add(bankCode);
+                  }
+                  showEditAccountDetails(
+                    context,
+                    listOfBank,
+                    _accountNumberController,
+                    _formKey,
+                    profileProvider,
+                  );
+                },
+              ),
+              _profileDetailsTiles(
+                title: 'Bank Name',
+                subTitle: 'GTBank',
+                hasTrailing: false,
+              ),
+              Divider(),
+              Container(height: 15.0),
+              Padding(
+                padding: EdgeInsets.all(5.0),
+                child: Text(
+                  "Service Information",
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Container(
+                height: 14,
+              ),
+              _profileDetailsTiles(
+                title: 'Service Category',
+                subTitle: user.serviceArea,
+                hasTrailing: false,
+              ),
+              _profileDetailsTiles(
+                title: 'Service Subcategories',
+                subTitle: subServices ?? 'No Subcategory available yet',
+                hasTrailing: true,
+                trailingIcon: FaIcon(
+                  FontAwesomeIcons.plus,
+                  color: Colors.grey,
+                  size: 25.0,
+                ),
+                toolTip: 'Add Subcategory',
+                onPressed: () async {
+                  _showSubCategoryDialog(context, _profileScaffoldKey);
+                  await getSubService();
+                },
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              _servicesImages(serviceImages, profileProiver),
+              Divider(),
+              _darkTheme(),
+              Container(
+                height: 50,
+              ),
+            ],
+          )),
     );
   }
 
@@ -384,7 +369,7 @@ class _ProfileState extends State<Profile> {
     return Padding(
       padding: EdgeInsets.all(5.0),
       child: Text(
-        "Account Information".toUpperCase(),
+        "Account Information",
         style: TextStyle(
           fontSize: 16.0,
           fontWeight: FontWeight.bold,
@@ -394,7 +379,7 @@ class _ProfileState extends State<Profile> {
   }
 }
 
-Widget _profileName(AsyncSnapshot snapshot, BuildContext context) {
+Widget _profileName(User snapshot, BuildContext context) {
   return Expanded(
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -403,7 +388,7 @@ Widget _profileName(AsyncSnapshot snapshot, BuildContext context) {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Text(
-              snapshot.data.firstName + ' ' + snapshot.data.lastName,
+              snapshot.firstName + ' ' + snapshot.lastName,
               style: TextStyle(
                 fontSize: 20.0,
                 fontWeight: FontWeight.bold,
@@ -416,7 +401,7 @@ Widget _profileName(AsyncSnapshot snapshot, BuildContext context) {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Text(
-              snapshot.data.email,
+              snapshot.fullNumber,
               style: TextStyle(
                 fontSize: 14.0,
                 fontWeight: FontWeight.bold,
