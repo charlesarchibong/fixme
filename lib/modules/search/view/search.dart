@@ -135,12 +135,12 @@ class _SearchScreenState extends State<SearchScreen>
                                         "${Constants.uploadUrl + artisan['profile_pic_file_name']}",
                                       ),
                                     ),
-                                    trailing: SmoothStarRating(
-                                      starCount: 1,
-                                      color: Constants.ratingBG,
-                                      allowHalfRating: true,
-                                      rating: 5.0,
-                                      size: 12.0,
+                                    trailing: Text(
+                                      " ${artisan['distance']}km",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                     subtitle: Column(
                                       mainAxisAlignment:
@@ -151,22 +151,21 @@ class _SearchScreenState extends State<SearchScreen>
                                         Row(
                                           children: <Widget>[
                                             SizedBox(width: 6.0),
+                                            SmoothStarRating(
+                                              starCount: 5,
+                                              color: Constants.ratingBG,
+                                              allowHalfRating: true,
+                                              rating: 5.0,
+                                              size: 12.0,
+                                            ),
                                             Text(
-                                              "5.0 (${artisan['reviews']} Reviews)",
+                                              "(${artisan['reviews']} Reviews)",
                                               style: TextStyle(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.w300,
                                               ),
                                             ),
                                           ],
-                                        ),
-                                        SizedBox(height: 6.0),
-                                        Text(
-                                          "Distance - ${artisan['distance']}km",
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.bold,
-                                          ),
                                         ),
                                       ],
                                     ),

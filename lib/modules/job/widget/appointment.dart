@@ -48,6 +48,7 @@ class PendingAppointments extends StatelessWidget {
               builder: (_) => JobDetails(
                 isOwner: false,
                 job: job,
+                index: index,
               ),
             ),
           );

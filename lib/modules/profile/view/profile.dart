@@ -500,7 +500,7 @@ Widget _profileImage(ProfileProvider profileProvider) {
                     color: Colors.white,
                   ),
             elevation: 5,
-            color: Colors.red,
+            color: Color.fromRGBO(153, 0, 153, 1.0),
           )
         ],
       );

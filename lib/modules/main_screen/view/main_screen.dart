@@ -13,7 +13,6 @@ import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:quickfix/helpers/flush_bar.dart';
 import 'package:quickfix/helpers/notification.dart';
-import 'package:quickfix/modules/artisan/view/favorite_screen.dart';
 import 'package:quickfix/modules/dashboard/provider/dashboard_provider.dart';
 import 'package:quickfix/modules/dashboard/view/dashboard.dart';
 import 'package:quickfix/modules/job/provider/pending_job_provider.dart';
@@ -282,21 +281,21 @@ class MainScreenState extends State<MainScreen> {
                   navigationTapped(1);
                 },
               ),
-              ListTile(
-                title: Text('Favourite Artisan'),
-                leading: FaIcon(FontAwesomeIcons.heart),
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (
-                        BuildContext context,
-                      ) {
-                        return FavoriteScreen();
-                      },
-                    ),
-                  );
-                },
-              ),
+              // ListTile(
+              //   title: Text('Favourite Artisan'),
+              //   leading: FaIcon(FontAwesomeIcons.heart),
+              //   onTap: () {
+              //     Navigator.of(context).push(
+              //       MaterialPageRoute(
+              //         builder: (
+              //           BuildContext context,
+              //         ) {
+              //           return FavoriteScreen();
+              //         },
+              //       ),
+              //     );
+              //   },
+              // ),
               ListTile(
                 title: Text('My Profile'),
                 leading: FaIcon(
@@ -310,11 +309,11 @@ class MainScreenState extends State<MainScreen> {
                   navigationTapped(4);
                 },
               ),
-              ListTile(
-                title: Text('Settings'),
-                leading: FaIcon(FontAwesomeIcons.cogs),
-                onTap: () {},
-              ),
+              // ListTile(
+              //   title: Text('Settings'),
+              //   leading: FaIcon(FontAwesomeIcons.cogs),
+              //   onTap: () {},
+              // ),
               // AboutListTile(
               //   applicationIcon: Image.asset(
               //     "assets/icon-logo.png",

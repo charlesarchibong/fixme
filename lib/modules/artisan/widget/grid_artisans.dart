@@ -11,6 +11,7 @@ class GridTechnician extends StatelessWidget {
   final int raters;
   final String mobile;
   final Map userData;
+  final String serviceArea;
 
   GridTechnician({
     Key key,
@@ -21,6 +22,7 @@ class GridTechnician extends StatelessWidget {
     @required this.raters,
     @required this.mobile,
     @required this.userData,
+    this.serviceArea,
   }) : super(key: key);
 
   @override
@@ -30,7 +32,7 @@ class GridTechnician extends StatelessWidget {
         shrinkWrap: true,
         primary: false,
         children: <Widget>[
-          Stack(  
+          Stack(
             children: <Widget>[
               Container(
                 height: MediaQuery.of(context).size.height / 3.6,
@@ -81,20 +83,37 @@ class GridTechnician extends StatelessWidget {
           ),
           Padding(
             padding: EdgeInsets.only(bottom: 5.0, top: 2.0),
-            child: Row(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                SmoothStarRating(
-                  starCount: 5,
-                  color: Constants.ratingBG,
-                  allowHalfRating: true,
-                  rating: rating,
-                  size: 10.0,
-                ),
                 Text(
-                  " $rating ($raters Reviews)",
+                  serviceArea,
                   style: TextStyle(
                     fontSize: 11.0,
+                    fontWeight: FontWeight.w900,
                   ),
+                  textAlign: TextAlign.start,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: <Widget>[
+                    SmoothStarRating(
+                      starCount: 5,
+                      color: Constants.ratingBG,
+                      allowHalfRating: true,
+                      rating: rating,
+                      size: 10.0,
+                    ),
+                    Text(
+                      " $rating ($raters Reviews)",
+                      style: TextStyle(
+                        fontSize: 11.0,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

@@ -69,6 +69,7 @@ class _HomeState extends State<HomeW>
         headers: headers,
       );
       var artisans = response.data['sortedUsers'] as List;
+      print(artisans.toString());
       setState(() {
         users = artisans;
       });
@@ -302,9 +303,13 @@ class _HomeState extends State<HomeW>
                 img: Constants.uploadUrl + technician['profile_pic_file_name'],
                 distance: technician['distance'],
                 name:
-                    '${technician['user_first_name']} ${technician['user_last_name']} (${technician['service_area']})',
-                rating: 5.0,
-                raters: 23,
+                    '${technician['user_first_name']} ${technician['user_last_name']}',
+                rating: double.parse(
+                      technician['user_rating'].toString(),
+                    ) ??
+                    0.0,
+                raters: technician['reviews'] ?? 0,
+                serviceArea: technician['service_area'],
               );
             },
           )
