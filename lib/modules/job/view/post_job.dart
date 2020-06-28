@@ -93,6 +93,7 @@ class _PostJobState extends State<PostJob> {
           longitude: first.coordinates.longitude,
           price: int.parse(_jobPriceController.text),
           serviceCategory: jobCategory.id,
+          address: _jobAddressController.text,
         );
         final uploaded = await postJob.uploadJob(job);
         setState(() {
