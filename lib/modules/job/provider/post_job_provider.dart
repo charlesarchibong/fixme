@@ -63,7 +63,7 @@ class PostJobProvider extends ChangeNotifier {
         'mobile': currentUser.phoneNumber,
         'job_title': job.jobTitle,
         'job_description': job.description,
-        'service_category': job.serviceCategory,
+        'service_id': job.serviceCategory,
         'budget': job.price,
         'latitude': job.latitude.toString(),
         'longitude': job.longitude.toString(),
