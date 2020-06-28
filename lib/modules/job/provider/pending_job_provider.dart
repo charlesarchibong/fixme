@@ -15,7 +15,7 @@ class PendingJobProvider extends ChangeNotifier {
     try {
       User currentUser = await Utils.getUserSession();
       String apiKey = await Utils.getApiKey();
-      String url = 'https://manager.quickfixnaija.com.ng/projects-by-service';
+      String url = 'https://manager.fixme.ng/projects-by-service';
       Map<String, dynamic> body = {
         'mobile': currentUser.phoneNumber,
         'service_id': currentUser.serviceId,
@@ -72,7 +72,7 @@ class PendingJobProvider extends ChangeNotifier {
     try {
       User currentUser = await Utils.getUserSession();
       String apiKey = await Utils.getApiKey();
-      String url = 'https://manager.quickfixnaija.com.ng/bid-project';
+      String url = 'https://manager.fixme.ng/bid-project';
       Map<String, dynamic> body = {
         'mobile': currentUser.phoneNumber,
         'job_id': job.id,

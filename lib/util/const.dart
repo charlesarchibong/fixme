@@ -5,26 +5,23 @@ class Constants {
   static String appVersion = "1.0.3";
   static String lagelSee =
       "All Right Reserved, and all information store in this application is secure and is only use for Identification";
-  static String baseUrl = "https://manager.quickfixnaija.com.ng/";
+  static String baseUrl = "https://manager.fixme.ng/";
   static String savedDeviceDetails =
-      "http://manager.quickfixnaija.com.ng/mtk-details-update";
-  static String serviceImageUrl =
-      "https://manager.quickfixnaija.com.ng/service-images";
+      "http://manager.fixme.ng/mtk-details-update";
+  static String serviceImageUrl = "https://manager.fixme.ng/service-images";
   static String createUserUrl = "reg-user";
   static String uploadUrl = 'https://uploads.quickfixnaija.com/thumbnails/';
-  static String updateLocationUrl = 'https://manager.quickfixnaija.com.ng/gpsl';
+  static String updateLocationUrl = 'https://manager.fixme.ng/gpsl';
   static String getArtisanByLocationUrl =
-      'https://manager.quickfixnaija.com.ng/near-artisans';
+      'https://manager.fixme.ng/near-artisans';
   static String loginUserUrl = "m-login";
   static String addSubService = "add-sub-service";
   static String userInfo = "user-info";
-  static String getMyRequestEndpoint =
-      'https://manager.quickfixnaija.com.ng/user-projects';
-  static String getJobBidders = 'https://manager.quickfixnaija.com.ng/get-bids';
-  static String approveBid = 'https://manager.quickfixnaija.com.ng/approve-bid';
-  static String rejectBid = 'https://manager.quickfixnaija.com.ng/reject-bid';
-  static String searchArtisans =
-      'https://manager.quickfixnaija.com.ng/search-artisans';
+  static String getMyRequestEndpoint = 'https://manager.fixme.ng/user-projects';
+  static String getJobBidders = 'https://manager.fixme.ng/get-bids';
+  static String approveBid = 'https://manager.fixme.ng/approve-bid';
+  static String rejectBid = 'https://manager.fixme.ng/reject-bid';
+  static String searchArtisans = 'https://manager.fixme.ng/search-artisans';
 
   //Colors for theme
 //  Color(0xfffcfcff);

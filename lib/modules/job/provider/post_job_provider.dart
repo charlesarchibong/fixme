@@ -22,7 +22,7 @@ class PostJobProvider extends ChangeNotifier {
     try {
       User currentUser = await Utils.getUserSession();
       String apiKey = await Utils.getApiKey();
-      String url = 'https://manager.quickfixnaija.com.ng/service-list';
+      String url = 'https://manager.fixme.ng/service-list';
       Map<String, String> body = {
         'mobile': currentUser.phoneNumber,
       };
@@ -58,7 +58,7 @@ class PostJobProvider extends ChangeNotifier {
     try {
       User currentUser = await Utils.getUserSession();
       String apiKey = await Utils.getApiKey();
-      String url = 'https://manager.quickfixnaija.com.ng/new-project';
+      String url = 'https://manager.fixme.ng/new-project';
       Map<String, dynamic> body = {
         'mobile': currentUser.phoneNumber,
         'job_title': job.jobTitle,

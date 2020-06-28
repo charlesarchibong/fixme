@@ -209,7 +209,7 @@ class ProfileProvider extends ChangeNotifier {
   Future<Either<Failure, bool>> updateProfile(
       String firstName, String lastName) async {
     try {
-      String url = 'http://manager.quickfixnaija.com.ng/e-f-n';
+      String url = 'http://manager.fixme.ng/e-f-n';
       User currentUser = await Utils.getUserSession();
       String apiKey = await Utils.getApiKey();
       Map<String, String> body = {
@@ -237,7 +237,7 @@ class ProfileProvider extends ChangeNotifier {
   }
 
   Future<List> getBankCodes() async {
-    String url = 'http://manager.quickfixnaija.com.ng/g-b-info';
+    String url = 'http://manager.fixme.ng/g-b-info';
     User currentUser = await Utils.getUserSession();
     String apiKey = await Utils.getApiKey();
     Map<String, String> body = {
@@ -260,7 +260,7 @@ class ProfileProvider extends ChangeNotifier {
   Future<Either<Failure, bool>> updateBankDetails(
       BankCode bankCode, String accountNumber) async {
     try {
-      String url = 'http://manager.quickfixnaija.com.ng/s-u-b-i';
+      String url = 'http://manager.fixme.ng/s-u-b-i';
       User currentUser = await Utils.getUserSession();
       String apiKey = await Utils.getApiKey();
       Map<String, String> body = {
