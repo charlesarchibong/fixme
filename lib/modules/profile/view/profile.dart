@@ -25,12 +25,19 @@ BankCode selected;
 
 class _ProfileState extends State<Profile> {
   final _profileScaffoldKey = GlobalKey<ScaffoldState>();
+
   final _formKey = GlobalKey<FormState>();
+
   String subServices;
+
   bool savingBankDetails = false;
+
   List<ServiceImage> serviceImages = List();
+
   TextEditingController _accountNumberController = TextEditingController();
+
   User user;
+
   getSubService() async {
     final profileProvider =
         Provider.of<ProfileProvider>(context, listen: false);
@@ -41,8 +48,10 @@ class _ProfileState extends State<Profile> {
   }
 
   getServiceImages() async {
-    final profileProvider =
-        Provider.of<ProfileProvider>(context, listen: false);
+    final profileProvider = Provider.of<ProfileProvider>(
+      context,
+      listen: false,
+    );
     final images = await profileProvider.getServiceImagesFromServer();
     images.fold((Failure failure) {
       print(failure.message);
@@ -79,162 +88,170 @@ class _ProfileState extends State<Profile> {
     final profileProiver = Provider.of<ProfileProvider>(context, listen: false);
     return Scaffold(
       key: _profileScaffoldKey,
-      body: Padding(
-          padding: EdgeInsets.fromLTRB(10.0, 15.0, 10.0, 0),
-          child: ListView(
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                    child: Consumer<ProfileProvider>(
-                        builder: (context, profileProvider, child) {
-                      return _profileImage(profileProvider);
-                    }),
-                  ),
-                  _profileName(user, context)
-                ],
-              ),
-              Divider(),
-              Container(height: 15.0),
-              _accountInformation(),
-              _profileDetailsTiles(
-                title: 'Full Name',
-                subTitle: '${user.firstName} ${user.lastName}',
-                hasTrailing: true,
-                trailingIcon: FaIcon(
-                  FontAwesomeIcons.edit,
-                  size: 25.0,
-                  color: Colors.grey,
-                ),
-                toolTip: 'Edit',
-                onPressed: () {
-                  showProfilePopUp(context, _profileScaffoldKey, user.firstName,
-                      user.lastName);
-                },
-              ),
-              _profileDetailsTiles(
-                title: 'Email',
-                subTitle: user.email,
-                hasTrailing: false,
-              ),
-              _profileDetailsTiles(
-                title: 'Phone',
-                subTitle: user.fullNumber,
-                hasTrailing: false,
-              ),
-              Divider(),
-              Container(height: 15.0),
-              Padding(
-                padding: EdgeInsets.all(5.0),
-                child: Text(
-                  "Transaction Information",
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              _profileDetailsTiles(
-                title: 'Wallet Balance',
-                subTitle: 'N3000',
-                hasTrailing: false,
-              ),
-              _profileDetailsTiles(
-                title: 'Account Number',
-                subTitle: '0348861021',
-                hasTrailing: true,
-                trailingIcon: FaIcon(
-                  FontAwesomeIcons.edit,
-                  size: 25.0,
-                  color: Colors.grey,
-                ),
-                toolTip: 'Edit Account Details',
-                onPressed: () async {
-                  final profileProvider = Provider.of<ProfileProvider>(
-                    context,
-                    listen: false,
-                  );
-                  setState(() {
-                    selected = null;
-                  });
-                  List codes = await profileProvider.getBankCodes();
-                  List<BankCode> listOfBank = List();
-                  listOfBank.clear();
-                  print(codes.length);
-                  for (int i = 0; i < codes.length; i++) {
-                    // String id = codes[i]['id'];
-                    String code = codes[i]['code'];
-                    String name = codes[i]['name'];
-                    print(codes[i]['name']);
-                    BankCode bankCode = BankCode(
-                      code: code,
-                      name: name,
-                      id: 'id',
-                    );
-                    listOfBank.add(bankCode);
-                  }
-                  showEditAccountDetails(
-                    context,
-                    listOfBank,
-                    _accountNumberController,
-                    _formKey,
-                    profileProvider,
-                  );
-                },
-              ),
-              _profileDetailsTiles(
-                title: 'Bank Name',
-                subTitle: 'GTBank',
-                hasTrailing: false,
-              ),
-              Divider(),
-              Container(height: 15.0),
-              Padding(
-                padding: EdgeInsets.all(5.0),
-                child: Text(
-                  "Service Information",
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              Container(
-                height: 14,
-              ),
-              _profileDetailsTiles(
-                title: 'Service Category',
-                subTitle: user.serviceArea,
-                hasTrailing: false,
-              ),
-              _profileDetailsTiles(
-                title: 'Service Subcategories',
-                subTitle: subServices ?? 'No Subcategory available yet',
-                hasTrailing: true,
-                trailingIcon: FaIcon(
-                  FontAwesomeIcons.plus,
-                  color: Colors.grey,
-                  size: 25.0,
-                ),
-                toolTip: 'Add Subcategory',
-                onPressed: () async {
-                  _showSubCategoryDialog(context, _profileScaffoldKey);
-                  await getSubService();
-                },
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              _servicesImages(serviceImages, profileProiver),
-              Divider(),
-              _darkTheme(),
-              Container(
+      body: user == null
+          ? Center(
+              child: Container(
                 height: 50,
+                width: 50,
+                child: CircularProgressIndicator(),
               ),
-            ],
-          )),
+            )
+          : Padding(
+              padding: EdgeInsets.fromLTRB(10.0, 15.0, 10.0, 0),
+              child: ListView(
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                        child: Consumer<ProfileProvider>(
+                            builder: (context, profileProvider, child) {
+                          return _profileImage(profileProvider);
+                        }),
+                      ),
+                      _profileName(user, context)
+                    ],
+                  ),
+                  Divider(),
+                  Container(height: 15.0),
+                  _accountInformation(),
+                  _profileDetailsTiles(
+                    title: 'Full Name',
+                    subTitle: '${user.firstName} ${user.lastName}',
+                    hasTrailing: true,
+                    trailingIcon: FaIcon(
+                      FontAwesomeIcons.edit,
+                      size: 25.0,
+                      color: Colors.grey,
+                    ),
+                    toolTip: 'Edit',
+                    onPressed: () {
+                      showProfilePopUp(context, _profileScaffoldKey,
+                          user.firstName, user.lastName);
+                    },
+                  ),
+                  _profileDetailsTiles(
+                    title: 'Email',
+                    subTitle: user.email,
+                    hasTrailing: false,
+                  ),
+                  _profileDetailsTiles(
+                    title: 'Phone',
+                    subTitle: user.fullNumber,
+                    hasTrailing: false,
+                  ),
+                  Divider(),
+                  Container(height: 15.0),
+                  Padding(
+                    padding: EdgeInsets.all(5.0),
+                    child: Text(
+                      "Transaction Information",
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  _profileDetailsTiles(
+                    title: 'Wallet Balance',
+                    subTitle: 'N3000',
+                    hasTrailing: false,
+                  ),
+                  _profileDetailsTiles(
+                    title: 'Account Number',
+                    subTitle: '0348861021',
+                    hasTrailing: true,
+                    trailingIcon: FaIcon(
+                      FontAwesomeIcons.edit,
+                      size: 25.0,
+                      color: Colors.grey,
+                    ),
+                    toolTip: 'Edit Account Details',
+                    onPressed: () async {
+                      final profileProvider = Provider.of<ProfileProvider>(
+                        context,
+                        listen: false,
+                      );
+                      setState(() {
+                        selected = null;
+                      });
+                      List codes = await profileProvider.getBankCodes();
+                      List<BankCode> listOfBank = List();
+                      listOfBank.clear();
+                      print(codes.length);
+                      for (int i = 0; i < codes.length; i++) {
+                        // String id = codes[i]['id'];
+                        String code = codes[i]['code'];
+                        String name = codes[i]['name'];
+                        print(codes[i]['name']);
+                        BankCode bankCode = BankCode(
+                          code: code,
+                          name: name,
+                          id: 'id',
+                        );
+                        listOfBank.add(bankCode);
+                      }
+                      showEditAccountDetails(
+                        context,
+                        listOfBank,
+                        _accountNumberController,
+                        _formKey,
+                        profileProvider,
+                      );
+                    },
+                  ),
+                  _profileDetailsTiles(
+                    title: 'Bank Name',
+                    subTitle: 'GTBank',
+                    hasTrailing: false,
+                  ),
+                  Divider(),
+                  Container(height: 15.0),
+                  Padding(
+                    padding: EdgeInsets.all(5.0),
+                    child: Text(
+                      "Service Information",
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    height: 14,
+                  ),
+                  _profileDetailsTiles(
+                    title: 'Service Category',
+                    subTitle: user.serviceArea,
+                    hasTrailing: false,
+                  ),
+                  _profileDetailsTiles(
+                    title: 'Service Subcategories',
+                    subTitle: subServices ?? 'No Subcategory available yet',
+                    hasTrailing: true,
+                    trailingIcon: FaIcon(
+                      FontAwesomeIcons.plus,
+                      color: Colors.grey,
+                      size: 25.0,
+                    ),
+                    toolTip: 'Add Subcategory',
+                    onPressed: () async {
+                      _showSubCategoryDialog(context, _profileScaffoldKey);
+                      await getSubService();
+                    },
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  _servicesImages(serviceImages, profileProiver),
+                  Divider(),
+                  _darkTheme(),
+                  Container(
+                    height: 50,
+                  ),
+                ],
+              )),
     );
   }
 

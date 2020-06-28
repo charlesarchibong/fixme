@@ -31,12 +31,24 @@ class Constants {
 //  static Color darkAccent = Color(0xffFFA000);
   static Color lightBG = Color(0xfffcfcff);
   static Color darkBG = Colors.black;
-  static Color ratingBG = Colors.red[600];
-  static Color lightAccent = Colors.red;
-  static Color darkAccent = Colors.red;
-
+  static Color ratingBG = Color.fromRGBO(153, 0, 153, 1.0);
+  static Color lightAccent = Color.fromRGBO(153, 0, 153, 1.0);
+  static Color darkAccent = Color.fromRGBO(153, 0, 153, 1.0);
+  static Map<int, Color> colorScratch = {
+    50: Color.fromRGBO(153, 0, 153, .1),
+    100: Color.fromRGBO(153, 0, 153, .2),
+    200: Color.fromRGBO(153, 0, 153, .3),
+    300: Color.fromRGBO(153, 0, 153, .4),
+    400: Color.fromRGBO(153, 0, 153, .5),
+    500: Color.fromRGBO(153, 0, 153, .6),
+    600: Color.fromRGBO(153, 0, 153, .7),
+    700: Color.fromRGBO(153, 0, 153, .8),
+    800: Color.fromRGBO(153, 0, 153, .9),
+    900: Color.fromRGBO(153, 0, 153, 1),
+  };
+  // MaterialColor colorCustom = ;
   static ThemeData lightTheme = ThemeData(
-    primarySwatch: Colors.red,
+    primarySwatch: MaterialColor(0xFF880E4F, colorScratch),
     // brightness: Brightness.light,
     backgroundColor: darkAccent,
     primaryColor: lightPrimary,
@@ -44,7 +56,7 @@ class Constants {
     fontFamily: 'Popins',
     cursorColor: lightAccent,
     brightness: Brightness.light,
-    textSelectionColor: Colors.red,
+    textSelectionColor: Color.fromRGBO(153, 0, 153, 1),
     scaffoldBackgroundColor: lightBG,
     appBarTheme: AppBarTheme(
       textTheme: TextTheme(),
@@ -57,7 +69,7 @@ class Constants {
   static ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
     backgroundColor: darkAccent,
-    textSelectionColor: Colors.red,
+    textSelectionColor: Color.fromRGBO(153, 0, 153, 1),
     primaryColor: darkPrimary,
     accentColor: darkAccent,
     scaffoldBackgroundColor: darkBG,
