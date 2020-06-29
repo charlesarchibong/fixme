@@ -74,18 +74,6 @@ class _PostJobState extends State<PostJob> {
         var first = addresses.first;
         print("${first.featureName} : ${first.coordinates}");
 
-        if (jobCategory == null) {
-          setState(() {
-            loading = false;
-          });
-          debugPrint('Error');
-          FlushBarCustomHelper.showErrorFlushbar(
-            context,
-            'Error',
-            'Please select a job category!',
-          );
-          return;
-        }
         Job job = Job(
           description: _jobDescriptionController.text,
           jobTitle: _jobTitleController.text,
@@ -406,10 +394,25 @@ class _PostJobState extends State<PostJob> {
                                 ),
                               ),
                               onPressed: () async {
-                                setState(() {
-                                  loading = true;
-                                });
-                                await uploadJob();
+                                if (_formKey.currentState.validate()) {
+                                  if (jobCategory == null) {
+                                    setState(() {
+                                      loading = false;
+                                    });
+                                    debugPrint('Error');
+                                    FlushBarCustomHelper.showErrorFlushbar(
+                                      context,
+                                      'Error',
+                                      'Please select a job category!',
+                                    );
+                                    return;
+                                  }
+                                  // print('bby uploading');
+                                  setState(() {
+                                    loading = true;
+                                  });
+                                  await uploadJob();
+                                }
                               },
                               color: Theme.of(context).accentColor,
                             ),
