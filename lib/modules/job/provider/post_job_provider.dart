@@ -78,6 +78,7 @@ class PostJobProvider extends ChangeNotifier {
         headers: headers,
         contentType: ContentType.JSON,
       );
+      print(response.data);
       if (response.statusCode == 200 && response.data['reqRes'] == 'true') {
         return Right(true);
       } else {

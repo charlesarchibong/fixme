@@ -46,7 +46,12 @@ class _HomeState extends State<HomeW>
       });
       // getArtisanByLocation();
     });
-    getArtisanByLocation();
+    Future.delayed(
+        Duration(
+          seconds: 10,
+        ), () {
+      getArtisanByLocation();
+    });
     getUserPhone();
     super.initState();
   }

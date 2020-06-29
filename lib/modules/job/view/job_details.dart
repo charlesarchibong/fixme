@@ -32,28 +32,30 @@ class _JobDetailsState extends State<JobDetails> {
   String error = '';
   bool loading = true;
   Future<void> getBidders() async {
-    final myRequestProvider = Provider.of<MyRequestProvider>(
-      context,
-      listen: false,
-    );
-    final gotten = await myRequestProvider.getJobBidders(widget.job);
-    gotten.fold((Failure failure) {
-      setState(() {
-        loading = false;
-        error = failure.message;
-      });
-      FlushBarCustomHelper.showErrorFlushbar(
+    if (widget.isOwner) {
+      final myRequestProvider = Provider.of<MyRequestProvider>(
         context,
-        'Error',
-        failure.message,
+        listen: false,
       );
-    }, (List bidders) {
-      print(bidders.toString());
-      setState(() {
-        loading = false;
-        biddersList = bidders;
+      final gotten = await myRequestProvider.getJobBidders(widget.job);
+      gotten.fold((Failure failure) {
+        setState(() {
+          loading = false;
+          error = failure.message;
+        });
+        FlushBarCustomHelper.showErrorFlushbar(
+          context,
+          'Error',
+          failure.message,
+        );
+      }, (List bidders) {
+        print(bidders.toString());
+        setState(() {
+          loading = false;
+          biddersList = bidders;
+        });
       });
-    });
+    }
   }
 
   @override
