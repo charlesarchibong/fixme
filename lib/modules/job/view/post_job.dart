@@ -168,9 +168,6 @@ class _PostJobState extends State<PostJob> {
                               ? 'Job title can not be empty'
                               : null,
                           decoration: InputDecoration(
-                            errorText: postJob.title
-                                ? 'Job title can not be empty'
-                                : null,
                             contentPadding: EdgeInsets.all(10.0),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(5.0),
@@ -220,9 +217,6 @@ class _PostJobState extends State<PostJob> {
                             color: Colors.black,
                           ),
                           decoration: InputDecoration(
-                            errorText: postJob.description
-                                ? 'Job description can not be empty'
-                                : null,
                             contentPadding: EdgeInsets.all(10.0),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(5.0),
@@ -314,9 +308,6 @@ class _PostJobState extends State<PostJob> {
                             color: Colors.black,
                           ),
                           decoration: InputDecoration(
-                            errorText: postJob.price
-                                ? 'Job budget can not be empty'
-                                : null,
                             contentPadding: EdgeInsets.all(10.0),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(5.0),
@@ -366,9 +357,6 @@ class _PostJobState extends State<PostJob> {
                             color: Colors.black,
                           ),
                           decoration: InputDecoration(
-                            errorText: postJob.address
-                                ? 'Job address can not be empty'
-                                : null,
                             contentPadding: EdgeInsets.all(10.0),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(5.0),
