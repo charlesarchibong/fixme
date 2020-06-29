@@ -182,7 +182,7 @@ class _HomeState extends State<HomeW>
                       ),
                       borderRadius: BorderRadius.circular(5.0),
                     ),
-                    hintText: "Search Artisan...",
+                    hintText: "Search Service Providers or Businesses",
                     suffixIcon: IconButton(
                       onPressed: () {
                         _searchArtisans(_searchControl.text);
@@ -218,17 +218,17 @@ class _HomeState extends State<HomeW>
                     fontWeight: FontWeight.w800,
                   ),
                 ),
-                FlatButton(
-                  child: Text(
-                    "View More",
-                    style: TextStyle(
-                      fontSize: 12,
-//                      fontWeight: FontWeight.w800,
-                      color: Theme.of(context).accentColor,
-                    ),
-                  ),
-                  onPressed: () {},
-                ),
+//                 FlatButton(
+//                   child: Text(
+//                     "voew more",
+//                     style: TextStyle(
+//                       fontSize: 12,
+// //                      fontWeight: FontWeight.w800,
+//                       color: Theme.of(context).accentColor,
+//                     ),
+//                   ),
+//                   onPressed: () {},
+//                 ),
               ],
             ),
             SizedBox(height: 10.0),

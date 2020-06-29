@@ -68,7 +68,7 @@ class _SearchScreenState extends State<SearchScreen>
                       ),
                       borderRadius: BorderRadius.circular(5.0),
                     ),
-                    hintText: "Search Artisan...",
+                    hintText: "Search Service Providers or Businesses",
                     suffixIcon: IconButton(
                       onPressed: () {
                         _searchArtisans(_searchControl.text);

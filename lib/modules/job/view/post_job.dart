@@ -304,7 +304,7 @@ class _PostJobState extends State<PostJob> {
                           textCapitalization: TextCapitalization.none,
                           keyboardType: TextInputType.number,
                           validator: (value) => value.isEmpty
-                              ? 'Job price can not be empty'
+                              ? 'Job budget can not be empty'
                               : null,
                           inputFormatters: [
                             WhitelistingTextInputFormatter.digitsOnly
@@ -315,7 +315,7 @@ class _PostJobState extends State<PostJob> {
                           ),
                           decoration: InputDecoration(
                             errorText: postJob.price
-                                ? 'Job price can not be empty'
+                                ? 'Job budget can not be empty'
                                 : null,
                             contentPadding: EdgeInsets.all(10.0),
                             border: OutlineInputBorder(
@@ -330,7 +330,7 @@ class _PostJobState extends State<PostJob> {
                               ),
                               borderRadius: BorderRadius.circular(5.0),
                             ),
-                            hintText: "Job Price",
+                            hintText: "Job Budget",
                             hintStyle: TextStyle(
                               fontSize: 15.0,
                               color: Colors.grey,
