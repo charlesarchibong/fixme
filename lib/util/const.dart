@@ -6,6 +6,8 @@ class Constants {
   static String lagelSee =
       "All Right Reserved, and all information store in this application is secure and is only use for Identification";
   static String baseUrl = "https://manager.fixme.ng/";
+  static String updateProfileView =
+      "https://manager.fixme.ng/profile-views-update";
   static String savedDeviceDetails =
       "http://manager.fixme.ng/mtk-details-update";
   static String serviceImageUrl = "https://manager.fixme.ng/service-images";

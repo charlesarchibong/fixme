@@ -1,7 +1,9 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:quickfix/modules/notification/view/notifications.dart';
+import 'package:provider/provider.dart';
+import 'package:quickfix/models/failure.dart';
+import 'package:quickfix/modules/profile/provider/profile_provider.dart';
 import 'package:quickfix/util/const.dart';
 import 'package:quickfix/widgets/reviews.dart';
 import 'package:quickfix/widgets/smooth_star_rating.dart';
@@ -19,6 +21,28 @@ class ProductDetails extends StatefulWidget {
 
 class _ProductDetailsState extends State<ProductDetails> {
   bool isFav = false;
+
+  @override
+  void initState() {
+    updateArtisanProfileView();
+    super.initState();
+  }
+
+  void updateArtisanProfileView() async {
+    final profileProvider = Provider.of<ProfileProvider>(
+      context,
+      listen: false,
+    );
+    print(widget.userData);
+    final updated = await profileProvider.updateProfileView(
+      widget.userData['mobile'],
+    );
+    updated.fold(
+      (Failure failure) => print(failure.message),
+      (r) => print('profile view count updated'),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,34 +93,34 @@ class _ProductDetailsState extends State<ProductDetails> {
             },
             tooltip: "Chats",
           ),
-          IconButton(
-            color: Colors.white,
-            icon: Badge(
-              badgeContent: Text(
-                '2',
-                style: TextStyle(
-                  color: Colors.black,
-                ),
-              ),
-              badgeColor: Colors.white,
-              animationType: BadgeAnimationType.slide,
-              toAnimate: true,
-              child: FaIcon(
-                FontAwesomeIcons.bell,
-                size: 17.0,
-              ),
-            ),
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (BuildContext context) {
-                    return Notifications();
-                  },
-                ),
-              );
-            },
-            tooltip: "Notifications",
-          ),
+          // IconButton(
+          //   color: Colors.white,
+          //   icon: Badge(
+          //     badgeContent: Text(
+          //       '2',
+          //       style: TextStyle(
+          //         color: Colors.black,
+          //       ),
+          //     ),
+          //     badgeColor: Colors.white,
+          //     animationType: BadgeAnimationType.slide,
+          //     toAnimate: true,
+          //     child: FaIcon(
+          //       FontAwesomeIcons.bell,
+          //       size: 17.0,
+          //     ),
+          //   ),
+          //   onPressed: () {
+          //     Navigator.of(context).push(
+          //       MaterialPageRoute(
+          //         builder: (BuildContext context) {
+          //           return Notifications();
+          //         },
+          //       ),
+          //     );
+          //   },
+          //   tooltip: "Notifications",
+          // ),
         ],
       ),
       body: Padding(

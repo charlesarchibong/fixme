@@ -288,4 +288,34 @@ class ProfileProvider extends ChangeNotifier {
       return Left(Failure(message: e.toString().split(':')[1]));
     }
   }
+
+  Future<Either<Failure, bool>> updateProfileView(String mobile) async {
+    try {
+      final user = await Utils.getUserSession();
+      final String apiKey = await Utils.getApiKey();
+      String url = Constants.updateProfileView;
+      Map<String, String> headers = {'Bearer': '$apiKey'};
+      Map<String, String> body = {'mobile': mobile};
+      final response = await NetworkService().post(
+        url: url,
+        body: body,
+        contentType: ContentType.URL_ENCODED,
+        headers: headers,
+      );
+      if (response.statusCode == 200) {
+        return Right(response.data['reqRes'] == 'true');
+      } else {
+        return Left(Failure(message: 'Profile count was not updated'));
+      }
+    } catch (e) {
+      if (e is DioError) {
+        print(e.toString());
+        return Left(
+          Failure(
+            message: 'Error occurred while trying to update profile count',
+          ),
+        );
+      }
+    }
+  }
 }
