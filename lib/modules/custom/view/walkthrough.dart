@@ -29,8 +29,9 @@ class _WalkthroughState extends State<Walkthrough> {
     List<PageViewModel> pages = [
       PageViewModel(
         // title: "Get Technicain",
-        title: "Get A Technician",
-        body: "Request for a technician service anytime and anywhere you are.",
+        title: "Find the Right Fix Quickly",
+        body:
+            "We are the simplest, safest and fastest way to hire service providers.",
         image: Image.asset(
           "assets/on1.png",
           height: 100.0,
@@ -50,8 +51,9 @@ class _WalkthroughState extends State<Walkthrough> {
         ),
       ),
       PageViewModel(
-        title: "Easy Payment",
-        body: "Payment of technician service is made easy and affordable",
+        title: "Easy and Secure Payment",
+        body: "The fastest and safest way to pay " +
+            "for service delivery nationwide.",
         image: Image.asset(
           "assets/on2.png",
           height: 100.0,
