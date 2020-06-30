@@ -291,7 +291,7 @@ class ProfileProvider extends ChangeNotifier {
 
   Future<Either<Failure, bool>> updateProfileView(String mobile) async {
     try {
-      final user = await Utils.getUserSession();
+      // final user = await Utils.getUserSession();
       final String apiKey = await Utils.getApiKey();
       String url = Constants.updateProfileView;
       Map<String, String> headers = {'Bearer': '$apiKey'};
