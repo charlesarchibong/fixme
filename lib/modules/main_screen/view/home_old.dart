@@ -1,4 +1,6 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_shimmer/flutter_shimmer.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
@@ -32,6 +34,7 @@ class _HomeState extends State<HomeW>
   LocationData locationData;
   List users = List();
   String phoneNumber = '';
+  String accountNumber = '0348861021';
   final TextEditingController _searchControl = new TextEditingController();
 
   @override
@@ -154,6 +157,48 @@ class _HomeState extends State<HomeW>
             //     },
             //   ),
             // ),
+            RichText(
+              textAlign: TextAlign.center,
+              text: TextSpan(
+                text: 'Your account number is ',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 15,
+                ),
+                children: <TextSpan>[
+                  TextSpan(
+                    text: accountNumber,
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        Clipboard.setData(
+                          ClipboardData(
+                            text: accountNumber,
+                          ),
+                        );
+                        FlushBarCustomHelper.showInfoFlushbar(
+                          context,
+                          accountNumber,
+                          'Copied to clipboard',
+                        );
+                      },
+                  ),
+                  TextSpan(
+                    text:
+                        'Bank Name Providious Bank to receive money simply transfer to this account.',
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
             Card(
               elevation: 6.0,
               child: Container(
