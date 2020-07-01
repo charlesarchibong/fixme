@@ -266,15 +266,30 @@ class _ProductDetailsState extends State<ProductDetails> {
         padding: EdgeInsets.only(bottom: 30.0, left: 20.0, right: 20.0),
         child: Container(
           height: 50.0,
-          child: RaisedButton(
-            child: Text(
-              "Request Service",
-              style: TextStyle(
-                color: Colors.white,
+          child: Row(
+            children: <Widget>[
+              RaisedButton(
+                child: Text(
+                  "Request Service",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                color: Theme.of(context).accentColor,
+                onPressed: () {},
               ),
-            ),
-            color: Theme.of(context).accentColor,
-            onPressed: () {},
+              Spacer(),
+              RaisedButton(
+                child: Text(
+                  "Send Message",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                color: Theme.of(context).accentColor,
+                onPressed: () {},
+              ),
+            ],
           ),
         ),
       ),
