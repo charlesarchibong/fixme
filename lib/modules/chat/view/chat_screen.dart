@@ -146,6 +146,8 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
+        backgroundColor: Theme.of(context).accentColor,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -160,20 +162,20 @@ class _ChatScreenState extends State<ChatScreen> {
             Text(
               'Charles Archibong',
               style: TextStyle(
-                fontSize: 19.0,
-                fontWeight: FontWeight.bold,
-              ),
+                  fontSize: 19.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
             ),
           ],
         ),
         elevation: 0.0,
         actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.more_horiz),
-            iconSize: 30.0,
-            color: Colors.white,
-            onPressed: () {},
-          ),
+          // IconButton(
+          //   icon: Icon(Icons.more_horiz),
+          //   iconSize: 30.0,
+          //   color: Colors.white,
+          //   onPressed: () {},
+          // ),
         ],
       ),
       body: GestureDetector(
