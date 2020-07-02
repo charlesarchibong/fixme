@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quickfix/modules/chat/view/chat_screen.dart';
 
 class MyChatWidget extends StatefulWidget {
   final Map artisan;
@@ -14,7 +15,13 @@ class _MyChatWidgetState extends State<MyChatWidget> {
     return Card(
       color: widget.artisan['read'] ? Colors.white : Colors.white70,
       child: ListTile(
-        onTap: () {},
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (_) => ChatScreen(),
+            ),
+          );
+        },
         leading: CircleAvatar(
           backgroundColor: Theme.of(context).primaryColor,
           backgroundImage: AssetImage(widget.artisan['img']),
