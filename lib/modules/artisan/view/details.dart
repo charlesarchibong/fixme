@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:quickfix/models/failure.dart';
+import 'package:quickfix/modules/chat/view/chats.dart';
 import 'package:quickfix/modules/profile/provider/profile_provider.dart';
 import 'package:quickfix/util/const.dart';
 import 'package:quickfix/widgets/reviews.dart';
@@ -287,7 +288,13 @@ class _ProductDetailsState extends State<ProductDetails> {
                   ),
                 ),
                 color: Theme.of(context).accentColor,
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => Chats(),
+                    ),
+                  );
+                },
               ),
             ],
           ),

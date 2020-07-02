@@ -13,6 +13,7 @@ import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:quickfix/helpers/flush_bar.dart';
 import 'package:quickfix/helpers/notification.dart';
+import 'package:quickfix/modules/chat/view/chats.dart';
 import 'package:quickfix/modules/dashboard/provider/dashboard_provider.dart';
 import 'package:quickfix/modules/dashboard/view/dashboard.dart';
 import 'package:quickfix/modules/job/provider/pending_job_provider.dart';
@@ -159,9 +160,7 @@ class MainScreenState extends State<MainScreen> {
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (BuildContext context) {
-                      return;
-                    },
+                    builder: (_) => Chats(),
                   ),
                 );
               },
