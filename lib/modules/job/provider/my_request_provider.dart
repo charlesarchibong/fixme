@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:quickfix/models/failure.dart';
 import 'package:quickfix/modules/job/model/job.dart';
 import 'package:quickfix/modules/profile/model/user.dart';
-import 'package:quickfix/services/network_service.dart';
+import 'package:quickfix/services/network/network_service.dart';
 import 'package:quickfix/util/Utils.dart';
 import 'package:quickfix/util/const.dart';
 import 'package:quickfix/util/content_type.dart';

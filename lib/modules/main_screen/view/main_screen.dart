@@ -24,7 +24,7 @@ import 'package:quickfix/modules/main_screen/view/home_old.dart';
 import 'package:quickfix/modules/profile/provider/profile_provider.dart';
 import 'package:quickfix/modules/profile/view/profile.dart';
 import 'package:quickfix/modules/search/view/search.dart';
-import 'package:quickfix/services/network_service.dart';
+import 'package:quickfix/services/network/network_service.dart';
 import 'package:quickfix/util/Utils.dart';
 import 'package:quickfix/util/const.dart';
 import 'package:quickfix/util/content_type.dart';

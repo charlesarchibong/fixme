@@ -2,7 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:quickfix/modules/profile/model/user.dart';
-import 'package:quickfix/services/network_service.dart';
+import 'package:quickfix/services/firebase/users.dart';
+import 'package:quickfix/services/network/network_service.dart';
 import 'package:quickfix/util/Utils.dart';
 import 'package:quickfix/util/const.dart';
 import 'package:quickfix/util/content_type.dart';
@@ -70,7 +71,13 @@ class LoginFormValidation extends ChangeNotifier {
         } else {
           String apiKey = response.headers.value('bearer');
           Utils.setApiKey(apiKey);
-          return new User.fromjson(response.data);
+          User user = User.fromjson(response.data);
+          UsersService(userPhone: user.phoneNumber).updateUserDate(
+            user: user,
+            imageUrl:
+                '${Constants.uploadUrl + response.data['profile_pic_file_name']}',
+          );
+          return user;
         }
       } else {
         throw new Exception('Something wnt wrong, please try again!');

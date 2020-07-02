@@ -8,7 +8,7 @@ import 'package:quickfix/helpers/flush_bar.dart';
 import 'package:quickfix/models/failure.dart';
 import 'package:quickfix/modules/artisan/widget/grid_artisans.dart';
 import 'package:quickfix/modules/search/provider/search_provider.dart';
-import 'package:quickfix/services/network_service.dart';
+import 'package:quickfix/services/network/network_service.dart';
 import 'package:quickfix/util/Utils.dart';
 import 'package:quickfix/util/const.dart';
 import 'package:quickfix/util/content_type.dart';
