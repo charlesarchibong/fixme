@@ -36,9 +36,7 @@ class _ChatScreenState extends State<ChatScreen> {
       padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 15.0),
       width: MediaQuery.of(context).size.width * 0.75,
       decoration: BoxDecoration(
-        color: isMe
-            ? Theme.of(context).accentColor
-            : Color.fromRGBO(153, 0, 153, .3),
+        color: isMe ? Color.fromRGBO(153, 0, 153, .75) : Colors.grey[400],
         borderRadius: isMe
             ? BorderRadius.only(
                 topLeft: Radius.circular(15.0),
@@ -100,7 +98,7 @@ class _ChatScreenState extends State<ChatScreen> {
         horizontal: 8.0,
       ),
       height: 70.0,
-      color: Colors.white,
+      // color: Colors.white,
       child: Row(
         children: <Widget>[
           IconButton(
@@ -148,12 +146,25 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
-        title: Text(
-          'Charles Archibong',
-          style: TextStyle(
-            fontSize: 19.0,
-            fontWeight: FontWeight.bold,
-          ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            CircleAvatar(
+              backgroundColor: Theme.of(context).primaryColor,
+              backgroundImage: AssetImage('assets/food1.jpeg'),
+            ),
+            SizedBox(
+              width: 15,
+            ),
+            Text(
+              'Charles Archibong',
+              style: TextStyle(
+                fontSize: 19.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
         ),
         elevation: 0.0,
         actions: <Widget>[
@@ -172,12 +183,12 @@ class _ChatScreenState extends State<ChatScreen> {
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30.0),
-                    topRight: Radius.circular(30.0),
-                  ),
-                ),
+                    // color: Colors.white,
+                    // borderRadius: BorderRadius.only(
+                    //   topLeft: Radius.circular(30.0),
+                    //   topRight: Radius.circular(30.0),
+                    // ),
+                    ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(30.0),

@@ -21,7 +21,6 @@ import 'package:quickfix/modules/job/view/my_requests.dart';
 import 'package:quickfix/modules/job/view/pending_appointment.dart';
 import 'package:quickfix/modules/job/view/post_job.dart';
 import 'package:quickfix/modules/main_screen/view/home_old.dart';
-import 'package:quickfix/modules/notification/view/notifications.dart';
 import 'package:quickfix/modules/profile/provider/profile_provider.dart';
 import 'package:quickfix/modules/profile/view/profile.dart';
 import 'package:quickfix/modules/search/view/search.dart';
@@ -166,34 +165,34 @@ class MainScreenState extends State<MainScreen> {
               },
               tooltip: "Chats",
             ),
-            IconButton(
-              color: Colors.white,
-              icon: Badge(
-                badgeContent: Text(
-                  requests.length.toString(),
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),
-                ),
-                badgeColor: Colors.white,
-                animationType: BadgeAnimationType.slide,
-                toAnimate: true,
-                child: FaIcon(
-                  FontAwesomeIcons.bell,
-                  size: 17.0,
-                ),
-              ),
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (BuildContext context) {
-                      return Notifications();
-                    },
-                  ),
-                );
-              },
-              tooltip: "Notifications",
-            ),
+            // IconButton(
+            //   color: Colors.white,
+            //   icon: Badge(
+            //     badgeContent: Text(
+            //       requests.length.toString(),
+            //       style: TextStyle(
+            //         color: Colors.black,
+            //       ),
+            //     ),
+            //     badgeColor: Colors.white,
+            //     animationType: BadgeAnimationType.slide,
+            //     toAnimate: true,
+            //     child: FaIcon(
+            //       FontAwesomeIcons.bell,
+            //       size: 17.0,
+            //     ),
+            //   ),
+            //   onPressed: () {
+            //     Navigator.of(context).push(
+            //       MaterialPageRoute(
+            //         builder: (BuildContext context) {
+            //           return Notifications();
+            //         },
+            //       ),
+            //     );
+            //   },
+            //   tooltip: "Notifications",
+            // ),
           ],
         ),
         drawer: Drawer(

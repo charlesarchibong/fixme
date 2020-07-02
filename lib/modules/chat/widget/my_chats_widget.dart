@@ -13,7 +13,7 @@ class _MyChatWidgetState extends State<MyChatWidget> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: widget.artisan['read'] ? Colors.white : Colors.white70,
+      // color: widget.artisan['read'] ? Colors.white : Colors.white70,
       child: ListTile(
         onTap: () {
           Navigator.of(context).push(
