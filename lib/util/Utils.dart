@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
-import 'package:flutter/cupertino.dart';
 import 'package:quickfix/modules/profile/model/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -71,5 +71,11 @@ class Utils {
     return sp.remove('apiKey');
   }
 
-  static void showAlert(BuildContext context, String title, String message) {}
+  static String generateId(int length) {
+    const _chars =
+        'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+    Random _rnd = Random();
+    return String.fromCharCodes(Iterable.generate(
+        length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
+  }
 }

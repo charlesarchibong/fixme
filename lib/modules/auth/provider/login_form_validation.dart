@@ -72,10 +72,10 @@ class LoginFormValidation extends ChangeNotifier {
           String apiKey = response.headers.value('bearer');
           Utils.setApiKey(apiKey);
           User user = User.fromjson(response.data);
-          UsersService(userPhone: user.phoneNumber).updateUserDate(
+          debugPrint(user.toJson().toString());
+          await UsersService(userPhone: user.phoneNumber).updateUserDate(
             user: user,
-            imageUrl:
-                '${Constants.uploadUrl + response.data['profile_pic_file_name']}',
+            imageUrl: null,
           );
           return user;
         }
@@ -83,6 +83,8 @@ class LoginFormValidation extends ChangeNotifier {
         throw new Exception('Something wnt wrong, please try again!');
       }
     } catch (e) {
+      print(e.runtimeType);
+      print(e.toString());
       throw e;
     }
   }

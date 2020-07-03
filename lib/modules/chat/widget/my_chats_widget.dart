@@ -18,7 +18,9 @@ class _MyChatWidgetState extends State<MyChatWidget> {
         onTap: () {
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (_) => ChatScreen(),
+              builder: (_) => ChatScreen(
+                receiver: '9039311559',
+              ),
             ),
           );
         },

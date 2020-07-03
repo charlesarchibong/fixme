@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:quickfix/models/failure.dart';
-import 'package:quickfix/modules/chat/view/chats.dart';
+import 'package:quickfix/modules/chat/view/chat_screen.dart';
 import 'package:quickfix/modules/profile/provider/profile_provider.dart';
 import 'package:quickfix/util/const.dart';
 import 'package:quickfix/widgets/reviews.dart';
@@ -36,7 +36,7 @@ class _ProductDetailsState extends State<ProductDetails> {
     );
     print(widget.userData);
     final updated = await profileProvider.updateProfileView(
-      widget.userData['mobile'],
+      widget.userData['user_mobile'],
     );
     updated.fold(
       (Failure failure) => print(failure.message),
@@ -291,7 +291,9 @@ class _ProductDetailsState extends State<ProductDetails> {
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (_) => Chats(),
+                      builder: (_) => ChatScreen(
+                        receiver: widget.userData['user_mobile'],
+                      ),
                     ),
                   );
                 },

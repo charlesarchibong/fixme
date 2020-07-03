@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:quickfix/helpers/flush_bar.dart';
 import 'package:quickfix/modules/chat/model/message.dart';
 import 'package:quickfix/modules/profile/model/user.dart';
+import 'package:quickfix/services/firebase/messages.dart';
+import 'package:quickfix/services/firebase/users.dart';
 import 'package:quickfix/util/Utils.dart';
 
 class ChatScreen extends StatefulWidget {
-  final User user;
+  final String receiver;
 
-  ChatScreen({this.user});
+  ChatScreen({@required this.receiver});
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -20,6 +24,12 @@ class _ChatScreenState extends State<ChatScreen> {
     'Good morning, how are you?',
     'I am fine and you?'
   ];
+
+  final _formKey = GlobalKey<FormState>();
+
+  TextEditingController _messageController = TextEditingController();
+
+  final df = new DateFormat('dd-MM-yyyy hh:mm a');
 
   _buildMessage(Message message, bool isMe) {
     final Container msg = Container(
@@ -51,7 +61,7 @@ class _ChatScreenState extends State<ChatScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            message.time,
+            '${df.format(DateTime.fromMillisecondsSinceEpoch(message.time, isUtc: false))}',
             style: TextStyle(
               color: Colors.white54,
               fontSize: 16.0,
@@ -110,8 +120,9 @@ class _ChatScreenState extends State<ChatScreen> {
             onPressed: () {},
           ),
           Expanded(
-            child: TextField(
+            child: TextFormField(
               textCapitalization: TextCapitalization.sentences,
+              controller: _messageController,
               onChanged: (value) {},
               decoration: InputDecoration.collapsed(
                 hintText: 'Send a message...',
@@ -124,11 +135,36 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
             iconSize: 25.0,
             color: Theme.of(context).accentColor,
-            onPressed: () {},
+            onPressed: () {
+              sendMessage(_messageController.text);
+            },
           ),
         ],
       ),
     );
+  }
+
+  void sendMessage(String messageText) async {
+    try {
+      String messageId = Utils.generateId(30);
+      Message message = Message(
+        id: messageId,
+        isLiked: false,
+        receiverPhone: widget.receiver,
+        senderPhone: currentUser.phoneNumber,
+        text: messageText,
+        time: DateTime.now().millisecondsSinceEpoch,
+        unread: false,
+      );
+      await MessageService(messageId: messageId).updateMessage(message);
+    } catch (e) {
+      print(e.toString());
+      FlushBarCustomHelper.showErrorFlushbar(
+        context,
+        'Error',
+        'Your message was not sent',
+      );
+    }
   }
 
   @override
@@ -138,7 +174,9 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void getCurrentUser() async {
-    currentUser = await Utils.getUserSession();
+    setState(() async {
+      currentUser = await Utils.getUserSession();
+    });
   }
 
   @override
@@ -148,26 +186,32 @@ class _ChatScreenState extends State<ChatScreen> {
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: Theme.of(context).accentColor,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            CircleAvatar(
-              backgroundColor: Theme.of(context).primaryColor,
-              backgroundImage: AssetImage('assets/food1.jpeg'),
-            ),
-            SizedBox(
-              width: 15,
-            ),
-            Text(
-              'Charles Archibong',
-              style: TextStyle(
-                  fontSize: 19.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
-            ),
-          ],
-        ),
+        title: StreamBuilder<User>(
+            stream: UsersService(userPhone: widget.receiver).user,
+            builder: (context, snapshot) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  CircleAvatar(
+                    backgroundColor: Theme.of(context).primaryColor,
+                    backgroundImage: snapshot.data.imageUrl == null
+                        ? AssetImage('assets/dp.png')
+                        : NetworkImage(snapshot.data.imageUrl),
+                  ),
+                  SizedBox(
+                    width: 15,
+                  ),
+                  Text(
+                    '${snapshot.data.firstName ?? ''} ${snapshot.data.lastName ?? ''}',
+                    style: TextStyle(
+                        fontSize: 19.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  ),
+                ],
+              );
+            }),
         elevation: 0.0,
         actions: <Widget>[
           // IconButton(
@@ -196,22 +240,26 @@ class _ChatScreenState extends State<ChatScreen> {
                     topLeft: Radius.circular(30.0),
                     topRight: Radius.circular(30.0),
                   ),
-                  child: ListView.builder(
-                    reverse: false,
-                    padding: EdgeInsets.only(top: 15.0),
-                    itemCount: 3,
-                    itemBuilder: (BuildContext context, int index) {
-                      final Message message = Message(
-                        isLiked: true,
-                        sender: currentUser,
-                        text: messageList[index],
-                        time: '14:90',
-                        unread: false,
-                      );
-                      final bool isMe = isMeList[index];
-                      return _buildMessage(message, isMe);
-                    },
-                  ),
+                  child: StreamBuilder<List<Message>>(
+                      stream: MessageService().getMessages(
+                          currentUser.phoneNumber, widget.receiver),
+                      builder: (context, snapshot) {
+                        return snapshot.hasData
+                            ? ListView.builder(
+                                reverse: true,
+                                padding: EdgeInsets.only(top: 15.0),
+                                itemCount: snapshot.data.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  final Message message = snapshot.data[index];
+                                  final bool isMe = message.senderPhone ==
+                                      currentUser.phoneNumber;
+                                  return _buildMessage(message, isMe);
+                                },
+                              )
+                            : Center(
+                                child: CircularProgressIndicator(),
+                              );
+                      }),
                 ),
               ),
             ),

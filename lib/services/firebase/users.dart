@@ -21,9 +21,7 @@ class UsersService {
       'lastName': '${user.lastName}',
       'imageUrl': imageUrl,
     };
-    return await _collectionReference
-        .document(this.userPhone)
-        .updateData(userMap);
+    return await _collectionReference.document(userPhone).setData(userMap);
   }
 
   Stream<User> get user {
