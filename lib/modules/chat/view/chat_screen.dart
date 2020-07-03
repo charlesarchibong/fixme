@@ -29,7 +29,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   TextEditingController _messageController = TextEditingController();
 
-  final df = new DateFormat('dd-MM-yyyy hh:mm a');
+  final df = new DateFormat('dd-MMM-yyyy hh:mm a');
 
   _buildMessage(Message message, bool isMe) {
     final Container msg = Container(
@@ -146,6 +146,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   void sendMessage(String messageText) async {
     try {
+      _messageController.clear();
       String messageId = Utils.generateId(30);
       Message message = Message(
         id: messageId,
@@ -174,8 +175,9 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void getCurrentUser() async {
-    setState(() async {
-      currentUser = await Utils.getUserSession();
+    final user = await Utils.getUserSession();
+    setState(() {
+      currentUser = user;
     });
   }
 
@@ -227,41 +229,47 @@ class _ChatScreenState extends State<ChatScreen> {
         child: Column(
           children: <Widget>[
             Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                    // color: Colors.white,
-                    // borderRadius: BorderRadius.only(
-                    //   topLeft: Radius.circular(30.0),
-                    //   topRight: Radius.circular(30.0),
-                    // ),
+              child: currentUser == null
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : Container(
+                      decoration: BoxDecoration(
+                          // color: Colors.white,
+                          // borderRadius: BorderRadius.only(
+                          //   topLeft: Radius.circular(30.0),
+                          //   topRight: Radius.circular(30.0),
+                          // ),
+                          ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(30.0),
+                          topRight: Radius.circular(30.0),
+                        ),
+                        child: StreamBuilder<List<Message>>(
+                            stream: MessageService().getMessages(
+                                currentUser.phoneNumber, widget.receiver),
+                            builder: (context, snapshot) {
+                              return snapshot.hasData
+                                  ? ListView.builder(
+                                      reverse: true,
+                                      padding: EdgeInsets.only(top: 15.0),
+                                      itemCount: snapshot.data.length,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        final Message message =
+                                            snapshot.data[index];
+                                        final bool isMe = message.senderPhone ==
+                                            currentUser.phoneNumber;
+                                        return _buildMessage(message, isMe);
+                                      },
+                                    )
+                                  : Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                            }),
+                      ),
                     ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30.0),
-                    topRight: Radius.circular(30.0),
-                  ),
-                  child: StreamBuilder<List<Message>>(
-                      stream: MessageService().getMessages(
-                          currentUser.phoneNumber, widget.receiver),
-                      builder: (context, snapshot) {
-                        return snapshot.hasData
-                            ? ListView.builder(
-                                reverse: true,
-                                padding: EdgeInsets.only(top: 15.0),
-                                itemCount: snapshot.data.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  final Message message = snapshot.data[index];
-                                  final bool isMe = message.senderPhone ==
-                                      currentUser.phoneNumber;
-                                  return _buildMessage(message, isMe);
-                                },
-                              )
-                            : Center(
-                                child: CircularProgressIndicator(),
-                              );
-                      }),
-                ),
-              ),
             ),
             _buildMessageComposer(),
           ],

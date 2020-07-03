@@ -163,14 +163,14 @@ class _HomeState extends State<HomeW>
                 text: 'Your account number is ',
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: 15,
+                  fontSize: 17,
                 ),
                 children: <TextSpan>[
                   TextSpan(
                     text: accountNumber,
                     style: TextStyle(
-                      color: Theme.of(context).primaryColor,
-                      fontSize: 15,
+                      color: Theme.of(context).accentColor,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                     recognizer: TapGestureRecognizer()
@@ -189,15 +189,18 @@ class _HomeState extends State<HomeW>
                   ),
                   TextSpan(
                     text:
-                        'Bank Name Providious Bank to receive money simply transfer to this account.',
+                        '. Bank Name is Providious Bank. To receive/send money simply transfer to this account.',
                     style: TextStyle(
-                      color: Theme.of(context).primaryColor,
+                      // color: Theme.of(context).primaryColor,
                       fontSize: 15,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.normal,
                     ),
                   ),
                 ],
               ),
+            ),
+            SizedBox(
+              height: 6,
             ),
             Card(
               elevation: 6.0,
@@ -230,7 +233,7 @@ class _HomeState extends State<HomeW>
                     hintText: "Search Service Providers or Businesses",
                     suffixIcon: IconButton(
                       onPressed: () {
-                        _searchArtisans(_searchControl.text);
+                        // _searchArtisans(_searchControl.text);
                       },
                       icon: Icon(
                         Icons.search,
@@ -245,7 +248,7 @@ class _HomeState extends State<HomeW>
                   maxLines: 1,
                   controller: _searchControl,
                   onSubmitted: (val) {
-                    _searchArtisans(val);
+                    // _searchArtisans(val);
                   },
                 ),
               ),

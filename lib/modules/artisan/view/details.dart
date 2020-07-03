@@ -264,7 +264,7 @@ class _ProductDetailsState extends State<ProductDetails> {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.only(bottom: 30.0, left: 20.0, right: 20.0),
+        padding: EdgeInsets.only(bottom: 10.0, left: 20.0, right: 20.0),
         child: Container(
           height: 50.0,
           child: Row(
