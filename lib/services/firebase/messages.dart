@@ -10,21 +10,36 @@ class MessageService {
       Firestore.instance.collection('messages');
 
   Future updateMessage(Message message) async {
-    return await _collectionReference.document(this.messageId).setData(
+    return await _collectionReference
+        .document(getChatNode(
+          message.senderPhone,
+          message.receiverPhone,
+        ))
+        .collection(getChatNode(
+          message.senderPhone,
+          message.receiverPhone,
+        ))
+        .document(this.messageId)
+        .setData(
           message.toMap(),
         );
   }
 
   Stream<List<Message>> getMessages(String sender, String receiver) {
     return _collectionReference
+        .document(getChatNode(sender, receiver))
+        .collection(getChatNode(sender, receiver))
         .orderBy('time', descending: true)
-        .where('senderPhone', isEqualTo: sender)
-        .where(
-          'receiverPhone',
-          isEqualTo: receiver,
-        )
         .snapshots()
         .map(_convertMessageToListStream);
+  }
+
+  String getChatNode(String sender, String receiver) {
+    if (sender.hashCode <= receiver.hashCode) {
+      return sender + '-' + receiver;
+    } else {
+      return receiver + '-' + sender;
+    }
   }
 
   List<Message> _convertMessageToListStream(QuerySnapshot querySnapshot) {

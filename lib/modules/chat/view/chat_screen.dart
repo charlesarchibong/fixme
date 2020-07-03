@@ -248,7 +248,9 @@ class _ChatScreenState extends State<ChatScreen> {
                         ),
                         child: StreamBuilder<List<Message>>(
                             stream: MessageService().getMessages(
-                                currentUser.phoneNumber, widget.receiver),
+                              currentUser.phoneNumber,
+                              widget.receiver,
+                            ),
                             builder: (context, snapshot) {
                               return snapshot.hasData
                                   ? ListView.builder(
