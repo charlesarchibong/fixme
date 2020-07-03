@@ -242,10 +242,6 @@ class _ChatScreenState extends State<ChatScreen> {
                           // ),
                           ),
                       child: ClipRRect(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(30.0),
-                          topRight: Radius.circular(30.0),
-                        ),
                         child: StreamBuilder<List<Message>>(
                             stream: MessageService().getMessages(
                               currentUser.phoneNumber,
