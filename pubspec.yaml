@@ -46,6 +46,10 @@ dependencies:
   firebase_auth:
   cloud_firestore: ^0.13.7
   intl: ^0.16.1
+  flutter_local_notifications: ^1.4.4+1
+  flutter_app_badger: ^1.1.2
+  flutter_widgets: ^0.1.12
+  photo_view: ^0.9.2
 
 
 

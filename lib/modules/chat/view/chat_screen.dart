@@ -1,4 +1,10 @@
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_badger/flutter_app_badger.dart';
+import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:quickfix/helpers/flush_bar.dart';
 import 'package:quickfix/modules/chat/model/message.dart';
@@ -146,7 +152,6 @@ class _ChatScreenState extends State<ChatScreen> {
 
   void sendMessage(String messageText) async {
     try {
-      _messageController.clear();
       String messageId = Utils.generateId(30);
       Message message = Message(
         id: messageId,
@@ -158,6 +163,13 @@ class _ChatScreenState extends State<ChatScreen> {
         unread: false,
       );
       await MessageService(messageId: messageId).updateMessage(message);
+      sendAndRetrieveMessage(1);
+
+      //Message Count
+      FlutterAppBadger.updateBadgeCount(1);
+
+      FocusScope.of(context).requestFocus(FocusNode());
+      _messageController.clear();
     } catch (e) {
       print(e.toString());
       FlushBarCustomHelper.showErrorFlushbar(
@@ -274,5 +286,55 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
       ),
     );
+  }
+
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  Future<Map<String, dynamic>> sendAndRetrieveMessage(unReadMSGCount) async {
+    var firebaseCloudserverToken =
+        'AAAAyf72URY:APA91bE6buaTnJMHGJLvBVTti6Nt6cketYse2T9q6P8IhgwhGFmh7I6bL3v9fQqzZYqgh4VePiPODwO3Puod2k0JV6Gf55Lq4ojRB05pIAgIPj3aTt9A1bK0WtDsuZz1kqTB_-U_2C2o';
+    await http.post(
+      'https://fcm.googleapis.com/fcm/send',
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        'Authorization': 'key=$firebaseCloudserverToken',
+      },
+      body: jsonEncode(
+        <String, dynamic>{
+          'notification': <String, dynamic>{
+            'body': '${_messageController.text}',
+            'title': '${currentUser.firstName} ${currentUser.lastName}',
+            'badge': '$unReadMSGCount' //'$unReadMSGCount'
+          },
+          'priority': 'high',
+          'data': <String, dynamic>{
+            'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+            'id': '1',
+            'status': 'done',
+            'chatroomid': getChatNode(currentUser.phoneNumber, widget.receiver),
+          },
+          'to': widget.receiver,
+        },
+      ),
+    );
+
+    final Completer<Map<String, dynamic>> completer =
+        Completer<Map<String, dynamic>>();
+
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        completer.complete(message);
+      },
+    );
+    FocusScope.of(context).requestFocus(FocusNode());
+
+    return completer.future;
+  }
+
+  String getChatNode(String sender, String receiver) {
+    if (sender.hashCode <= receiver.hashCode) {
+      return sender + '-' + receiver;
+    } else {
+      return receiver + '-' + sender;
+    }
   }
 }

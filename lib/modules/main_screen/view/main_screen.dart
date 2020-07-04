@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_shimmer/flutter_shimmer.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -52,6 +53,9 @@ class MainScreen extends StatefulWidget {
 }
 
 class MainScreenState extends State<MainScreen> {
+  final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+
   PageController pageController;
   final _scaffoledKey = GlobalKey<ScaffoldState>();
   int _page = 0;
@@ -78,8 +82,24 @@ class MainScreenState extends State<MainScreen> {
             navigationTapped(3);
           });
         }
+        print("onMessage: $message");
+        String msg = 'notibody';
+        String name = 'chatapp';
+        if (Platform.isIOS) {
+          msg = message['aps']['alert']['body'];
+          name = message['aps']['alert']['title'];
+        } else {
+          msg = message['notification']['body'];
+          name = message['notification']['title'];
+        }
+
+        if (Platform.isIOS) {
+          sendLocalNotification(name, msg);
+        } else {
+          sendLocalNotification(name, msg);
+        }
       },
-      onBackgroundMessage: myBackgroundMessageHandler,
+      onBackgroundMessage: Platform.isIOS ? null : myBackgroundMessageHandler,
       onLaunch: (Map<String, dynamic> message) async {
         print("onLaunch: $message");
         //_navigateToItemDetail(message);
@@ -480,6 +500,7 @@ class MainScreenState extends State<MainScreen> {
 
   @override
   void initState() {
+    _initLocalNotification();
     _firebaseMessaging.getToken().then((token) {
       print('on message $token');
     });
@@ -559,6 +580,50 @@ class MainScreenState extends State<MainScreen> {
       }
       print(e.toString());
     }
+  }
+
+  _initLocalNotification() async {
+    if (Platform.isIOS) {
+      // set iOS Local notification.
+      var initializationSettingsAndroid =
+          AndroidInitializationSettings('ic_launcher');
+      var initializationSettingsIOS = IOSInitializationSettings(
+        requestSoundPermission: true,
+        requestBadgePermission: true,
+        requestAlertPermission: true,
+        onDidReceiveLocalNotification: _onDidReceiveLocalNotification,
+      );
+      var initializationSettings = InitializationSettings(
+          initializationSettingsAndroid, initializationSettingsIOS);
+      await _flutterLocalNotificationsPlugin.initialize(initializationSettings,
+          onSelectNotification: _selectNotification);
+    } else {
+      // set Android Local notification.
+      var initializationSettingsAndroid =
+          AndroidInitializationSettings('ic_launcher');
+      var initializationSettingsIOS = IOSInitializationSettings(
+          onDidReceiveLocalNotification: _onDidReceiveLocalNotification);
+      var initializationSettings = InitializationSettings(
+          initializationSettingsAndroid, initializationSettingsIOS);
+      await _flutterLocalNotificationsPlugin.initialize(initializationSettings,
+          onSelectNotification: _selectNotification);
+    }
+  }
+
+  Future _onDidReceiveLocalNotification(
+      int id, String title, String body, String payload) async {}
+
+  Future _selectNotification(String payload) async {}
+
+  sendLocalNotification(name, msg) async {
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+        'your channel id', 'your channel name', 'your channel description',
+        importance: Importance.Max, priority: Priority.High, ticker: 'ticker');
+    var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+    var platformChannelSpecifics = NotificationDetails(
+        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+    await _flutterLocalNotificationsPlugin
+        .show(0, name, msg, platformChannelSpecifics, payload: 'item x');
   }
 
   Future sendLocationToServer(LocationData locationData) async {
