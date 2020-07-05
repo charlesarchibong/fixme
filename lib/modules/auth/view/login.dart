@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:provider/provider.dart';
 import 'package:quickfix/modules/auth/provider/login_form_validation.dart';
 import 'package:quickfix/modules/main_screen/view/main_screen.dart';
@@ -110,8 +109,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void initState() {
-    FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
-    FlutterStatusbarcolor.setNavigationBarWhiteForeground(true);
     super.initState();
   }
 

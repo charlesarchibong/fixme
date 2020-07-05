@@ -8,7 +8,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_shimmer/flutter_shimmer.dart';
-import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
@@ -530,12 +529,7 @@ class MainScreenState extends State<MainScreen> {
     pageController.dispose();
   }
 
-  void setStatusBar() async {
-    await FlutterStatusbarcolor.setStatusBarColor(Constants.darkAccent);
-    await FlutterStatusbarcolor.setNavigationBarColor(Constants.darkAccent);
-    await FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
-    await FlutterStatusbarcolor.setNavigationBarWhiteForeground(true);
-  }
+  void setStatusBar() async {}
 
   Future sendDeviceDetails() async {
     try {
