@@ -29,7 +29,7 @@ class Constants {
 //  Color(0xfffcfcff);
   static Color lightPrimary = Color(0xfffcfcff);
   static Color darkPrimary = Colors.black;
-//  static Color lightAccent = Color(0xffFFA000);
+//  static Color lightAccen.t = Color(0xffFFA000);
 //  static Color darkAccent = Color(0xffFFA000);
   static Color lightBG = Color(0xfffcfcff);
   static Color darkBG = Colors.black;
@@ -57,11 +57,14 @@ class Constants {
     accentColor: lightAccent,
     fontFamily: 'Popins',
     cursorColor: lightAccent,
-    brightness: Brightness.light,
+    brightness: Brightness.dark,
     textSelectionColor: Color.fromRGBO(153, 0, 153, 1),
     scaffoldBackgroundColor: lightBG,
     appBarTheme: AppBarTheme(
+      color: Color.fromRGBO(153, 0, 153, 1.0),
       textTheme: TextTheme(),
+      iconTheme: IconThemeData(color: Color(0xffffffff)),
+
 //      iconTheme: IconThemeData(
 //        color: lightAccent,
 //      ),
@@ -78,7 +81,11 @@ class Constants {
     cursorColor: darkAccent,
     fontFamily: 'Popins',
     appBarTheme: AppBarTheme(
+      color: Color.fromRGBO(153, 0, 153, 1.0),
+
       textTheme: TextTheme(),
+      iconTheme: IconThemeData(color: Color(0xffffffff)),
+
 //      iconTheme: IconThemeData(
 //        color: darkAccent,
 //      ),
