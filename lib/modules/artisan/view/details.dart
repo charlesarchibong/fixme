@@ -1,5 +1,6 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:quickfix/models/failure.dart';
@@ -20,13 +21,38 @@ class ProductDetails extends StatefulWidget {
   _ProductDetailsState createState() => _ProductDetailsState();
 }
 
-class _ProductDetailsState extends State<ProductDetails> {
+class _ProductDetailsState extends State<ProductDetails>
+    with WidgetsBindingObserver {
   bool isFav = false;
 
   @override
   void initState() {
+    WidgetsBinding.instance.addObserver(this);
+
     updateArtisanProfileView();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    setStatusBar();
+  }
+
+  void setStatusBar() async {
+    setState(() {
+      FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
+      FlutterStatusbarcolor.setNavigationBarWhiteForeground(true);
+      FlutterStatusbarcolor.setStatusBarColor(Color.fromRGBO(153, 0, 153, 1.0));
+      FlutterStatusbarcolor.setNavigationBarColor(
+        Color.fromRGBO(153, 0, 153, 1.0),
+      );
+    });
   }
 
   void updateArtisanProfileView() async {

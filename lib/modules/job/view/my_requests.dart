@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_shimmer/flutter_shimmer.dart';
+import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:provider/provider.dart';
 import 'package:quickfix/models/failure.dart';
 import 'package:quickfix/modules/job/model/job.dart';
@@ -15,7 +16,7 @@ class MyRequests extends StatefulWidget {
 }
 
 class _MyRequestsState extends State<MyRequests>
-    with AutomaticKeepAliveClientMixin<MyRequests> {
+    with AutomaticKeepAliveClientMixin<MyRequests>, WidgetsBindingObserver {
   bool isloading = true;
   String error = '';
   List<Job> myJobs = List();
@@ -40,8 +41,32 @@ class _MyRequestsState extends State<MyRequests>
 
   @override
   void initState() {
+    WidgetsBinding.instance.addObserver(this);
     super.initState();
     getMyRequest();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    setStatusBar();
+  }
+
+  void setStatusBar() async {
+    setState(() {
+      FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
+      FlutterStatusbarcolor.setNavigationBarWhiteForeground(true);
+      FlutterStatusbarcolor.setStatusBarColor(Color.fromRGBO(153, 0, 153, 1.0));
+      FlutterStatusbarcolor.setNavigationBarColor(
+        Color.fromRGBO(153, 0, 153, 1.0),
+      );
+    });
   }
 
   @override

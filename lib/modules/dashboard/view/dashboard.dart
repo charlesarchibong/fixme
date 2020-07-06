@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sparkline/flutter_sparkline.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:provider/provider.dart';
 import 'package:quickfix/modules/dashboard/provider/dashboard_provider.dart';
 import 'package:quickfix/util/const.dart';
@@ -13,7 +14,7 @@ class Dashboard extends StatefulWidget {
   Dashboard({@required this.pageController});
 }
 
-class _DashboardState extends State<Dashboard> {
+class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
   static final List<String> chartDropdownItems = [
     'Last 7 days',
     'Last month',
@@ -23,7 +24,31 @@ class _DashboardState extends State<Dashboard> {
   int actualChart = 0;
   @override
   void initState() {
+    WidgetsBinding.instance.addObserver(this);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    setStatusBar();
+  }
+
+  void setStatusBar() async {
+    setState(() {
+      FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
+      FlutterStatusbarcolor.setNavigationBarWhiteForeground(true);
+      FlutterStatusbarcolor.setStatusBarColor(Color.fromRGBO(153, 0, 153, 1.0));
+      FlutterStatusbarcolor.setNavigationBarColor(
+        Color.fromRGBO(153, 0, 153, 1.0),
+      );
+    });
   }
 
   @override

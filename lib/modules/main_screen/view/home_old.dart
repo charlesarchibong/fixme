@@ -12,6 +12,7 @@ import 'package:quickfix/services/network/network_service.dart';
 import 'package:quickfix/util/Utils.dart';
 import 'package:quickfix/util/const.dart';
 import 'package:quickfix/util/content_type.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeW extends StatefulWidget {
   @override
@@ -180,48 +181,56 @@ class _HomeState extends State<HomeW>
                   'Copied to clipboard',
                 );
               },
-              child: RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
-                  text: 'Your account number is ',
-                  style: TextStyle(
-                    // color: Colors.black,
-                    fontSize: 17,
-                  ),
-                  children: <TextSpan>[
-                    TextSpan(
-                      text: accountNumber,
-                      style: TextStyle(
-                        color: Theme.of(context).accentColor,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          Clipboard.setData(
-                            ClipboardData(
-                              text: accountNumber,
+              child: FutureBuilder<SharedPreferences>(
+                  future: SharedPreferences.getInstance(),
+                  builder: (context, snapshot) {
+                    return RichText(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(
+                        text: 'Your account number is ',
+                        style: TextStyle(
+                          color: snapshot.hasData
+                              ? snapshot.data.getString("theme") == 'light'
+                                  ? Colors.black
+                                  : Colors.white
+                              : ListTileShimmer(),
+                          fontSize: 17,
+                        ),
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: accountNumber,
+                            style: TextStyle(
+                              color: Theme.of(context).accentColor,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
                             ),
-                          );
-                          FlushBarCustomHelper.showInfoFlushbar(
-                            context,
-                            accountNumber,
-                            'Copied to clipboard',
-                          );
-                        },
-                    ),
-                    TextSpan(
-                      text:
-                          '. Bank Name is Providious Bank. To receive/send money simply transfer to this account.',
-                      style: TextStyle(
-                        // color: Theme.of(context).primaryColor,
-                        fontSize: 15,
-                        fontWeight: FontWeight.normal,
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Clipboard.setData(
+                                  ClipboardData(
+                                    text: accountNumber,
+                                  ),
+                                );
+                                FlushBarCustomHelper.showInfoFlushbar(
+                                  context,
+                                  accountNumber,
+                                  'Copied to clipboard',
+                                );
+                              },
+                          ),
+                          TextSpan(
+                            text:
+                                '. Bank Name is Providious Bank. To receive/send money simply transfer to this account.',
+                            style: TextStyle(
+                              // color: Theme.of(context).primaryColor,
+                              fontSize: 15,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
-                ),
-              ),
+                    );
+                  }),
             ),
             SizedBox(
               height: 6,
