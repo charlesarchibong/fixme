@@ -84,6 +84,7 @@ class _HomeState extends State<HomeW>
       return artisans;
     } catch (error) {
       print(error.toString());
+      return List();
     }
   }
 
@@ -97,6 +98,15 @@ class _HomeState extends State<HomeW>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        systemNavigationBarColor:
+            Color.fromRGBO(153, 0, 153, 1.0), // navigation bar color
+        statusBarColor: Color.fromRGBO(153, 0, 153, 1.0),
+        statusBarIconBrightness: Brightness.dark,
+        systemNavigationBarIconBrightness: Brightness.dark,
+      ),
+    );
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.fromLTRB(10.0, 0, 10.0, 0),
@@ -175,7 +185,7 @@ class _HomeState extends State<HomeW>
                 text: TextSpan(
                   text: 'Your account number is ',
                   style: TextStyle(
-                    color: Colors.black,
+                    // color: Colors.black,
                     fontSize: 17,
                   ),
                   children: <TextSpan>[

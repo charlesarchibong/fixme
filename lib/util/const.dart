@@ -57,13 +57,15 @@ class Constants {
     accentColor: lightAccent,
     fontFamily: 'Popins',
     cursorColor: lightAccent,
-    brightness: Brightness.dark,
+    brightness: Brightness.light,
     textSelectionColor: Color.fromRGBO(153, 0, 153, 1),
     scaffoldBackgroundColor: lightBG,
     appBarTheme: AppBarTheme(
       color: Color.fromRGBO(153, 0, 153, 1.0),
       textTheme: TextTheme(),
-      iconTheme: IconThemeData(color: Color(0xffffffff)),
+      iconTheme: IconThemeData(
+        color: Color.fromRGBO(153, 0, 153, 1.0),
+      ),
 
 //      iconTheme: IconThemeData(
 //        color: lightAccent,

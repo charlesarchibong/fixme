@@ -15,8 +15,9 @@ import 'package:quickfix/util/Utils.dart';
 
 class ChatScreen extends StatefulWidget {
   final String receiver;
+  final String receiverToken;
 
-  ChatScreen({@required this.receiver});
+  ChatScreen({@required this.receiver, this.receiverToken});
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -31,7 +32,7 @@ class _ChatScreenState extends State<ChatScreen> {
     'I am fine and you?'
   ];
 
-  final _formKey = GlobalKey<FormState>();
+  // final _formKey = GlobalKey<FormState>();
 
   TextEditingController _messageController = TextEditingController();
 
@@ -312,7 +313,7 @@ class _ChatScreenState extends State<ChatScreen> {
             'status': 'done',
             'chatroomid': getChatNode(currentUser.phoneNumber, widget.receiver),
           },
-          'to': widget.receiver,
+          'to': widget.receiverToken,
         },
       ),
     );

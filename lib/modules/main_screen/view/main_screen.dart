@@ -6,8 +6,10 @@ import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_shimmer/flutter_shimmer.dart';
+import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
@@ -51,9 +53,10 @@ class MainScreen extends StatefulWidget {
   MainScreenState createState() => mainScreenState;
 }
 
-class MainScreenState extends State<MainScreen> {
+class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
+  AppLifecycleState _notification;
 
   PageController pageController;
   final _scaffoledKey = GlobalKey<ScaffoldState>();
@@ -138,6 +141,16 @@ class MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     setStatusBar();
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        systemNavigationBarColor:
+            Color.fromRGBO(153, 0, 153, 1.0), // navigation bar color
+        statusBarColor: Color.fromRGBO(153, 0, 153, 1.0),
+        statusBarIconBrightness: Brightness.light,
+        systemNavigationBarIconBrightness: Brightness.light,
+      ),
+    );
+
     return WillPopScope(
       onWillPop: () {
         setStatusBar();
@@ -146,9 +159,11 @@ class MainScreenState extends State<MainScreen> {
       child: Scaffold(
         key: _scaffoledKey,
         appBar: AppBar(
-          backgroundColor: Constants.lightAccent,
+          backgroundColor: Color.fromRGBO(153, 0, 153, 1.0),
 //          automaticallyImplyLeading: false,
 //          centerTitle: true,
+//Charles added
+          brightness: Brightness.dark,
           iconTheme: IconThemeData(color: Colors.white),
           title: Text(
             Constants.appName,
@@ -499,6 +514,8 @@ class MainScreenState extends State<MainScreen> {
 
   @override
   void initState() {
+    WidgetsBinding.instance.addObserver(this);
+
     _initLocalNotification();
     _firebaseMessaging.getToken().then((token) {
       print('on message $token');
@@ -525,11 +542,30 @@ class MainScreenState extends State<MainScreen> {
 
   @override
   void dispose() {
-    super.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+
     pageController.dispose();
+    super.dispose();
   }
 
-  void setStatusBar() async {}
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    setState(() {
+      _notification = state;
+    });
+    setStatusBar();
+  }
+
+  void setStatusBar() async {
+    setState(() {
+      FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
+      FlutterStatusbarcolor.setNavigationBarWhiteForeground(true);
+      FlutterStatusbarcolor.setStatusBarColor(Color.fromRGBO(153, 0, 153, 1.0));
+      FlutterStatusbarcolor.setNavigationBarColor(
+        Color.fromRGBO(153, 0, 153, 1.0),
+      );
+    });
+  }
 
   Future sendDeviceDetails() async {
     try {

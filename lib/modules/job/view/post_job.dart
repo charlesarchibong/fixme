@@ -61,7 +61,7 @@ class _PostJobState extends State<PostJob> {
 
   @override
   Widget build(BuildContext context) {
-    final postJob = Provider.of<PostJobProvider>(context);
+    // final postJob = Provider.of<PostJobProvider>(context);
     final _scaffoldKey = GlobalKey<ScaffoldState>();
     final _formKey = GlobalKey<FormState>();
 

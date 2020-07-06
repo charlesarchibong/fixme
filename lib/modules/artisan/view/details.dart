@@ -293,6 +293,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                     MaterialPageRoute(
                       builder: (_) => ChatScreen(
                         receiver: widget.userData['user_mobile'],
+                        receiverToken: widget.userData['mobile_device_token'],
                       ),
                     ),
                   );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:quickfix/modules/auth/provider/login_form_validation.dart';
 import 'package:quickfix/modules/custom/view/walkthrough.dart';
@@ -16,7 +17,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final SharedPreferences prefs = await SharedPreferences.getInstance();
-
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle(
+      systemNavigationBarColor:
+          Color.fromRGBO(153, 0, 153, 1.0), // navigation bar color
+      statusBarColor: Color.fromRGBO(153, 0, 153, 1.0),
+      statusBarIconBrightness: Brightness.light,
+      systemNavigationBarIconBrightness: Brightness.light,
+    ),
+  );
   runApp(
     MultiProvider(
       providers: [
