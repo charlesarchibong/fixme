@@ -292,8 +292,8 @@ class _ChatScreenState extends State<ChatScreen> {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   Future<Map<String, dynamic>> sendAndRetrieveMessage(unReadMSGCount) async {
     var firebaseCloudserverToken =
-        'AAAAyf72URY:APA91bE6buaTnJMHGJLvBVTti6Nt6cketYse2T9q6P8IhgwhGFmh7I6bL3v9fQqzZYqgh4VePiPODwO3Puod2k0JV6Gf55Lq4ojRB05pIAgIPj3aTt9A1bK0WtDsuZz1kqTB_-U_2C2o';
-    await http.post(
+        'AAAAyf72URY:APA91bG0N1JMxXJqu_E21ijGzuNf6qAKROxBj163xMiWI0lhtxsoNsYF559XUE0vLxtN79xNqZlvj5QT8pw7W-7lLNOuL2OuwHlydN6_WWxxZe1z9px_IYAQl2bTOkzPwMx1QCLo-dpE';
+    final response = await http.post(
       'https://fcm.googleapis.com/fcm/send',
       headers: <String, String>{
         'Content-Type': 'application/json',
@@ -317,6 +317,7 @@ class _ChatScreenState extends State<ChatScreen> {
         },
       ),
     );
+    print(response.body);
 
     final Completer<Map<String, dynamic>> completer =
         Completer<Map<String, dynamic>>();
