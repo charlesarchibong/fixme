@@ -9,7 +9,7 @@ class Constants {
   static String updateProfileView =
       "https://manager.fixme.ng/profile-views-update";
   static String savedDeviceDetails =
-      "http://manager.fixme.ng/mtk-details-update";
+      "https://manager.fixme.ng/mtk-details-update";
   static String serviceImageUrl = "https://manager.fixme.ng/service-images";
   static String createUserUrl = "reg-user";
   static String uploadUrl = 'https://uploads.quickfixnaija.com/thumbnails/';

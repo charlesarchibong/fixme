@@ -583,8 +583,6 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
         device_type = 'IOS ' + iosDeviceInfo.model;
         device_os = iosDeviceInfo.systemName;
       }
-      print(device_os);
-      print(device_type);
       final user = await Utils.getUserSession();
       final apiKey = await Utils.getApiKey();
       final String url = Constants.savedDeviceDetails;
@@ -601,8 +599,6 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
         contentType: ContentType.URL_ENCODED,
         headers: headers,
       );
-      print(response.data);
-      print(response.data);
       print(response.data);
     } catch (e) {
       if (e is DioError) {
