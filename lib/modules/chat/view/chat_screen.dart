@@ -327,7 +327,7 @@ class _ChatScreenState extends State<ChatScreen> {
         completer.complete(message);
       },
     );
-    FocusScope.of(context).requestFocus(FocusNode());
+    // FocusScope.of(context).requestFocus(FocusNode());
 
     return completer.future;
   }

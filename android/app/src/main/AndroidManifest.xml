@@ -16,7 +16,7 @@
 
     <uses-permission
         android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <application android:name="io.flutter.app.FlutterApplication" android:label="FixMe Business" android:icon="@mipmap/launcher_icon">
+    <application android:name="io.flutter.app.FlutterApplication" android:label="Fixme Business" android:icon="@mipmap/launcher_icon">
         <meta-data android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAUU8zl--MGwOUxLRKpcPnHvEdToscy_Eo"/>
 
