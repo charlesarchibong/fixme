@@ -31,13 +31,57 @@ class PendingAppointments extends StatelessWidget {
             color: Colors.white,
           ),
         ),
-        title: Text(
-          this.title,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
+        title: Row(
+          children: <Widget>[
+            Text(
+              'Title:',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(
+              width: 15.0,
+            ),
+            Text(
+              this.title,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            )
+          ],
         ),
-        subtitle: Text(this.subtitle),
+        subtitle: Column(
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Text(
+                  'Description:',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(
+                  width: 15.0,
+                ),
+                Text(this.subtitle),
+              ],
+            ),
+            Row(
+              children: <Widget>[
+                Text(
+                  'Date Posted:',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(
+                  width: 15.0,
+                ),
+                Text(this.job.datePosted),
+              ],
+            ),
+          ],
+        ),
         trailing: CustomPopupButton(
           job: job,
           index: index,

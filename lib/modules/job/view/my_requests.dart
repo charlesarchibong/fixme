@@ -112,6 +112,7 @@ class _MyRequestsState extends State<MyRequests>
                                   subtitle: myJobs[index].description,
                                   status: myJobs[index].status,
                                   job: myJobs[index],
+                                  datePosted: myJobs[index].datePosted,
                                 );
                               },
                             ),

@@ -9,6 +9,7 @@ class MyRequestWidget extends StatelessWidget {
   final String subtitle;
   final String status;
   final Job job;
+  final String datePosted;
 
   MyRequestWidget({
     Key key,
@@ -16,6 +17,7 @@ class MyRequestWidget extends StatelessWidget {
     @required this.subtitle,
     @required this.job,
     @required this.status,
+    @required this.datePosted,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -29,13 +31,57 @@ class MyRequestWidget extends StatelessWidget {
             color: Colors.white,
           ),
         ),
-        title: Text(
-          this.title,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
+        title: Row(
+          children: <Widget>[
+            Text(
+              'Title:',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(
+              width: 15.0,
+            ),
+            Text(
+              this.title,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            )
+          ],
         ),
-        subtitle: Text(this.subtitle),
+        subtitle: Column(
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Text(
+                  'Description:',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(
+                  width: 15.0,
+                ),
+                Text(this.subtitle),
+              ],
+            ),
+            Row(
+              children: <Widget>[
+                Text(
+                  'Date Posted:',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(
+                  width: 15.0,
+                ),
+                Text(this.datePosted),
+              ],
+            ),
+          ],
+        ),
         trailing: _myRequestAction(),
         onTap: () {
           Navigator.of(context).push(

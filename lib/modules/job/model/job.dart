@@ -8,6 +8,7 @@ class Job {
   final double latitude;
   final double longitude;
   final String status;
+  final String datePosted;
   Job({
     this.id,
     this.jobTitle,
@@ -18,6 +19,7 @@ class Job {
     this.longitude,
     this.address,
     this.status,
+    this.datePosted,
   });
 
   Map<String, dynamic> toMap() {
@@ -30,6 +32,7 @@ class Job {
       'job_description': description,
       'latitude': latitude,
       'longitude': longitude,
+      'date_oppened': datePosted,
       'job_address': address,
     };
   }
@@ -45,6 +48,7 @@ class Job {
       latitude: map['latitude'],
       longitude: map['longitude'],
       address: map['job_address'],
+      datePosted: map['date_oppened'],
     );
   }
 }
