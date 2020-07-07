@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:geocoder/geocoder.dart';
 import 'package:provider/provider.dart';
 import 'package:quickfix/helpers/flush_bar.dart';
 import 'package:quickfix/models/failure.dart';
@@ -66,43 +65,54 @@ class _PostJobState extends State<PostJob> {
     final _formKey = GlobalKey<FormState>();
 
     Future uploadJob() async {
-      final postJob = Provider.of<PostJobProvider>(context, listen: false);
+      try {
+        final postJob = Provider.of<PostJobProvider>(context, listen: false);
 
-      if (_formKey.currentState.validate()) {
-        var addresses = await Geocoder.local
-            .findAddressesFromQuery(_jobAddressController.text);
-        var first = addresses.first;
-        print("${first.featureName} : ${first.coordinates}");
+        if (_formKey.currentState.validate()) {
+          // var addresses = await Geocoder.local
+          //     .findAddressesFromQuery(_jobAddressController.text);
+          // var first = addresses.first;
+          // print("${first.featureName} : ${first.coordinates}");
 
-        Job job = Job(
-          description: _jobDescriptionController.text,
-          jobTitle: _jobTitleController.text,
-          latitude: first.coordinates.latitude,
-          longitude: first.coordinates.longitude,
-          price: int.parse(_jobPriceController.text),
-          serviceCategory: jobCategory.id,
-          address: _jobAddressController.text,
-        );
-        final uploaded = await postJob.uploadJob(job);
+          Job job = Job(
+            description: _jobDescriptionController.text,
+            jobTitle: _jobTitleController.text,
+            price: int.parse(_jobPriceController.text),
+            serviceCategory: jobCategory.id,
+            address: _jobAddressController.text,
+          );
+          final uploaded = await postJob.uploadJob(job);
+          setState(() {
+            loading = false;
+          });
+          uploaded.fold((Failure failure) {
+            FlushBarCustomHelper.showErrorFlushbar(
+              context,
+              'Error',
+              failure.message,
+            );
+          }, (bool upload) {
+            FlushBarCustomHelper.showInfoFlushbarWithAction(
+                context, 'Success', 'Job was uploaded successfully', 'View',
+                () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => MyRequests(),
+                ),
+              );
+            });
+          });
+        }
+      } catch (e) {
+        print(e.toString());
         setState(() {
           loading = false;
         });
-        uploaded.fold((Failure failure) {
-          FlushBarCustomHelper.showErrorFlushbar(
-            context,
-            'Error',
-            failure.message,
-          );
-        }, (bool upload) {
-          FlushBarCustomHelper.showInfoFlushbarWithAction(
-              context, 'Success', 'Job was uploaded successfully', 'View', () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (_) => MyRequests(),
-              ),
-            );
-          });
-        });
+        FlushBarCustomHelper.showErrorFlushbar(
+          context,
+          'Error',
+          'Request was not completed, please check your inputs.',
+        );
       }
     }
 

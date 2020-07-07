@@ -169,7 +169,7 @@ class _ChatScreenState extends State<ChatScreen> {
       //Message Count
       FlutterAppBadger.updateBadgeCount(1);
 
-      FocusScope.of(context).requestFocus(FocusNode());
+      // FocusScope.of(context).requestFocus(FocusNode());
       _messageController.clear();
     } catch (e) {
       print(e.toString());
