@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:quickfix/modules/artisan/view/track_artisan.dart';
@@ -40,7 +41,7 @@ class MyRequestWidget extends StatelessWidget {
               ),
             ),
             SizedBox(
-              width: 15.0,
+              width: 5.0,
             ),
             Text(
               this.title,
@@ -50,37 +51,34 @@ class MyRequestWidget extends StatelessWidget {
             )
           ],
         ),
-        subtitle: Column(
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                Text(
-                  'Description:',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(
-                  width: 15.0,
-                ),
-                Text(this.subtitle),
-              ],
+        subtitle: RichText(
+          text: TextSpan(
+            text: 'Description: ',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 15,
+              fontWeight: FontWeight.bold,
             ),
-            Row(
-              children: <Widget>[
-                Text(
-                  'Date Posted:',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
+            children: <TextSpan>[
+              TextSpan(
+                text: this.subtitle,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
+                  fontWeight: FontWeight.normal,
                 ),
-                SizedBox(
-                  width: 15.0,
+                recognizer: TapGestureRecognizer()..onTap = () {},
+              ),
+              TextSpan(
+                text: ' \nDate: ${job.datePosted}',
+                style: TextStyle(
+                  // color: Theme.of(context).primaryColor,
+                  fontSize: 15,
+                  fontWeight: FontWeight.normal,
                 ),
-                Text(this.datePosted),
-              ],
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
         trailing: _myRequestAction(),
         onTap: () {

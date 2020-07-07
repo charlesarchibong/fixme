@@ -626,7 +626,7 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
     } else {
       // set Android Local notification.
       var initializationSettingsAndroid =
-          AndroidInitializationSettings('ic_launcher');
+          AndroidInitializationSettings('drawable/logo');
       var initializationSettingsIOS = IOSInitializationSettings(
           onDidReceiveLocalNotification: _onDidReceiveLocalNotification);
       var initializationSettings = InitializationSettings(
