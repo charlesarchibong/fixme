@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:quickfix/helpers/flush_bar.dart';
 import 'package:quickfix/models/failure.dart';
 import 'package:quickfix/modules/artisan/widget/grid_artisans.dart';
+import 'package:quickfix/modules/profile/model/user.dart';
 import 'package:quickfix/modules/search/provider/search_provider.dart';
 import 'package:quickfix/services/network/network_service.dart';
 import 'package:quickfix/util/Utils.dart';
@@ -184,52 +185,61 @@ class _HomeState extends State<HomeW>
               child: FutureBuilder<SharedPreferences>(
                   future: SharedPreferences.getInstance(),
                   builder: (context, snapshot) {
-                    return RichText(
-                      textAlign: TextAlign.center,
-                      text: TextSpan(
-                        text: 'Your account number is ',
-                        style: TextStyle(
-                          color: snapshot.hasData
-                              ? snapshot.data.getString("theme") == 'light'
-                                  ? Colors.black
-                                  : Colors.white
-                              : ListTileShimmer(),
-                          fontSize: 17,
-                        ),
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: accountNumber,
-                            style: TextStyle(
-                              color: Theme.of(context).accentColor,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                Clipboard.setData(
-                                  ClipboardData(
-                                    text: accountNumber,
+                    return FutureBuilder<User>(
+                        future: Utils.getUserSession(),
+                        builder: (context, usersnapshot) {
+                          return RichText(
+                            textAlign: TextAlign.center,
+                            text: TextSpan(
+                              text: 'Your account number is ',
+                              style: TextStyle(
+                                color: snapshot.hasData
+                                    ? snapshot.data.getString("theme") ==
+                                            'light'
+                                        ? Colors.black
+                                        : Colors.white
+                                    : Container(
+                                        child: CircularProgressIndicator(),
+                                      ),
+                                fontSize: 17,
+                              ),
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: usersnapshot.hasData
+                                      ? '${usersnapshot.data.accountNumber}'
+                                      : '',
+                                  style: TextStyle(
+                                    color: Theme.of(context).accentColor,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
                                   ),
-                                );
-                                FlushBarCustomHelper.showInfoFlushbar(
-                                  context,
-                                  accountNumber,
-                                  'Copied to clipboard',
-                                );
-                              },
-                          ),
-                          TextSpan(
-                            text:
-                                '. Bank Name is Providious Bank. To receive/send money simply transfer to this account.',
-                            style: TextStyle(
-                              // color: Theme.of(context).primaryColor,
-                              fontSize: 15,
-                              fontWeight: FontWeight.normal,
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      Clipboard.setData(
+                                        ClipboardData(
+                                          text: accountNumber,
+                                        ),
+                                      );
+                                      FlushBarCustomHelper.showInfoFlushbar(
+                                        context,
+                                        accountNumber,
+                                        'Copied to clipboard',
+                                      );
+                                    },
+                                ),
+                                TextSpan(
+                                  text:
+                                      '. Bank Name is Providious Bank. To receive/send money simply transfer to this account.',
+                                  style: TextStyle(
+                                    // color: Theme.of(context).primaryColor,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
-                      ),
-                    );
+                          );
+                        });
                   }),
             ),
             SizedBox(
