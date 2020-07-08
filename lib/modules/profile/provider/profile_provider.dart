@@ -114,9 +114,6 @@ class ProfileProvider extends ChangeNotifier {
       );
       if (response.statusCode == 200) {
         List images = response.data['servicePictures'] as List;
-        // print(images.length);
-        // print(images.length);
-        // print(images.length);
         List<ServiceImage> servicesImages = List();
         for (var i = 0; i < images.length; i++) {
           ServiceImage image = ServiceImage().fromMap(images[i]);
@@ -147,7 +144,9 @@ class ProfileProvider extends ChangeNotifier {
           ),
         );
       }
-      print(e.toString());
+      print(
+        e.toString(),
+      );
       return Left(
         Failure(
           message: 'No images found',
