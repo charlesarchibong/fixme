@@ -15,6 +15,7 @@ class User {
     this.lastName,
     this.phoneNumber,
     this.email,
+    this.profilePicture,
     this.accountNumber,
     this.fullNumber,
     this.imageUrl,
