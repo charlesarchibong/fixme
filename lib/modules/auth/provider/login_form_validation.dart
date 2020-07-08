@@ -54,7 +54,9 @@ class LoginFormValidation extends ChangeNotifier {
   Future<User> loginUser(String phone) async {
     try {
       Map<String, String> headers = {
-        "Content-type": "application/x-www-form-urlencoded"
+        "Content-type": "application/x-www-form-urlencoded",
+        'Authorization':
+            'Bearer FIXME_1U90P3444ANdroidAPP4HUisallOkayBY_FIXME_APP_UIONSISJGJANKKI3445fv',
       };
       Map<String, String> body = {'phoneNumber': phone};
       String url = Constants.baseUrl + Constants.loginUserUrl;
@@ -80,7 +82,7 @@ class LoginFormValidation extends ChangeNotifier {
           return user;
         }
       } else {
-        throw new Exception('Something wnt wrong, please try again!');
+        throw new Exception('Something went wrong, please try again!');
       }
     } catch (e) {
       print(e.runtimeType);

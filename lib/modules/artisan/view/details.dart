@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:quickfix/helpers/flush_bar.dart';
 import 'package:quickfix/models/failure.dart';
+import 'package:quickfix/modules/artisan/provider/artisan_provider.dart';
 import 'package:quickfix/modules/chat/view/chat_screen.dart';
 import 'package:quickfix/modules/profile/provider/profile_provider.dart';
 import 'package:quickfix/util/const.dart';
@@ -295,15 +297,41 @@ class _ProductDetailsState extends State<ProductDetails>
           height: 50.0,
           child: Row(
             children: <Widget>[
-              RaisedButton(
-                child: Text(
-                  "Request Service",
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-                color: Theme.of(context).accentColor,
-                onPressed: () {},
+              Consumer<RequestArtisanService>(
+                builder: (context, requestArtisanService, child) {
+                  return requestArtisanService.loading
+                      ? Container(
+                          child: CircularProgressIndicator(),
+                        )
+                      : RaisedButton(
+                          child: Text(
+                            "Request Service",
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                          color: Theme.of(context).accentColor,
+                          onPressed: () async {
+                            final requested =
+                                await requestArtisanService.request(
+                              widget.userData['user_mobile'],
+                            );
+                            requested.fold((Failure failure) {
+                              FlushBarCustomHelper.showErrorFlushbar(
+                                context,
+                                'Error',
+                                failure.message,
+                              );
+                            }, (bool requested) {
+                              FlushBarCustomHelper.showInfoFlushbar(
+                                context,
+                                'Success',
+                                'Request was successfully, please wait for Artisan to confirm his/her availability.',
+                              );
+                            });
+                          },
+                        );
+                },
               ),
               Spacer(),
               RaisedButton(
