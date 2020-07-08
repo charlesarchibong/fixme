@@ -4,6 +4,7 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:quickfix/helpers/custom_lodder.dart';
 import 'package:quickfix/models/failure.dart';
 import 'package:quickfix/modules/profile/model/bank_code.dart';
 import 'package:quickfix/modules/profile/model/service_image.dart';
@@ -308,14 +309,12 @@ class ProfileProvider extends ChangeNotifier {
         return Left(Failure(message: 'Profile count was not updated'));
       }
     } catch (e) {
-      if (e is DioError) {
-        print(e.toString());
-        return Left(
-          Failure(
-            message: 'Error occurred while trying to update profile count',
-          ),
-        );
-      }
+      CustomLogger(className: 'ProfileProvider').errorPrint(e.toString());
+      return Left(
+        Failure(
+          message: 'Error occurred while trying to update profile count',
+        ),
+      );
     }
   }
 }
