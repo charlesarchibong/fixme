@@ -8,7 +8,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_shimmer/flutter_shimmer.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:location/location.dart';
@@ -23,6 +22,7 @@ import 'package:quickfix/modules/job/view/my_requests.dart';
 import 'package:quickfix/modules/job/view/pending_appointment.dart';
 import 'package:quickfix/modules/job/view/post_job.dart';
 import 'package:quickfix/modules/main_screen/view/home_old.dart';
+import 'package:quickfix/modules/profile/model/user.dart';
 import 'package:quickfix/modules/profile/provider/profile_provider.dart';
 import 'package:quickfix/modules/profile/view/profile.dart';
 import 'package:quickfix/modules/search/view/search.dart';
@@ -472,7 +472,7 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
   }
 
   Widget _drawwerImage() {
-    return FutureBuilder(
+    return FutureBuilder<User>(
       future: Utils.getUserSession(),
       builder: (context, snapshot) {
         return snapshot.hasData
@@ -492,12 +492,13 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                           shape: BoxShape.circle,
                           image: DecorationImage(
                             fit: BoxFit.fill,
-                            image: profileProvider.profilePicture == null
+                            image: profileProvider.profilePicture == null ||
+                                    profileProvider.profilePicture == ''
                                 ? AssetImage(
                                     "assets/dp.png",
                                   )
                                 : NetworkImage(
-                                    profileProvider.profilePicture,
+                                    snapshot.data.profilePicture,
                                   ),
                           ),
                           border: Border.all(
@@ -507,7 +508,9 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                     );
                   },
                 ))
-            : ProfileShimmer();
+            : Container(
+                child: CircularProgressIndicator(),
+              );
       },
     );
   }
