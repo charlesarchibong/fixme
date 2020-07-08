@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app_badger/flutter_app_badger.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:quickfix/helpers/custom_lodder.dart';
 import 'package:quickfix/helpers/flush_bar.dart';
 import 'package:quickfix/modules/chat/model/message.dart';
 import 'package:quickfix/modules/profile/model/user.dart';
@@ -317,7 +318,8 @@ class _ChatScreenState extends State<ChatScreen> {
         },
       ),
     );
-    print(response.body);
+
+    CustomLogger(className: 'ChatScreen').messagePrint(response.body);
 
     final Completer<Map<String, dynamic>> completer =
         Completer<Map<String, dynamic>>();
