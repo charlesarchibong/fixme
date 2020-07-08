@@ -11,6 +11,8 @@ class Constants {
   static String savedDeviceDetails =
       "https://manager.fixme.ng/mtk-details-update";
   static String serviceImageUrl = "https://manager.fixme.ng/service-images";
+  static String requestArtisanRequest =
+      "https://manager.fixme.ng/service-request";
   static String createUserUrl = "reg-user";
   static String uploadUrl = 'https://uploads.fixme.ng/thumbnails/';
   static String updateLocationUrl = 'https://manager.fixme.ng/gpsl';
