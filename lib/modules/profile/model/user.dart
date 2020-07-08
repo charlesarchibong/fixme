@@ -8,6 +8,7 @@ class User {
   String fullNumber;
   int serviceId;
   String imageUrl;
+  String profilePicture;
 
   User.name({
     this.firstName,
@@ -35,6 +36,7 @@ class User {
     map['service_id'] = serviceId;
     map['imageUrl'] = imageUrl;
     map['bank_account_number'] = accountNumber;
+    map['profilePicture'] = profilePicture;
     return map;
   }
 
@@ -48,5 +50,6 @@ class User {
     serviceId = json['service_id'];
     imageUrl = json['imageUrl'];
     accountNumber = json['bank_account_number'];
+    profilePicture = json['profilePicture'];
   }
 }

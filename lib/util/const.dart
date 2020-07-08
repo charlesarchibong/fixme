@@ -12,7 +12,7 @@ class Constants {
       "https://manager.fixme.ng/mtk-details-update";
   static String serviceImageUrl = "https://manager.fixme.ng/service-images";
   static String createUserUrl = "reg-user";
-  static String uploadUrl = 'https://uploads.quickfixnaija.com/thumbnails/';
+  static String uploadUrl = 'https://uploads.fixme.ng/thumbnails/';
   static String updateLocationUrl = 'https://manager.fixme.ng/gpsl';
   static String getArtisanByLocationUrl =
       'https://manager.fixme.ng/near-artisans';

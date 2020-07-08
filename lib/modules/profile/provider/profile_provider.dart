@@ -37,7 +37,7 @@ class ProfileProvider extends ChangeNotifier {
   Future<void> getImage() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
     var uploaded = await uploadImageToServer('profilePicture', image);
-    String uploadUrl = 'https://uploads.quickfixnaija.com/thumbnails/';
+    String uploadUrl = 'https://uploads.fixme.ng/thumbnails/';
     _profilePicture = uploadUrl + uploaded['imageFileName'] ?? null;
     Utils.setProfilePicture(_profilePicture);
     notifyListeners();
@@ -123,20 +123,36 @@ class ProfileProvider extends ChangeNotifier {
           servicesImages.add(image);
         }
         if (servicesImages.length <= 0) {
-          return Left(Failure(message: 'No images found'));
+          return Left(
+            Failure(
+              message: 'No images found',
+            ),
+          );
         } else {
           return Right(servicesImages);
         }
       } else {
-        return Left(Failure(message: 'No images found'));
+        return Left(
+          Failure(
+            message: 'No images found',
+          ),
+        );
       }
     } catch (e) {
       if (e is DioError) {
         print(e.message);
-        return Left(Failure(message: 'No images found'));
+        return Left(
+          Failure(
+            message: 'No images found',
+          ),
+        );
       }
       print(e.toString());
-      return Left(Failure(message: 'No images found'));
+      return Left(
+        Failure(
+          message: 'No images found',
+        ),
+      );
     }
   }
 
@@ -150,7 +166,7 @@ class ProfileProvider extends ChangeNotifier {
       final user = await Utils.getUserSession();
       String fileName = file.path.split('/').last;
       String apiKey = await Utils.getApiKey();
-      String url = 'https://uploads.quickfixnaija.com/uploads-processing';
+      String url = 'https://uploads.fixme.ng/uploads-processing';
       Map<String, String> headers = {'Bearer': '$apiKey'};
       FormData formData = FormData.fromMap({
         "mobile": user.phoneNumber,
@@ -167,6 +183,7 @@ class ProfileProvider extends ChangeNotifier {
       return response.data;
     } catch (e) {
       print(e);
+      return null;
     }
   }
 
@@ -195,14 +212,25 @@ class ProfileProvider extends ChangeNotifier {
         return Right(true);
       } else {
         return Left(
-            Failure(message: 'Subservice was not added, please try again'));
+          Failure(
+            message: 'Subservice was not added, please try again',
+          ),
+        );
       }
     } catch (e) {
       print(e);
       if (e is DioError) {
-        return Left(Failure(message: e.message));
+        return Left(
+          Failure(
+            message: e.message,
+          ),
+        );
       } else {
-        return Left(Failure(message: e.toString()));
+        return Left(
+          Failure(
+            message: e.toString(),
+          ),
+        );
       }
     }
   }
@@ -233,7 +261,11 @@ class ProfileProvider extends ChangeNotifier {
         return Left(Failure(message: 'Your profile was not updated'));
       }
     } catch (e) {
-      return Left(Failure(message: e.toString().split(':')[1]));
+      return Left(
+        Failure(
+          message: e.toString().split(':')[1],
+        ),
+      );
     }
   }
 
@@ -286,7 +318,11 @@ class ProfileProvider extends ChangeNotifier {
         return Left(Failure(message: message));
       }
     } catch (e) {
-      return Left(Failure(message: e.toString().split(':')[1]));
+      return Left(
+        Failure(
+          message: e.toString().split(':')[1],
+        ),
+      );
     }
   }
 
