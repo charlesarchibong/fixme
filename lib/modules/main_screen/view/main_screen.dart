@@ -489,21 +489,26 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                     return Container(
                       height: 200,
                       decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                            fit: BoxFit.fill,
-                            image: profileProvider.profilePicture == null ||
-                                    profileProvider.profilePicture == ''
-                                ? AssetImage(
-                                    "assets/dp.png",
-                                  )
-                                : NetworkImage(
-                                    snapshot.data.profilePicture,
-                                  ),
-                          ),
-                          border: Border.all(
-                              color: Constants.lightAccent, width: 1)),
-                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          fit: BoxFit.fill,
+                          image: profileProvider.profilePicture == null ||
+                                  profileProvider.profilePicture == ''
+                              ? AssetImage(
+                                  "assets/dp.png",
+                                )
+                              : NetworkImage(
+                                  snapshot.data.profilePicture,
+                                ),
+                        ),
+                        border: Border.all(
+                          color: Constants.lightAccent,
+                          width: 1,
+                        ),
+                      ),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                      ),
                       width: MediaQuery.of(context).size.width * 10.6,
                     );
                   },
