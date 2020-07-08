@@ -12,6 +12,7 @@ import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
+import 'package:quickfix/helpers/custom_lodder.dart';
 import 'package:quickfix/helpers/flush_bar.dart';
 import 'package:quickfix/helpers/notification.dart';
 import 'package:quickfix/modules/chat/view/chats.dart';
@@ -650,6 +651,9 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
   Future _selectNotification(String payload) async {}
 
   sendLocalNotification(name, msg) async {
+    CustomLogger(className: 'MainScreen').messagePrint(
+      'Native notification sent',
+    );
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
         'your channel id', 'your channel name', 'your channel description',
         importance: Importance.Max, priority: Priority.High, ticker: 'ticker');
