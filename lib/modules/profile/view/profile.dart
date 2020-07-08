@@ -107,7 +107,7 @@ class _ProfileState extends State<Profile> {
                         padding: EdgeInsets.only(left: 10.0, right: 10.0),
                         child: Consumer<ProfileProvider>(
                             builder: (context, profileProvider, child) {
-                          return _profileImage(profileProvider);
+                          return _profileImage(profileProvider, user);
                         }),
                       ),
                       _profileName(user, context)
@@ -461,50 +461,45 @@ Widget _profileName(User snapshot, BuildContext context) {
   );
 }
 
-Widget _profileImage(ProfileProvider profileProvider) {
-  return FutureBuilder(
-    future: profileProvider.myProfilePicture(),
-    builder: (context, snapshot) {
-      return Stack(
-        alignment: Alignment.bottomCenter,
-        children: <Widget>[
-          profileProvider.profilePicture == null
-              ? Image.asset(
-                  "assets/dp.png",
-                  fit: BoxFit.cover,
-                  width: 100.0,
-                  height: 100.0,
-                )
-              : Image.network(
-                  profileProvider.profilePicture,
-                  fit: BoxFit.cover,
-                  width: 100.0,
-                  height: 100.0,
-                ),
-          RaisedButton(
-            onPressed: () {
-              profileProvider.setLoading();
-              profileProvider.getImage().then((value) {
-                profileProvider.setNotLoading();
-              }).catchError((e) {
-                profileProvider.setNotLoading();
-              });
-            },
-            child: profileProvider.loading
-                ? Spinner(
-                    icon: FontAwesomeIcons.spinner,
-                    color: Colors.white,
-                  )
-                : FaIcon(
-                    FontAwesomeIcons.upload,
-                    color: Colors.white,
-                  ),
-            elevation: 5,
-            color: Color.fromRGBO(153, 0, 153, 1.0),
-          )
-        ],
-      );
-    },
+Widget _profileImage(ProfileProvider profileProvider, User user) {
+  return Stack(
+    alignment: Alignment.bottomCenter,
+    children: <Widget>[
+      user.profilePicture == null || user.profilePicture == ''
+          ? Image.asset(
+              "assets/dp.png",
+              fit: BoxFit.cover,
+              width: 100.0,
+              height: 100.0,
+            )
+          : Image.network(
+              '${user.profilePicture}',
+              fit: BoxFit.cover,
+              width: 100.0,
+              height: 100.0,
+            ),
+      RaisedButton(
+        onPressed: () {
+          profileProvider.setLoading();
+          profileProvider.getImage().then((value) {
+            profileProvider.setNotLoading();
+          }).catchError((e) {
+            profileProvider.setNotLoading();
+          });
+        },
+        child: profileProvider.loading
+            ? Spinner(
+                icon: FontAwesomeIcons.spinner,
+                color: Colors.white,
+              )
+            : FaIcon(
+                FontAwesomeIcons.upload,
+                color: Colors.white,
+              ),
+        elevation: 5,
+        color: Color.fromRGBO(153, 0, 153, 1.0),
+      )
+    ],
   );
 }
 
@@ -787,7 +782,10 @@ _showSubCategoryDialog(
                           context, 'Error', failure.message);
                     }, (bool added) {
                       FlushBarCustomHelper.showInfoFlushbar(
-                          context, 'Success', 'Subservice was added');
+                        context,
+                        'Success',
+                        'Subservice was added',
+                      );
                     });
                   }
                 },
