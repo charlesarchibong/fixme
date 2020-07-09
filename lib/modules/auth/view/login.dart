@@ -95,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
         // print(error.toString().split(":")[1]);
         String message = error is SocketException
             ? 'No Internet connection available'
-            : 'Your request can not be process, please try.';
+            : 'Your request can not be processed, please try again.';
 //        _showAlert(context, error.toString().split(":")[1]);
         _scaffoldKey.currentState.showSnackBar(
           SnackBar(
