@@ -21,9 +21,6 @@ class User {
     this.imageUrl,
     this.serviceArea,
     this.serviceId,
-    this.serviceArea,
-    this.serviceId,
-    this.imageUrl,
   });
 
   Map<String, dynamic> toJson() {

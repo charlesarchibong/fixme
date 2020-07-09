@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_shimmer/flutter_shimmer.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:quickfix/helpers/flush_bar.dart';
@@ -35,6 +35,7 @@ class _HomeState extends State<HomeW>
   Location location;
   LocationData locationData;
   List users = List();
+  bool _loadingArtisan = false;
   String phoneNumber = '';
   String accountNumber = '0348861021';
   final TextEditingController _searchControl = new TextEditingController();
@@ -63,6 +64,9 @@ class _HomeState extends State<HomeW>
 
   Future<List> getArtisanByLocation() async {
     try {
+      setState(() {
+        _loadingArtisan = true;
+      });
       final user = await Utils.getUserSession();
       String apiKey = await Utils.getApiKey();
       Map<String, String> headers = {'Bearer': '$apiKey'};
@@ -80,11 +84,18 @@ class _HomeState extends State<HomeW>
       );
       var artisans = response.data['sortedUsers'] as List;
       print(artisans.toString());
+
       setState(() {
         users = artisans;
+        _loadingArtisan = false;
       });
       return artisans;
     } catch (error) {
+      setState(() {
+        users = List();
+        _loadingArtisan = false;
+      });
+
       print(error.toString());
       return List();
     }
@@ -198,9 +209,7 @@ class _HomeState extends State<HomeW>
                                             'light'
                                         ? Colors.black
                                         : Colors.white
-                                    : Container(
-                                        child: CircularProgressIndicator(),
-                                      ),
+                                    : Colors.white,
                                 fontSize: 17,
                               ),
                               children: <TextSpan>[
@@ -418,6 +427,52 @@ class _HomeState extends State<HomeW>
               },
             ),
           )
-        : VideoShimmer();
+        : _loadingArtisan
+            ? Center(
+                child: Container(
+                  child: CircularProgressIndicator(),
+                ),
+              )
+            : Center(
+                child: Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      SvgPicture.asset(
+                        'assets/sad.svg',
+                        semanticsLabel: 'So Sad',
+                        width: 250,
+                      ),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                      Text(
+                        'We are so sorry, no artisan available near your location.',
+                        style: TextStyle(
+                          // color: Theme.of(context).accentColor,
+                          fontSize: 20.0,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                      RaisedButton(
+                        child: Text(
+                          "Click here to Refresh",
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                        color: Theme.of(context).accentColor,
+                        onPressed: () async {
+                          getArtisanByLocation();
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              );
   }
 }

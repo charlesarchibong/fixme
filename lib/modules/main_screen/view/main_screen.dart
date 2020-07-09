@@ -246,6 +246,39 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                 },
               ),
               ListTile(
+                title: Text('My Chats'),
+                leading: Badge(
+                  badgeContent: Consumer<PendingJobProvider>(
+                    builder: (
+                      BuildContext context,
+                      PendingJobProvider pendingJobProvider,
+                      Widget child,
+                    ) {
+                      return Text(
+                        '6',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      );
+                    },
+                  ),
+                  badgeColor: Colors.red,
+                  animationType: BadgeAnimationType.slide,
+                  toAnimate: true,
+                  child: FaIcon(
+                    FontAwesomeIcons.commentAlt,
+                    color: Theme.of(context).textTheme.caption.color,
+                  ),
+                ),
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => Chats(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
                 title: Text('Jobs Around me'),
                 leading: Badge(
                   badgeContent: Consumer<PendingJobProvider>(

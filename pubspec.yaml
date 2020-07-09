@@ -51,6 +51,7 @@ dependencies:
   photo_view: ^0.9.2
   flutter_statusbarcolor: ^0.2.3
   logger: ^0.9.1
+  flutter_svg: ^0.17.4
 
 
 
@@ -88,6 +89,7 @@ flutter:
     - assets/cc.png
     - assets/dp.png
     - assets/on1.png
+    - assets/sad.svg
     - assets/on2.png
     - assets/on3.png
     - assets/food1.jpeg
