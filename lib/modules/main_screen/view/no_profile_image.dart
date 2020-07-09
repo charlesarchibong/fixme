@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:quickfix/helpers/flush_bar.dart';
 import 'package:quickfix/modules/main_screen/view/main_screen.dart';
@@ -50,14 +49,6 @@ class _NoProfileImageState extends State<NoProfileImage> {
                   SizedBox(
                     height: 15,
                   ),
-                  SvgPicture.asset(
-                    'assets/sad.svg',
-                    semanticsLabel: 'So Sad',
-                    width: 330,
-                  ),
-                  SizedBox(
-                    height: 4,
-                  ),
                   Padding(
                     padding: const EdgeInsets.only(
                       left: 20,
@@ -74,7 +65,13 @@ class _NoProfileImageState extends State<NoProfileImage> {
                           textAlign: TextAlign.center,
                         ),
                         SizedBox(
-                          height: 5,
+                          height: 20,
+                        ),
+                        Image.asset(
+                          "assets/dp.png",
+                          fit: BoxFit.cover,
+                          width: 100.0,
+                          height: 100.0,
                         ),
                         Consumer<ProfileProvider>(
                             builder: (context, profileProvider, child) {
