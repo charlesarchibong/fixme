@@ -482,6 +482,7 @@ Widget _profileImage(ProfileProvider profileProvider, User user) {
         onPressed: () {
           profileProvider.setLoading();
           profileProvider.getImage().then((value) {
+            // FlushBarCustomHelper.showInfoFlushbar(context, title, message)
             profileProvider.setNotLoading();
           }).catchError((e) {
             profileProvider.setNotLoading();

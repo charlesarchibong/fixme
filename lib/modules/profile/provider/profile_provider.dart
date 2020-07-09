@@ -39,6 +39,10 @@ class ProfileProvider extends ChangeNotifier {
     var uploaded = await uploadImageToServer('profilePicture', image);
     String uploadUrl = 'https://uploads.fixme.ng/thumbnails/';
     _profilePicture = uploadUrl + uploaded['imageFileName'] ?? null;
+    User user = await Utils.getUserSession();
+    Map userMap = user.toJson();
+    userMap['profilePicture'] = _profilePicture;
+    Utils.setUserSession(userMap.toString());
     Utils.setProfilePicture(_profilePicture);
     notifyListeners();
   }
@@ -181,6 +185,9 @@ class ProfileProvider extends ChangeNotifier {
       );
       return response.data;
     } catch (e) {
+      if (e is DioError) {
+        CustomLogger(className: 'ProfileProvider').errorPrint(e.response.data);
+      }
       print(e);
       return null;
     }

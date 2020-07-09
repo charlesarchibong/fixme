@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
@@ -624,9 +625,11 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
     pageController = PageController();
     location = new Location();
     sendDeviceDetails();
+    showUpdatePictureDialog();
     location.onLocationChanged.listen((LocationData locationData) {
       sendLocationToServer(locationData);
     });
+
     super.initState();
 //    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
 //        statusBarColor: Constants.darkAccent, // Color for Android
@@ -652,6 +655,7 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
       _notification = state;
     });
     setStatusBar();
+    // showUpdatePictureDialog();
   }
 
   void setStatusBar() async {
@@ -663,6 +667,104 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
         Color.fromRGBO(153, 0, 153, 1.0),
       );
     });
+  }
+
+  void showUpdatePictureDialog() async {
+    final user = await Utils.getUserSession();
+    if (user.profilePicture == null ||
+        user.profilePicture == 'no_picture_upload') {
+      showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) {
+          return StatefulBuilder(
+            builder: (context, setState) {
+              return Dialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ), //this right here
+                child: Container(
+                  height: 400,
+                  child: Padding(
+                    padding: const EdgeInsets.all(
+                      12.0,
+                    ),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 15,
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.25,
+                          child: SvgPicture.asset(
+                            'assets/sad.svg',
+                            semanticsLabel: 'So Sad',
+                            width: 230,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 4,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            left: 20,
+                            right: 20,
+                          ),
+                          child: Column(
+                            children: <Widget>[
+                              Text(
+                                'Dear Artisan/Service Provider, please kindly update your profile picture.',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20.0,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              RaisedButton(
+                                child: Text(
+                                  "Click here to update",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                color: Theme.of(context).accentColor,
+                                onPressed: () async {
+                                  navigationTapped(4);
+                                  // profileProvider.getImage().then((value) {
+                                  //   FlushBarCustomHelper.showInfoFlushbar(
+                                  //     context,
+                                  //     'Success',
+                                  //     'Profile picture updated',
+                                  //   );
+                                  //   profileProvider.setNotLoading();
+                                  // }).catchError((e) {
+                                  //   FlushBarCustomHelper.showInfoFlushbar(
+                                  //     context,
+                                  //     'Error',
+                                  //     'Profile picture was not updated, please try again',
+                                  //   );
+                                  //   profileProvider.setNotLoading();
+                                  // });
+                                  Navigator.of(context, rootNavigator: true)
+                                      .pop();
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
+        },
+      );
+    }
   }
 
   Future sendDeviceDetails() async {

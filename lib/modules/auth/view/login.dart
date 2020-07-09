@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quickfix/modules/auth/provider/login_form_validation.dart';
-import 'package:quickfix/modules/main_screen/view/main_screen.dart';
+import 'package:quickfix/modules/main_screen/view/no_profile_image.dart';
 import 'package:quickfix/modules/profile/model/user.dart';
 import 'package:quickfix/util/Utils.dart';
 
@@ -29,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
         Utils.setUserSession(jsonEncode(user));
         Navigator.of(context).push(
           MaterialPageRoute(builder: (BuildContext context) {
-            return MainScreen();
+            return NoProfileImage();
           }),
         );
       });
