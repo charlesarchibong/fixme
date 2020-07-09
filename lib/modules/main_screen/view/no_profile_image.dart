@@ -66,7 +66,7 @@ class _NoProfileImageState extends State<NoProfileImage> {
                     child: Column(
                       children: <Widget>[
                         Text(
-                          'Dear Artisan/Service Provider, please kindly update your profile picture.',
+                          'Dear Artisan/Service Provider, please kindly update your profile picture to continue.',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 20.0,
