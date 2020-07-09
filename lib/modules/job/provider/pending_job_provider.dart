@@ -21,7 +21,7 @@ class PendingJobProvider extends ChangeNotifier {
         'service_id': currentUser.serviceId,
       };
       print(body);
-      Map<String, String> headers = {'Bearer': '$apiKey'};
+      Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
       Response response = await NetworkService().post(
         url: url,
         body: {},
@@ -78,7 +78,7 @@ class PendingJobProvider extends ChangeNotifier {
         'job_id': job.id,
         'bidding_price': biddingPrice,
       };
-      Map<String, String> headers = {'Bearer': '$apiKey'};
+      Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
       Response response = await NetworkService().post(
         url: url,
         body: {},

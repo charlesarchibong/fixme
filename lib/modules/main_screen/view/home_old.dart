@@ -69,7 +69,7 @@ class _HomeState extends State<HomeW>
       });
       final user = await Utils.getUserSession();
       String apiKey = await Utils.getApiKey();
-      Map<String, String> headers = {'Bearer': '$apiKey'};
+      Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
       Map<String, dynamic> body = {
         'mobile': user.phoneNumber,
         'latitude': locationData.latitude,

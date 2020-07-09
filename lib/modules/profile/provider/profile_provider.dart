@@ -54,7 +54,7 @@ class ProfileProvider extends ChangeNotifier {
     try {
       final user = await Utils.getUserSession();
       String apiKey = await Utils.getApiKey();
-      Map<String, String> headers = {'Bearer': '$apiKey'};
+      Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
       Map<String, String> body = {'mobile': user.phoneNumber};
       String url = Constants.baseUrl + Constants.userInfo;
       Response response = await NetworkService().post(
@@ -104,7 +104,7 @@ class ProfileProvider extends ChangeNotifier {
       final user = await Utils.getUserSession();
       final String apiKey = await Utils.getApiKey();
       String url = Constants.serviceImageUrl;
-      Map<String, String> headers = {'Bearer': '$apiKey'};
+      Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
       Map<String, String> body = {'mobile': user.phoneNumber};
       final response = await NetworkService().post(
         url: url,
@@ -166,7 +166,7 @@ class ProfileProvider extends ChangeNotifier {
       String fileName = file.path.split('/').last;
       String apiKey = await Utils.getApiKey();
       String url = 'https://uploads.fixme.ng/uploads-processing';
-      Map<String, String> headers = {'Bearer': '$apiKey'};
+      Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
       FormData formData = FormData.fromMap({
         "mobile": user.phoneNumber,
         "uploadType": uploadType,
@@ -197,7 +197,7 @@ class ProfileProvider extends ChangeNotifier {
         'email': currentUser.email,
         'subservice': subCategory
       };
-      Map<String, String> headers = {'Bearer': '$apiKey'};
+      Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
       print(headers);
 
       Response response = await NetworkService().post(
@@ -245,7 +245,7 @@ class ProfileProvider extends ChangeNotifier {
         'firstName': firstName,
         'lastName': lastName
       };
-      Map<String, String> headers = {'Bearer': '$apiKey'};
+      Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
       final response = await NetworkService().post(
         url: url,
         body: body,
@@ -300,7 +300,7 @@ class ProfileProvider extends ChangeNotifier {
         'bankCode': bankCode.code,
         'accountNumber': accountNumber,
       };
-      Map<String, String> headers = {'Bearer': '$apiKey'};
+      Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
       final response = await NetworkService().post(
         url: url,
         body: body,
@@ -330,7 +330,7 @@ class ProfileProvider extends ChangeNotifier {
       // final user = await Utils.getUserSession();
       final String apiKey = await Utils.getApiKey();
       String url = Constants.updateProfileView;
-      Map<String, String> headers = {'Bearer': '$apiKey'};
+      Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
       Map<String, String> body = {'mobile': mobile};
       final response = await NetworkService().post(
         url: url,

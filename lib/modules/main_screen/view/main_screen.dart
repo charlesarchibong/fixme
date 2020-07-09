@@ -414,69 +414,125 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
           child: Consumer<DashBoardProvider>(
             builder: (context, dashboardProvider, child) {
               return Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
                   SizedBox(width: 7),
-                  IconButton(
-                    icon: FaIcon(FontAwesomeIcons.home),
-                    color: _page == 0
-                        ? Theme.of(context).accentColor
-                        : Theme.of(context).textTheme.caption.color,
-                    onPressed: () => navigationTapped(0),
-                  ),
-                  IconButton(
-                    icon: FaIcon(FontAwesomeIcons.search),
-                    color: _page == 1
-                        ? Theme.of(context).accentColor
-                        : Theme.of(context).textTheme.caption.color,
-                    onPressed: () => navigationTapped(1),
-                  ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.search,
-                      size: 24.0,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    color: _page == 2
-                        ? Theme.of(context).accentColor
-                        : Theme.of(context).textTheme.caption.color,
-                    onPressed: () => navigationTapped(2),
-                  ),
-                  InkWell(
-                    onTap: () => navigationTapped(3),
-                    child: Badge(
-                      badgeContent: Consumer<PendingJobProvider>(
-                        builder: (
-                          BuildContext context,
-                          PendingJobProvider pendingJobProvider,
-                          Widget child,
-                        ) {
-                          return Text(
-                            pendingJobProvider.listOfJobs.length.toString(),
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          );
-                        },
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      IconButton(
+                        icon: FaIcon(FontAwesomeIcons.home),
+                        color: _page == 0
+                            ? Theme.of(context).accentColor
+                            : Theme.of(context).textTheme.caption.color,
+                        onPressed: () => navigationTapped(0),
                       ),
-                      badgeColor: Colors.red,
-                      animationType: BadgeAnimationType.slide,
-                      toAnimate: true,
-                      child: FaIcon(
-                        FontAwesomeIcons.luggageCart,
+                      Text(
+                        'Home',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: _page == 0
+                              ? Theme.of(context).accentColor
+                              : Theme.of(context).textTheme.caption.color,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      IconButton(
+                        icon: FaIcon(
+                          FontAwesomeIcons.plusCircle,
+                        ),
+                        color: _page == 2
+                            ? Theme.of(context).accentColor
+                            : Theme.of(context).textTheme.caption.color,
+                        onPressed: () => navigationTapped(2),
+                      ),
+                      Text(
+                        'Post Job',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: _page == 2
+                              ? Theme.of(context).accentColor
+                              : Theme.of(context).textTheme.caption.color,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      IconButton(
+                        icon: FaIcon(FontAwesomeIcons.search),
+                        color: _page == 1
+                            ? Theme.of(context).accentColor
+                            : Theme.of(context).textTheme.caption.color,
+                        onPressed: () => navigationTapped(1),
+                      ),
+                      Text(
+                        'Search Artisan',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: _page == 1
+                              ? Theme.of(context).accentColor
+                              : Theme.of(context).textTheme.caption.color,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      IconButton(
+                        icon: FaIcon(FontAwesomeIcons.luggageCart),
                         color: _page == 3
                             ? Theme.of(context).accentColor
                             : Theme.of(context).textTheme.caption.color,
+                        onPressed: () => navigationTapped(3),
                       ),
-                    ),
+                      Text(
+                        'Jobs',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: _page == 3
+                              ? Theme.of(context).accentColor
+                              : Theme.of(context).textTheme.caption.color,
+                        ),
+                      ),
+                    ],
                   ),
-                  IconButton(
-                    icon: FaIcon(FontAwesomeIcons.user),
-                    color: _page == 4
-                        ? Theme.of(context).accentColor
-                        : Theme.of(context).textTheme.caption.color,
-                    onPressed: () => navigationTapped(4),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      IconButton(
+                        icon: FaIcon(FontAwesomeIcons.user),
+                        color: _page == 4
+                            ? Theme.of(context).accentColor
+                            : Theme.of(context).textTheme.caption.color,
+                        onPressed: () => navigationTapped(4),
+                      ),
+                      Text(
+                        'Profile',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: _page == 4
+                              ? Theme.of(context).accentColor
+                              : Theme.of(context).textTheme.caption.color,
+                        ),
+                      ),
+                    ],
                   ),
                   SizedBox(width: 7),
                 ],
@@ -486,17 +542,17 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
           color: Theme.of(context).primaryColor,
           shape: CircularNotchedRectangle(),
         ),
-        floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: Consumer<DashBoardProvider>(
-          builder: (context, dashboardProvider, child) {
-            return FloatingActionButton(
-              elevation: 4.0,
-              child: FaIcon(FontAwesomeIcons.plusCircle),
-              onPressed: () => navigationTapped(2),
-            );
-          },
-        ),
+        // floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
+        // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        // floatingActionButton: Consumer<DashBoardProvider>(
+        //   builder: (context, dashboardProvider, child) {
+        //     return FloatingActionButton(
+        //       elevation: 4.0,
+        //       child: FaIcon(FontAwesomeIcons.plusCircle),
+        //       onPressed: () => navigationTapped(2),
+        //     );
+        //   },
+        // ),
       ),
     );
   }
@@ -628,7 +684,7 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
       final user = await Utils.getUserSession();
       final apiKey = await Utils.getApiKey();
       final String url = Constants.savedDeviceDetails;
-      Map<String, String> headers = {'Bearer': '$apiKey'};
+      Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
       Map<String, dynamic> body = {
         'mobile': user.phoneNumber,
         'device_token': token,
@@ -702,7 +758,7 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
       final user = await Utils.getUserSession();
       final apiKey = await Utils.getApiKey();
       final String url = Constants.updateLocationUrl;
-      Map<String, String> headers = {'Bearer': '$apiKey'};
+      Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
       Map<String, dynamic> body = {
         'mobile': user.phoneNumber,
         'latitude': locationData.latitude,

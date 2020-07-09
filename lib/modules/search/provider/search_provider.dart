@@ -25,7 +25,7 @@ class SearchProvider extends ChangeNotifier {
         'longitude': locationData.longitude,
         'latitude': locationData.latitude,
       };
-      Map<String, String> headers = {'Bearer': '$apiKey'};
+      Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
       print(body);
       Response response = await NetworkService().post(
         url: url,

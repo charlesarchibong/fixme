@@ -26,7 +26,7 @@ class PostJobProvider extends ChangeNotifier {
       Map<String, String> body = {
         'mobile': currentUser.phoneNumber,
       };
-      Map<String, String> headers = {'Bearer': '$apiKey'};
+      Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
       print(headers);
 
       Response response = await NetworkService().post(
@@ -70,7 +70,7 @@ class PostJobProvider extends ChangeNotifier {
         'job_address': job.address,
       };
       print(body);
-      Map<String, String> headers = {'Bearer': '$apiKey'};
+      Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
       Response response = await NetworkService().post(
         url: url,
         body: {},

@@ -18,7 +18,7 @@ class MyRequestProvider extends ChangeNotifier {
       Map<String, dynamic> body = {
         'mobile': currentUser.phoneNumber,
       };
-      Map<String, String> headers = {'Bearer': '$apiKey'};
+      Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
       Response response = await NetworkService().post(
         url: url,
         body: {},
@@ -67,7 +67,7 @@ class MyRequestProvider extends ChangeNotifier {
         'mobile': currentUser.phoneNumber,
         'job_id': job.id,
       };
-      Map<String, String> headers = {'Bearer': '$apiKey'};
+      Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
       print(headers);
       Response response = await NetworkService().post(
         url: url,
@@ -124,7 +124,7 @@ class MyRequestProvider extends ChangeNotifier {
         'bidder_mobile': bidderMobile,
         'bid_id': bidId,
       };
-      Map<String, String> headers = {'Bearer': '$apiKey'};
+      Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
       print(headers);
       Response response = await NetworkService().post(
         url: url,
@@ -169,7 +169,7 @@ class MyRequestProvider extends ChangeNotifier {
         'bidder_mobile': bidderMobile,
         'bid_id': bidId,
       };
-      Map<String, String> headers = {'Bearer': '$apiKey'};
+      Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
       print(headers);
       Response response = await NetworkService().post(
         url: url,
