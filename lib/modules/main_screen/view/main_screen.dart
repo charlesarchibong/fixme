@@ -573,7 +573,7 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                       ' ' +
                       snapshot.data.lastName.toUpperCase(),
                 ),
-                accountEmail: Text(snapshot.data.email),
+                accountEmail: Text(snapshot.data.fullNumber),
                 currentAccountPicture: Consumer<ProfileProvider>(
                   builder: (BuildContext context,
                       ProfileProvider profileProvider, Widget child) {
@@ -583,8 +583,9 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                         shape: BoxShape.circle,
                         image: DecorationImage(
                           fit: BoxFit.fill,
-                          image: profileProvider.profilePicture == null ||
-                                  profileProvider.profilePicture == ''
+                          image: snapshot.data.profilePicture == null ||
+                                  snapshot.data.profilePicture ==
+                                      'no_picture_upload'
                               ? AssetImage(
                                   "assets/dp.png",
                                 )

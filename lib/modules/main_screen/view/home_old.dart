@@ -48,6 +48,7 @@ class _HomeState extends State<HomeW>
     });
     location.onLocationChanged.listen((LocationData loc) {
       setState(() {
+        _loadingArtisan = true;
         locationData = loc;
       });
       // getArtisanByLocation();

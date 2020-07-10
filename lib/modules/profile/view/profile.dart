@@ -155,56 +155,51 @@ class _ProfileState extends State<Profile> {
                   ),
                   _profileDetailsTiles(
                     title: 'Wallet Balance',
-                    subTitle: 'N3000',
+                    subTitle: 'N200',
                     hasTrailing: false,
                   ),
                   _profileDetailsTiles(
                     title: 'Account Number',
-                    subTitle: '0348861021',
-                    hasTrailing: true,
-                    trailingIcon: FaIcon(
-                      FontAwesomeIcons.edit,
-                      size: 25.0,
-                      color: Colors.grey,
-                    ),
-                    toolTip: 'Edit Account Details',
-                    onPressed: () async {
-                      final profileProvider = Provider.of<ProfileProvider>(
-                        context,
-                        listen: false,
-                      );
-                      setState(() {
-                        selected = null;
-                      });
-                      List codes = await profileProvider.getBankCodes();
-                      List<BankCode> listOfBank = List();
-                      listOfBank.clear();
-                      print(codes.length);
-                      for (int i = 0; i < codes.length; i++) {
-                        // String id = codes[i]['id'];
-                        String code = codes[i]['code'];
-                        String name = codes[i]['name'];
-                        print(codes[i]['name']);
-                        BankCode bankCode = BankCode(
-                          code: code,
-                          name: name,
-                          id: 'id',
-                        );
-                        listOfBank.add(bankCode);
-                      }
-                      showEditAccountDetails(
-                        context,
-                        listOfBank,
-                        _accountNumberController,
-                        _formKey,
-                        profileProvider,
-                      );
-                    },
+                    subTitle: user.accountNumber,
+                    hasTrailing: false,
                   ),
                   _profileDetailsTiles(
                     title: 'Bank Name',
-                    subTitle: 'GTBank',
+                    subTitle: 'Providus Bank',
                     hasTrailing: false,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      RaisedButton(
+                        child: Text(
+                          "Withdraw Fund",
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                        color: Theme.of(context).accentColor,
+                        onPressed: () async {
+                          // getArtisanByLocation();
+                        },
+                      ),
+                      SizedBox(width: 15),
+                      RaisedButton(
+                        child: Text(
+                          "Transfer Fund",
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                        color: Theme.of(context).accentColor,
+                        onPressed: () async {
+                          // getArtisanByLocation();
+                        },
+                      ),
+                    ],
                   ),
                   Divider(),
                   Container(height: 15.0),

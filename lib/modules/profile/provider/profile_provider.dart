@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
@@ -42,7 +43,7 @@ class ProfileProvider extends ChangeNotifier {
     User user = await Utils.getUserSession();
     Map userMap = user.toJson();
     userMap['profilePicture'] = _profilePicture;
-    Utils.setUserSession(userMap.toString());
+    Utils.setUserSession(jsonEncode(User.fromjson(userMap)));
     Utils.setProfilePicture(_profilePicture);
     notifyListeners();
   }
@@ -171,6 +172,7 @@ class ProfileProvider extends ChangeNotifier {
       String apiKey = await Utils.getApiKey();
       String url = 'https://uploads.fixme.ng/uploads-processing';
       Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
+      print(headers);
       FormData formData = FormData.fromMap({
         "mobile": user.phoneNumber,
         "uploadType": uploadType,
@@ -186,7 +188,8 @@ class ProfileProvider extends ChangeNotifier {
       return response.data;
     } catch (e) {
       if (e is DioError) {
-        CustomLogger(className: 'ProfileProvider').errorPrint(e.response.data);
+        // CustomLogger(className: 'ProfileProvider').errorPrint(e.response.data);
+        debugPrint(e.response.data);
       }
       print(e);
       return null;

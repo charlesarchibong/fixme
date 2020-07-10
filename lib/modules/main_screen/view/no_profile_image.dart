@@ -57,7 +57,7 @@ class _NoProfileImageState extends State<NoProfileImage> {
                     child: Column(
                       children: <Widget>[
                         Text(
-                          'Dear Artisan/Service Provider, please kindly update your profile picture to continue.',
+                          'Kindly upload a profile picture to continue.',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 20.0,
@@ -70,8 +70,11 @@ class _NoProfileImageState extends State<NoProfileImage> {
                         Image.asset(
                           "assets/dp.png",
                           fit: BoxFit.cover,
-                          width: 100.0,
-                          height: 100.0,
+                          width: 250.0,
+                          height: 250.0,
+                        ),
+                        SizedBox(
+                          height: 20,
                         ),
                         Consumer<ProfileProvider>(
                             builder: (context, profileProvider, child) {
@@ -94,7 +97,7 @@ class _NoProfileImageState extends State<NoProfileImage> {
                                         'Profile picture updated',
                                       );
                                       profileProvider.setNotLoading();
-                                      Future.delayed(Duration(seconds: 5), () {
+                                      Future.delayed(Duration(seconds: 2), () {
                                         Navigator.of(context).push(
                                           MaterialPageRoute(
                                             builder: (_) => MainScreen(),
