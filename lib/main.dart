@@ -5,6 +5,7 @@ import 'package:quickfix/modules/artisan/provider/artisan_provider.dart';
 import 'package:quickfix/modules/auth/provider/login_form_validation.dart';
 import 'package:quickfix/modules/custom/view/walkthrough.dart';
 import 'package:quickfix/modules/dashboard/provider/dashboard_provider.dart';
+import 'package:quickfix/modules/job/provider/approve_bid_provider.dart';
 import 'package:quickfix/modules/job/provider/my_request_provider.dart';
 import 'package:quickfix/modules/job/provider/pending_job_provider.dart';
 import 'package:quickfix/modules/job/provider/post_job_provider.dart';
@@ -43,6 +44,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => MyRequestProvider()),
         ChangeNotifierProvider(create: (_) => SearchProvider()),
         ChangeNotifierProvider(create: (_) => RequestArtisanService()),
+        ChangeNotifierProvider(create: (_) => ApprovedBidProvider()),
       ],
       child: MyApp(
         sp: prefs,

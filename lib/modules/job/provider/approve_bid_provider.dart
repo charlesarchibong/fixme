@@ -5,7 +5,6 @@ import 'package:quickfix/models/failure.dart';
 import 'package:quickfix/modules/profile/model/user.dart';
 import 'package:quickfix/services/network/network_service.dart';
 import 'package:quickfix/util/Utils.dart';
-import 'package:quickfix/util/const.dart';
 import 'package:quickfix/util/content_type.dart';
 
 class ApprovedBidProvider with ChangeNotifier {
@@ -37,14 +36,14 @@ class ApprovedBidProvider with ChangeNotifier {
             ),
           );
         }
-        List<Job> jobs = List();
+        // List<Job> jobs = List();
         if (projects.length > 0) {
           for (var i = 0; i < projects.length; i++) {
-            Job job = Job.fromMap(projects[i]);
-            jobs.add(job);
+            // Job job = Job.fromMap(projects[i]);
+            // jobs.add(job);
           }
         }
-        return Right(jobs);
+        // return Right(jobs);
       } else {
         return Left(
           Failure(
