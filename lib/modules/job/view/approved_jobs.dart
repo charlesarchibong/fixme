@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quickfix/models/failure.dart';
 import 'package:quickfix/modules/job/provider/approve_bid_provider.dart';
+import 'package:quickfix/modules/job/widget/approved_bid_widget.dart';
+import 'package:quickfix/modules/job/widget/my_request.dart';
 import 'package:quickfix/util/const.dart';
 
 class ApprovedBid extends StatefulWidget {
@@ -64,13 +66,13 @@ class _ApprovedBidState extends State<ApprovedBid> {
                                     ? 0
                                     : approvedBidProiver.approvedBids.length,
                             itemBuilder: (BuildContext context, int index) {
-                              // return MyRequestWidget(
-                              //   title: myJobs[index].jobTitle,
-                              //   subtitle: myJobs[index].description,
-                              //   status: myJobs[index].status,
-                              //   job: myJobs[index],
-                              //   datePosted: myJobs[index].datePosted,
-                              // );
+                              return ApprovedBidWidget(
+                                title: myJobs[index].jobTitle,
+                                subtitle: myJobs[index].description,
+                                status: myJobs[index].status,
+                                job: myJobs[index],
+                                datePosted: myJobs[index].datePosted,
+                              );
                             },
                           ),
                         );
