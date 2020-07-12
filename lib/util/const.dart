@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class Constants {
-  static String appName = "FixMe Business";
-  static String appVersion = "1.0.3";
+  static String appName = "Fixme Business";
+  static String appVersion = "5.0.0";
   static String lagelSee =
       "All Right Reserved, and all information store in this application is secure and is only use for Identification";
   static String baseUrl = "https://manager.fixme.ng/";
