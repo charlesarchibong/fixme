@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:quickfix/modules/chat/model/message.dart';
 import 'package:quickfix/modules/chat/view/chat_screen.dart';
 
 class MyChatWidget extends StatefulWidget {
-  final Map artisan;
+  final Message message;
 
-  const MyChatWidget({Key key, this.artisan}) : super(key: key);
+  const MyChatWidget({Key key, this.message}) : super(key: key);
   @override
   _MyChatWidgetState createState() => _MyChatWidgetState();
 }
@@ -19,30 +20,30 @@ class _MyChatWidgetState extends State<MyChatWidget> {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (_) => ChatScreen(
-                receiver: '9039311559',
+                receiver: widget.message.receiverPhone,
               ),
             ),
           );
         },
         leading: CircleAvatar(
           backgroundColor: Theme.of(context).primaryColor,
-          backgroundImage: AssetImage(widget.artisan['img']),
+          backgroundImage: AssetImage('assets/dp.png'),
         ),
         title: Text(
-          widget.artisan['name'],
+          'Charles Archibong',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 18.0,
           ),
         ),
-        subtitle: Text(widget.artisan['message']),
+        subtitle: Text(widget.message.text),
         trailing: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
-            Text('3:70PM'),
+            Text(widget.message.time.toString()),
             Spacer(),
-            widget.artisan['read']
+            widget.message.unread == false
                 ? Text('')
                 : Icon(
                     Icons.mail,

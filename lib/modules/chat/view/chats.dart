@@ -1,8 +1,9 @@
 import 'package:badges/badges.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:quickfix/modules/chat/model/message.dart';
 import 'package:quickfix/modules/chat/widget/my_chats_widget.dart';
-import 'package:quickfix/util/foods.dart';
 
 class Chats extends StatefulWidget {
   @override
@@ -98,22 +99,42 @@ class _ChatsState extends State<Chats> {
         child: Column(
           children: <Widget>[
             SizedBox(height: 10.0),
-            Expanded(
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.vertical,
-                  physics: AlwaysScrollableScrollPhysics(),
-                  itemCount: technicians.length ?? 0,
-                  itemBuilder: (BuildContext context, int index) {
-                    // Map artisan = technicians[index];
-                    return MyChatWidget(
-                      artisan: technicians[index],
-                    );
-                  }),
-            ),
+            StreamBuilder<List<String>>(
+                // stream: MessageService().getAllUserUnRead(),
+                builder: (context, snapshot1) {
+              return Expanded(
+                child: StreamBuilder<List<Message>>(
+                    // stream: Firestore.instance
+                    //     .collection('messages')
+                    //     .document(snapshot1.data.documents)
+                    //     .collection(snapshot1.data.documentID)
+                    //     .orderBy('time', descending: true)
+                    //     .snapshots()
+                    //     .map(_convertMessageToListStream),
+                    builder: (context, snapshot) {
+                  return ListView.builder(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      physics: AlwaysScrollableScrollPhysics(),
+                      itemCount: snapshot.data.length ?? 0,
+                      itemBuilder: (BuildContext context, int index) {
+                        // Map artisan = technicians[index];
+                        return MyChatWidget(
+                          message: snapshot.data[index],
+                        );
+                      });
+                }),
+              );
+            }),
           ],
         ),
       ),
     );
+  }
+
+  List<Message> _convertMessageToListStream(QuerySnapshot querySnapshot) {
+    return querySnapshot.documents
+        .map((doc) => Message.fromMap(doc.data))
+        .toList();
   }
 }

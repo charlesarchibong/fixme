@@ -20,6 +20,7 @@ import 'package:quickfix/modules/chat/view/chats.dart';
 import 'package:quickfix/modules/dashboard/provider/dashboard_provider.dart';
 import 'package:quickfix/modules/dashboard/view/dashboard.dart';
 import 'package:quickfix/modules/job/provider/pending_job_provider.dart';
+import 'package:quickfix/modules/job/view/approved_jobs.dart';
 import 'package:quickfix/modules/job/view/my_requests.dart';
 import 'package:quickfix/modules/job/view/pending_appointment.dart';
 import 'package:quickfix/modules/job/view/post_job.dart';
@@ -309,6 +310,40 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                 onTap: () {
                   Navigator.of(context).pop();
                   navigationTapped(3);
+                },
+              ),
+              ListTile(
+                title: Text('Approved Bids'),
+                leading: Badge(
+                  badgeContent: Consumer<PendingJobProvider>(
+                    builder: (
+                      BuildContext context,
+                      PendingJobProvider pendingJobProvider,
+                      Widget child,
+                    ) {
+                      return Text(
+                        pendingJobProvider.listOfJobs.length.toString(),
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      );
+                    },
+                  ),
+                  badgeColor: Colors.red,
+                  animationType: BadgeAnimationType.slide,
+                  toAnimate: true,
+                  child: FaIcon(
+                    FontAwesomeIcons.checkSquare,
+                    color: Theme.of(context).accentColor,
+                  ),
+                ),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => ApprovedBid(),
+                    ),
+                  );
                 },
               ),
               ListTile(
