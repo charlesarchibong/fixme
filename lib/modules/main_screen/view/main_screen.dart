@@ -39,13 +39,19 @@ Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) {
   if (message.containsKey('data')) {
     // Handle data message
     final dynamic data = message['data'];
+    print('background message');
+    print(data);
   }
 
   if (message.containsKey('notification')) {
     // Handle notification message
     final dynamic notification = message['notification'];
+    print('background message II');
+    print(notification);
   }
-
+  print('background message III');
+  print('background message III');
+  print('background message III');
   // Or do other work.
 }
 
@@ -118,9 +124,41 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
             navigationTapped(3);
           });
         }
+
+        String msg = 'notibody';
+        String name = 'chatapp';
+        if (Platform.isIOS) {
+          msg = message['aps']['alert']['body'];
+          name = message['aps']['alert']['title'];
+        } else {
+          msg = message['notification']['body'];
+          name = message['notification']['title'];
+        }
+
+        if (Platform.isIOS) {
+          sendLocalNotification(name, msg);
+        } else {
+          sendLocalNotification(name, msg);
+        }
       },
       onResume: (Map<String, dynamic> message) async {
         print("onResume: $message");
+        String msg = 'notibody';
+        String name = 'chatapp';
+        if (Platform.isIOS) {
+          msg = message['aps']['alert']['body'];
+          name = message['aps']['alert']['title'];
+        } else {
+          msg = message['notification']['body'];
+          name = message['notification']['title'];
+        }
+
+        if (Platform.isIOS) {
+          sendLocalNotification(name, msg);
+        } else {
+          sendLocalNotification(name, msg);
+        }
+
         print(message['data']['notification_type']);
         if (message['data']['notification_type'] == 'new_project') {
           FlushBarCustomHelper.showInfoFlushbarWithActionNot(
@@ -651,11 +689,11 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
   void initState() {
     WidgetsBinding.instance.addObserver(this);
 
+    getMessage();
     _initLocalNotification();
     _firebaseMessaging.getToken().then((token) {
       print('on message $token');
     });
-    getMessage();
     getPendingRequest();
     setStatusBar();
     pageController = PageController();

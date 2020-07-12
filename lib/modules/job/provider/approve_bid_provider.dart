@@ -32,7 +32,7 @@ class ApprovedBidProvider with ChangeNotifier {
         if (projects.length <= 0) {
           return Left(
             Failure(
-              message: 'No approved bigs at the moment.',
+              message: 'No approved bids at the moment.',
             ),
           );
         }
