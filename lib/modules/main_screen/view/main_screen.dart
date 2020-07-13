@@ -19,6 +19,7 @@ import 'package:quickfix/helpers/notification.dart';
 import 'package:quickfix/modules/chat/view/chats.dart';
 import 'package:quickfix/modules/dashboard/provider/dashboard_provider.dart';
 import 'package:quickfix/modules/dashboard/view/dashboard.dart';
+import 'package:quickfix/modules/job/provider/approve_bid_provider.dart';
 import 'package:quickfix/modules/job/provider/pending_job_provider.dart';
 import 'package:quickfix/modules/job/view/approved_jobs.dart';
 import 'package:quickfix/modules/job/view/my_requests.dart';
@@ -79,6 +80,9 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
     final pendingJobProvider =
         Provider.of<PendingJobProvider>(context, listen: false);
     await pendingJobProvider.getPendingRequest();
+    final approvedBids =
+        Provider.of<ApprovedBidProvider>(context, listen: false);
+    await approvedBids.getApprovedBids();
   }
 
   void getMessage() {
@@ -351,16 +355,16 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                 },
               ),
               ListTile(
-                title: Text('Approved Bids'),
+                title: Text('My Job Bids'),
                 leading: Badge(
-                  badgeContent: Consumer<PendingJobProvider>(
+                  badgeContent: Consumer<ApprovedBidProvider>(
                     builder: (
                       BuildContext context,
-                      PendingJobProvider pendingJobProvider,
+                      ApprovedBidProvider approvedBidProvider,
                       Widget child,
                     ) {
                       return Text(
-                        pendingJobProvider.listOfJobs.length.toString(),
+                        approvedBidProvider.approvedBids.length.toString(),
                         style: TextStyle(
                           color: Colors.white,
                         ),

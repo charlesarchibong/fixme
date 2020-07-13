@@ -44,6 +44,8 @@ class ApprovedBidProvider with ChangeNotifier {
             bids.add(bid);
           }
         }
+        approvedBids = bids;
+        notifyListeners();
         return Right(bids);
       } else {
         return Left(
