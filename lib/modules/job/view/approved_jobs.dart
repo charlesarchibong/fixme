@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quickfix/models/failure.dart';
+import 'package:quickfix/modules/job/model/project_bid.dart';
 import 'package:quickfix/modules/job/provider/approve_bid_provider.dart';
 import 'package:quickfix/modules/job/widget/approved_bid_widget.dart';
 import 'package:quickfix/util/const.dart';
@@ -23,7 +24,7 @@ class _ApprovedBidState extends State<ApprovedBid> {
 //          centerTitle: true,
         iconTheme: IconThemeData(color: Colors.white),
         title: Text(
-          'My Jobs',
+          'My Bids',
           style: TextStyle(
             color: Colors.white,
           ),
@@ -33,7 +34,9 @@ class _ApprovedBidState extends State<ApprovedBid> {
         padding: EdgeInsets.fromLTRB(10.0, 0, 10.0, 0),
         child: Column(
           children: <Widget>[
-            SizedBox(height: 10.0),
+            SizedBox(
+              height: 10.0,
+            ),
             Expanded(
               child: Consumer<ApprovedBidProvider>(
                   builder: (context, approvedBidProiver, child) {
@@ -65,13 +68,15 @@ class _ApprovedBidState extends State<ApprovedBid> {
                                     ? 0
                                     : approvedBidProiver.approvedBids.length,
                             itemBuilder: (BuildContext context, int index) {
+                              ProjectBid projectBid =
+                                  approvedBidProiver.approvedBids[index];
                               return ApprovedBidWidget(
-                                  // title: myJobs[index].jobTitle,
-                                  // subtitle: myJobs[index].description,
-                                  // status: myJobs[index].status,
-                                  // job: myJobs[index],
-                                  // datePosted: myJobs[index].datePosted,
-                                  );
+                                title: projectBid.bidderMobile,
+                                subtitle: projectBid.dateApproved,
+                                status: projectBid.status,
+                                job: projectBid,
+                                datePosted: projectBid.dateApproved,
+                              );
                             },
                           ),
                         );

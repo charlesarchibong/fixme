@@ -9,6 +9,12 @@ class User {
   int serviceId;
   String imageUrl;
   String profilePicture;
+  int profileViews;
+  int reviews;
+  int userRating;
+  String status;
+  String bio;
+  String address;
 
   User.name({
     this.firstName,
@@ -19,8 +25,14 @@ class User {
     this.accountNumber,
     this.fullNumber,
     this.imageUrl,
+    this.address,
+    this.reviews,
+    this.userRating,
     this.serviceArea,
     this.serviceId,
+    this.bio,
+    this.status,
+    this.profileViews,
   });
 
   Map<String, dynamic> toJson() {
@@ -35,6 +47,11 @@ class User {
     map['imageUrl'] = imageUrl;
     map['bank_account_number'] = accountNumber;
     map['profilePicture'] = profilePicture;
+    map['profile_views'] = profileViews;
+    map['reviews'] = reviews;
+    map['user_rating'] = userRating;
+    map['status'] = status;
+    map['user_address'] = address;
     return map;
   }
 
@@ -49,5 +66,10 @@ class User {
     imageUrl = json['imageUrl'];
     accountNumber = json['bank_account_number'];
     profilePicture = json['profilePicture'];
+    profilePicture = json['profile_views'];
+    reviews = json['reviews'];
+    userRating = json['user_rating'];
+    address = json['user_address'];
+    status = json['status'];
   }
 }

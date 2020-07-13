@@ -11,6 +11,16 @@ class ProjectBid {
   final String dateBidded;
   final String dateApproved;
   final String dateRejected;
+
+  static const String PROJECT_BIDS = "job_bids";
+  static const String PENDING_BID = "pending";
+  static const String REJECTED_BID = "rejected";
+  static const String ACCEPTED_BID = "accepted";
+  static const String STARTED_BID = "started";
+  static const String COMPLETED_BID = "completed";
+  static const String DISPUTED_BID = "disputed";
+  static const String UN_AVAILABLE = "unavailable";
+
   ProjectBid({
     this.sn,
     this.jobId,

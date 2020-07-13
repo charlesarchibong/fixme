@@ -1,15 +1,18 @@
+import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:quickfix/modules/artisan/view/track_artisan.dart';
-import 'package:quickfix/modules/job/model/job.dart';
-import 'package:quickfix/modules/job/view/job_details.dart';
+import 'package:provider/provider.dart';
+import 'package:quickfix/helpers/flush_bar.dart';
+import 'package:quickfix/models/failure.dart';
+import 'package:quickfix/modules/job/model/project_bid.dart';
+import 'package:quickfix/modules/job/provider/approve_bid_provider.dart';
 
 class ApprovedBidWidget extends StatelessWidget {
   final String title;
   final String subtitle;
   final String status;
-  final Job job;
+  final ProjectBid job;
   final String datePosted;
 
   ApprovedBidWidget({
@@ -70,7 +73,7 @@ class ApprovedBidWidget extends StatelessWidget {
                 recognizer: TapGestureRecognizer()..onTap = () {},
               ),
               TextSpan(
-                text: ' \nDate: ${job.datePosted}',
+                text: ' \nDate: $datePosted',
                 style: TextStyle(
                   // color: Theme.of(context).primaryColor,
                   fontSize: 15,
@@ -88,22 +91,29 @@ class ApprovedBidWidget extends StatelessWidget {
             ],
           ),
         ),
-        trailing: _myRequestAction(),
+        trailing: _myBidAction(),
         onTap: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (_) => JobDetails(
-                isOwner: true,
-                job: job,
-              ),
-            ),
-          );
+          // Navigator.of(context).push(
+          //   MaterialPageRoute(
+          //     builder: (_) => JobDetails(
+          //       isOwner: true,
+          //       job: job,
+          //     ),
+          //   ),
+          // );
+          if (job.status == ProjectBid.ACCEPTED_BID) {
+            FlushBarCustomHelper.showErrorFlushbar(
+              context,
+              'Info',
+              'Please click on the three dot beside to accept or decline availability',
+            );
+          }
         },
       ),
     );
   }
 
-  Widget _myRequestAction() {
+  Widget _myBidAction() {
     return PopupMenuButton(
       onSelected: (value) {
         print(value);
@@ -116,26 +126,53 @@ class ApprovedBidWidget extends StatelessWidget {
         PopupMenuItem(
           value: 1,
           child: InkWell(
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => JobDetails(
-                    isOwner: true,
-                    job: job,
-                  ),
-                ),
+            onTap: () async {
+              FlushbarHelper.createLoading(
+                message: 'Confirming availability, please wait!',
+                linearProgressIndicator: LinearProgressIndicator(),
+                duration: Duration(minutes: 1),
+                title: 'Loading...',
               );
+              final approvedBidProvider = Provider.of<ApprovedBidProvider>(
+                context,
+                listen: false,
+              );
+              final confirmed = await approvedBidProvider.confirmAvailability(
+                job,
+              );
+              Navigator.of(context).pop();
+              confirmed.fold((Failure failure) {
+                FlushBarCustomHelper.showErrorFlushbar(
+                  context,
+                  'Error',
+                  failure.message,
+                );
+              }, (bool confirmed) {
+                FlushBarCustomHelper.showErrorFlushbar(
+                  context,
+                  'Success',
+                  'you have successfully confirmed your availabilty for this job/project and work as been initial',
+                );
+              });
+              // Navigator.of(context).push(
+              //   MaterialPageRoute(
+              //     builder: (_) => JobDetails(
+              //       isOwner: true,
+              //       job: job,
+              //     ),
+              //   ),
+              // );
             },
             child: Row(
               children: <Widget>[
                 FaIcon(
-                  FontAwesomeIcons.eye,
+                  FontAwesomeIcons.checkCircle,
                   color: Colors.green,
                 ),
                 SizedBox(
                   width: 10.0,
                 ),
-                Text('View Job Details'),
+                Text('Confirmed Availability'),
               ],
             ),
           ),
@@ -143,23 +180,50 @@ class ApprovedBidWidget extends StatelessWidget {
         PopupMenuItem(
           value: 4,
           child: InkWell(
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => TrackArtisan(),
-                ),
+            onTap: () async {
+              // Navigator.of(context).push(
+              //   MaterialPageRoute(
+              //     builder: (_) => TrackArtisan(),
+              //   ),
+              // );
+              FlushbarHelper.createLoading(
+                message: 'Declining availability, please wait!',
+                linearProgressIndicator: LinearProgressIndicator(),
+                duration: Duration(minutes: 1),
+                title: 'Loading...',
               );
+              final approvedBidProvider = Provider.of<ApprovedBidProvider>(
+                context,
+                listen: false,
+              );
+              final declined = await approvedBidProvider.declineAvailability(
+                job,
+              );
+              Navigator.of(context).pop();
+              declined.fold((Failure failure) {
+                FlushBarCustomHelper.showErrorFlushbar(
+                  context,
+                  'Error',
+                  failure.message,
+                );
+              }, (bool confirmed) {
+                FlushBarCustomHelper.showErrorFlushbar(
+                  context,
+                  'Success',
+                  'you have successfully declined your availabilty for this job/project.',
+                );
+              });
             },
             child: Row(
               children: <Widget>[
                 FaIcon(
-                  FontAwesomeIcons.map,
+                  FontAwesomeIcons.windowClose,
                   color: Colors.red,
                 ),
                 SizedBox(
                   width: 10.0,
                 ),
-                Text('Track Artisan'),
+                Text('Decline Offer'),
               ],
             ),
           ),
