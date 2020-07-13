@@ -8,7 +8,6 @@ import 'package:quickfix/models/failure.dart';
 import 'package:quickfix/modules/artisan/model/service_request.dart';
 import 'package:quickfix/modules/artisan/provider/artisan_provider.dart';
 import 'package:quickfix/modules/job/model/project_bid.dart';
-import 'package:quickfix/modules/job/provider/approve_bid_provider.dart';
 
 class MyServiceRequestWidget extends StatelessWidget {
   final String title;
@@ -175,38 +174,33 @@ class MyServiceRequestWidget extends StatelessWidget {
           value: 4,
           child: InkWell(
             onTap: () async {
-              // Navigator.of(context).push(
-              //   MaterialPageRoute(
-              //     builder: (_) => TrackArtisan(),
-              //   ),
-              // );
               FlushbarHelper.createLoading(
-                message: 'Declining availability, please wait!',
+                message: 'Rejecting request, please wait!',
                 linearProgressIndicator: LinearProgressIndicator(),
                 duration: Duration(minutes: 1),
                 title: 'Loading...',
               );
-              final approvedBidProvider = Provider.of<ApprovedBidProvider>(
+              final approvedBidProvider = Provider.of<RequestArtisanService>(
                 context,
                 listen: false,
               );
-              // final declined = await approvedBidProvider.declineAvailability(
-              //   job,
-              // );
-              // Navigator.of(context).pop();
-              // declined.fold((Failure failure) {
-              //   FlushBarCustomHelper.showErrorFlushbar(
-              //     context,
-              //     'Error',
-              //     failure.message,
-              //   );
-              // }, (bool confirmed) {
-              //   FlushBarCustomHelper.showErrorFlushbar(
-              //     context,
-              //     'Success',
-              //     'you have successfully declined your availabilty for this job/project.',
-              //   );
-              // });
+              final accepted = await approvedBidProvider.rejectRequest(
+                job,
+              );
+              Navigator.of(context).pop();
+              accepted.fold((Failure failure) {
+                FlushBarCustomHelper.showErrorFlushbar(
+                  context,
+                  'Error',
+                  failure.message,
+                );
+              }, (bool accepted) {
+                FlushBarCustomHelper.showErrorFlushbar(
+                  context,
+                  'Success',
+                  'you have successfully declined your availabilty for this job/project',
+                );
+              });
             },
             child: Row(
               children: <Widget>[
