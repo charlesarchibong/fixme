@@ -16,6 +16,8 @@ import 'package:provider/provider.dart';
 import 'package:quickfix/helpers/custom_lodder.dart';
 import 'package:quickfix/helpers/flush_bar.dart';
 import 'package:quickfix/helpers/notification.dart';
+import 'package:quickfix/modules/artisan/provider/artisan_provider.dart';
+import 'package:quickfix/modules/artisan/view/my_service_requests.dart';
 import 'package:quickfix/modules/chat/view/chats.dart';
 import 'package:quickfix/modules/dashboard/provider/dashboard_provider.dart';
 import 'package:quickfix/modules/dashboard/view/dashboard.dart';
@@ -387,6 +389,40 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (_) => ApprovedBid(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                title: Text('Service Requests'),
+                leading: Badge(
+                  badgeContent: Consumer<RequestArtisanService>(
+                    builder: (
+                      BuildContext context,
+                      RequestArtisanService requestArtisanService,
+                      Widget child,
+                    ) {
+                      return Text(
+                        requestArtisanService.serviceRequests.length.toString(),
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      );
+                    },
+                  ),
+                  badgeColor: Colors.red,
+                  animationType: BadgeAnimationType.slide,
+                  toAnimate: true,
+                  child: FaIcon(
+                    FontAwesomeIcons.checkSquare,
+                    color: Theme.of(context).accentColor,
+                  ),
+                ),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => MyServiceRequests(),
                     ),
                   );
                 },
