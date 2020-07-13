@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:quickfix/helpers/flush_bar.dart';
+import 'package:quickfix/models/failure.dart';
 import 'package:quickfix/modules/artisan/model/service_request.dart';
+import 'package:quickfix/modules/artisan/provider/artisan_provider.dart';
 import 'package:quickfix/modules/job/model/project_bid.dart';
 import 'package:quickfix/modules/job/provider/approve_bid_provider.dart';
 
@@ -133,35 +135,27 @@ class MyServiceRequestWidget extends StatelessWidget {
                 duration: Duration(minutes: 1),
                 title: 'Loading...',
               );
-              final approvedBidProvider = Provider.of<ApprovedBidProvider>(
+              final approvedBidProvider = Provider.of<RequestArtisanService>(
                 context,
                 listen: false,
               );
-              // final confirmed = await approvedBidProvider.confirmAvailability(
-              //   // job,
-              // );
-              // Navigator.of(context).pop();
-              // confirmed.fold((Failure failure) {
-              //   FlushBarCustomHelper.showErrorFlushbar(
-              //     context,
-              //     'Error',
-              //     failure.message,
-              //   );
-              // }, (bool confirmed) {
-              //   FlushBarCustomHelper.showErrorFlushbar(
-              //     context,
-              //     'Success',
-              //     'you have successfully confirmed your availabilty for this job/project and work as been initial',
-              //   );
-              // });
-              // Navigator.of(context).push(
-              //   MaterialPageRoute(
-              //     builder: (_) => JobDetails(
-              //       isOwner: true,
-              //       job: job,
-              //     ),
-              //   ),
-              // );
+              final accepted = await approvedBidProvider.acceptRequest(
+                job,
+              );
+              Navigator.of(context).pop();
+              accepted.fold((Failure failure) {
+                FlushBarCustomHelper.showErrorFlushbar(
+                  context,
+                  'Error',
+                  failure.message,
+                );
+              }, (bool accepted) {
+                FlushBarCustomHelper.showErrorFlushbar(
+                  context,
+                  'Success',
+                  'you have successfully confirmed your availabilty for this job/project and work as been initial',
+                );
+              });
             },
             child: Row(
               children: <Widget>[
