@@ -60,4 +60,31 @@ class RequestArtisanService with ChangeNotifier {
       );
     }
   }
+
+  Future<Either<Failure, bool>> acceptRequest(
+      ServiceRequest serviceRequest) async {
+    try {
+      loading = true;
+      notifyListeners();
+      final bool requested = await ArtisanApi().acceptServiceRequest(
+        serviceRequest,
+      );
+      loading = false;
+      notifyListeners();
+      return Right(
+        requested,
+      );
+    } catch (e) {
+      CustomLogger().errorPrint(
+        e.toString(),
+      );
+      loading = false;
+      notifyListeners();
+      return Left(
+        Failure(
+          message: 'Request was not successful, please try again!',
+        ),
+      );
+    }
+  }
 }
