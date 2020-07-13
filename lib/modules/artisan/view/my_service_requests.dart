@@ -26,7 +26,7 @@ class _MyServiceRequestsState extends State<MyServiceRequests> {
           color: Colors.white,
         ),
         title: Text(
-          'My Service Request',
+          'My Service Requests',
           style: TextStyle(
             color: Colors.white,
           ),
