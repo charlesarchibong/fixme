@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:quickfix/modules/artisan/model/service_request.dart';
 import 'package:quickfix/modules/artisan/service/artisan.service..dart';
 import 'package:quickfix/services/network/network_service.dart';
 import 'package:quickfix/util/Utils.dart';
@@ -25,6 +26,48 @@ class ArtisanApi extends ArtisanService {
       );
       if (response.statusCode == 200 && response.data['reqRes'] == 'true') {
         return true;
+      } else {
+        throw Exception(
+          'Request was not successful, Please try again!',
+        );
+      }
+    } catch (e) {
+      if (e is DioError) {
+        print(e.message);
+      }
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<ServiceRequest>> getServiceRequest() async {
+    try {
+      final user = await Utils.getUserSession();
+      final String apiKey = await Utils.getApiKey();
+      String url = Constants.requestArtisanRequest;
+      Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
+      Map<String, String> body = {
+        'mobile': user.phoneNumber,
+      };
+      final response = await NetworkService().post(
+        url: url,
+        body: body,
+        contentType: ContentType.URL_ENCODED,
+        headers: headers,
+      );
+      if (response.statusCode == 200 && response.data['reqRes'] == 'true') {
+        List projects = response.data['service_requests'] as List;
+        if (projects.length <= 0) {
+          throw Exception('No approved bids at the moment');
+        }
+        List<ServiceRequest> bids = List();
+        if (projects.length > 0) {
+          for (var i = 0; i < projects.length; i++) {
+            ServiceRequest bid = ServiceRequest.fromMap(projects[i]);
+            bids.add(bid);
+          }
+        }
+        return bids;
       } else {
         throw Exception(
           'Request was not successful, Please try again!',

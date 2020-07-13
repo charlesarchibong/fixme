@@ -76,12 +76,15 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
   FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
 
   Future<void> getPendingRequest() async {
-    // print('snjfna');
-    final pendingJobProvider =
-        Provider.of<PendingJobProvider>(context, listen: false);
+    final pendingJobProvider = Provider.of<PendingJobProvider>(
+      context,
+      listen: false,
+    );
     await pendingJobProvider.getPendingRequest();
-    final approvedBids =
-        Provider.of<ApprovedBidProvider>(context, listen: false);
+    final approvedBids = Provider.of<ApprovedBidProvider>(
+      context,
+      listen: false,
+    );
     await approvedBids.getApprovedBids();
   }
 
