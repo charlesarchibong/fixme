@@ -35,7 +35,7 @@ class RequestArtisanService with ChangeNotifier {
     }
   }
 
-  Future<Either<Failure, List<ServiceRequest>>> getRequest() async {
+  Future<Either<Failure, List<ServiceRequest>>> getRequests() async {
     try {
       loading = true;
       notifyListeners();
