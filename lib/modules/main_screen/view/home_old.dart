@@ -200,117 +200,129 @@ class _HomeState extends State<HomeW>
                     return FutureBuilder<User>(
                         future: Utils.getUserSession(),
                         builder: (context, usersnapshot) {
-                          return RichText(
-                            textAlign: TextAlign.center,
-                            text: TextSpan(
-                              text: 'Your account number is ',
-                              style: TextStyle(
-                                color: snapshot.hasData
-                                    ? snapshot.data.getString("theme") ==
-                                            'light'
-                                        ? Colors.black
-                                        : Colors.white
-                                    : Colors.white,
-                                fontSize: 17,
+                          return Card(
+                            elevation: 6.0,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(5.0),
+                                ),
                               ),
-                              children: <TextSpan>[
-                                TextSpan(
-                                  text: usersnapshot.hasData
-                                      ? '${usersnapshot.data.accountNumber}'
-                                      : '',
+                              child: RichText(
+                                textAlign: TextAlign.center,
+                                text: TextSpan(
+                                  text: 'Your account number is ',
                                   style: TextStyle(
-                                    color: Theme.of(context).accentColor,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
+                                    color: snapshot.hasData
+                                        ? snapshot.data.getString("theme") ==
+                                                'light'
+                                            ? Colors.black
+                                            : Colors.white
+                                        : Colors.white,
+                                    fontSize: 17,
                                   ),
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = () {
-                                      Clipboard.setData(
-                                        ClipboardData(
-                                          text: usersnapshot.data.accountNumber,
-                                        ),
-                                      );
-                                      FlushBarCustomHelper.showInfoFlushbar(
-                                        context,
-                                        accountNumber,
-                                        'Copied to clipboard',
-                                      );
-                                    },
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                      text: usersnapshot.hasData
+                                          ? '${usersnapshot.data.accountNumber}'
+                                          : '',
+                                      style: TextStyle(
+                                        color: Theme.of(context).accentColor,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                          Clipboard.setData(
+                                            ClipboardData(
+                                              text: usersnapshot
+                                                  .data.accountNumber,
+                                            ),
+                                          );
+                                          FlushBarCustomHelper.showInfoFlushbar(
+                                            context,
+                                            accountNumber,
+                                            'Copied to clipboard',
+                                          );
+                                        },
+                                    ),
+                                    TextSpan(
+                                      text:
+                                          '. Bank Name is Providus Bank. To receive/send money simply transfer to this account.',
+                                      style: TextStyle(
+                                        // color: Theme.of(context).primaryColor,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.normal,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                TextSpan(
-                                  text:
-                                      '. Bank Name is Providus Bank. To receive/send money simply transfer to this account.',
-                                  style: TextStyle(
-                                    // color: Theme.of(context).primaryColor,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                                ),
-                              ],
+                              ),
                             ),
                           );
                         });
                   }),
             ),
-            SizedBox(
-              height: 6,
-            ),
-            InkWell(
-              onTap: () {
-                print('bby');
-              },
-              child: Card(
-                elevation: 6.0,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(5.0),
-                    ),
-                  ),
-                  child: TextField(
-                    style: TextStyle(
-                      fontSize: 15.0,
-                      color: Colors.black,
-                    ),
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.all(10.0),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                        borderSide: BorderSide(
-                          color: Colors.white,
-                        ),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.white,
-                        ),
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
-                      hintText: "Search Service Providers or Businesses",
-                      suffixIcon: IconButton(
-                        onPressed: () {
-                          // _searchArtisans(_searchControl.text);
-                        },
-                        icon: Icon(
-                          Icons.search,
-                          color: Colors.black,
-                        ),
-                      ),
-                      hintStyle: TextStyle(
-                        fontSize: 15.0,
-                        color: Colors.black,
-                      ),
-                    ),
-                    maxLines: 1,
-                    controller: _searchControl,
-                    onSubmitted: (val) {
-                      // _searchArtisans(val);
-                    },
-                  ),
-                ),
-              ),
-            ),
+            // SizedBox(
+            //   height: 6,
+            // ),
+            // InkWell(
+            //   onTap: () {
+            //     print('bby');
+            //   },
+            //   child: Card(
+            //     elevation: 6.0,
+            //     child: Container(
+            //       decoration: BoxDecoration(
+            //         color: Colors.white,
+            //         borderRadius: BorderRadius.all(
+            //           Radius.circular(5.0),
+            //         ),
+            //       ),
+            //       child: TextField(
+            //         style: TextStyle(
+            //           fontSize: 15.0,
+            //           color: Colors.black,
+            //         ),
+            //         decoration: InputDecoration(
+            //           contentPadding: EdgeInsets.all(10.0),
+            //           border: OutlineInputBorder(
+            //             borderRadius: BorderRadius.circular(5.0),
+            //             borderSide: BorderSide(
+            //               color: Colors.white,
+            //             ),
+            //           ),
+            //           enabledBorder: OutlineInputBorder(
+            //             borderSide: BorderSide(
+            //               color: Colors.white,
+            //             ),
+            //             borderRadius: BorderRadius.circular(5.0),
+            //           ),
+            //           hintText: "Search Service Providers or Businesses",
+            //           suffixIcon: IconButton(
+            //             onPressed: () {
+            //               // _searchArtisans(_searchControl.text);
+            //             },
+            //             icon: Icon(
+            //               Icons.search,
+            //               color: Colors.black,
+            //             ),
+            //           ),
+            //           hintStyle: TextStyle(
+            //             fontSize: 15.0,
+            //             color: Colors.black,
+            //           ),
+            //         ),
+            //         maxLines: 1,
+            //         controller: _searchControl,
+            //         onSubmitted: (val) {
+            //           // _searchArtisans(val);
+            //         },
+            //       ),
+            //     ),
+            //   ),
+            // ),
 
             SizedBox(height: 10.0),
 
