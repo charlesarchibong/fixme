@@ -57,7 +57,7 @@ class ArtisanApi extends ArtisanService {
       );
       print(response.data.toString());
       if (response.statusCode == 200 && response.data['reqRes'] == 'true') {
-        List projects = response.data['service_requests'] as List;
+        List projects = response.data['serviceRequest'] as List;
         if (projects.length <= 0) {
           throw Exception('No approved bids at the moment');
         }
