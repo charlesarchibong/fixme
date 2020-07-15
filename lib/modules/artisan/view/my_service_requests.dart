@@ -58,7 +58,7 @@ class _MyServiceRequestsState extends State<MyServiceRequests> {
                             ),
                           ),
                         );
-                      }, (Map jobs) {
+                      }, (List<ServiceRequest> jobs) {
                         return RefreshIndicator(
                           onRefresh: () {
                             requestArtisanService.getRequests();
