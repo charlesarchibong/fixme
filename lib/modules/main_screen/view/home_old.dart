@@ -227,7 +227,7 @@ class _HomeState extends State<HomeW>
                                     ..onTap = () {
                                       Clipboard.setData(
                                         ClipboardData(
-                                          text: accountNumber,
+                                          text: usersnapshot.data.accountNumber,
                                         ),
                                       );
                                       FlushBarCustomHelper.showInfoFlushbar(

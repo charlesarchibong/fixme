@@ -37,16 +37,16 @@ class User {
 
   Map<String, dynamic> toJson() {
     var map = new Map<String, dynamic>();
-    map['firstName'] = firstName;
-    map['lastName'] = lastName;
-    map['phoneNumber'] = phoneNumber;
+    map['user_first_name'] = firstName;
+    map['user_last_name'] = lastName;
+    map['user_mobile'] = phoneNumber;
     map['email'] = email;
-    map['serviceArea'] = serviceArea;
-    map['fullNumber'] = fullNumber;
+    map['service_area'] = serviceArea;
+    map['full_number'] = fullNumber;
     map['service_id'] = serviceId;
-    map['imageUrl'] = imageUrl;
+    map['profile_pic_file_name'] = imageUrl;
     map['bank_account_number'] = accountNumber;
-    map['profilePicture'] = profilePicture;
+    map['profile_pic_file_name'] = profilePicture;
     map['profile_views'] = profileViews;
     map['reviews'] = reviews;
     map['user_rating'] = userRating;
@@ -56,16 +56,16 @@ class User {
   }
 
   User.fromjson(Map<String, dynamic> json) {
-    firstName = json['firstName'];
-    lastName = json['lastName'];
-    phoneNumber = json['phoneNumber'];
+    firstName = json['user_first_name'];
+    lastName = json['user_last_name'];
+    phoneNumber = json['user_mobile'];
     email = json['email'];
-    serviceArea = json['serviceArea'];
-    fullNumber = json['fullNumber'];
+    serviceArea = json['service_area'];
+    fullNumber = json['full_number'];
     serviceId = json['service_id'];
-    imageUrl = json['imageUrl'];
+    imageUrl = json['profile_pic_file_name'];
     accountNumber = json['bank_account_number'];
-    profilePicture = json['profilePicture'];
+    profilePicture = json['profile_pic_file_name'];
     profilePicture = json['profile_views'];
     reviews = json['reviews'];
     userRating = json['user_rating'];

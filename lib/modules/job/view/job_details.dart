@@ -101,7 +101,7 @@ class _JobDetailsState extends State<JobDetails> {
                   ? _jobBidders()
                   : RaisedButton(
                       child: Text(
-                        'Bid Job',
+                        'Bid for this Job',
                         style: TextStyle(
                           color: Colors.white,
                         ),

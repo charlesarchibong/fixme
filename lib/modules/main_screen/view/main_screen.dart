@@ -453,7 +453,7 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                 },
               ),
               ListTile(
-                title: Text('Search Artisan'),
+                title: Text('Search Service'),
                 leading: FaIcon(
                   FontAwesomeIcons.search,
                   color: _page == 1
@@ -596,7 +596,7 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                         onPressed: () => navigationTapped(1),
                       ),
                       Text(
-                        'Search Artisan',
+                        'Search Service',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: _page == 1
@@ -743,7 +743,7 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
     pageController = PageController();
     location = new Location();
     sendDeviceDetails();
-    showUpdatePictureDialog();
+    // showUpdatePictureDialog();
     location.onLocationChanged.listen((LocationData locationData) {
       sendLocationToServer(locationData);
     });

@@ -183,7 +183,7 @@ class _CustomPopupButtonState extends State<CustomPopupButton> {
               SizedBox(
                 width: 10.0,
               ),
-              Text('Bid'),
+              Text('Bid for this Job'),
             ],
           ),
         ),
