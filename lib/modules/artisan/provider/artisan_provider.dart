@@ -7,7 +7,7 @@ import 'package:quickfix/modules/artisan/service/artisan.dart';
 
 class RequestArtisanService with ChangeNotifier {
   bool loading = false;
-  List<ServiceRequest> serviceRequests;
+  List<ServiceRequest> serviceRequests = List();
 
   Future<Either<Failure, bool>> request(String artisanPhone) async {
     try {

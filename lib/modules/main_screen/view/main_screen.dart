@@ -381,7 +381,7 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                   toAnimate: true,
                   child: FaIcon(
                     FontAwesomeIcons.checkSquare,
-                    color: Theme.of(context).accentColor,
+                    color: Theme.of(context).textTheme.caption.color,
                   ),
                 ),
                 onTap: () {
@@ -403,19 +403,20 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                       Widget child,
                     ) {
                       return Text(
-                        requestArtisanService.serviceRequests.length.toString(),
+                        requestArtisanService.serviceRequests?.length
+                            .toString(),
                         style: TextStyle(
                           color: Colors.white,
                         ),
                       );
                     },
                   ),
-                  badgeColor: Colors.red,
+                  // badgeColor: Colors.red,
                   animationType: BadgeAnimationType.slide,
                   toAnimate: true,
                   child: FaIcon(
                     FontAwesomeIcons.checkSquare,
-                    color: Theme.of(context).accentColor,
+                    color: Theme.of(context).textTheme.caption.color,
                   ),
                 ),
                 onTap: () {
