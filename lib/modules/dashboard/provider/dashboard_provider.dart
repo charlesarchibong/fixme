@@ -27,9 +27,7 @@ class DashBoardProvider extends ChangeNotifier {
       );
       debugPrint(response.data.toString());
       if (response.statusCode == 200 && response.data['reqRes'] == 'true') {
-        DashboardModel dashboardModel = DashboardModel.fromMap(
-          response.data['dashboard_data'],
-        );
+        DashboardModel dashboardModel = DashboardModel.fromMap(response.data);
         return Right(dashboardModel);
       } else {
         return Left(
