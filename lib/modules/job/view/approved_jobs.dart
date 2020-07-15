@@ -56,7 +56,7 @@ class _ApprovedBidState extends State<ApprovedBid> {
                             ),
                           ),
                         );
-                      }, (Map jobs) {
+                      }, (List<ProjectBid> list) {
                         return RefreshIndicator(
                           onRefresh: () {
                             approvedBidProiver.getApprovedBids();

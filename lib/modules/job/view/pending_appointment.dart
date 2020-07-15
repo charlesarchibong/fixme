@@ -18,7 +18,8 @@ class _PendingAppointmentState extends State<PendingAppointment>
   List<Job> jobsAround = List();
 
   Future<void> getPendingRequest() async {
-    // print('snjfna');
+    var bby = 'cakewf';
+    print(bby);
     final pendingJobProvider =
         Provider.of<PendingJobProvider>(context, listen: false);
     final fetched = await pendingJobProvider.getPendingRequest();
@@ -31,7 +32,9 @@ class _PendingAppointmentState extends State<PendingAppointment>
       setState(() {
         isloading = false;
         jobsAround = jobs;
+        bby = 'Done';
       });
+      print(bby);
     });
   }
 

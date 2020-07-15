@@ -55,6 +55,7 @@ class ArtisanApi extends ArtisanService {
         contentType: ContentType.URL_ENCODED,
         headers: headers,
       );
+      print(response.data.toString());
       if (response.statusCode == 200 && response.data['reqRes'] == 'true') {
         List projects = response.data['service_requests'] as List;
         if (projects.length <= 0) {

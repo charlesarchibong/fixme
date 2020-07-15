@@ -29,7 +29,7 @@ class ApprovedBidProvider with ChangeNotifier {
       );
       debugPrint(response.data.toString());
       if (response.statusCode == 200 && response.data['reqRes'] == 'true') {
-        List projects = response.data['bids'] as List;
+        List projects = response.data['project_bids'] as List;
         if (projects.length <= 0) {
           return Left(
             Failure(

@@ -50,6 +50,7 @@ class GridTechnician extends StatelessWidget {
                 bottom: 3.0,
                 child: Card(
                   elevation: 7,
+                  color: Colors.white,
                   child: Container(
                     decoration: BoxDecoration(
                       color: Colors.white,

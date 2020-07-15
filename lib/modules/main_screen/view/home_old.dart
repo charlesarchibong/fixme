@@ -239,7 +239,7 @@ class _HomeState extends State<HomeW>
                                 ),
                                 TextSpan(
                                   text:
-                                      '. Bank Name is Providious Bank. To receive/send money simply transfer to this account.',
+                                      '. Bank Name is Providus Bank. To receive/send money simply transfer to this account.',
                                   style: TextStyle(
                                     // color: Theme.of(context).primaryColor,
                                     fontSize: 15,

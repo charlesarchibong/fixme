@@ -55,7 +55,7 @@ class PendingAppointments extends StatelessWidget {
           text: TextSpan(
             text: 'Description: ',
             style: TextStyle(
-              color: Colors.black,
+              // color: Colors.black,
               fontSize: 15,
               fontWeight: FontWeight.bold,
             ),
@@ -63,7 +63,7 @@ class PendingAppointments extends StatelessWidget {
               TextSpan(
                 text: this.subtitle,
                 style: TextStyle(
-                  color: Colors.black,
+                  // color: Colors.black,
                   fontSize: 14,
                   fontWeight: FontWeight.normal,
                 ),

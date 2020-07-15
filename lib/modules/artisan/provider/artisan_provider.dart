@@ -38,7 +38,8 @@ class RequestArtisanService with ChangeNotifier {
   Future<Either<Failure, List<ServiceRequest>>> getRequests() async {
     try {
       loading = true;
-      notifyListeners();
+      // notifyListeners();
+      print('Requesting');
       final List<ServiceRequest> requests =
           await ArtisanApi().getServiceRequest();
       loading = false;
