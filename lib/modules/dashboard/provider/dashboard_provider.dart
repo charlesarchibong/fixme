@@ -2,13 +2,14 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:quickfix/models/failure.dart';
+import 'package:quickfix/modules/dashboard/model/dashboard_model.dart';
 import 'package:quickfix/modules/profile/model/user.dart';
 import 'package:quickfix/services/network/network_service.dart';
 import 'package:quickfix/util/Utils.dart';
 import 'package:quickfix/util/content_type.dart';
 
 class DashBoardProvider extends ChangeNotifier {
-  Future<Either<Failure, Map>> getDashboardData() async {
+  Future<Either<Failure, DashboardModel>> getDashboardData() async {
     try {
       User currentUser = await Utils.getUserSession();
       String apiKey = await Utils.getApiKey();
@@ -26,15 +27,10 @@ class DashBoardProvider extends ChangeNotifier {
       );
       debugPrint(response.data.toString());
       if (response.statusCode == 200 && response.data['reqRes'] == 'true') {
-        List projects = response.data['projects'] as List;
-        List<Job> jobs = List();
-        if (projects.length > 0) {
-          for (var i = 0; i < projects.length; i++) {
-            Job job = Job.fromMap(projects[i]);
-            jobs.add(job);
-          }
-        }
-        return Right(jobs);
+        DashboardModel dashboardModel = DashboardModel.fromMap(
+          response.data['dashboard_data'],
+        );
+        return Right(dashboardModel);
       } else {
         return Left(
           Failure(
