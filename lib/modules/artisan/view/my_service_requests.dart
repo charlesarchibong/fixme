@@ -45,7 +45,7 @@ class _MyServiceRequestsState extends State<MyServiceRequests> {
                 return FutureBuilder(
                   future: requestArtisanService.getRequests(),
                   builder: (BuildContext context, AsyncSnapshot myService) {
-                    if (myService.connectionState == ConnectionState.done) {
+                    if (myService.hasData) {
                       return myService.data.fold((Failure failure) {
                         return Center(
                           child: Text(

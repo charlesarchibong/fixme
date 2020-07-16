@@ -202,61 +202,65 @@ class _HomeState extends State<HomeW>
                         builder: (context, usersnapshot) {
                           return Card(
                             elevation: 6.0,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(5.0),
-                                ),
-                              ),
-                              child: RichText(
-                                textAlign: TextAlign.center,
-                                text: TextSpan(
-                                  text: 'Your account number is ',
-                                  style: TextStyle(
-                                    color: snapshot.hasData
-                                        ? snapshot.data.getString("theme") ==
-                                                'light'
-                                            ? Colors.black
-                                            : Colors.white
-                                        : Colors.white,
-                                    fontSize: 17,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(5.0),
                                   ),
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                      text: usersnapshot.hasData
-                                          ? '${usersnapshot.data.accountNumber}'
-                                          : '',
-                                      style: TextStyle(
-                                        color: Theme.of(context).accentColor,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      recognizer: TapGestureRecognizer()
-                                        ..onTap = () {
-                                          Clipboard.setData(
-                                            ClipboardData(
-                                              text: usersnapshot
-                                                  .data.accountNumber,
-                                            ),
-                                          );
-                                          FlushBarCustomHelper.showInfoFlushbar(
-                                            context,
-                                            accountNumber,
-                                            'Copied to clipboard',
-                                          );
-                                        },
+                                ),
+                                child: RichText(
+                                  textAlign: TextAlign.center,
+                                  text: TextSpan(
+                                    text: 'Your account number is ',
+                                    style: TextStyle(
+                                      color: snapshot.hasData
+                                          ? snapshot.data.getString("theme") ==
+                                                  'light'
+                                              ? Colors.black
+                                              : Colors.white
+                                          : Colors.white,
+                                      fontSize: 17,
                                     ),
-                                    TextSpan(
-                                      text:
-                                          '. Bank Name is Providus Bank. To receive/send money simply transfer to this account.',
-                                      style: TextStyle(
-                                        // color: Theme.of(context).primaryColor,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.normal,
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                        text: usersnapshot.hasData
+                                            ? '${usersnapshot.data.accountNumber}'
+                                            : '',
+                                        style: TextStyle(
+                                          color: Theme.of(context).accentColor,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        recognizer: TapGestureRecognizer()
+                                          ..onTap = () {
+                                            Clipboard.setData(
+                                              ClipboardData(
+                                                text: usersnapshot
+                                                    .data.accountNumber,
+                                              ),
+                                            );
+                                            FlushBarCustomHelper
+                                                .showInfoFlushbar(
+                                              context,
+                                              accountNumber,
+                                              'Copied to clipboard',
+                                            );
+                                          },
                                       ),
-                                    ),
-                                  ],
+                                      TextSpan(
+                                        text:
+                                            '. Bank Name is Providus Bank. To receive/send money simply transfer to this account.',
+                                        style: TextStyle(
+                                          // color: Theme.of(context).primaryColor,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),

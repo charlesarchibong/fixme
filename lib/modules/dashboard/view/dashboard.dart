@@ -76,7 +76,15 @@ class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
                 if (snapshot.connectionState == ConnectionState.done) {
                   return snapshot.data.fold((Failure failure) {
                     return Center(
-                      child: Text(failure.message),
+                      child: Text(
+                        failure.message,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                      ),
                     );
                   }, (DashboardModel dashboardModel) {
                     return StaggeredGridView.count(
@@ -258,7 +266,7 @@ class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
                                           style: TextStyle(color: Colors.green),
                                         ),
                                         Text(
-                                          '${dashboardModel.totalRevenue}',
+                                          'N${dashboardModel.totalRevenue}',
                                           style: TextStyle(
                                               fontWeight: FontWeight.w700,
                                               fontSize: 34.0),
@@ -324,7 +332,7 @@ class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
                                                 color: Colors.blueAccent),
                                           ),
                                           Text(
-                                            '${dashboardModel.accountBalance}',
+                                            'N${dashboardModel.accountBalance}',
                                             style: TextStyle(
                                                 fontWeight: FontWeight.w700,
                                                 fontSize: 34.0),

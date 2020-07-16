@@ -1,9 +1,9 @@
 class DashboardModel {
   final int profileViews;
-  final double ratings;
+  final int ratings;
   final int reviews;
-  final double totalRevenue;
-  final double accountBalance;
+  final int totalRevenue;
+  final int accountBalance;
   final int serviceRequest;
   final int completedJobs;
   final int projectBids;
