@@ -245,7 +245,7 @@ class _HomeState extends State<HomeW>
                                             FlushBarCustomHelper
                                                 .showInfoFlushbar(
                                               context,
-                                              accountNumber,
+                                              usersnapshot.data.accountNumber,
                                               'Copied to clipboard',
                                             );
                                           },
