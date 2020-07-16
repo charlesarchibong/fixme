@@ -49,7 +49,7 @@ class _MyServiceRequestsState extends State<MyServiceRequests> {
                       return myService.data.fold((Failure failure) {
                         return Center(
                           child: Text(
-                            failure.message,
+                            '${failure.message} asf',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Colors.red,
@@ -73,6 +73,7 @@ class _MyServiceRequestsState extends State<MyServiceRequests> {
                             itemBuilder: (BuildContext context, int index) {
                               ServiceRequest serviceRequest =
                                   requestArtisanService.serviceRequests[index];
+                              print(serviceRequest.toMap());
                               return MyServiceRequestWidget(
                                 title: serviceRequest.requestingMobile,
                                 subtitle: 'Please confirm availability',
