@@ -52,6 +52,7 @@ dependencies:
   flutter_statusbarcolor: ^0.2.3
   logger: ^0.9.1
   flutter_svg: ^0.17.4
+  rxdart: ^0.24.1
 
 
 

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:badges/badges.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info/device_info.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -13,9 +14,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
-import 'package:quickfix/helpers/custom_lodder.dart';
 import 'package:quickfix/helpers/flush_bar.dart';
 import 'package:quickfix/helpers/notification.dart';
+import 'package:quickfix/main.dart';
 import 'package:quickfix/modules/artisan/provider/artisan_provider.dart';
 import 'package:quickfix/modules/artisan/view/my_service_requests.dart';
 import 'package:quickfix/modules/chat/view/chats.dart';
@@ -32,11 +33,11 @@ import 'package:quickfix/modules/profile/model/user.dart';
 import 'package:quickfix/modules/profile/provider/profile_provider.dart';
 import 'package:quickfix/modules/profile/view/profile.dart';
 import 'package:quickfix/modules/search/view/search.dart';
+import 'package:quickfix/services/firebase/messages.dart';
 import 'package:quickfix/services/network/network_service.dart';
 import 'package:quickfix/util/Utils.dart';
 import 'package:quickfix/util/const.dart';
 import 'package:quickfix/util/content_type.dart';
-import 'package:quickfix/util/pending_request.dart';
 
 Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) {
   if (message.containsKey('data')) {
@@ -69,6 +70,7 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
   AppLifecycleState _notification;
+  User currentUser;
 
   PageController pageController;
   final _scaffoledKey = GlobalKey<ScaffoldState>();
@@ -210,9 +212,9 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
         key: _scaffoledKey,
         appBar: AppBar(
           backgroundColor: Color.fromRGBO(153, 0, 153, 1.0),
-//          automaticallyImplyLeading: false,
-//          centerTitle: true,
-//Charles added
+          //          automaticallyImplyLeading: false,
+          //          centerTitle: true,
+          //Charles added
           brightness: Brightness.dark,
           iconTheme: IconThemeData(color: Colors.white),
           title: Text(
@@ -226,11 +228,18 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
             IconButton(
               color: Colors.white,
               icon: Badge(
-                badgeContent: Text(
-                  requests.length.toString(),
-                  style: TextStyle(
-                    color: Colors.black,
+                badgeContent: StreamBuilder<QuerySnapshot>(
+                  stream: MessageService().getMyTotalChatCount(
+                    '${currentUser.phoneNumber}',
                   ),
+                  builder: (context, snapshot) {
+                    return Text(
+                      snapshot.data.documents.length.toString(),
+                      style: TextStyle(
+                        color: Colors.black,
+                      ),
+                    );
+                  },
                 ),
                 badgeColor: Colors.white,
                 animationType: BadgeAnimationType.slide,
@@ -297,14 +306,13 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
               ListTile(
                 title: Text('My Chats'),
                 leading: Badge(
-                  badgeContent: Consumer<PendingJobProvider>(
-                    builder: (
-                      BuildContext context,
-                      PendingJobProvider pendingJobProvider,
-                      Widget child,
-                    ) {
+                  badgeContent: StreamBuilder<QuerySnapshot>(
+                    stream: MessageService().getMyTotalChatCount(
+                      '${currentUser.phoneNumber}',
+                    ),
+                    builder: (context, snapshot) {
                       return Text(
-                        '6',
+                        snapshot.data.documents.length.toString(),
                         style: TextStyle(
                           color: Colors.white,
                         ),
@@ -734,7 +742,6 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
 
     getMessage();
-    _initLocalNotification();
     _firebaseMessaging.getToken().then((token) {
       print('on message $token');
     });
@@ -747,16 +754,24 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
     location.onLocationChanged.listen((LocationData locationData) {
       sendLocationToServer(locationData);
     });
+    getCurrentUser();
 
     super.initState();
-//    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
-//        statusBarColor: Constants.darkAccent, // Color for Android
-//        systemNavigationBarColor: Constants.darkAccent,
-//        statusBarIconBrightness: Brightness.dark,
-//        systemNavigationBarIconBrightness: Brightness.dark,
-//        statusBarBrightness:
-//            Brightness.dark // Dark == white status bar -- for IOS.
-//        ));
+    //    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
+    //        statusBarColor: Constants.darkAccent, // Color for Android
+    //        systemNavigationBarColor: Constants.darkAccent,
+    //        statusBarIconBrightness: Brightness.dark,
+    //        systemNavigationBarIconBrightness: Brightness.dark,
+    //        statusBarBrightness:
+    //            Brightness.dark // Dark == white status bar -- for IOS.
+    //        ));
+  }
+
+  getCurrentUser() async {
+    final user = await Utils.getUserSession();
+    setState(() {
+      currentUser = user;
+    });
   }
 
   @override
@@ -926,53 +941,6 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
     }
   }
 
-  _initLocalNotification() async {
-    if (Platform.isIOS) {
-      // set iOS Local notification.
-      var initializationSettingsAndroid =
-          AndroidInitializationSettings('ic_launcher');
-      var initializationSettingsIOS = IOSInitializationSettings(
-        requestSoundPermission: true,
-        requestBadgePermission: true,
-        requestAlertPermission: true,
-        onDidReceiveLocalNotification: _onDidReceiveLocalNotification,
-      );
-      var initializationSettings = InitializationSettings(
-          initializationSettingsAndroid, initializationSettingsIOS);
-      await _flutterLocalNotificationsPlugin.initialize(initializationSettings,
-          onSelectNotification: _selectNotification);
-    } else {
-      // set Android Local notification.
-      var initializationSettingsAndroid =
-          AndroidInitializationSettings('drawable/logo');
-      var initializationSettingsIOS = IOSInitializationSettings(
-          onDidReceiveLocalNotification: _onDidReceiveLocalNotification);
-      var initializationSettings = InitializationSettings(
-          initializationSettingsAndroid, initializationSettingsIOS);
-      await _flutterLocalNotificationsPlugin.initialize(initializationSettings,
-          onSelectNotification: _selectNotification);
-    }
-  }
-
-  Future _onDidReceiveLocalNotification(
-      int id, String title, String body, String payload) async {}
-
-  Future _selectNotification(String payload) async {}
-
-  sendLocalNotification(name, msg) async {
-    CustomLogger(className: 'MainScreen').messagePrint(
-      'Native notification sent',
-    );
-    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-        'your channel id', 'your channel name', 'your channel description',
-        importance: Importance.Max, priority: Priority.High, ticker: 'ticker');
-    var iOSPlatformChannelSpecifics = IOSNotificationDetails();
-    var platformChannelSpecifics = NotificationDetails(
-        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
-    await _flutterLocalNotificationsPlugin
-        .show(0, name, msg, platformChannelSpecifics, payload: 'item x');
-  }
-
   Future sendLocationToServer(LocationData locationData) async {
     try {
       final user = await Utils.getUserSession();
@@ -999,9 +967,29 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
   }
 
   void onPageChanged(int page) {
-//    setStatusBar();
+    //    setStatusBar();
     setState(() {
       this._page = page;
     });
+  }
+
+  void sendLocalNotification(String name, String msg) async {
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+        'your channel id', 'your channel name', 'your channel description',
+        importance: Importance.Max, priority: Priority.High, ticker: 'ticker');
+    var iOSPlatformChannelSpecifics = IOSNotificationDetails(
+      presentBadge: true,
+      presentAlert: true,
+      presentSound: true,
+    );
+    var platformChannelSpecifics = NotificationDetails(
+        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      '$name',
+      '$msg',
+      platformChannelSpecifics,
+      payload: 'item x',
+    );
   }
 }

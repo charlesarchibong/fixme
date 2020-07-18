@@ -1,7 +1,5 @@
-import 'package:badges/badges.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:quickfix/modules/chat/model/message.dart';
 import 'package:quickfix/modules/chat/widget/my_chats_widget.dart';
 import 'package:quickfix/modules/profile/model/user.dart';
@@ -52,33 +50,33 @@ class _ChatsState extends State<Chats> {
           ),
           elevation: 0.0,
           actions: <Widget>[
-            IconButton(
-              color: Colors.white,
-              icon: Badge(
-                badgeContent: Text(
-                  '3',
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),
-                ),
-                badgeColor: Colors.white,
-                animationType: BadgeAnimationType.slide,
-                toAnimate: true,
-                child: FaIcon(
-                  FontAwesomeIcons.comment,
-                  size: 17.0,
-                ),
-              ),
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => Chats(),
-                  ),
-                );
-              },
-              tooltip: "Chats",
-            ),
             // IconButton(
+            //   color: Colors.white,
+            //   icon: Badge(
+            //     badgeContent: Text(
+            //       '3',
+            //       style: TextStyle(
+            //         color: Colors.black,
+            //       ),
+            //     ),
+            //     badgeColor: Colors.white,
+            //     animationType: BadgeAnimationType.slide,
+            //     toAnimate: true,
+            //     child: FaIcon(
+            //       FontAwesomeIcons.comment,
+            //       size: 17.0,
+            //     ),
+            //   ),
+            //   onPressed: () {
+            //     Navigator.of(context).push(
+            //       MaterialPageRoute(
+            //         builder: (_) => Chats(),
+            //       ),
+            //     );
+            //   },
+            //   tooltip: "Chats",
+            // ),
+            // // IconButton(
             //   color: Colors.white,
             //   icon: Badge(
             //     badgeContent: Text(

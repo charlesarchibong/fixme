@@ -16,7 +16,8 @@ class MessageService {
       message.receiverPhone,
     ))
         .setData({
-      'chatId': getChatNode(
+      'chatId': message.receiverPhone,
+      'receiver': getChatNode(
         message.senderPhone,
         message.receiverPhone,
       ),
@@ -54,13 +55,17 @@ class MessageService {
         .snapshots();
   }
 
-  Stream<QuerySnapshot> getMyChats(String nodeId) {
+  Stream<QuerySnapshot> getMyChats(String nodeId, String me) {
     return _collectionReference
         .document(nodeId)
         .collection('chats')
-        .where('id', isEqualTo: nodeId)
+        // .where('chatId', isEqualTo: nodeId)
         .orderBy('time', descending: true)
         .snapshots();
+  }
+
+  Stream<QuerySnapshot> getMyTotalChatCount(String phone) {
+    return _collectionReference.where('receiver', isEqualTo: phone).snapshots();
   }
 
   List<Message> getUnRead(QuerySnapshot querySnapshot) {
