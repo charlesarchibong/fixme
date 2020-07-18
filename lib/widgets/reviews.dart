@@ -1,7 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:quickfix/util/comments.dart';
 import 'package:quickfix/util/const.dart';
 import 'package:quickfix/widgets/smooth_star_rating.dart';
-import 'package:flutter/material.dart';
 
 class Reviews extends StatelessWidget {
   @override
@@ -31,6 +31,7 @@ class Reviews extends StatelessWidget {
                     color: Constants.ratingBG,
                     allowHalfRating: true,
                     rating: 5.0,
+                    borderColor: Constants.ratingBG,
                     size: 12.0,
                   ),
                   SizedBox(width: 6.0),

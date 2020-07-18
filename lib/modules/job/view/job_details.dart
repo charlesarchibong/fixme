@@ -382,6 +382,7 @@ class _JobDetailsState extends State<JobDetails> {
                                           starCount: 1,
                                           color: Constants.ratingBG,
                                           allowHalfRating: true,
+                                          borderColor: Constants.ratingBG,
                                           rating: 5.0,
                                           size: 12.0,
                                         ),

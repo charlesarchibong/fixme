@@ -155,8 +155,12 @@ class _ChatScreenState extends State<ChatScreen> {
   void sendMessage(String messageText) async {
     try {
       String messageId = Utils.generateId(30);
+
       Message message = Message(
-        id: messageId,
+        id: getChatNode(
+          currentUser.phoneNumber,
+          widget.receiver,
+        ),
         isLiked: false,
         receiverPhone: widget.receiver,
         senderPhone: currentUser.phoneNumber,

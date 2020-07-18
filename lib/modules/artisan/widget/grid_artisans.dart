@@ -103,6 +103,7 @@ class GridTechnician extends StatelessWidget {
                   children: <Widget>[
                     SmoothStarRating(
                       starCount: 5,
+                      borderColor: Constants.ratingBG,
                       color: Constants.ratingBG,
                       allowHalfRating: true,
                       rating: rating,

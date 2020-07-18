@@ -14,13 +14,13 @@ class SmoothStarRating extends StatelessWidget {
 
   SmoothStarRating(
       {this.starCount = 5,
-        this.rating = 0.0,
-        this.onRatingChanged,
-        this.color,
-        this.borderColor,
-        this.size,
-        this.spacing = 0.0,
-        this.allowHalfRating = true}) {
+      this.rating = 0.0,
+      this.onRatingChanged,
+      this.color,
+      this.borderColor,
+      this.size,
+      this.spacing = 0.0,
+      this.allowHalfRating = true}) {
     assert(this.rating != null);
   }
 

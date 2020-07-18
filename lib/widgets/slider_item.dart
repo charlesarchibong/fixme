@@ -1,7 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:quickfix/modules/artisan/view/details.dart';
 import 'package:quickfix/util/const.dart';
 import 'package:quickfix/widgets/smooth_star_rating.dart';
-import 'package:flutter/material.dart';
 
 class SliderItem extends StatelessWidget {
   final String name;
@@ -79,6 +79,7 @@ class SliderItem extends StatelessWidget {
                   color: Constants.ratingBG,
                   allowHalfRating: true,
                   rating: rating,
+                  borderColor: Constants.ratingBG,
                   size: 10.0,
                 ),
                 Text(

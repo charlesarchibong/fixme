@@ -154,8 +154,12 @@ class _SearchScreenState extends State<SearchScreen>
                                             SmoothStarRating(
                                               starCount: 5,
                                               color: Constants.ratingBG,
+                                              borderColor: Constants.ratingBG,
                                               allowHalfRating: true,
-                                              rating: 5.0,
+                                              rating: double.parse(
+                                                artisan['user_rating']
+                                                    .toString(),
+                                              ),
                                               size: 12.0,
                                             ),
                                             Text(

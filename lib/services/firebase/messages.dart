@@ -10,6 +10,17 @@ class MessageService {
       Firestore.instance.collection('messages');
 
   Future updateMessage(Message message) async {
+    _collectionReference
+        .document(getChatNode(
+      message.senderPhone,
+      message.receiverPhone,
+    ))
+        .setData({
+      'chatId': getChatNode(
+        message.senderPhone,
+        message.receiverPhone,
+      ),
+    });
     return await _collectionReference
         .document(getChatNode(
           message.senderPhone,
@@ -37,9 +48,18 @@ class MessageService {
 //     });
 //   }
 
-  getUserChats(String phone) async {
+  Stream<QuerySnapshot> getUserChats() {
     return _collectionReference
-        .where('receiverPhone', arrayContains: phone)
+        // .where('chatId', isEqualTo: receiverPhone)
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> getMyChats(String nodeId) {
+    return _collectionReference
+        .document(nodeId)
+        .collection('chats')
+        .where('id', isEqualTo: nodeId)
+        .orderBy('time', descending: true)
         .snapshots();
   }
 

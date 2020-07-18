@@ -212,12 +212,15 @@ class _ProductDetailsState extends State<ProductDetails>
                     starCount: 5,
                     color: Constants.ratingBG,
                     allowHalfRating: true,
-                    rating: 5.0,
+                    borderColor: Constants.ratingBG,
+                    rating: double.parse(
+                      widget.userData['user_rating'].toString(),
+                    ),
                     size: 10.0,
                   ),
                   SizedBox(width: 10.0),
                   Text(
-                    "5.0 (23 Reviews)",
+                    "(${widget.userData['reviews']} Reviews)",
                     style: TextStyle(
                       fontSize: 11.0,
                     ),
@@ -230,7 +233,7 @@ class _ProductDetailsState extends State<ProductDetails>
               child: Row(
                 children: <Widget>[
                   Text(
-                    "20 Stars",
+                    "${widget.userData['user_rating']} Stars",
                     style: TextStyle(
                       fontSize: 11.0,
                       fontWeight: FontWeight.w300,
