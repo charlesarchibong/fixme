@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:quickfix/modules/chat/model/message.dart';
 import 'package:quickfix/modules/chat/widget/my_chats_widget.dart';
+import 'package:quickfix/modules/profile/model/user.dart';
+import 'package:quickfix/services/firebase/messages.dart';
+import 'package:quickfix/util/Utils.dart';
 
 class Chats extends StatefulWidget {
   @override
@@ -94,41 +97,37 @@ class _ChatsState extends State<Chats> {
           // ),
         ],
       ),
-      body: Padding(
-        padding: EdgeInsets.fromLTRB(10.0, 0, 10.0, 0),
-        child: Column(
-          children: <Widget>[
-            SizedBox(height: 10.0),
-            StreamBuilder<List<String>>(
-                // stream: MessageService().getAllUserUnRead(),
-                builder: (context, snapshot1) {
-              return Expanded(
-                child: StreamBuilder<List<Message>>(
-                    // stream: Firestore.instance
-                    //     .collection('messages')
-                    //     .document(snapshot1.data.documents)
-                    //     .collection(snapshot1.data.documentID)
-                    //     .orderBy('time', descending: true)
-                    //     .snapshots()
-                    //     .map(_convertMessageToListStream),
-                    builder: (context, snapshot) {
-                  return ListView.builder(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.vertical,
-                      physics: AlwaysScrollableScrollPhysics(),
-                      itemCount: snapshot.data.length ?? 0,
-                      itemBuilder: (BuildContext context, int index) {
-                        // Map artisan = technicians[index];
-                        return MyChatWidget(
-                          message: snapshot.data[index],
-                        );
-                      });
-                }),
-              );
-            }),
-          ],
-        ),
-      ),
+      body: FutureBuilder<User>(
+          future: Utils.getUserSession(),
+          builder: (context, user) {
+            return Padding(
+              padding: EdgeInsets.fromLTRB(10.0, 0, 10.0, 0),
+              child: Column(
+                children: <Widget>[
+                  SizedBox(height: 10.0),
+                  Expanded(
+                    child: StreamBuilder<QuerySnapshot>(
+                        stream: MessageService()
+                            .getUserChats(user.data.phoneNumber),
+                        builder: (context, snapshot) {
+                          return ListView.builder(
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              physics: AlwaysScrollableScrollPhysics(),
+                              itemCount: snapshot.data.documents.length ?? 0,
+                              itemBuilder: (BuildContext context, int index) {
+                                // Map artisan = technicians[index];
+                                return MyChatWidget(
+                                  message:
+                                      snapshot.data.documents[index].documentID,
+                                );
+                              });
+                        }),
+                  ),
+                ],
+              ),
+            );
+          }),
     );
   }
 
