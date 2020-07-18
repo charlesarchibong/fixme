@@ -1,7 +1,5 @@
-import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:quickfix/helpers/flush_bar.dart';
 import 'package:quickfix/models/failure.dart';
@@ -94,34 +92,34 @@ class _ProductDetailsState extends State<ProductDetails>
         ),
         elevation: 0.0,
         actions: <Widget>[
-          IconButton(
-            color: Colors.white,
-            icon: Badge(
-              badgeContent: Text(
-                '3',
-                style: TextStyle(
-                  color: Colors.black,
-                ),
-              ),
-              badgeColor: Colors.white,
-              animationType: BadgeAnimationType.slide,
-              toAnimate: true,
-              child: FaIcon(
-                FontAwesomeIcons.comment,
-                size: 17.0,
-              ),
-            ),
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (BuildContext context) {
-                    return;
-                  },
-                ),
-              );
-            },
-            tooltip: "Chats",
-          ),
+          // IconButton(
+          //   color: Colors.white,
+          //   icon: Badge(
+          //     badgeContent: Text(
+          //       '3',
+          //       style: TextStyle(
+          //         color: Colors.black,
+          //       ),
+          //     ),
+          //     badgeColor: Colors.white,
+          //     animationType: BadgeAnimationType.slide,
+          //     toAnimate: true,
+          //     child: FaIcon(
+          //       FontAwesomeIcons.comment,
+          //       size: 17.0,
+          //     ),
+          //   ),
+          //   onPressed: () {
+          //     Navigator.of(context).push(
+          //       MaterialPageRoute(
+          //         builder: (BuildContext context) {
+          //           return;
+          //         },
+          //       ),
+          //     );
+          //   },
+          //   tooltip: "Chats",
+          // ),
           // IconButton(
           //   color: Colors.white,
           //   icon: Badge(
