@@ -24,67 +24,71 @@ class _MyChatWidgetState extends State<MyChatWidget> {
     return StreamBuilder<QuerySnapshot>(
         stream: MessageService().getMyChats(widget.message),
         builder: (context, snapshot) {
-          Message message = Message.fromMap(snapshot.data.documents.first.data);
-          print(message.toMap());
-          return Card(
-            // color: widget.artisan['read'] ? Colors.white : Colors.white70,
-            child: StreamBuilder<User>(
-                stream: UsersService(
-                  userPhone: message.receiverPhone == widget.me
-                      ? message.senderPhone
-                      : message.receiverPhone,
-                ).user,
-                builder: (context, user) {
-                  return ListTile(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => ChatScreen(
-                            receiver: message.receiverPhone,
-                          ),
-                        ),
-                      );
-                    },
-                    leading: CircleAvatar(
-                      backgroundColor: Theme.of(context).primaryColor,
-                      backgroundImage: user.data.imageUrl == null
-                          ? AssetImage(
-                              'assets/dp.png',
-                            )
-                          : NetworkImage(
-                              user.data.imageUrl,
-                            ),
-                    ),
-                    title: Text(
-                      '${user.data.firstName + ' ' + user.data.lastName}',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18.0,
-                      ),
-                    ),
-                    subtitle: Text(
-                      '${message.senderPhone == widget.me ? 'Me:' : ''} ${message.text}',
-                    ),
-                    trailing: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: <Widget>[
-                        Text(
-                          '${df.format(DateTime.fromMillisecondsSinceEpoch(message.time, isUtc: false))}',
-                        ),
-                        Spacer(),
-                        message.unread == false
-                            ? Icon(
-                                Icons.mail,
-                                color: Theme.of(context).accentColor,
-                                size: 18.0,
-                              )
-                            : Text('')
-                      ],
-                    ),
-                  );
-                }),
+          Message message = Message.fromMap(
+            snapshot.data?.documents?.first?.data,
           );
+          return message == null
+              ? Text('')
+              : Card(
+                  // color: widget.artisan['read'] ? Colors.white : Colors.white70,
+                  child: StreamBuilder<User>(
+                      stream: UsersService(
+                        userPhone: message.receiverPhone == widget.me
+                            ? message.senderPhone
+                            : message.receiverPhone,
+                      ).user,
+                      builder: (context, user) {
+                        return ListTile(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => ChatScreen(
+                                  receiver: message.receiverPhone,
+                                ),
+                              ),
+                            );
+                          },
+                          leading: CircleAvatar(
+                            backgroundColor: Theme.of(context).primaryColor,
+                            backgroundImage: user.data?.imageUrl == null
+                                ? AssetImage(
+                                    'assets/dp.png',
+                                  )
+                                : NetworkImage(
+                                    user.data.imageUrl,
+                                  ),
+                          ),
+                          title: Text(
+                            // ignore: null_aware_before_operator
+                            '${user.data?.firstName} ${user.data?.lastName}',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18.0,
+                            ),
+                          ),
+                          subtitle: Text(
+                            '${message.senderPhone == widget.me ? 'Me:' : ''} ${message.text}',
+                          ),
+                          trailing: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: <Widget>[
+                              Text(
+                                '${df.format(DateTime.fromMillisecondsSinceEpoch(message.time, isUtc: false))}',
+                              ),
+                              Spacer(),
+                              message.unread == false
+                                  ? Icon(
+                                      Icons.mail,
+                                      color: Theme.of(context).accentColor,
+                                      size: 18.0,
+                                    )
+                                  : Text('')
+                            ],
+                          ),
+                        );
+                      }),
+                );
         });
   }
 }
