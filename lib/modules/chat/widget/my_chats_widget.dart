@@ -50,7 +50,10 @@ class _MyChatWidgetState extends State<MyChatWidget> {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (_) => ChatScreen(
-                                      receiver: message.receiverPhone,
+                                      receiver:
+                                          message.receiverPhone == widget.me
+                                              ? message.senderPhone
+                                              : message.receiverPhone,
                                     ),
                                   ),
                                 );
