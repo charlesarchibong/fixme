@@ -7,7 +7,6 @@ import 'package:quickfix/helpers/flush_bar.dart';
 import 'package:quickfix/models/failure.dart';
 import 'package:quickfix/modules/artisan/model/service_request.dart';
 import 'package:quickfix/modules/artisan/provider/artisan_provider.dart';
-import 'package:quickfix/modules/job/model/project_bid.dart';
 
 class MyRequestedServiceWidget extends StatelessWidget {
   final String title;
@@ -102,13 +101,14 @@ class MyRequestedServiceWidget extends StatelessWidget {
           //     ),
           //   ),
           // );
-          if (job.status == ProjectBid.ACCEPTED_BID) {
-            FlushBarCustomHelper.showErrorFlushbar(
-              context,
-              'Info',
-              'Please click on the three dot beside to accept or decline availability',
-            );
-          }
+          // if (job.status == ProjectBid.ACCEPTED_BID) {
+          //   FlushBarCustomHelper.showErrorFlushbar(
+          //     context,
+          //     'Info',
+          //     'Please click on the three dot beside to accept or decline availability',
+          //   );
+          // }
+          _myBidAction();
         },
       ),
     );
