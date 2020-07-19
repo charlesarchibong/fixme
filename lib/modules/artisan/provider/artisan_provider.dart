@@ -62,6 +62,31 @@ class RequestArtisanService with ChangeNotifier {
     }
   }
 
+  Future<Either<Failure, List<ServiceRequest>>> getMyRequestedService() async {
+    try {
+      loading = true;
+      final List<ServiceRequest> requests =
+          await ArtisanApi().getMyServiceRequest();
+      loading = false;
+      serviceRequests = requests;
+      notifyListeners();
+      return Right(
+        requests,
+      );
+    } catch (e) {
+      CustomLogger().errorPrint(
+        e.toString(),
+      );
+      loading = false;
+      notifyListeners();
+      return Left(
+        Failure(
+          message: 'Request was not successful, please try again!',
+        ),
+      );
+    }
+  }
+
   Future<Either<Failure, bool>> acceptRequest(
       ServiceRequest serviceRequest) async {
     try {
