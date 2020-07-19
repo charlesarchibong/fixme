@@ -6,6 +6,7 @@ abstract class ArtisanService {
   );
 
   Future<List<ServiceRequest>> getServiceRequest();
+  Future<List<ServiceRequest>> getMyServiceRequest();
 
   Future<bool> acceptServiceRequest(ServiceRequest serviceRequest);
   Future<bool> rejectServiceRequest(ServiceRequest serviceRequest);
