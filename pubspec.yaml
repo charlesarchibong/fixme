@@ -53,6 +53,7 @@ dependencies:
   logger: ^0.9.1
   flutter_svg: ^0.17.4
   rxdart: ^0.24.1
+  stacked: ^1.7.4
 
 
 

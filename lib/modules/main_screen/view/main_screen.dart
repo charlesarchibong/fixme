@@ -402,6 +402,31 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                 },
               ),
               ListTile(
+                title: Text('My Posted Job(s)'),
+                leading: FaIcon(FontAwesomeIcons.luggageCart),
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => MyRequests(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                title: Text('Post Job'),
+                leading: FaIcon(
+                  FontAwesomeIcons.plusCircle,
+                  color: _page == 2
+                      ? Theme.of(context).accentColor
+                      : Theme.of(context).textTheme.caption.color,
+                ),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  navigationTapped(2);
+                },
+              ),
+
+              ListTile(
                 title: Text('Service Requests'),
                 leading: Badge(
                   badgeContent: Consumer<RequestArtisanService>(
@@ -434,30 +459,6 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                       builder: (_) => MyServiceRequests(),
                     ),
                   );
-                },
-              ),
-              ListTile(
-                title: Text('My Posted Job(s)'),
-                leading: FaIcon(FontAwesomeIcons.luggageCart),
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => MyRequests(),
-                    ),
-                  );
-                },
-              ),
-              ListTile(
-                title: Text('Post Job'),
-                leading: FaIcon(
-                  FontAwesomeIcons.plusCircle,
-                  color: _page == 2
-                      ? Theme.of(context).accentColor
-                      : Theme.of(context).textTheme.caption.color,
-                ),
-                onTap: () {
-                  Navigator.of(context).pop();
-                  navigationTapped(2);
                 },
               ),
               ListTile(
