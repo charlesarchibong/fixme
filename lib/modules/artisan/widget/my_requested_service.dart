@@ -9,14 +9,14 @@ import 'package:quickfix/modules/artisan/model/service_request.dart';
 import 'package:quickfix/modules/artisan/provider/artisan_provider.dart';
 import 'package:quickfix/modules/job/model/project_bid.dart';
 
-class MyServiceRequestWidget extends StatelessWidget {
+class MyRequestedServiceWidget extends StatelessWidget {
   final String title;
   final String subtitle;
   final String status;
   final ServiceRequest job;
   final String datePosted;
 
-  MyServiceRequestWidget({
+  MyRequestedServiceWidget({
     Key key,
     @required this.title,
     @required this.subtitle,
@@ -38,12 +38,12 @@ class MyServiceRequestWidget extends StatelessWidget {
         ),
         title: Row(
           children: <Widget>[
-            Text(
-              'Request From: ${job.requestedMobile}',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            // Text(
+            //   'Request From: ',
+            //   style: TextStyle(
+            //     fontWeight: FontWeight.bold,
+            //   ),
+            // ),
             SizedBox(
               width: 5.0,
             ),
