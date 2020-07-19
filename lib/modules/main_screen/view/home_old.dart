@@ -106,6 +106,7 @@ class _HomeState extends State<HomeW>
     final user = await Utils.getUserSession();
     setState(() {
       phoneNumber = user.phoneNumber;
+      accountNumber = user.accountNumber;
     });
   }
 
