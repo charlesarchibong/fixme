@@ -92,7 +92,7 @@ class MyRequestedServiceWidget extends StatelessWidget {
             ],
           ),
         ),
-        trailing: _myBidAction(),
+        // trailing: _myBidAction(),
         onTap: () {
           // Navigator.of(context).push(
           //   MaterialPageRoute(
