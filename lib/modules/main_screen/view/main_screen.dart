@@ -437,7 +437,7 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                 },
               ),
               ListTile(
-                title: Text('My Job(s)'),
+                title: Text('My Posted Job(s)'),
                 leading: FaIcon(FontAwesomeIcons.luggageCart),
                 onTap: () {
                   Navigator.of(context).push(
