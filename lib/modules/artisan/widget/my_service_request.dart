@@ -187,9 +187,8 @@ class MyServiceRequestWidget extends StatelessWidget {
                       context,
                       listen: false,
                     );
-                    final accepted = await approvedBidProvider.acceptRequest(
-                      job,
-                    );
+                    final accepted =
+                        await approvedBidProvider.requestForPayment(job);
                     Navigator.of(context).pop();
                     accepted.fold((Failure failure) {
                       FlushBarCustomHelper.showErrorFlushbar(

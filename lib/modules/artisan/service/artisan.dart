@@ -193,7 +193,7 @@ class ArtisanApi extends ArtisanService {
   Future<bool> requestForPayment(ServiceRequest serviceRequest) async {
     try {
       final String apiKey = await Utils.getApiKey();
-      String url = 'https://manager.fixme.ng/accept-service-request';
+      String url = 'https://manager.fixme.ng/complete-service-and-payment';
       Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
       Map<String, dynamic> body = {
         'requested_mobile': serviceRequest.requestedMobile,
