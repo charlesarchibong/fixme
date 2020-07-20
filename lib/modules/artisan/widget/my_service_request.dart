@@ -133,7 +133,7 @@ class MyServiceRequestWidget extends StatelessWidget {
                 linearProgressIndicator: LinearProgressIndicator(),
                 duration: Duration(minutes: 1),
                 title: 'Loading...',
-              );
+              )..show(context);
               final approvedBidProvider = Provider.of<RequestArtisanService>(
                 context,
                 listen: false,
@@ -149,7 +149,7 @@ class MyServiceRequestWidget extends StatelessWidget {
                   failure.message,
                 );
               }, (bool accepted) {
-                FlushBarCustomHelper.showErrorFlushbar(
+                FlushBarCustomHelper.showInfoFlushbar(
                   context,
                   'Success',
                   'you have successfully confirmed your availabilty for this job/project and work as been initial',
@@ -179,7 +179,7 @@ class MyServiceRequestWidget extends StatelessWidget {
                 linearProgressIndicator: LinearProgressIndicator(),
                 duration: Duration(minutes: 1),
                 title: 'Loading...',
-              );
+              )..show(context);
               final approvedBidProvider = Provider.of<RequestArtisanService>(
                 context,
                 listen: false,
