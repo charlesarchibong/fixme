@@ -1,12 +1,8 @@
-import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
 import 'package:quickfix/helpers/flush_bar.dart';
-import 'package:quickfix/models/failure.dart';
 import 'package:quickfix/modules/artisan/model/service_request.dart';
-import 'package:quickfix/modules/artisan/provider/artisan_provider.dart';
 import 'package:quickfix/modules/job/model/project_bid.dart';
 
 class MyRequestedServiceWidget extends StatelessWidget {
@@ -114,109 +110,109 @@ class MyRequestedServiceWidget extends StatelessWidget {
     );
   }
 
-  Widget _myBidAction() {
-    return PopupMenuButton(
-      onSelected: (value) {
-        print(value);
-      },
-      icon: Icon(
-        Icons.more_vert,
-        color: Colors.grey,
-      ),
-      itemBuilder: (context) => [
-        PopupMenuItem(
-          value: 1,
-          child: InkWell(
-            onTap: () async {
-              FlushbarHelper.createLoading(
-                message: 'Confirming availability, please wait!',
-                linearProgressIndicator: LinearProgressIndicator(),
-                duration: Duration(minutes: 1),
-                title: 'Loading...',
-              );
-              final approvedBidProvider = Provider.of<RequestArtisanService>(
-                context,
-                listen: false,
-              );
-              final accepted = await approvedBidProvider.acceptRequest(
-                job,
-              );
-              Navigator.of(context).pop();
-              accepted.fold((Failure failure) {
-                FlushBarCustomHelper.showErrorFlushbar(
-                  context,
-                  'Error',
-                  failure.message,
-                );
-              }, (bool accepted) {
-                FlushBarCustomHelper.showErrorFlushbar(
-                  context,
-                  'Success',
-                  'you have successfully confirmed your availabilty for this job/project and work as been initial',
-                );
-              });
-            },
-            child: Row(
-              children: <Widget>[
-                FaIcon(
-                  FontAwesomeIcons.checkCircle,
-                  color: Colors.green,
-                ),
-                SizedBox(
-                  width: 10.0,
-                ),
-                Text('Confirmed Availability'),
-              ],
-            ),
-          ),
-        ),
-        PopupMenuItem(
-          value: 4,
-          child: InkWell(
-            onTap: () async {
-              FlushbarHelper.createLoading(
-                message: 'Rejecting request, please wait!',
-                linearProgressIndicator: LinearProgressIndicator(),
-                duration: Duration(minutes: 1),
-                title: 'Loading...',
-              );
-              final approvedBidProvider = Provider.of<RequestArtisanService>(
-                context,
-                listen: false,
-              );
-              final accepted = await approvedBidProvider.rejectRequest(
-                job,
-              );
-              Navigator.of(context).pop();
-              accepted.fold((Failure failure) {
-                FlushBarCustomHelper.showErrorFlushbar(
-                  context,
-                  'Error',
-                  failure.message,
-                );
-              }, (bool accepted) {
-                FlushBarCustomHelper.showErrorFlushbar(
-                  context,
-                  'Success',
-                  'you have successfully declined your availabilty for this job/project',
-                );
-              });
-            },
-            child: Row(
-              children: <Widget>[
-                FaIcon(
-                  FontAwesomeIcons.windowClose,
-                  color: Colors.red,
-                ),
-                SizedBox(
-                  width: 10.0,
-                ),
-                Text('Decline Offer'),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+  // Widget _myBidAction() {
+  //   return PopupMenuButton(
+  //     onSelected: (value) {
+  //       print(value);
+  //     },
+  //     icon: Icon(
+  //       Icons.more_vert,
+  //       color: Colors.grey,
+  //     ),
+  //     itemBuilder: (context) => [
+  //       PopupMenuItem(
+  //         value: 1,
+  //         child: InkWell(
+  //           onTap: () async {
+  //             FlushbarHelper.createLoading(
+  //               message: 'Confirming availability, please wait!',
+  //               linearProgressIndicator: LinearProgressIndicator(),
+  //               duration: Duration(minutes: 1),
+  //               title: 'Loading...',
+  //             );
+  //             final approvedBidProvider = Provider.of<RequestArtisanService>(
+  //               context,
+  //               listen: false,
+  //             );
+  //             final accepted = await approvedBidProvider.acceptRequest(
+  //               job,
+  //             );
+  //             Navigator.of(context).pop();
+  //             accepted.fold((Failure failure) {
+  //               FlushBarCustomHelper.showErrorFlushbar(
+  //                 context,
+  //                 'Error',
+  //                 failure.message,
+  //               );
+  //             }, (bool accepted) {
+  //               FlushBarCustomHelper.showErrorFlushbar(
+  //                 context,
+  //                 'Success',
+  //                 'you have successfully confirmed your availabilty for this job/project and work as been initial',
+  //               );
+  //             });
+  //           },
+  //           child: Row(
+  //             children: <Widget>[
+  //               FaIcon(
+  //                 FontAwesomeIcons.checkCircle,
+  //                 color: Colors.green,
+  //               ),
+  //               SizedBox(
+  //                 width: 10.0,
+  //               ),
+  //               Text('Confirmed Availability'),
+  //             ],
+  //           ),
+  //         ),
+  //       ),
+  //       PopupMenuItem(
+  //         value: 4,
+  //         child: InkWell(
+  //           onTap: () async {
+  //             FlushbarHelper.createLoading(
+  //               message: 'Rejecting request, please wait!',
+  //               linearProgressIndicator: LinearProgressIndicator(),
+  //               duration: Duration(minutes: 1),
+  //               title: 'Loading...',
+  //             );
+  //             final approvedBidProvider = Provider.of<RequestArtisanService>(
+  //               context,
+  //               listen: false,
+  //             );
+  //             final accepted = await approvedBidProvider.rejectRequest(
+  //               job,
+  //             );
+  //             Navigator.of(context).pop();
+  //             accepted.fold((Failure failure) {
+  //               FlushBarCustomHelper.showErrorFlushbar(
+  //                 context,
+  //                 'Error',
+  //                 failure.message,
+  //               );
+  //             }, (bool accepted) {
+  //               FlushBarCustomHelper.showErrorFlushbar(
+  //                 context,
+  //                 'Success',
+  //                 'you have successfully declined your availabilty for this job/project',
+  //               );
+  //             });
+  //           },
+  //           child: Row(
+  //             children: <Widget>[
+  //               FaIcon(
+  //                 FontAwesomeIcons.windowClose,
+  //                 color: Colors.red,
+  //               ),
+  //               SizedBox(
+  //                 width: 10.0,
+  //               ),
+  //               Text('Decline Offer'),
+  //             ],
+  //           ),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 }

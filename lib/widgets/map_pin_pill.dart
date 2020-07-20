@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quickfix/models/pin_pill_info.dart';
 
+// ignore: must_be_immutable
 class MapPinPillComponent extends StatefulWidget {
   double pinPillPosition;
   PinInformation currentlySelectedPin;

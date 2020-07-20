@@ -3,12 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:location/location.dart';
-import 'package:provider/provider.dart';
 import 'package:quickfix/helpers/flush_bar.dart';
-import 'package:quickfix/models/failure.dart';
 import 'package:quickfix/modules/artisan/widget/grid_artisans.dart';
 import 'package:quickfix/modules/profile/model/user.dart';
-import 'package:quickfix/modules/search/provider/search_provider.dart';
 import 'package:quickfix/services/network/network_service.dart';
 import 'package:quickfix/util/Utils.dart';
 import 'package:quickfix/util/const.dart';
@@ -31,14 +28,14 @@ class _HomeState extends State<HomeW>
     return result;
   }
 
-  int _current = 0;
+  // int _current = 0;
   Location location;
   LocationData locationData;
   List users = List();
   bool _loadingArtisan = false;
   String phoneNumber = '';
   String accountNumber = '0348861021';
-  final TextEditingController _searchControl = new TextEditingController();
+  // final TextEditingController _searchControl = new TextEditingController();
 
   @override
   void initState() {
@@ -363,54 +360,6 @@ class _HomeState extends State<HomeW>
     );
   }
 
-  @override
-  bool get wantKeepAlive => true;
-  void _searchArtisans(String keyword) async {
-    setState(() {
-      // _loading = true;
-    });
-    final searchProvider = Provider.of<SearchProvider>(
-      context,
-      listen: false,
-    );
-    final fetched = await searchProvider.searchArtisan(keyword);
-    if (fetched == null) {
-      setState(() {
-        // _loading = false;
-      });
-      FlushBarCustomHelper.showErrorFlushbar(
-        context,
-        'Error',
-        'No artisan information retrieved, please try again',
-      );
-    } else {
-      fetched.fold((Failure failure) {
-        setState(() {
-          // _loading = false;
-        });
-        FlushBarCustomHelper.showErrorFlushbar(
-          context,
-          'Error',
-          failure.message,
-        );
-      }, (List artisans) {
-        if (artisans.length <= 0) {
-          setState(() {
-            // error = 'No artisan found, please search again';
-          });
-        } else {
-          setState(() {
-            // error = '';
-          });
-        }
-        setState(() {
-          // _loading = false;
-          users = artisans;
-        });
-      });
-    }
-  }
-
   Widget _serviceProvidersAroundMe() {
     return users.isNotEmpty
         ? RefreshIndicator(
@@ -493,4 +442,7 @@ class _HomeState extends State<HomeW>
                 ),
               );
   }
+
+  @override
+  bool get wantKeepAlive => throw UnimplementedError();
 }

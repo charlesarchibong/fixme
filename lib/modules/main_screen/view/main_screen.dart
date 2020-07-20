@@ -58,6 +58,7 @@ Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) {
   print('background message III');
   print('background message III');
   // Or do other work.
+  return Future.value(true);
 }
 
 class MainScreen extends StatefulWidget {

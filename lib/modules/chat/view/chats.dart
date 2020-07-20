@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:quickfix/modules/chat/model/message.dart';
 import 'package:quickfix/modules/chat/widget/my_chats_widget.dart';
 import 'package:quickfix/modules/profile/model/user.dart';
 import 'package:quickfix/services/firebase/messages.dart';
@@ -140,9 +139,9 @@ class _ChatsState extends State<Chats> {
         ));
   }
 
-  List<Message> _convertMessageToListStream(QuerySnapshot querySnapshot) {
-    return querySnapshot.documents
-        .map((doc) => Message.fromMap(doc.data))
-        .toList();
-  }
+  // List<Message> _convertMessageToListStream(QuerySnapshot querySnapshot) {
+  //   return querySnapshot.documents
+  //       .map((doc) => Message.fromMap(doc.data))
+  //       .toList();
+  // }
 }

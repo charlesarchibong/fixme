@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -57,7 +56,7 @@ class LoginFormValidation extends ChangeNotifier {
     try {
       String token =
           'FIXME_1U90P3444ANdroidAPP4HUisallOkayBY_FIXME_APP_UIONSISJGJANKKI3445fv';
-      String tokenEncoded = base64.encode(utf8.encode(token));
+      // String tokenEncoded = base64.encode(utf8.encode(token));
       Map<String, String> headers = {
         "Content-type": "application/x-www-form-urlencoded",
         'Authorization': 'Bearer $token',
