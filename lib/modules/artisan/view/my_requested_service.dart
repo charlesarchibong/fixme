@@ -76,7 +76,9 @@ class _MyRequestedServiceState extends State<MyRequestedService> {
                               print(serviceRequest.toMap());
                               return MyRequestedServiceWidget(
                                 title: serviceRequest.requestingMobile,
-                                subtitle: 'Please confirm availability',
+                                subtitle: serviceRequest.status == 'accepted'
+                                    ? 'Artisan has accepted your request'
+                                    : 'Your request is still pending, artisan will confirm availability soon.',
                                 status: serviceRequest.status,
                                 job: serviceRequest,
                                 datePosted: serviceRequest.dateRequested,

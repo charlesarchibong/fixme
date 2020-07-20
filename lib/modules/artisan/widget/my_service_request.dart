@@ -195,7 +195,7 @@ class MyServiceRequestWidget extends StatelessWidget {
                   failure.message,
                 );
               }, (bool accepted) {
-                FlushBarCustomHelper.showErrorFlushbar(
+                FlushBarCustomHelper.showInfoFlushbar(
                   context,
                   'Success',
                   'you have successfully declined your availabilty for this job/project',
