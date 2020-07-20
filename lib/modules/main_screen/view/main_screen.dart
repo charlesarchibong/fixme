@@ -207,7 +207,6 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
 
     return WillPopScope(
       onWillPop: () {
-        setStatusBar();
         return Future.value(false);
       },
       child: Scaffold(
@@ -216,7 +215,6 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
           backgroundColor: Color.fromRGBO(153, 0, 153, 1.0),
           //          automaticallyImplyLeading: false,
           //          centerTitle: true,
-          //Charles added
           brightness: Brightness.dark,
           iconTheme: IconThemeData(color: Colors.white),
           title: Text(
@@ -232,11 +230,11 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
               icon: Badge(
                 badgeContent: StreamBuilder<QuerySnapshot>(
                   stream: MessageService().getMyTotalChatCount(
-                    '${currentUser.phoneNumber}',
+                    '${currentUser?.phoneNumber}',
                   ),
                   builder: (context, snapshot) {
                     return Text(
-                      snapshot.data.documents.length.toString(),
+                      snapshot.data?.documents?.length.toString(),
                       style: TextStyle(
                         color: Colors.black,
                       ),
