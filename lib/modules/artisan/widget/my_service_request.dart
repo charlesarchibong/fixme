@@ -39,7 +39,7 @@ class MyServiceRequestWidget extends StatelessWidget {
         title: Row(
           children: <Widget>[
             Text(
-              'Request From: ${job.requestedMobile}',
+              'Request From: ',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),

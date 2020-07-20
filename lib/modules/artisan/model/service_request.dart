@@ -17,11 +17,11 @@ class ServiceRequest {
   Map<String, dynamic> toMap() {
     return {
       'sn': sn,
-      'requestedMobile': requestedMobile,
-      'requestingMobile': requestingMobile,
-      'serviceId': serviceId,
+      'requested_mobile': requestedMobile,
+      'requesting_mobile': requestingMobile,
+      'service_id': serviceId,
       'status': status,
-      'dateRequested': dateRequested,
+      'date_requested': dateRequested,
     };
   }
 
@@ -30,11 +30,11 @@ class ServiceRequest {
 
     return ServiceRequest(
       sn: map['sn'],
-      requestedMobile: map['requestedMobile'],
-      requestingMobile: map['requestingMobile'],
-      serviceId: map['serviceId'],
+      requestedMobile: map['requested_mobile'],
+      requestingMobile: map['requesting_mobile'],
+      serviceId: map['service_id'],
       status: map['status'],
-      dateRequested: map['dateRequested'],
+      dateRequested: map['date_requested'],
     );
   }
 }

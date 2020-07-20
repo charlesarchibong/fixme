@@ -46,12 +46,12 @@ class MyRequestedServiceWidget extends StatelessWidget {
             SizedBox(
               width: 5.0,
             ),
-            Text(
-              this.title,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            )
+            // Text(
+            //   this.title,
+            //   style: TextStyle(
+            //     fontWeight: FontWeight.bold,
+            //   ),
+            // )
           ],
         ),
         subtitle: RichText(
