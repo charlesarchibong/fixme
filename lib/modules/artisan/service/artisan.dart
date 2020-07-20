@@ -188,4 +188,36 @@ class ArtisanApi extends ArtisanService {
       rethrow;
     }
   }
+
+  @override
+  Future<bool> requestForPayment(ServiceRequest serviceRequest) async {
+    try {
+      final String apiKey = await Utils.getApiKey();
+      String url = 'https://manager.fixme.ng/accept-service-request';
+      Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
+      Map<String, dynamic> body = {
+        'requested_mobile': serviceRequest.requestedMobile,
+        'requesting_mobile': serviceRequest.requestingMobile,
+        'service_request_id': serviceRequest.sn,
+      };
+      final response = await NetworkService().post(
+        url: url,
+        body: body,
+        contentType: ContentType.URL_ENCODED,
+        headers: headers,
+      );
+      if (response.statusCode == 200 && response.data['reqRes'] == 'true') {
+        return true;
+      } else {
+        throw Exception(
+          'Request was not successful, Please try again!',
+        );
+      }
+    } catch (e) {
+      if (e is DioError) {
+        print(e.message);
+      }
+      rethrow;
+    }
+  }
 }

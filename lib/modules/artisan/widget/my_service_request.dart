@@ -124,52 +124,101 @@ class MyServiceRequestWidget extends StatelessWidget {
         color: Colors.grey,
       ),
       itemBuilder: (context) => [
-        PopupMenuItem(
-          value: 1,
-          child: InkWell(
-            onTap: () async {
-              FlushbarHelper.createLoading(
-                message: 'Confirming availability, please wait!',
-                linearProgressIndicator: LinearProgressIndicator(),
-                duration: Duration(minutes: 1),
-                title: 'Loading...',
-              )..show(context);
-              final approvedBidProvider = Provider.of<RequestArtisanService>(
-                context,
-                listen: false,
-              );
-              final accepted = await approvedBidProvider.acceptRequest(
-                job,
-              );
-              Navigator.of(context).pop();
-              accepted.fold((Failure failure) {
-                FlushBarCustomHelper.showErrorFlushbar(
-                  context,
-                  'Error',
-                  failure.message,
-                );
-              }, (bool accepted) {
-                FlushBarCustomHelper.showInfoFlushbar(
-                  context,
-                  'Success',
-                  'you have successfully confirmed your availabilty for this job/project and work as been initial',
-                );
-              });
-            },
-            child: Row(
-              children: <Widget>[
-                FaIcon(
-                  FontAwesomeIcons.checkCircle,
-                  color: Colors.green,
+        job.status == ProjectBid.ACCEPTED_BID
+            ? PopupMenuItem(
+                value: 1,
+                child: InkWell(
+                  onTap: () async {
+                    FlushbarHelper.createLoading(
+                      message: 'Confirming availability, please wait!',
+                      linearProgressIndicator: LinearProgressIndicator(),
+                      duration: Duration(minutes: 1),
+                      title: 'Loading...',
+                    )..show(context);
+                    final approvedBidProvider =
+                        Provider.of<RequestArtisanService>(
+                      context,
+                      listen: false,
+                    );
+                    final accepted = await approvedBidProvider.acceptRequest(
+                      job,
+                    );
+                    Navigator.of(context).pop();
+                    accepted.fold((Failure failure) {
+                      FlushBarCustomHelper.showErrorFlushbar(
+                        context,
+                        'Error',
+                        failure.message,
+                      );
+                    }, (bool accepted) {
+                      FlushBarCustomHelper.showInfoFlushbar(
+                        context,
+                        'Success',
+                        'you have successfully confirmed your availabilty for this job/project and work as been initial',
+                      );
+                    });
+                  },
+                  child: Row(
+                    children: <Widget>[
+                      FaIcon(
+                        FontAwesomeIcons.checkCircle,
+                        color: Colors.green,
+                      ),
+                      SizedBox(
+                        width: 10.0,
+                      ),
+                      Text('Confirmed Availability'),
+                    ],
+                  ),
                 ),
-                SizedBox(
-                  width: 10.0,
+              )
+            : PopupMenuItem(
+                value: 1,
+                child: InkWell(
+                  onTap: () async {
+                    FlushbarHelper.createLoading(
+                      message: 'Requesting for payment, please wait!',
+                      linearProgressIndicator: LinearProgressIndicator(),
+                      duration: Duration(minutes: 1),
+                      title: 'Loading...',
+                    )..show(context);
+                    final approvedBidProvider =
+                        Provider.of<RequestArtisanService>(
+                      context,
+                      listen: false,
+                    );
+                    final accepted = await approvedBidProvider.acceptRequest(
+                      job,
+                    );
+                    Navigator.of(context).pop();
+                    accepted.fold((Failure failure) {
+                      FlushBarCustomHelper.showErrorFlushbar(
+                        context,
+                        'Error',
+                        failure.message,
+                      );
+                    }, (bool accepted) {
+                      FlushBarCustomHelper.showInfoFlushbar(
+                        context,
+                        'Success',
+                        'you have successfully requested for payment on this job, Service owner will be contacted with your FIXME account details',
+                      );
+                    });
+                  },
+                  child: Row(
+                    children: <Widget>[
+                      FaIcon(
+                        FontAwesomeIcons.checkCircle,
+                        color: Colors.green,
+                      ),
+                      SizedBox(
+                        width: 10.0,
+                      ),
+                      Text('Completed Service/Request Payment'),
+                    ],
+                  ),
                 ),
-                Text('Confirmed Availability'),
-              ],
-            ),
-          ),
-        ),
+              ),
         PopupMenuItem(
           value: 4,
           child: InkWell(

@@ -14,7 +14,7 @@ description: A platform to order for a technician service and get it done immedi
 version: 5.0+50
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.0 <3.0.0"
 
 dependencies:
   flutter:
