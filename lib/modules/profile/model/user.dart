@@ -68,7 +68,7 @@ class User {
     imageUrl = json['profile_pic_file_name'];
     accountNumber = json['bank_account_number'];
     profilePicture = Constants.uploadUrl + json['profile_pic_file_name'];
-    profilePicture = json['profile_views'];
+    profileViews = json['profile_views'];
     reviews = json['reviews'];
     userRating = json['user_rating'];
     address = json['user_address'];
