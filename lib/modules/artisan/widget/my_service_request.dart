@@ -7,6 +7,7 @@ import 'package:quickfix/helpers/flush_bar.dart';
 import 'package:quickfix/models/failure.dart';
 import 'package:quickfix/modules/artisan/model/service_request.dart';
 import 'package:quickfix/modules/artisan/provider/artisan_provider.dart';
+import 'package:quickfix/modules/artisan/widget/request_leading_widget.dart';
 import 'package:quickfix/modules/job/model/project_bid.dart';
 
 class MyServiceRequestWidget extends StatelessWidget {
@@ -29,12 +30,8 @@ class MyServiceRequestWidget extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.fromLTRB(0, 4, 0, 4),
       child: ListTile(
-        leading: CircleAvatar(
-          backgroundColor: Colors.orange,
-          child: FaIcon(
-            FontAwesomeIcons.ellipsisH,
-            color: Colors.white,
-          ),
+        leading: RequestLeadingWidget(
+          serviceRequest: job,
         ),
         title: Row(
           children: <Widget>[

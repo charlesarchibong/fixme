@@ -1,8 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:quickfix/helpers/flush_bar.dart';
 import 'package:quickfix/modules/artisan/model/service_request.dart';
+import 'package:quickfix/modules/artisan/widget/request_leading_widget.dart';
 import 'package:quickfix/modules/job/model/project_bid.dart';
 
 class MyRequestedServiceWidget extends StatelessWidget {
@@ -25,12 +25,8 @@ class MyRequestedServiceWidget extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.fromLTRB(0, 4, 0, 4),
       child: ListTile(
-        leading: CircleAvatar(
-          backgroundColor: Colors.orange,
-          child: FaIcon(
-            FontAwesomeIcons.ellipsisH,
-            color: Colors.white,
-          ),
+        leading: RequestLeadingWidget(
+          serviceRequest: job,
         ),
         title: Row(
           children: <Widget>[
@@ -64,7 +60,7 @@ class MyRequestedServiceWidget extends StatelessWidget {
                 text: this.subtitle,
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: 14,
+                  fontSize: 15.5,
                   fontWeight: FontWeight.normal,
                 ),
                 recognizer: TapGestureRecognizer()..onTap = () {},

@@ -77,7 +77,9 @@ class _MyRequestedServiceState extends State<MyRequestedService> {
                               return MyRequestedServiceWidget(
                                 title: serviceRequest.requestingMobile,
                                 subtitle: serviceRequest.status == 'accepted'
-                                    ? 'Artisan has accepted your request'
+                                    ? serviceRequest.status == 'completed'
+                                        ? 'This service request has been completed, Please rate the service provider'
+                                        : 'Artisan has accepted your request'
                                     : 'Your request is still pending, artisan will confirm availability soon.',
                                 status: serviceRequest.status,
                                 job: serviceRequest,
