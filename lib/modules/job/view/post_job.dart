@@ -38,9 +38,10 @@ class _PostJobState extends State<PostJob> {
         'An error occured, please try again!',
       );
     }, (List<JobCategory> list) {
-      setState(() {
-        jobCategories = list;
-      });
+      if (mounted)
+        setState(() {
+          jobCategories = list;
+        });
     });
   }
 
