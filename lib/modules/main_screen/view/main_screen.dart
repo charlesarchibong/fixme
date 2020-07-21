@@ -323,7 +323,7 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                     ),
                     builder: (context, snapshot) {
                       return Text(
-                        snapshot.data.documents.length.toString(),
+                        snapshot.data?.documents?.length.toString(),
                         style: TextStyle(
                           color: Colors.white,
                         ),
