@@ -15,6 +15,7 @@ import 'package:quickfix/modules/main_screen/view/main_screen.dart';
 import 'package:quickfix/modules/main_screen/view/no_profile_image.dart';
 import 'package:quickfix/modules/profile/model/user.dart';
 import 'package:quickfix/modules/profile/provider/profile_provider.dart';
+import 'package:quickfix/modules/rate_review/provider/rate_review_provider.dart';
 import 'package:quickfix/modules/search/provider/search_provider.dart';
 import 'package:quickfix/providers/app_provider.dart';
 import 'package:quickfix/util/Utils.dart';
@@ -100,6 +101,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => SearchProvider()),
         ChangeNotifierProvider(create: (_) => RequestArtisanService()),
         ChangeNotifierProvider(create: (_) => ApprovedBidProvider()),
+        ChangeNotifierProvider(create: (_) => RateReviewProvider()),
       ],
       child: MyApp(
         sp: prefs,
