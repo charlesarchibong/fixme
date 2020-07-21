@@ -67,7 +67,7 @@ class User {
     serviceId = json['service_id'];
     imageUrl = json['profile_pic_file_name'];
     accountNumber = json['bank_account_number'];
-    profilePicture = Constants.uploadUrl + json['profile_pic_file_name'];
+    profilePicture = '${Constants.uploadUrl}${json['profile_pic_file_name']}';
     profileViews = json['profile_views'];
     reviews = json['reviews'];
     userRating = json['user_rating'];

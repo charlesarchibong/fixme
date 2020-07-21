@@ -182,6 +182,17 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
             navigationTapped(3);
           });
         }
+
+        if (message['data']['notification_type'] ==
+            'completed_service_request') {
+          FlushBarCustomHelper.showInfoFlushbarWithActionNot(
+              context,
+              'Request Completed/Payment',
+              '${message['data']['requesting_mobile']} has completed your requested service and require his payment, Account Number - ${message['data']['account_number']}, Bank Name: Providus Bank',
+              'Drop a Review', () {
+            // navigationTapped(3);
+          });
+        }
       },
     );
 
