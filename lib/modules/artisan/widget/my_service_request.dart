@@ -8,7 +8,6 @@ import 'package:quickfix/models/failure.dart';
 import 'package:quickfix/modules/artisan/model/service_request.dart';
 import 'package:quickfix/modules/artisan/provider/artisan_provider.dart';
 import 'package:quickfix/modules/artisan/widget/request_leading_widget.dart';
-import 'package:quickfix/modules/job/model/project_bid.dart';
 
 class MyServiceRequestWidget extends StatelessWidget {
   final String title;
@@ -91,21 +90,11 @@ class MyServiceRequestWidget extends StatelessWidget {
         ),
         trailing: _myBidAction(),
         onTap: () {
-          // Navigator.of(context).push(
-          //   MaterialPageRoute(
-          //     builder: (_) => JobDetails(
-          //       isOwner: true,
-          //       job: job,
-          //     ),
-          //   ),
-          // );
-          if (job.status == ProjectBid.ACCEPTED_BID) {
-            FlushBarCustomHelper.showErrorFlushbar(
-              context,
-              'Info',
-              'Please click on the three dot beside to accept or decline availability',
-            );
-          }
+          FlushBarCustomHelper.showErrorFlushbar(
+            context,
+            'Info',
+            'Please click on the three dot beside to accept or decline availability',
+          );
         },
       ),
     );
