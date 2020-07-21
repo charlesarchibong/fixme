@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quickfix/helpers/flush_bar.dart';
 import 'package:quickfix/modules/artisan/model/service_request.dart';
 import 'package:quickfix/util/const.dart';
 
@@ -51,23 +52,30 @@ class _ServiceRequestDetailsState extends State<ServiceRequestDetails> {
             children: <Widget>[
               Center(
                 child: Image.asset(
-                  'assets/job_details.png',
+                  'assets/service_request.png',
                   width: 250,
                 ),
               ),
               _serviceRequestDetails(),
               // SizedBox(height: 4.0),
-              widget.serviceRequest.status == 'completed'
-                  ? Text('')
-                  : RaisedButton(
-                      child: Text(
-                        'Rate Service Provider',
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                      color: Color.fromRGBO(153, 0, 153, 1),
-                      onPressed: () {}),
+              RaisedButton(
+                  child: Text(
+                    'Rate Service Provider',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                  color: Color.fromRGBO(153, 0, 153, 1),
+                  onPressed: () {
+                    if (widget.serviceRequest.status != 'completed') {
+                      FlushBarCustomHelper.showErrorFlushbar(
+                        context,
+                        'Error',
+                        'You can not rate/review service provider until this request is completed',
+                      );
+                      return;
+                    }
+                  }),
             ],
           ),
         ),
@@ -76,29 +84,33 @@ class _ServiceRequestDetailsState extends State<ServiceRequestDetails> {
   }
 
   Widget _serviceRequestDetails() {
-    return Column(
-      children: <Widget>[
-        _serviceRequestListTile(
-          'Service Requested Contact',
-          widget.serviceRequest.requestedMobile,
-        ),
-        _serviceRequestListTile(
-          'Service Provider Contant',
-          widget.serviceRequest.requestingMobile,
-        ),
-        _serviceRequestListTile(
-          'Service Status',
-          '${widget.serviceRequest.status}',
-        ),
-        _serviceRequestListTile(
-          'Date Requested',
-          widget.serviceRequest.dateRequested,
-        ),
-        // _serviceRequestListTile('Job Status', widget.job.,),
-        SizedBox(
-          height: 10,
-        ),
-      ],
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          _serviceRequestListTile(
+            'Service Requested Contact',
+            widget.serviceRequest.requestedMobile,
+          ),
+          _serviceRequestListTile(
+            'Service Provider Contant',
+            widget.serviceRequest.requestingMobile,
+          ),
+          _serviceRequestListTile(
+            'Service Status',
+            '${widget.serviceRequest.status}',
+          ),
+          _serviceRequestListTile(
+            'Date Requested',
+            widget.serviceRequest.dateRequested,
+          ),
+          // _serviceRequestListTile('Job Status', widget.job.,),
+          SizedBox(
+            height: 10,
+          ),
+        ],
+      ),
     );
   }
 

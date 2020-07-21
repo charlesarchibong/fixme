@@ -1,9 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:quickfix/helpers/flush_bar.dart';
 import 'package:quickfix/modules/artisan/model/service_request.dart';
+import 'package:quickfix/modules/artisan/view/service_request_details.dart';
 import 'package:quickfix/modules/artisan/widget/request_leading_widget.dart';
-import 'package:quickfix/modules/job/model/project_bid.dart';
 
 class MyRequestedServiceWidget extends StatelessWidget {
   final String title;
@@ -86,21 +85,13 @@ class MyRequestedServiceWidget extends StatelessWidget {
         ),
         // trailing: _myBidAction(),
         onTap: () {
-          // Navigator.of(context).push(
-          //   MaterialPageRoute(
-          //     builder: (_) => JobDetails(
-          //       isOwner: true,
-          //       job: job,
-          //     ),
-          //   ),
-          // );
-          if (job.status == ProjectBid.ACCEPTED_BID) {
-            FlushBarCustomHelper.showInfoFlushbar(
-              context,
-              'Info',
-              'Please click on the three dot beside to accept or decline availability',
-            );
-          }
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (_) => ServiceRequestDetails(
+                serviceRequest: job,
+              ),
+            ),
+          );
         },
       ),
     );
