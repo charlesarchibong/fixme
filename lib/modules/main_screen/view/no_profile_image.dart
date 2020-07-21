@@ -28,7 +28,7 @@ class _NoProfileImageState extends State<NoProfileImage> {
     print(user.toJson().toString());
     print(user.toJson().toString());
 
-    if (user.profilePicture == null || user.profilePicture == '') {
+    if (user?.profilePicture == null || user?.profilePicture == '') {
       Navigator.of(context).push(
         MaterialPageRoute(builder: (BuildContext context) {
           return MainScreen();
