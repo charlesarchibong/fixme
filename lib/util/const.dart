@@ -27,6 +27,11 @@ class Constants {
   static String rejectBid = 'https://manager.fixme.ng/reject-bid';
   static String searchArtisans = 'https://manager.fixme.ng/search-artisans';
 
+  static const APP_STORE_URL =
+      'https://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftwareUpdate?id=com.fixme.business&mt=8';
+  static const PLAY_STORE_URL =
+      'https://play.google.com/store/apps/details?id=com.fixme.business';
+
   //Colors for theme
 //  Color(0xfffcfcff);
   static Color lightPrimary = Color(0xfffcfcff);
