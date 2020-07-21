@@ -118,14 +118,63 @@ class MyServiceRequestWidget extends StatelessWidget {
     return PopupMenuButton(
       onSelected: (value) {
         print(value);
+        print(job.toMap().toString());
+        print(job.toMap().toString());
+        print(job.toMap().toString());
       },
       icon: Icon(
         Icons.more_vert,
         color: Colors.grey,
       ),
       itemBuilder: (context) => [
-        job.status == ProjectBid.ACCEPTED_BID
+        job.status == 'accepted'
             ? PopupMenuItem(
+                value: 9,
+                child: InkWell(
+                  onTap: () async {
+                    FlushbarHelper.createLoading(
+                      message: 'Requesting for payment, please wait!',
+                      linearProgressIndicator: LinearProgressIndicator(),
+                      duration: Duration(minutes: 1),
+                      title: 'Loading...',
+                    )..show(context);
+                    final approvedBidProvider =
+                        Provider.of<RequestArtisanService>(
+                      context,
+                      listen: false,
+                    );
+                    final accepted =
+                        await approvedBidProvider.requestForPayment(job);
+                    Navigator.of(context).pop();
+                    accepted.fold((Failure failure) {
+                      FlushBarCustomHelper.showErrorFlushbar(
+                        context,
+                        'Error',
+                        failure.message,
+                      );
+                    }, (bool accepted) {
+                      FlushBarCustomHelper.showInfoFlushbar(
+                        context,
+                        'Success',
+                        'you have successfully requested for payment on this job, Service owner will be contacted with your FIXME account details',
+                      );
+                    });
+                  },
+                  child: Row(
+                    children: <Widget>[
+                      FaIcon(
+                        FontAwesomeIcons.checkCircle,
+                        color: Colors.green,
+                      ),
+                      SizedBox(
+                        width: 10.0,
+                      ),
+                      Text('Completed Service/Request Payment'),
+                    ],
+                  ),
+                ),
+              )
+            : PopupMenuItem(
                 value: 1,
                 child: InkWell(
                   onTap: () async {
@@ -168,52 +217,6 @@ class MyServiceRequestWidget extends StatelessWidget {
                         width: 10.0,
                       ),
                       Text('Confirmed Availability'),
-                    ],
-                  ),
-                ),
-              )
-            : PopupMenuItem(
-                value: 1,
-                child: InkWell(
-                  onTap: () async {
-                    FlushbarHelper.createLoading(
-                      message: 'Requesting for payment, please wait!',
-                      linearProgressIndicator: LinearProgressIndicator(),
-                      duration: Duration(minutes: 1),
-                      title: 'Loading...',
-                    )..show(context);
-                    final approvedBidProvider =
-                        Provider.of<RequestArtisanService>(
-                      context,
-                      listen: false,
-                    );
-                    final accepted =
-                        await approvedBidProvider.requestForPayment(job);
-                    Navigator.of(context).pop();
-                    accepted.fold((Failure failure) {
-                      FlushBarCustomHelper.showErrorFlushbar(
-                        context,
-                        'Error',
-                        failure.message,
-                      );
-                    }, (bool accepted) {
-                      FlushBarCustomHelper.showInfoFlushbar(
-                        context,
-                        'Success',
-                        'you have successfully requested for payment on this job, Service owner will be contacted with your FIXME account details',
-                      );
-                    });
-                  },
-                  child: Row(
-                    children: <Widget>[
-                      FaIcon(
-                        FontAwesomeIcons.checkCircle,
-                        color: Colors.green,
-                      ),
-                      SizedBox(
-                        width: 10.0,
-                      ),
-                      Text('Completed Service/Request Payment'),
                     ],
                   ),
                 ),
