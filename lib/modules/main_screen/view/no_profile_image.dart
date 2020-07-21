@@ -21,6 +21,13 @@ class _NoProfileImageState extends State<NoProfileImage> {
 
   void sendUsertoMainScreen() async {
     final user = await Utils.getUserSession();
+
+    print(user.toJson().toString());
+    print(user.toJson().toString());
+    print(user.toJson().toString());
+    print(user.toJson().toString());
+    print(user.toJson().toString());
+
     if (user.profilePicture == null || user.profilePicture == '') {
       Navigator.of(context).push(
         MaterialPageRoute(builder: (BuildContext context) {
