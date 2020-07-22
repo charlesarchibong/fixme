@@ -39,7 +39,7 @@ class RateArtisanApi extends RateReview {
   }
 
   @override
-  Future<bool> reviewArtisan(RateArtisan rateArtisan) {
-    // TODO: implement reviewArtisan
+  Future<bool> reviewArtisan(RateArtisan rateArtisan) async {
+    return true;
   }
 }

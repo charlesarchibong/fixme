@@ -68,11 +68,11 @@ class MessageService {
     return _collectionReference.where('receiver', isEqualTo: phone).snapshots();
   }
 
-  List<Message> getUnRead(QuerySnapshot querySnapshot) {
-    querySnapshot.documents.forEach((element) {
-      element.reference.collection('chats').snapshots();
-    });
-  }
+  // List<Message> getUnRead(QuerySnapshot querySnapshot) {
+  //   querySnapshot.documents.forEach((element) {
+  //     element.reference.collection('chats').snapshots();
+  //   });
+  // }
 
   // Stream<List<Message>> getPendingMessages(String id, String userPhone) {
   //   return getAllUserUnRead().listen((event) {

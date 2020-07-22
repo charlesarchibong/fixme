@@ -96,6 +96,5 @@ class _ApprovedBidState extends State<ApprovedBid> {
     );
   }
 
-  @override
   bool get wantKeepAlive => true;
 }

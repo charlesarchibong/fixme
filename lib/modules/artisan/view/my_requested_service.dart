@@ -104,6 +104,5 @@ class _MyRequestedServiceState extends State<MyRequestedService> {
     });
   }
 
-  @override
   bool get wantKeepAlive => true;
 }

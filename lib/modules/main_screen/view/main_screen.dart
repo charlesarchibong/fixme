@@ -1039,18 +1039,18 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
   Future sendDeviceDetails() async {
     try {
       final token = await NotificationHelper().getToken();
-      String device_os;
-      String device_type;
+      String deviceOs;
+      String deviceType;
       DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
       if (Platform.isAndroid) {
         AndroidDeviceInfo androidDeviceInfo = await deviceInfo.androidInfo;
-        device_os = 'Android';
-        device_type =
+        deviceOs = 'Android';
+        deviceType =
             androidDeviceInfo.manufacturer + ' - ' + androidDeviceInfo.model;
       } else if (Platform.isIOS) {
         IosDeviceInfo iosDeviceInfo = await deviceInfo.iosInfo;
-        device_type = 'IOS ' + iosDeviceInfo.model;
-        device_os = iosDeviceInfo.systemName;
+        deviceType = 'IOS ' + iosDeviceInfo.model;
+        deviceOs = iosDeviceInfo.systemName;
       }
       final user = await Utils.getUserSession();
       final apiKey = await Utils.getApiKey();
@@ -1059,8 +1059,8 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
       Map<String, dynamic> body = {
         'mobile': user.phoneNumber,
         'device_token': token,
-        'device_os': device_os,
-        'device_type': device_type,
+        'device_os': deviceOs,
+        'device_type': deviceType,
       };
       final response = await NetworkService().post(
         url: url,
