@@ -197,8 +197,8 @@ class _MyAppState extends State<MyApp> {
           title: Constants.appName,
           theme: appProvider.theme,
           home: widget.sp.get('user') != null
-              ? widget.user.profilePicture == null ||
-                      widget.user.profilePicture == 'no_picture_upload'
+              ? widget.user?.profilePicture == null ||
+                      widget.user?.profilePicture == 'no_picture_upload'
                   ? NoProfileImage()
                   : MainScreen()
               : Walkthrough(),
