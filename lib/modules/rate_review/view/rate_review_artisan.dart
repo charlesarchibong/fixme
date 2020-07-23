@@ -34,10 +34,6 @@ class _RateReviewArtisanState extends State<RateReviewArtisan> {
             color: Theme.of(context).accentColor,
           ),
           bodyTextStyle: TextStyle(fontSize: 15.0),
-//          dotsDecorator: DotsDecorator(
-//            activeColor: Theme.of(context).accentColor,
-//            activeSize: Size.fromRadius(8),
-//          ),
           pageColor: Theme.of(context).primaryColor,
         ),
       ),
@@ -132,9 +128,13 @@ class _RateReviewArtisanState extends State<RateReviewArtisan> {
                   color: Colors.black,
                 ),
                 decoration: InputDecoration(
-                  contentPadding: EdgeInsets.all(10.0),
+                  contentPadding: EdgeInsets.all(
+                    10.0,
+                  ),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
+                    borderRadius: BorderRadius.circular(
+                      5.0,
+                    ),
                     borderSide: BorderSide(
                       color: Colors.white,
                     ),
@@ -155,7 +155,7 @@ class _RateReviewArtisanState extends State<RateReviewArtisan> {
                     color: Colors.grey,
                   ),
                 ),
-                maxLines: null,
+                maxLines: 10,
                 autocorrect: true,
                 controller: _reviewController,
               ),
