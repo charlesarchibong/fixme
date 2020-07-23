@@ -11,6 +11,9 @@ class RateReviewArtisan extends StatefulWidget {
 
 class _RateReviewArtisanState extends State<RateReviewArtisan> {
   double rating = 0.0;
+  TextEditingController _reviewController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     super.initState();
@@ -75,12 +78,81 @@ class _RateReviewArtisanState extends State<RateReviewArtisan> {
         ),
       ),
       PageViewModel(
-        title: "Easy and Secure Payment",
-        body: "The fastest and safest way to pay " +
-            "for service delivery nationwide.",
-        image: Image.asset(
-          "assets/on2.png",
-          height: 100.0,
+        title: "Write A Review for Artisan",
+        body: "",
+        image: Column(
+          children: <Widget>[
+            Card(
+              elevation: 3.0,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(5.0),
+                  ),
+                ),
+                child: Form(
+                  key: _formKey,
+                  child: TextFormField(
+                    textCapitalization: TextCapitalization.none,
+                    keyboardType: TextInputType.multiline,
+                    validator: (value) =>
+                        value.isEmpty ? 'JReview can not be empty' : null,
+                    style: TextStyle(
+                      fontSize: 15.0,
+                      color: Colors.black,
+                    ),
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.all(10.0),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                        borderSide: BorderSide(
+                          color: Colors.white,
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.white,
+                        ),
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      hintText: "Enter a review",
+                      hintStyle: TextStyle(
+                        fontSize: 15.0,
+                        color: Colors.grey,
+                      ),
+                      prefixIcon: Icon(
+                        Icons.mode_edit,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    maxLines: null,
+                    autocorrect: true,
+                    controller: _reviewController,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            RaisedButton(
+              child: Text(
+                "Submit",
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              color: Theme.of(context).accentColor,
+              onPressed: () async {
+                FlushBarCustomHelper.showInfoFlushbar(
+                  context,
+                  'Loading',
+                  'Reviewing',
+                );
+              },
+            ),
+          ],
         ),
         decoration: PageDecoration(
           titleTextStyle: TextStyle(
