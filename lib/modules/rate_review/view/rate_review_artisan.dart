@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:quickfix/helpers/flush_bar.dart';
 import 'package:quickfix/modules/artisan/view/my_requested_service.dart';
 import 'package:quickfix/widgets/smooth_star_rating.dart';
 
@@ -22,15 +23,42 @@ class _RateReviewArtisanState extends State<RateReviewArtisan> {
         // title: "Get Technicain",
         title: 'Rate Artisan',
         body: '',
-        image: SmoothStarRating(
-          onRatingChanged: (value) {},
-          borderColor: Theme.of(context).accentColor,
-          color: Theme.of(context).accentColor,
-          rating: rating,
-          size: 50,
-          starCount: 5,
-          spacing: 10,
-          allowHalfRating: false,
+        image: Column(
+          children: <Widget>[
+            SmoothStarRating(
+              onRatingChanged: (value) {
+                setState(() {
+                  rating = value;
+                });
+              },
+              borderColor: Theme.of(context).accentColor,
+              color: Theme.of(context).accentColor,
+              rating: rating,
+              size: 50,
+              starCount: 5,
+              spacing: 10,
+              allowHalfRating: false,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            RaisedButton(
+              child: Text(
+                "Submit",
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              color: Theme.of(context).accentColor,
+              onPressed: () async {
+                FlushBarCustomHelper.showInfoFlushbar(
+                  context,
+                  'Loading',
+                  'Requesting',
+                );
+              },
+            ),
+          ],
         ),
         decoration: PageDecoration(
           titleTextStyle: TextStyle(
