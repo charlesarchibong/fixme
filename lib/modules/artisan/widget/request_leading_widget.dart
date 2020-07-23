@@ -19,7 +19,9 @@ class RequestLeadingWidget extends StatelessWidget {
             ? FontAwesomeIcons.windowClose
             : serviceRequest.status == 'pending'
                 ? FontAwesomeIcons.ellipsisH
-                : FontAwesomeIcons.check,
+                : serviceRequest.status == 'unavailable'
+                    ? FontAwesomeIcons.question
+                    : FontAwesomeIcons.check,
         color: Colors.white,
       ),
     );
