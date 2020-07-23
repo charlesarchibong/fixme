@@ -12,7 +12,9 @@ class RequestLeadingWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return CircleAvatar(
       backgroundColor: serviceRequest.status == 'rejected'
-          ? serviceRequest.status == 'pending' ? Colors.orange : Colors.red
+          ? serviceRequest.status == 'pending'
+              ? Colors.orange
+              : serviceRequest.status == 'unavailable' ? Colors.red : Colors.red
           : Colors.green,
       child: FaIcon(
         serviceRequest.status == 'rejected'
