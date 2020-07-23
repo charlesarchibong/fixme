@@ -43,7 +43,7 @@ class _MyServiceRequestsState extends State<MyServiceRequests> {
               child: Consumer<RequestArtisanService>(
                   builder: (context, requestArtisanService, child) {
                 return FutureBuilder(
-                  future: requestArtisanService.getRequests(),
+                  future: requestArtisanService.getMyRequestedService(),
                   builder: (BuildContext context, AsyncSnapshot myService) {
                     if (myService.hasData) {
                       return myService.data.fold((Failure failure) {
@@ -61,19 +61,15 @@ class _MyServiceRequestsState extends State<MyServiceRequests> {
                       }, (List<ServiceRequest> jobs) {
                         return RefreshIndicator(
                           onRefresh: () {
-                            requestArtisanService.getRequests();
+                            print('Fuck you');
+                            requestArtisanService.getMyRequestedService();
                             return Future.value();
                           },
                           child: ListView.builder(
-                            itemCount: requestArtisanService
-                                        .serviceRequests.length ==
-                                    null
-                                ? 0
-                                : requestArtisanService.serviceRequests.length,
+                            itemCount: jobs.length == null ? 0 : jobs.length,
                             itemBuilder: (BuildContext context, int index) {
-                              ServiceRequest serviceRequest =
-                                  requestArtisanService.serviceRequests[index];
-                              print(serviceRequest.toMap());
+                              ServiceRequest serviceRequest = jobs[index];
+                              print('nnn');
                               return MyServiceRequestWidget(
                                 title: serviceRequest.requestingMobile,
                                 subtitle: 'Please confirm availability',
