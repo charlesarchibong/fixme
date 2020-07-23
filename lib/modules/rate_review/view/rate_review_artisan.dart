@@ -97,7 +97,7 @@ class _RateReviewArtisanState extends State<RateReviewArtisan> {
                     textCapitalization: TextCapitalization.none,
                     keyboardType: TextInputType.multiline,
                     validator: (value) =>
-                        value.isEmpty ? 'JReview can not be empty' : null,
+                        value.isEmpty ? 'Review can not be empty' : null,
                     style: TextStyle(
                       fontSize: 15.0,
                       color: Colors.black,
