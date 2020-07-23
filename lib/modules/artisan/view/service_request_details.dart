@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quickfix/helpers/flush_bar.dart';
 import 'package:quickfix/modules/artisan/model/service_request.dart';
+import 'package:quickfix/modules/rate_review/view/rate_review_artisan.dart';
 import 'package:quickfix/util/const.dart';
 
 class ServiceRequestDetails extends StatefulWidget {
@@ -75,6 +76,12 @@ class _ServiceRequestDetailsState extends State<ServiceRequestDetails> {
                       );
                       return;
                     }
+
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => RateReviewArtisan(),
+                      ),
+                    );
                   }),
             ],
           ),
