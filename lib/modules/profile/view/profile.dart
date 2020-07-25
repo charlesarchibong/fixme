@@ -11,6 +11,7 @@ import 'package:quickfix/modules/profile/model/user.dart';
 import 'package:quickfix/modules/profile/provider/profile_provider.dart';
 import 'package:quickfix/modules/profile/widget/edit_profile.dart';
 import 'package:quickfix/modules/profile/widget/service_images.dart';
+import 'package:quickfix/modules/transfer/view/transfer_fund.dart';
 import 'package:quickfix/providers/app_provider.dart';
 import 'package:quickfix/util/Utils.dart';
 import 'package:quickfix/util/const.dart';
@@ -196,7 +197,11 @@ class _ProfileState extends State<Profile> {
                         ),
                         color: Theme.of(context).accentColor,
                         onPressed: () async {
-                          // getArtisanByLocation();
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => TransferFund(),
+                            ),
+                          );
                         },
                       ),
                     ],
