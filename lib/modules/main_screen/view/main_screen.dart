@@ -36,6 +36,7 @@ import 'package:quickfix/modules/profile/model/user.dart';
 import 'package:quickfix/modules/profile/provider/profile_provider.dart';
 import 'package:quickfix/modules/profile/view/profile.dart';
 import 'package:quickfix/modules/search/view/search.dart';
+import 'package:quickfix/modules/transfer/view/transfer_fund.dart';
 import 'package:quickfix/services/firebase/messages.dart';
 import 'package:quickfix/services/network/network_service.dart';
 import 'package:quickfix/util/Utils.dart';
@@ -539,6 +540,25 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
               //     );
               //   },
               // ),
+              ListTile(
+                title: Text('Transfer Fund'),
+                leading: FaIcon(
+                  FontAwesomeIcons.moneyCheck,
+                  color: Theme.of(context).textTheme.caption.color,
+                ),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (
+                        BuildContext context,
+                      ) {
+                        return TransferFund();
+                      },
+                    ),
+                  );
+                },
+              ),
               ListTile(
                 title: Text('My Profile'),
                 leading: FaIcon(
