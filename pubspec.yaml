@@ -57,6 +57,7 @@ dependencies:
   url_launcher: ^5.5.0
   package_info: ^0.4.1
   firebase_remote_config: ^0.3.1
+  searchable_dropdown: ^1.1.3
 
 
 
