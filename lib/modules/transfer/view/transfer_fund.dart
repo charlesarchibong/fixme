@@ -5,6 +5,7 @@ import 'package:quickfix/models/failure.dart';
 import 'package:quickfix/modules/transfer/model/bank_list.dart';
 import 'package:quickfix/modules/transfer/provider/transfer_provider.dart';
 import 'package:quickfix/util/const.dart';
+import 'package:searchable_dropdown/searchable_dropdown.dart';
 
 class TransferFund extends StatefulWidget {
   @override
@@ -14,6 +15,8 @@ class TransferFund extends StatefulWidget {
 class _TransferFundState extends State<TransferFund> {
   TextEditingController _accountNumberController = TextEditingController();
   TextEditingController _accountNameController = TextEditingController();
+  TextEditingController _amountController = TextEditingController();
+  TextEditingController _descriptionController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   BankList bankSelected;
   bool _loading = false;
@@ -101,7 +104,9 @@ class _TransferFundState extends State<TransferFund> {
                                 elevation: 4.0,
                                 child: Padding(
                                   padding: const EdgeInsets.only(
-                                      left: 5.0, right: 5.0),
+                                    left: 10.0,
+                                    right: 10.0,
+                                  ),
                                   child: TextFormField(
                                     controller: _accountNumberController,
                                     keyboardType: TextInputType.text,
@@ -127,30 +132,25 @@ class _TransferFundState extends State<TransferFund> {
                                 elevation: 4.0,
                                 child: Padding(
                                   padding: const EdgeInsets.only(
-                                      left: 5.0, right: 5.0),
-                                  child: DropdownButton<BankList>(
-                                    value: bankSelected,
-                                    hint: Text(
-                                      'Select Bank ',
-                                      style: TextStyle(
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                    isExpanded: true,
-                                    underline: SizedBox(),
-                                    icon: Icon(Icons.arrow_downward,
-                                        color: Colors.black),
+                                    left: 10.0,
+                                    right: 10.0,
+                                  ),
+                                  child: SearchableDropdown.single(
                                     items: bankList.map((BankList v) {
                                       return DropdownMenuItem<BankList>(
                                         value: v,
                                         child: Text(v.name),
                                       );
                                     }).toList(),
-                                    onChanged: (BankList newValue) {
+                                    value: bankSelected,
+                                    hint: "Select Bank",
+                                    searchHint: "Search Bank",
+                                    onChanged: (value) {
                                       setState(() {
-                                        bankSelected = newValue;
+                                        bankSelected = value;
                                       });
                                     },
+                                    isExpanded: true,
                                   ),
                                 ),
                               ),
@@ -161,7 +161,9 @@ class _TransferFundState extends State<TransferFund> {
                                 elevation: 4.0,
                                 child: Padding(
                                   padding: const EdgeInsets.only(
-                                      left: 5.0, right: 5.0),
+                                    left: 10.0,
+                                    right: 10.0,
+                                  ),
                                   child: TextFormField(
                                     controller: _accountNameController,
                                     keyboardType: TextInputType.text,
@@ -172,6 +174,58 @@ class _TransferFundState extends State<TransferFund> {
                                     },
                                     decoration: InputDecoration(
                                       hintText: 'Confirm Account Name',
+                                      hintStyle: TextStyle(
+                                        color: Colors.grey,
+                                      ),
+                                      border: InputBorder.none,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Card(
+                                elevation: 4.0,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                    left: 10.0,
+                                    right: 10.0,
+                                  ),
+                                  child: TextFormField(
+                                    controller: _amountController,
+                                    keyboardType: TextInputType.phone,
+                                    validator: (value) {
+                                      return value == ''
+                                          ? 'Amount can not be empty'
+                                          : null;
+                                    },
+                                    decoration: InputDecoration(
+                                      hintText: 'Amount',
+                                      hintStyle: TextStyle(
+                                        color: Colors.grey,
+                                      ),
+                                      border: InputBorder.none,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Card(
+                                elevation: 4.0,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                    left: 10.0,
+                                    right: 10.0,
+                                  ),
+                                  child: TextFormField(
+                                    maxLines: 10,
+                                    controller: _descriptionController,
+                                    keyboardType: TextInputType.multiline,
+                                    decoration: InputDecoration(
+                                      hintText: 'Transaction Description',
                                       hintStyle: TextStyle(
                                         color: Colors.grey,
                                       ),
