@@ -195,7 +195,87 @@ class _MyAppState extends State<MyApp> {
           debugShowCheckedModeBanner: false,
           navigatorKey: appProvider.navigatorKey,
           title: Constants.appName,
-          theme: appProvider.theme,
+          themeMode: ThemeMode.light,
+          darkTheme: ThemeData(
+            brightness: Brightness.dark,
+            backgroundColor: Color.fromRGBO(153, 0, 153, 1.0),
+            hintColor: Color.fromRGBO(153, 0, 153, 1.0),
+            primaryColor: Color.fromRGBO(153, 0, 153, 1.0),
+            inputDecorationTheme: InputDecorationTheme(
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Color.fromRGBO(153, 0, 153, 1.0),
+                  width: 1.0,
+                ),
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Color.fromRGBO(153, 0, 153, 1.0),
+                  width: 2.0,
+                ),
+              ),
+            ),
+            appBarTheme: AppBarTheme(
+              brightness: Brightness.dark,
+              color: Color(0xffffffff),
+              textTheme: TextTheme(),
+              iconTheme: IconThemeData(color: Color(0xffffffff)),
+            ),
+            fontFamily: "Montserrat",
+            canvasColor: Colors.white,
+          ),
+          theme: ThemeData(
+            backgroundColor: Color.fromRGBO(
+              153,
+              0,
+              153,
+              1.0,
+            ),
+            hintColor: Color.fromRGBO(153, 0, 153, 1.0),
+            primaryColor: Color.fromRGBO(
+              153,
+              0,
+              153,
+              1.0,
+            ),
+            inputDecorationTheme: InputDecorationTheme(
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Color.fromRGBO(
+                    153,
+                    0,
+                    153,
+                    1.0,
+                  ),
+                  width: 1.0,
+                ),
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Color.fromRGBO(
+                    153,
+                    0,
+                    153,
+                    1.0,
+                  ),
+                  width: 2.0,
+                ),
+              ),
+            ),
+            appBarTheme: AppBarTheme(
+              color: Color(
+                0xffffffff,
+              ),
+              textTheme: TextTheme(),
+              iconTheme: IconThemeData(
+                color: Color(
+                  0xffffffff,
+                ),
+              ),
+            ),
+            fontFamily: "Montserrat",
+            canvasColor: Colors.white,
+          ),
           home: widget.sp.get('user') != null
               ? widget.user?.profilePicture == null ||
                       widget.user?.profilePicture == 'no_picture_upload'
