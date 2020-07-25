@@ -89,8 +89,8 @@ class _TransferFundState extends State<TransferFund> {
                 child: Form(
                     key: _formKey,
                     child: _initialLoading
-                        ? CircularProgressIndicator(
-                            backgroundColor: Theme.of(context).accentColor,
+                        ? Center(
+                            child: CircularProgressIndicator(),
                           )
                         : Column(
                             children: <Widget>[
@@ -183,28 +183,26 @@ class _TransferFundState extends State<TransferFund> {
                               SizedBox(
                                 height: 15,
                               ),
+                              _loading
+                                  ? CircularProgressIndicator(
+                                      backgroundColor:
+                                          Theme.of(context).accentColor)
+                                  : FlatButton(
+                                      child: Text("Transfer"),
+                                      padding: EdgeInsets.all(10.0),
+                                      textColor: Colors.white,
+                                      color: Theme.of(context).accentColor,
+                                      onPressed: () async {
+                                        if (_formKey.currentState.validate()) {
+                                          setState(() {
+                                            _loading = true;
+                                          });
+                                        }
+                                      },
+                                    )
                             ],
                           )),
               ),
-              SizedBox(
-                height: 10,
-              ),
-              _loading
-                  ? CircularProgressIndicator(
-                      backgroundColor: Theme.of(context).accentColor)
-                  : FlatButton(
-                      child: Text("Transfer"),
-                      padding: EdgeInsets.all(10.0),
-                      textColor: Colors.white,
-                      color: Theme.of(context).accentColor,
-                      onPressed: () async {
-                        if (_formKey.currentState.validate()) {
-                          setState(() {
-                            _loading = true;
-                          });
-                        }
-                      },
-                    )
             ],
           ),
         ),
