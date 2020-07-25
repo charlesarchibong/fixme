@@ -79,20 +79,20 @@ class _TransferFundState extends State<TransferFund> {
               SizedBox(
                 height: 20,
               ),
-              _initialLoading
-                  ? CircularProgressIndicator(
-                      backgroundColor: Theme.of(context).accentColor,
-                    )
-                  : Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(5.0),
-                        ),
-                      ),
-                      child: Form(
-                          key: _formKey,
-                          child: Column(
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(5.0),
+                  ),
+                ),
+                child: Form(
+                    key: _formKey,
+                    child: _initialLoading
+                        ? CircularProgressIndicator(
+                            backgroundColor: Theme.of(context).accentColor,
+                          )
+                        : Column(
                             children: <Widget>[
                               SizedBox(
                                 height: 15,
@@ -185,7 +185,7 @@ class _TransferFundState extends State<TransferFund> {
                               ),
                             ],
                           )),
-                    ),
+              ),
               SizedBox(
                 height: 10,
               ),
