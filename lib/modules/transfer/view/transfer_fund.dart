@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:quickfix/helpers/flush_bar.dart';
 import 'package:quickfix/models/failure.dart';
@@ -267,13 +268,24 @@ class _TransferFundState extends State<TransferFund> {
   }
 
   _authTransfer() async {
-    var localAuth = LocalAuthentication();
-    bool didAuthenticate = await localAuth.authenticateWithBiometrics(
-      localizedReason: 'Please authenticate to complete transaction',
-      useErrorDialogs: true,
-      stickyAuth: true,
-      sensitiveTransaction: true,
-    );
-    print('auth is $didAuthenticate');
+    try {
+      var localAuth = LocalAuthentication();
+      bool didAuthenticate = await localAuth.authenticateWithBiometrics(
+        localizedReason: 'Please authenticate to complete transaction',
+        useErrorDialogs: true,
+        stickyAuth: true,
+        sensitiveTransaction: true,
+      );
+      print('auth is $didAuthenticate');
+    } catch (e) {
+      Logger().e(
+        e.toString(),
+      );
+      FlushBarCustomHelper.showErrorFlushbar(
+        context,
+        'Error',
+        'Unable to complete transaction, please try again',
+      );
+    }
   }
 }
