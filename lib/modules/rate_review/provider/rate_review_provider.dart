@@ -38,4 +38,35 @@ class RateReviewProvider with ChangeNotifier {
       );
     }
   }
+
+  Future<Either<Failure, bool>> reviewArtisan(
+      int serviceId, String artisanPhone, String review,
+      [int jobId]) async {
+    try {
+      final user = await Utils.getUserSession();
+      final rateArtisan = RateArtisan(
+        artisanMobile: artisanPhone,
+        jobId: int.parse(jobId.toString()),
+        serviceRequestId: serviceId,
+        ratedBy: user.phoneNumber,
+      );
+
+      final reviewed = await RateArtisanApi().reviewArtisan(
+        rateArtisan,
+        review,
+      );
+      if (reviewed == true) {
+        return right(reviewed);
+      }
+      return left(
+        Failure(message: 'Artisan was not reviewed, please try again'),
+      );
+    } catch (e) {
+      Logger().e(e.toString());
+      return left(
+        Failure(
+            message: 'Unable to rate artisan at the moment, please try again'),
+      );
+    }
+  }
 }
