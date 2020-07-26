@@ -96,173 +96,175 @@ class _TransferFundState extends State<TransferFund> {
                   ),
                 ),
                 child: Form(
-                    key: _formKey,
-                    child: _initialLoading
-                        ? Center(
-                            child: CircularProgressIndicator(),
-                          )
-                        : Column(
-                            children: <Widget>[
-                              SizedBox(
-                                height: 15,
-                              ),
-                              Card(
-                                elevation: 4.0,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                    left: 10.0,
-                                    right: 10.0,
-                                  ),
-                                  child: TextFormField(
-                                    controller: _accountNumberController,
-                                    keyboardType: TextInputType.text,
-                                    validator: (value) {
-                                      return value == ''
-                                          ? 'Account Number can not be empty'
-                                          : null;
-                                    },
-                                    decoration: InputDecoration(
-                                      hintText: 'Enter Account Number',
-                                      hintStyle: TextStyle(
-                                        color: Colors.grey,
-                                      ),
-                                      border: InputBorder.none,
+                  key: _formKey,
+                  child: _initialLoading
+                      ? Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : Column(
+                          children: <Widget>[
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Card(
+                              elevation: 4.0,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 10.0,
+                                  right: 10.0,
+                                ),
+                                child: TextFormField(
+                                  controller: _accountNumberController,
+                                  keyboardType: TextInputType.text,
+                                  validator: (value) {
+                                    return value == ''
+                                        ? 'Account Number can not be empty'
+                                        : null;
+                                  },
+                                  decoration: InputDecoration(
+                                    hintText: 'Enter Account Number',
+                                    hintStyle: TextStyle(
+                                      color: Colors.grey,
                                     ),
+                                    border: InputBorder.none,
                                   ),
                                 ),
                               ),
-                              SizedBox(
-                                height: 15,
-                              ),
-                              Card(
-                                elevation: 4.0,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                    left: 10.0,
-                                    right: 10.0,
-                                  ),
-                                  child: SearchableDropdown.single(
-                                    items: bankList.map((BankList v) {
-                                      return DropdownMenuItem<BankList>(
-                                        value: v,
-                                        child: Text(v.name),
-                                      );
-                                    }).toList(),
-                                    value: bankSelected,
-                                    hint: "Select Bank",
-                                    searchHint: "Search Bank",
-                                    onChanged: (value) {
-                                      setState(() {
-                                        bankSelected = value;
-                                      });
-                                    },
-                                    isExpanded: true,
-                                  ),
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Card(
+                              elevation: 4.0,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 10.0,
+                                  right: 10.0,
+                                ),
+                                child: SearchableDropdown.single(
+                                  items: bankList.map((BankList v) {
+                                    return DropdownMenuItem<BankList>(
+                                      value: v,
+                                      child: Text(v.name),
+                                    );
+                                  }).toList(),
+                                  value: bankSelected,
+                                  hint: "Select Bank",
+                                  searchHint: "Search Bank",
+                                  onChanged: (value) {
+                                    setState(() {
+                                      bankSelected = value;
+                                    });
+                                  },
+                                  isExpanded: true,
                                 ),
                               ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              Card(
-                                elevation: 4.0,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                    left: 10.0,
-                                    right: 10.0,
-                                  ),
-                                  child: TextFormField(
-                                    controller: _accountNameController,
-                                    keyboardType: TextInputType.text,
-                                    validator: (value) {
-                                      return value == ''
-                                          ? 'Account Name can not be empty'
-                                          : null;
-                                    },
-                                    decoration: InputDecoration(
-                                      hintText: 'Confirm Account Name',
-                                      hintStyle: TextStyle(
-                                        color: Colors.grey,
-                                      ),
-                                      border: InputBorder.none,
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Card(
+                              elevation: 4.0,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 10.0,
+                                  right: 10.0,
+                                ),
+                                child: TextFormField(
+                                  controller: _accountNameController,
+                                  keyboardType: TextInputType.text,
+                                  validator: (value) {
+                                    return value == ''
+                                        ? 'Account Name can not be empty'
+                                        : null;
+                                  },
+                                  decoration: InputDecoration(
+                                    hintText: 'Confirm Account Name',
+                                    hintStyle: TextStyle(
+                                      color: Colors.grey,
                                     ),
+                                    border: InputBorder.none,
                                   ),
                                 ),
                               ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              Card(
-                                elevation: 4.0,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                    left: 10.0,
-                                    right: 10.0,
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Card(
+                              elevation: 4.0,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 10.0,
+                                  right: 10.0,
+                                ),
+                                child: TextFormField(
+                                  controller: _amountController,
+                                  keyboardType: TextInputType.phone,
+                                  validator: (value) {
+                                    return value == ''
+                                        ? 'Amount can not be empty'
+                                        : null;
+                                  },
+                                  decoration: InputDecoration(
+                                    hintText: 'Amount',
+                                    hintStyle: TextStyle(
+                                      color: Colors.grey,
+                                    ),
+                                    border: InputBorder.none,
                                   ),
-                                  child: TextFormField(
-                                    controller: _amountController,
-                                    keyboardType: TextInputType.phone,
-                                    validator: (value) {
-                                      return value == ''
-                                          ? 'Amount can not be empty'
-                                          : null;
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Card(
+                              elevation: 4.0,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 10.0,
+                                  right: 10.0,
+                                ),
+                                child: TextFormField(
+                                  maxLines: 10,
+                                  controller: _descriptionController,
+                                  keyboardType: TextInputType.multiline,
+                                  decoration: InputDecoration(
+                                    hintText: 'Transaction Description',
+                                    hintStyle: TextStyle(
+                                      color: Colors.grey,
+                                    ),
+                                    border: InputBorder.none,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            _loading
+                                ? CircularProgressIndicator(
+                                    backgroundColor:
+                                        Theme.of(context).accentColor,
+                                  )
+                                : FlatButton(
+                                    child: Text("Transfer"),
+                                    padding: EdgeInsets.all(10.0),
+                                    textColor: Colors.white,
+                                    color: Theme.of(context).accentColor,
+                                    onPressed: () async {
+                                      if (_formKey.currentState.validate()) {
+                                        // setState(() {
+                                        //   _loading = true;
+                                        // });
+                                        _authTransfer();
+                                      }
                                     },
-                                    decoration: InputDecoration(
-                                      hintText: 'Amount',
-                                      hintStyle: TextStyle(
-                                        color: Colors.grey,
-                                      ),
-                                      border: InputBorder.none,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              Card(
-                                elevation: 4.0,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                    left: 10.0,
-                                    right: 10.0,
-                                  ),
-                                  child: TextFormField(
-                                    maxLines: 10,
-                                    controller: _descriptionController,
-                                    keyboardType: TextInputType.multiline,
-                                    decoration: InputDecoration(
-                                      hintText: 'Transaction Description',
-                                      hintStyle: TextStyle(
-                                        color: Colors.grey,
-                                      ),
-                                      border: InputBorder.none,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 15,
-                              ),
-                              _loading
-                                  ? CircularProgressIndicator(
-                                      backgroundColor:
-                                          Theme.of(context).accentColor)
-                                  : FlatButton(
-                                      child: Text("Transfer"),
-                                      padding: EdgeInsets.all(10.0),
-                                      textColor: Colors.white,
-                                      color: Theme.of(context).accentColor,
-                                      onPressed: () async {
-                                        if (_formKey.currentState.validate()) {
-                                          // setState(() {
-                                          //   _loading = true;
-                                          // });
-                                          _authTransfer();
-                                        }
-                                      },
-                                    )
-                            ],
-                          )),
+                                  )
+                          ],
+                        ),
+                ),
               ),
             ],
           ),
