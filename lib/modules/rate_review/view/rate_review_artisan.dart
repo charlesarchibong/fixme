@@ -1,10 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:provider/provider.dart';
 import 'package:quickfix/helpers/flush_bar.dart';
+import 'package:quickfix/models/failure.dart';
 import 'package:quickfix/modules/artisan/view/my_requested_service.dart';
+import 'package:quickfix/modules/rate_review/provider/rate_review_provider.dart';
 import 'package:quickfix/widgets/smooth_star_rating.dart';
 
 class RateReviewArtisan extends StatefulWidget {
+  final String artisanPhone;
+  final int serviceId;
+  final double rating;
+  final int jobId;
+
+  const RateReviewArtisan(
+      {Key key,
+      @required this.artisanPhone,
+      @required this.serviceId,
+      @required this.rating,
+      this.jobId})
+      : super(key: key);
   @override
   _RateReviewArtisanState createState() => _RateReviewArtisanState();
 }
@@ -13,6 +28,7 @@ class _RateReviewArtisanState extends State<RateReviewArtisan> {
   double rating = 0.0;
   TextEditingController _reviewController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool _loading = false;
 
   @override
   void initState() {
@@ -206,12 +222,14 @@ class _RateReviewArtisanState extends State<RateReviewArtisan> {
           height: 10,
         ),
         RaisedButton(
-          child: Text(
-            "Submit",
-            style: TextStyle(
-              color: Colors.white,
-            ),
-          ),
+          child: _loading
+              ? CircularProgressIndicator()
+              : Text(
+                  "Submit",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
           color: Theme.of(context).accentColor,
           onPressed: () async {
             FlushBarCustomHelper.showInfoFlushbar(
@@ -223,5 +241,33 @@ class _RateReviewArtisanState extends State<RateReviewArtisan> {
         ),
       ],
     );
+  }
+
+  rateArtisan() async {
+    setState(() {
+      _loading = true;
+    });
+    final rateReviewProvider = Provider.of<RateReviewProvider>(
+      context,
+      listen: false,
+    );
+    final rated = await rateReviewProvider.rateArtisan(
+      widget.serviceId,
+      widget.artisanPhone,
+      widget.rating,
+    );
+    rated.fold((Failure failure) {
+      FlushBarCustomHelper.showErrorFlushbar(
+        context,
+        'Error',
+        failure.message,
+      );
+    }, (bool rate) {
+      FlushBarCustomHelper.showInfoFlushbar(
+        context,
+        'Success',
+        'You have successfully rated this artisan, click next to continue',
+      );
+    });
   }
 }
