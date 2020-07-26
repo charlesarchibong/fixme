@@ -79,7 +79,11 @@ class _ServiceRequestDetailsState extends State<ServiceRequestDetails> {
 
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (_) => RateReviewArtisan(),
+                        builder: (_) => RateReviewArtisan(
+                          artisanPhone: widget.serviceRequest.requestedMobile,
+                          serviceId: widget.serviceRequest.serviceId,
+                          jobId: null,
+                        ),
                       ),
                     );
                   }),
