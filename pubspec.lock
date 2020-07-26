@@ -265,6 +265,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
+  flutter_lock_screen:
+    dependency: "direct main"
+    description:
+      name: flutter_lock_screen
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.6"
   flutter_native_splash:
     dependency: "direct dev"
     description:

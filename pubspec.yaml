@@ -59,6 +59,8 @@ dependencies:
   firebase_remote_config: ^0.3.1
   searchable_dropdown: ^1.1.3
   local_auth: ^0.6.2+3
+  flutter_lock_screen: '^1.0.5'
+
 
 
 
@@ -95,11 +97,13 @@ flutter:
     - assets/cat.png
     - assets/cc.png
     - assets/dp.png
+    - assets/fingerprint.png
     - assets/on1.png
     - assets/sad.svg
     - assets/on2.png
     - assets/on3.png
     - assets/food1.jpeg
+    - assets/pin.png
     - assets/food2.jpeg
     - assets/food3.jpeg
     - assets/food4.jpeg

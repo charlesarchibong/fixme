@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_lock_screen/flutter_lock_screen.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:quickfix/helpers/flush_bar.dart';
 import 'package:quickfix/models/failure.dart';
@@ -20,9 +21,11 @@ class _TransferFundState extends State<TransferFund> {
   TextEditingController _amountController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   BankList bankSelected;
   bool _loading = false;
   bool _initialLoading = false;
+  bool isFingerprint = false;
 
   List<BankList> bankList = List();
 
@@ -64,6 +67,7 @@ class _TransferFundState extends State<TransferFund> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         backgroundColor: Constants.lightAccent,
 //          automaticallyImplyLeading: false,
@@ -268,24 +272,81 @@ class _TransferFundState extends State<TransferFund> {
   }
 
   _authTransfer() async {
+    _showBottomSheet();
+    // try {
+    //   var localAuth = LocalAuthentication();
+    //   // localAuth.
+    //   bool didAuthenticate = await localAuth.authenticateWithBiometrics(
+    //     localizedReason: 'Please authenticate to complete transaction',
+    //     useErrorDialogs: true,
+    //     stickyAuth: true,
+    //     sensitiveTransaction: true,
+    //   );
+    //   print('auth is $didAuthenticate');
+    // } catch (e) {
+    //   Logger().e(
+    //     e.toString(),
+    //   );
+    //   FlushBarCustomHelper.showErrorFlushbar(
+    //     context,
+    //     'Error',
+    //     'Unable to complete transaction, please try again',
+    //   );
+    // }
+  }
+
+  Future<Null> biometrics() async {
+    final LocalAuthentication auth = new LocalAuthentication();
+    bool authenticated = false;
+
     try {
-      var localAuth = LocalAuthentication();
-      bool didAuthenticate = await localAuth.authenticateWithBiometrics(
-        localizedReason: 'Please authenticate to complete transaction',
-        useErrorDialogs: true,
-        stickyAuth: true,
-        sensitiveTransaction: true,
-      );
-      print('auth is $didAuthenticate');
-    } catch (e) {
-      Logger().e(
-        e.toString(),
-      );
-      FlushBarCustomHelper.showErrorFlushbar(
-        context,
-        'Error',
-        'Unable to complete transaction, please try again',
-      );
+      authenticated = await auth.authenticateWithBiometrics(
+          localizedReason: 'Scan your fingerprint to authenticate',
+          useErrorDialogs: true,
+          stickyAuth: false);
+    } on PlatformException catch (e) {
+      print(e);
     }
+    if (!mounted) return;
+    if (authenticated) {
+      setState(() {
+        isFingerprint = true;
+      });
+    }
+  }
+
+  _showBottomSheet() {
+    var myPass = [1, 2, 3, 4];
+    _scaffoldKey.currentState.showBottomSheet((context) {
+      return LockScreen(
+          title: "Enter your security pin",
+          passLength: 4,
+          bgImage: "assets/pin.png",
+          fingerPrintImage: "assets/fingerprint.png",
+          showFingerPass: true,
+          fingerFunction: biometrics,
+          fingerVerify: isFingerprint,
+          borderColor: Colors.white,
+          showWrongPassDialog: true,
+          wrongPassContent: "Wrong security pin, please try again.",
+          wrongPassTitle: "Opps!",
+          wrongPassCancelButtonText: "Cancel",
+          passCodeVerify: (passcode) async {
+            for (int i = 0; i < myPass.length; i++) {
+              if (passcode[i] != myPass[i]) {
+                return false;
+              }
+            }
+
+            return true;
+          },
+          onSuccess: () {
+            // Navigator.of(context).pushReplacement(
+            //     new MaterialPageRoute(builder: (BuildContext context) {
+            //   return EmptyPage();
+            // }));
+            print('Success');
+          });
+    });
   }
 }
