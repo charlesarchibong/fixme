@@ -11,14 +11,14 @@ class RateReviewProvider with ChangeNotifier {
   bool get loading => _loading;
 
   Future<Either<Failure, bool>> rateArtisan(
-      int serviceId, String artisanPhone, int rating,
+      int serviceId, String artisanPhone, double rating,
       [int jobId]) async {
     try {
       final user = await Utils.getUserSession();
       final rateArtisan = RateArtisan(
         artisanMobile: artisanPhone,
         jobId: jobId,
-        rating: rating,
+        rating: int.parse(rating.toString()),
         serviceRequestId: serviceId,
         ratedBy: user.phoneNumber,
       );
