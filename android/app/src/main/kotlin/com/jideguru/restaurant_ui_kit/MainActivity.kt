@@ -4,13 +4,13 @@ import android.os.Build
 import android.os.Bundle
 import android.view.ViewTreeObserver
 import android.view.WindowManager
-import io.flutter.app.FlutterActivity
+import io.flutter.app.FlutterFragmentActivity
 import io.flutter.plugin.common.PluginRegistry
 import io.flutter.plugin.common.PluginRegistry.PluginRegistrantCallback
 import io.flutter.plugins.GeneratedPluginRegistrant
 import io.flutter.plugins.firebasemessaging.FlutterFirebaseMessagingService
 
-class MainActivity : FlutterActivity(), PluginRegistrantCallback {
+class MainActivity : FlutterFragmentActivity(), PluginRegistrantCallback {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     FlutterFirebaseMessagingService.setPluginRegistrant(this)
