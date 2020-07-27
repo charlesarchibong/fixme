@@ -303,9 +303,10 @@ class _TransferFundState extends State<TransferFund> {
 
     try {
       authenticated = await auth.authenticateWithBiometrics(
-          localizedReason: 'Scan your fingerprint to authenticate',
-          useErrorDialogs: true,
-          stickyAuth: false);
+        localizedReason: 'Scan your fingerprint to authenticate',
+        useErrorDialogs: true,
+        stickyAuth: false,
+      );
     } on PlatformException catch (e) {
       print(e);
     }
