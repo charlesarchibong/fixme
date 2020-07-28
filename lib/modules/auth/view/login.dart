@@ -1,11 +1,9 @@
 import 'dart:io';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quickfix/modules/auth/provider/login_form_validation.dart';
 import 'package:quickfix/modules/auth/view/phone_number_verification.dart';
-import 'package:quickfix/modules/profile/model/user.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -16,61 +14,6 @@ final _scaffoldKey = GlobalKey<ScaffoldState>();
 
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _phoneControl = new TextEditingController();
-  String verificationId;
-  Future<void> _sendCodeToPhoneNumber(User user) async {
-    final loginForm = Provider.of<LoginFormValidation>(context, listen: false);
-    final PhoneVerificationCompleted verificationCompleted =
-        (AuthCredential authUser) {
-      setState(() {
-        print('phone number verifieds');
-        loginForm.setNotLoading();
-      });
-    };
-
-    final PhoneVerificationFailed verificationFailed =
-        (AuthException authException) {
-      _scaffoldKey.currentState.showSnackBar(
-        SnackBar(
-          content: Text(authException.message),
-          duration: Duration(seconds: 15),
-        ),
-      );
-      loginForm.setNotLoading();
-    };
-
-    final PhoneCodeSent codeSent =
-        (String verificationId, [int forceResendingToken]) async {
-      this.verificationId = verificationId;
-      _scaffoldKey.currentState.showSnackBar(
-        SnackBar(
-          content: Text('Your automatic verification code has been sent to ' +
-              _phoneControl.text),
-          duration: Duration(seconds: 10),
-        ),
-      );
-    };
-
-    final PhoneCodeAutoRetrievalTimeout codeAutoRetrievalTimeout =
-        (String verificationId) {
-      this.verificationId = verificationId;
-      _scaffoldKey.currentState.showSnackBar(
-        SnackBar(
-          content: Text('Phone number verification time out'),
-          duration: Duration(seconds: 15),
-        ),
-      );
-      loginForm.setNotLoading();
-    };
-
-    await FirebaseAuth.instance.verifyPhoneNumber(
-        phoneNumber: user.fullNumber,
-        timeout: const Duration(seconds: 10),
-        verificationCompleted: verificationCompleted,
-        verificationFailed: verificationFailed,
-        codeSent: codeSent,
-        codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
-  }
-
   void _loginUser() {
     final loginForm = Provider.of<LoginFormValidation>(context, listen: false);
     if (loginForm.validate(_phoneControl.text)) {
