@@ -60,6 +60,8 @@ dependencies:
   searchable_dropdown: ^1.1.3
   local_auth: ^0.6.2+3
   flutter_lock_screen: '^1.0.5'
+  pin_code_fields: ^4.0.0
+  flutter_custom_clippers: ^1.1.1
 
 
 
@@ -98,6 +100,7 @@ flutter:
     - assets/cc.png
     - assets/dp.png
     - assets/fingerprint.png
+    - assets/phone_verification.png
     - assets/on1.png
     - assets/sad.svg
     - assets/on2.png
