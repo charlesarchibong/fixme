@@ -334,7 +334,10 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
                                         ? Container(
                                             height: 50,
                                             width: 50,
-                                            child: CircularProgressIndicator(),
+                                            child: CircularProgressIndicator(
+                                              backgroundColor:
+                                                  Theme.of(context).accentColor,
+                                            ),
                                           )
                                         : Container(
                                             height: 50,
@@ -350,9 +353,8 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
                                                 ),
                                                 fieldHeight: 50,
                                                 fieldWidth: 40,
-                                                activeFillColor: Colors.white,
-                                                activeColor: Theme.of(context)
-                                                    .primaryColor,
+                                                activeFillColor: Colors.green,
+                                                activeColor: Colors.green,
                                                 selectedColor:
                                                     Colors.lightBlue[50],
                                                 inactiveColor: Colors.red,
