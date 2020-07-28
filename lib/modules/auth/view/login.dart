@@ -1,13 +1,11 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quickfix/modules/auth/provider/login_form_validation.dart';
-import 'package:quickfix/modules/main_screen/view/no_profile_image.dart';
+import 'package:quickfix/modules/auth/view/phone_number_verification.dart';
 import 'package:quickfix/modules/profile/model/user.dart';
-import 'package:quickfix/util/Utils.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -26,12 +24,6 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         print('phone number verifieds');
         loginForm.setNotLoading();
-        Utils.setUserSession(jsonEncode(user));
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (BuildContext context) {
-            return NoProfileImage();
-          }),
-        );
       });
     };
 
@@ -86,7 +78,12 @@ class _LoginScreenState extends State<LoginScreen> {
       loginForm.loginUser(_phoneControl.text).then((user) {
         // print(user.toJson());
         if (user != null) {
-          _sendCodeToPhoneNumber(user);
+          loginForm.setNotLoading();
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (BuildContext context) {
+              return PhoneNumberVerification(user: user);
+            }),
+          );
         } else {
           throw new Exception('Invalid phone number, please try again!');
         }

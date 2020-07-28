@@ -7,7 +7,7 @@ class FlushBarCustomHelper {
     Flushbar(
       title: title,
       message: message,
-      flushbarPosition: FlushbarPosition.TOP,
+      flushbarPosition: FlushbarPosition.BOTTOM,
       dismissDirection: FlushbarDismissDirection.HORIZONTAL,
       forwardAnimationCurve: Curves.fastLinearToSlowEaseIn,
       icon: Icon(
@@ -25,7 +25,7 @@ class FlushBarCustomHelper {
     Flushbar(
       title: title,
       message: message,
-      flushbarPosition: FlushbarPosition.TOP,
+      flushbarPosition: FlushbarPosition.BOTTOM,
       dismissDirection: FlushbarDismissDirection.HORIZONTAL,
       forwardAnimationCurve: Curves.fastLinearToSlowEaseIn,
       icon: Icon(
@@ -50,7 +50,7 @@ class FlushBarCustomHelper {
     Flushbar(
       title: title,
       message: message,
-      flushbarPosition: FlushbarPosition.TOP,
+      flushbarPosition: FlushbarPosition.BOTTOM,
       dismissDirection: FlushbarDismissDirection.HORIZONTAL,
       forwardAnimationCurve: Curves.fastLinearToSlowEaseIn,
       icon: Icon(
@@ -74,7 +74,7 @@ class FlushBarCustomHelper {
       BuildContext context, String title, String message) {
     Flushbar(
       title: title,
-      flushbarPosition: FlushbarPosition.TOP,
+      flushbarPosition: FlushbarPosition.BOTTOM,
       padding: EdgeInsets.all(10),
       dismissDirection: FlushbarDismissDirection.HORIZONTAL,
       forwardAnimationCurve: Curves.fastLinearToSlowEaseIn,
@@ -94,7 +94,7 @@ class FlushBarCustomHelper {
     Flushbar(
       title: title,
       message: message,
-      flushbarPosition: FlushbarPosition.TOP,
+      flushbarPosition: FlushbarPosition.BOTTOM,
       dismissDirection: FlushbarDismissDirection.HORIZONTAL,
       forwardAnimationCurve: Curves.fastLinearToSlowEaseIn,
       icon: Icon(
