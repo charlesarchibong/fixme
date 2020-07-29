@@ -73,9 +73,8 @@ dev_dependencies:
     sdk: flutter
       
 flutter_native_splash:
-  image: assets/screen.jpg
+  image: assets/splash2.png
   color: "ffffff"
-  fill: true
 
 flutter_icons:
   android: "launcher_icon"
@@ -125,7 +124,6 @@ flutter:
     - assets/cm4.jpeg
     - assets/cm4.jpeg
     - assets/service_request.png
-    - assets/splashscreen.jpg
     - assets/destination_map_marker.png
     - assets/driving_pin.png
     - assets/icon-logo.png
