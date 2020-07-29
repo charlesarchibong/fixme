@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
@@ -40,6 +39,7 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
   void initState() {
     _loading = false;
     timeOutNumber = 60;
+    print(widget.user.toJson().toString());
     onTapRecognizer = TapGestureRecognizer()
       ..onTap = () {
         Navigator.pop(context);
@@ -179,12 +179,16 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
   }
 
   void phoneSuccesRequest() async {
+    print('User from phone verification');
+    print(widget.user.toJson().toString());
     timer.cancel();
-    Utils.setUserSession(
-      jsonEncode(
-        widget.user,
-      ),
-    );
+    Utils.setUserSession(widget.user.toJson().toString());
+    print('1');
+    print('2');
+    print('3');
+    print('4');
+    print('5');
+    print('6');
     Navigator.of(context).push(
       MaterialPageRoute(builder: (BuildContext context) {
         return NoProfileImage();

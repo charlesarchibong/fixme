@@ -24,6 +24,8 @@ class _LoginScreenState extends State<LoginScreen> {
           loginForm.setNotLoading();
           Navigator.of(context).push(
             MaterialPageRoute(builder: (BuildContext context) {
+              print(user.toJson().toString());
+              print('From login');
               return PhoneNumberVerification(user: user);
             }),
           );

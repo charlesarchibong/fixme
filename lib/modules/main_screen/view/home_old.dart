@@ -44,10 +44,11 @@ class _HomeState extends State<HomeW>
       locationData = value;
     });
     location.onLocationChanged.listen((LocationData loc) {
-      setState(() {
-        _loadingArtisan = true;
-        locationData = loc;
-      });
+      if (mounted)
+        setState(() {
+          _loadingArtisan = true;
+          locationData = loc;
+        });
       // getArtisanByLocation();
     });
     Future.delayed(
@@ -367,7 +368,7 @@ class _HomeState extends State<HomeW>
   }
 
   Widget _serviceProvidersAroundMe() {
-    return users.isNotEmpty
+    return users != null
         ? RefreshIndicator(
             onRefresh: () => getArtisanByLocation(),
             child: GridView.builder(

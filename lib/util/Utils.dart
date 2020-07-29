@@ -42,7 +42,7 @@ class Utils {
   static Future<User> getUserSession() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
     return sp.get('user') != null
-        ? User.fromjson(jsonDecode(sp.get("user")))
+        ? User.fromjson(json.decode(sp.get("user")))
         : null;
   }
 

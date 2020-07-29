@@ -71,7 +71,7 @@ class User {
     profileViews = json['profile_views'];
     reviews = json['reviews'];
     userRating = json['user_rating'];
-    address = json['user_address'];
+    address = json['address'];
     status = json['status'];
   }
 }
