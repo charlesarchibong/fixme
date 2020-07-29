@@ -113,6 +113,7 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
         'Error',
         authException.message,
       );
+      timer.cancel();
       Future.delayed(
         Duration(
           seconds: 7,
@@ -241,8 +242,8 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
             ClipPath(
               clipper: OvalBottomBorderClipper(),
               child: Container(
-                height: 340,
-                color: Theme.of(context).primaryColor,
+                height: 200,
+                color: Theme.of(context).accentColor,
               ),
             ),
             SingleChildScrollView(
@@ -256,17 +257,17 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                      '',
-                      style: TextStyle(
-                        fontSize: 30,
-                        color: Colors.white,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
+                    // Text(
+                    //   '',
+                    //   style: TextStyle(
+                    //     fontSize: 30,
+                    //     color: Colors.white,
+                    //   ),
+                    //   textAlign: TextAlign.center,
+                    // ),
+                    // SizedBox(
+                    //   height: 9,
+                    // ),
                     GestureDetector(
                       onTap: () {
                         FocusScope.of(context).requestFocus(
@@ -280,7 +281,7 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
                         ),
                         child: Container(
                           decoration: BoxDecoration(),
-                          height: MediaQuery.of(context).size.height / 1.5,
+                          height: MediaQuery.of(context).size.height / 1.2,
                           width: MediaQuery.of(context).size.width,
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
@@ -303,9 +304,10 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
                                       'Phone Number Verification',
                                       style: TextStyle(
                                         fontSize: 20,
-                                        color: Theme.of(context).primaryColor,
+                                        color: Theme.of(context).accentColor,
                                         fontWeight: FontWeight.bold,
                                       ),
+                                      textAlign: TextAlign.center,
                                     ),
                                     SizedBox(
                                       height: 12,
@@ -332,7 +334,7 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
                                       ),
                                     ),
                                     SizedBox(
-                                      height: 20,
+                                      height: 9,
                                     ),
                                     _loading
                                         ? Container(
