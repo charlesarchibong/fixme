@@ -39,6 +39,8 @@ class _ProfileState extends State<Profile> {
 
   User user;
 
+  String profileImage;
+
   getSubService() async {
     final profileProvider =
         Provider.of<ProfileProvider>(context, listen: false);
@@ -68,6 +70,7 @@ class _ProfileState extends State<Profile> {
 
   void getUser() async {
     user = await Utils.getUserSession();
+    profileImage = await Utils.getProfilePicture();
   }
 
   @override
@@ -78,9 +81,9 @@ class _ProfileState extends State<Profile> {
 
   @override
   void initState() {
+    getUser();
     getSubService();
     getServiceImages();
-    getUser();
     super.initState();
   }
 
@@ -108,7 +111,8 @@ class _ProfileState extends State<Profile> {
                         padding: EdgeInsets.only(left: 10.0, right: 10.0),
                         child: Consumer<ProfileProvider>(
                             builder: (context, profileProvider, child) {
-                          return _profileImage(profileProvider, user);
+                          return _profileImage(
+                              profileProvider, user, profileImage);
                         }),
                       ),
                       _profileName(user, context)
@@ -461,23 +465,17 @@ Widget _profileName(User snapshot, BuildContext context) {
   );
 }
 
-Widget _profileImage(ProfileProvider profileProvider, User user) {
+Widget _profileImage(
+    ProfileProvider profileProvider, User user, String profileImage) {
   return Stack(
     alignment: Alignment.bottomCenter,
     children: <Widget>[
-      user.profilePicture == null || user.profilePicture == ''
-          ? Image.asset(
-              "assets/dp.png",
-              fit: BoxFit.cover,
-              width: 100.0,
-              height: 100.0,
-            )
-          : Image.network(
-              '${user.profilePicture}',
-              fit: BoxFit.cover,
-              width: 100.0,
-              height: 100.0,
-            ),
+      Image.network(
+        '$profileImage',
+        fit: BoxFit.cover,
+        width: 100.0,
+        height: 100.0,
+      ),
       RaisedButton(
         onPressed: () {
           profileProvider.setLoading();

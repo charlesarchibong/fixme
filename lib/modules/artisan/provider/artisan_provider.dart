@@ -19,7 +19,7 @@ class ArtisanProvider with ChangeNotifier {
     try {
       loading = true;
       notifyListeners();
-      final bool requested = await ArtisanApi().ArtisanProvider(
+      final bool requested = await ArtisanApi().requestArtisanService(
         artisanPhone,
       );
       loading = false;

@@ -41,9 +41,9 @@ class _MyServiceRequestsState extends State<MyServiceRequests> {
             ),
             Expanded(
               child: Consumer<ArtisanProvider>(
-                  builder: (context, ArtisanProvider, child) {
+                  builder: (context, artisanProvider, child) {
                 return FutureBuilder(
-                  future: ArtisanProvider.getMyRequestedService(),
+                  future: artisanProvider.getMyRequestedService(),
                   builder: (BuildContext context, AsyncSnapshot myService) {
                     if (myService.hasData) {
                       return myService.data.fold((Failure failure) {
@@ -61,8 +61,7 @@ class _MyServiceRequestsState extends State<MyServiceRequests> {
                       }, (List<ServiceRequest> jobs) {
                         return RefreshIndicator(
                           onRefresh: () {
-                            print('Fuck you');
-                            ArtisanProvider.getMyRequestedService();
+                            artisanProvider.getMyRequestedService();
                             return Future.value();
                           },
                           child: ListView.builder(
