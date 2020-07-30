@@ -1,11 +1,16 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:location/location.dart';
 import 'package:quickfix/helpers/custom_lodder.dart';
 import 'package:quickfix/models/failure.dart';
 import 'package:quickfix/modules/artisan/model/service_request.dart';
 import 'package:quickfix/modules/artisan/service/artisan.dart';
+import 'package:quickfix/services/network/network_service.dart';
+import 'package:quickfix/util/Utils.dart';
+import 'package:quickfix/util/const.dart';
+import 'package:quickfix/util/content_type.dart';
 
-class RequestArtisanService with ChangeNotifier {
+class ArtisanProvider with ChangeNotifier {
   bool loading = false;
   List<ServiceRequest> serviceRequests = List();
   List<ServiceRequest> myRequestedRequest = List();
@@ -14,7 +19,7 @@ class RequestArtisanService with ChangeNotifier {
     try {
       loading = true;
       notifyListeners();
-      final bool requested = await ArtisanApi().requestArtisanService(
+      final bool requested = await ArtisanApi().ArtisanProvider(
         artisanPhone,
       );
       loading = false;
@@ -110,6 +115,41 @@ class RequestArtisanService with ChangeNotifier {
       return Left(
         Failure(
           message: 'Request was not successful, please try again!',
+        ),
+      );
+    }
+  }
+
+  Future<Either<Failure, List>> getArtisanByLocation(
+      LocationData locationData) async {
+    try {
+      final user = await Utils.getUserSession();
+      String apiKey = await Utils.getApiKey();
+      Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
+      Map<String, dynamic> body = {
+        'mobile': user.phoneNumber,
+        'latitude': locationData.latitude,
+        'longitude': locationData.longitude
+      };
+      String url = Constants.getArtisanByLocationUrl;
+      final response = await NetworkService().post(
+        url: url,
+        body: body,
+        contentType: ContentType.URL_ENCODED,
+        headers: headers,
+      );
+      var artisans = response.data['sortedUsers'] as List;
+      print(artisans.toString());
+      return right(artisans);
+    } catch (e) {
+      CustomLogger().errorPrint(
+        e.toString(),
+      );
+      loading = false;
+      notifyListeners();
+      return Left(
+        Failure(
+          message: 'Unable to fetch artisan at the moment',
         ),
       );
     }

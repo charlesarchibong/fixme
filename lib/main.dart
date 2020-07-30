@@ -100,7 +100,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => PendingJobProvider()),
         ChangeNotifierProvider(create: (_) => MyRequestProvider()),
         ChangeNotifierProvider(create: (_) => SearchProvider()),
-        ChangeNotifierProvider(create: (_) => RequestArtisanService()),
+        ChangeNotifierProvider(create: (_) => ArtisanProvider()),
         ChangeNotifierProvider(create: (_) => ApprovedBidProvider()),
         ChangeNotifierProvider(create: (_) => RateReviewProvider()),
         ChangeNotifierProvider(create: (_) => TransferProvider()),

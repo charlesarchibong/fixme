@@ -298,9 +298,9 @@ class _ProductDetailsState extends State<ProductDetails>
           height: 50.0,
           child: Row(
             children: <Widget>[
-              Consumer<RequestArtisanService>(
-                builder: (context, requestArtisanService, child) {
-                  return requestArtisanService.loading
+              Consumer<ArtisanProvider>(
+                builder: (context, ArtisanProvider, child) {
+                  return ArtisanProvider.loading
                       ? Container(
                           child: CircularProgressIndicator(),
                         )
@@ -313,8 +313,7 @@ class _ProductDetailsState extends State<ProductDetails>
                           ),
                           color: Theme.of(context).accentColor,
                           onPressed: () async {
-                            final requested =
-                                await requestArtisanService.request(
+                            final requested = await ArtisanProvider.request(
                               widget.userData['user_mobile'],
                             );
                             requested.fold((Failure failure) {

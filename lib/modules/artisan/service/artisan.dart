@@ -8,7 +8,7 @@ import 'package:quickfix/util/content_type.dart';
 
 class ArtisanApi extends ArtisanService {
   @override
-  Future<bool> requestArtisanService(String artisanPhone) async {
+  Future<bool> ArtisanProvider(String artisanPhone) async {
     try {
       final user = await Utils.getUserSession();
       final String apiKey = await Utils.getApiKey();

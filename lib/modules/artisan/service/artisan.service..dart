@@ -1,7 +1,7 @@
 import 'package:quickfix/modules/artisan/model/service_request.dart';
 
 abstract class ArtisanService {
-  Future<bool> requestArtisanService(
+  Future<bool> ArtisanProvider(
     String artisanPhone,
   );
 

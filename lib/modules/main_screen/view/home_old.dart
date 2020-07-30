@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:location/location.dart';
+import 'package:provider/provider.dart';
 import 'package:quickfix/helpers/flush_bar.dart';
+import 'package:quickfix/models/failure.dart';
+import 'package:quickfix/modules/artisan/provider/artisan_provider.dart';
 import 'package:quickfix/modules/artisan/widget/grid_artisans.dart';
 import 'package:quickfix/modules/profile/model/user.dart';
-import 'package:quickfix/services/network/network_service.dart';
 import 'package:quickfix/util/Utils.dart';
 import 'package:quickfix/util/const.dart';
-import 'package:quickfix/util/content_type.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeW extends StatefulWidget {
@@ -63,32 +64,28 @@ class _HomeState extends State<HomeW>
 
   Future<List> getArtisanByLocation() async {
     try {
+      final artisanProvider = Provider.of<ArtisanProvider>(
+        context,
+        listen: false,
+      );
       setState(() {
         _loadingArtisan = true;
       });
-      final user = await Utils.getUserSession();
-      String apiKey = await Utils.getApiKey();
-      Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
-      Map<String, dynamic> body = {
-        'mobile': user.phoneNumber,
-        'latitude': locationData.latitude,
-        'longitude': locationData.longitude
-      };
-      String url = Constants.getArtisanByLocationUrl;
-      final response = await NetworkService().post(
-        url: url,
-        body: body,
-        contentType: ContentType.URL_ENCODED,
-        headers: headers,
-      );
-      var artisans = response.data['sortedUsers'] as List;
-      print(artisans.toString());
 
-      setState(() {
-        users = artisans;
-        _loadingArtisan = false;
+      final fetched = await artisanProvider.getArtisanByLocation(locationData);
+      return fetched.fold((Failure failure) {
+        setState(() {
+          users = List();
+          _loadingArtisan = false;
+        });
+        return List();
+      }, (List listArtisan) {
+        setState(() {
+          users = listArtisan;
+          _loadingArtisan = false;
+        });
+        return listArtisan;
       });
-      return artisans;
     } catch (error) {
       setState(() {
         users = List();

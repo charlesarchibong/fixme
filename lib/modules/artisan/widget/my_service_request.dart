@@ -124,8 +124,7 @@ class MyServiceRequestWidget extends StatelessWidget {
                       duration: Duration(minutes: 1),
                       title: 'Loading...',
                     )..show(context);
-                    final approvedBidProvider =
-                        Provider.of<RequestArtisanService>(
+                    final approvedBidProvider = Provider.of<ArtisanProvider>(
                       context,
                       listen: false,
                     );
@@ -170,8 +169,7 @@ class MyServiceRequestWidget extends StatelessWidget {
                       duration: Duration(minutes: 1),
                       title: 'Loading...',
                     )..show(context);
-                    final approvedBidProvider =
-                        Provider.of<RequestArtisanService>(
+                    final approvedBidProvider = Provider.of<ArtisanProvider>(
                       context,
                       listen: false,
                     );
@@ -217,7 +215,7 @@ class MyServiceRequestWidget extends StatelessWidget {
                 duration: Duration(minutes: 1),
                 title: 'Loading...',
               )..show(context);
-              final approvedBidProvider = Provider.of<RequestArtisanService>(
+              final approvedBidProvider = Provider.of<ArtisanProvider>(
                 context,
                 listen: false,
               );

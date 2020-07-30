@@ -17,8 +17,8 @@ class _MyRequestedServiceState extends State<MyRequestedService> {
   bool isLoading = false;
   @override
   Widget build(BuildContext context) {
-    return Consumer<RequestArtisanService>(
-        builder: (context, requestArtisanService, child) {
+    return Consumer<ArtisanProvider>(
+        builder: (context, ArtisanProvider, child) {
       return Scaffold(
         appBar: AppBar(
           backgroundColor: Constants.lightAccent,
@@ -43,7 +43,7 @@ class _MyRequestedServiceState extends State<MyRequestedService> {
               ),
               Expanded(
                 child: FutureBuilder(
-                  future: requestArtisanService.getMyRequestedService(),
+                  future: ArtisanProvider.getMyRequestedService(),
                   builder: (BuildContext context, AsyncSnapshot myService) {
                     if (myService.hasData) {
                       return myService.data.fold((Failure failure) {
@@ -61,18 +61,17 @@ class _MyRequestedServiceState extends State<MyRequestedService> {
                       }, (List<ServiceRequest> jobs) {
                         return RefreshIndicator(
                           onRefresh: () {
-                            requestArtisanService.getRequests();
+                            ArtisanProvider.getRequests();
                             return Future.value();
                           },
                           child: ListView.builder(
-                            itemCount: requestArtisanService
-                                        .serviceRequests.length ==
-                                    null
-                                ? 0
-                                : requestArtisanService.serviceRequests.length,
+                            itemCount:
+                                ArtisanProvider.serviceRequests.length == null
+                                    ? 0
+                                    : ArtisanProvider.serviceRequests.length,
                             itemBuilder: (BuildContext context, int index) {
                               ServiceRequest serviceRequest =
-                                  requestArtisanService.serviceRequests[index];
+                                  ArtisanProvider.serviceRequests[index];
                               print(serviceRequest.toMap());
                               return MyRequestedServiceWidget(
                                 title: serviceRequest.requestingMobile,

@@ -444,15 +444,14 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
               ListTile(
                 title: Text('Service Requests'),
                 leading: Badge(
-                  badgeContent: Consumer<RequestArtisanService>(
+                  badgeContent: Consumer<ArtisanProvider>(
                     builder: (
                       BuildContext context,
-                      RequestArtisanService requestArtisanService,
+                      ArtisanProvider ArtisanProvider,
                       Widget child,
                     ) {
                       return Text(
-                        requestArtisanService.serviceRequests?.length
-                            .toString(),
+                        ArtisanProvider.serviceRequests?.length.toString(),
                         style: TextStyle(
                           color: Colors.white,
                         ),
@@ -480,15 +479,14 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
               ListTile(
                 title: Text('My Requested Service'),
                 leading: Badge(
-                  badgeContent: Consumer<RequestArtisanService>(
+                  badgeContent: Consumer<ArtisanProvider>(
                     builder: (
                       BuildContext context,
-                      RequestArtisanService requestArtisanService,
+                      ArtisanProvider ArtisanProvider,
                       Widget child,
                     ) {
                       return Text(
-                        requestArtisanService.myRequestedRequest?.length
-                            .toString(),
+                        ArtisanProvider.myRequestedRequest?.length.toString(),
                         style: TextStyle(
                           color: Colors.white,
                         ),
