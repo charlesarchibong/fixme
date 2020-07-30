@@ -155,6 +155,12 @@ class ArtisanProvider with ChangeNotifier {
     }
   }
 
+  Future<Either<Failure, List>> getArtisanReview(String phone) async {
+    try {
+      String apiKey = await Utils.getApiKey();
+    } catch (e) {}
+  }
+
   Future<Either<Failure, bool>> rejectRequest(
       ServiceRequest serviceRequest) async {
     try {
