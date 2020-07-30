@@ -447,11 +447,11 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                   badgeContent: Consumer<ArtisanProvider>(
                     builder: (
                       BuildContext context,
-                      ArtisanProvider ArtisanProvider,
+                      ArtisanProvider artisanProvider,
                       Widget child,
                     ) {
                       return Text(
-                        ArtisanProvider.serviceRequests?.length.toString(),
+                        artisanProvider.serviceRequests?.length.toString(),
                         style: TextStyle(
                           color: Colors.white,
                         ),
@@ -482,11 +482,11 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                   badgeContent: Consumer<ArtisanProvider>(
                     builder: (
                       BuildContext context,
-                      ArtisanProvider ArtisanProvider,
+                      ArtisanProvider artisanProvider,
                       Widget child,
                     ) {
                       return Text(
-                        ArtisanProvider.myRequestedRequest?.length.toString(),
+                        artisanProvider.myRequestedRequest?.length.toString(),
                         style: TextStyle(
                           color: Colors.white,
                         ),

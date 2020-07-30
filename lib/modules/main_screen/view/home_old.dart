@@ -47,7 +47,6 @@ class _HomeState extends State<HomeW>
     location.onLocationChanged.listen((LocationData loc) {
       if (mounted)
         setState(() {
-          _loadingArtisan = true;
           locationData = loc;
         });
       // getArtisanByLocation();
@@ -73,23 +72,23 @@ class _HomeState extends State<HomeW>
       });
 
       final fetched = await artisanProvider.getArtisanByLocation(locationData);
+      setState(() {
+        _loadingArtisan = false;
+      });
       return fetched.fold((Failure failure) {
         setState(() {
           users = List();
-          _loadingArtisan = false;
         });
         return List();
       }, (List listArtisan) {
         setState(() {
           users = listArtisan;
-          _loadingArtisan = false;
         });
         return listArtisan;
       });
     } catch (error) {
       setState(() {
         users = List();
-        _loadingArtisan = false;
       });
 
       print(error.toString());
@@ -355,7 +354,11 @@ class _HomeState extends State<HomeW>
                 ],
               ),
               SizedBox(height: 10.0),
-              _serviceProvidersAroundMe(),
+              _loadingArtisan
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : _serviceProvidersAroundMe(),
               SizedBox(height: 30),
             ],
           ),
@@ -366,85 +369,75 @@ class _HomeState extends State<HomeW>
 
   Widget _serviceProvidersAroundMe() {
     return users != null
-        ? RefreshIndicator(
-            onRefresh: () => getArtisanByLocation(),
-            child: GridView.builder(
-              shrinkWrap: true,
-              primary: false,
-              physics: NeverScrollableScrollPhysics(),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: MediaQuery.of(context).size.width /
-                    (MediaQuery.of(context).size.height / 1.25),
-              ),
-              itemCount: users == null ? 0 : users.length,
-              itemBuilder: (BuildContext context, int index) {
-                Map technician = users[index];
-                return GridTechnician(
-                  userData: technician,
-                  mobile: technician['user_mobile'],
-                  img:
-                      Constants.uploadUrl + technician['profile_pic_file_name'],
-                  distance: technician['distance'],
-                  name:
-                      '${technician['user_first_name']} ${technician['user_last_name']}',
-                  rating: double.parse(
-                        technician['user_rating'].toString(),
-                      ) ??
-                      0.0,
-                  raters: technician['reviews'] ?? 0,
-                  serviceArea: technician['service_area'],
-                );
-              },
+        ? GridView.builder(
+            shrinkWrap: true,
+            primary: false,
+            physics: NeverScrollableScrollPhysics(),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: MediaQuery.of(context).size.width /
+                  (MediaQuery.of(context).size.height / 1.25),
             ),
-          )
-        : _loadingArtisan
-            ? Center(
-                child: Container(
-                  child: CircularProgressIndicator(),
-                ),
-              )
-            : Center(
-                child: Container(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      SvgPicture.asset(
-                        'assets/sad.svg',
-                        semanticsLabel: 'So Sad',
-                        width: 250,
-                      ),
-                      SizedBox(
-                        height: 10.0,
-                      ),
-                      Text(
-                        'We are so sorry, no artisan available near your location.',
-                        style: TextStyle(
-                          // color: Theme.of(context).accentColor,
-                          fontSize: 20.0,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(
-                        height: 10.0,
-                      ),
-                      RaisedButton(
-                        child: Text(
-                          "Click here to Refresh",
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
-                        color: Theme.of(context).accentColor,
-                        onPressed: () async {
-                          getArtisanByLocation();
-                        },
-                      ),
-                    ],
-                  ),
-                ),
+            itemCount: users == null ? 0 : users.length,
+            itemBuilder: (BuildContext context, int index) {
+              Map technician = users[index];
+              return GridTechnician(
+                userData: technician,
+                mobile: technician['user_mobile'],
+                img: Constants.uploadUrl + technician['profile_pic_file_name'],
+                distance: technician['distance'],
+                name:
+                    '${technician['user_first_name']} ${technician['user_last_name']}',
+                rating: double.parse(
+                      technician['user_rating'].toString(),
+                    ) ??
+                    0.0,
+                raters: technician['reviews'] ?? 0,
+                serviceArea: technician['service_area'],
               );
+            },
+          )
+        : Center(
+            child: Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  SvgPicture.asset(
+                    'assets/sad.svg',
+                    semanticsLabel: 'So Sad',
+                    width: 250,
+                  ),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  Text(
+                    'We are so sorry, no artisan available near your location.',
+                    style: TextStyle(
+                      // color: Theme.of(context).accentColor,
+                      fontSize: 20.0,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  RaisedButton(
+                    child: Text(
+                      "Click here to Refresh",
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    color: Theme.of(context).accentColor,
+                    onPressed: () async {
+                      getArtisanByLocation();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
   }
 
   @override
