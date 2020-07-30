@@ -771,32 +771,32 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                 currentAccountPicture: Consumer<ProfileProvider>(
                   builder: (BuildContext context,
                       ProfileProvider profileProvider, Widget child) {
-                    return Container(
-                      height: 200,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                          fit: BoxFit.fill,
-                          image: snapshot.data.profilePicture == null ||
-                                  snapshot.data.profilePicture ==
-                                      'no_picture_upload'
-                              ? AssetImage(
-                                  "assets/dp.png",
-                                )
-                              : NetworkImage(
-                                  snapshot.data.profilePicture,
-                                ),
-                        ),
-                        border: Border.all(
-                          color: Constants.lightAccent,
-                          width: 1,
-                        ),
-                      ),
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 16.0,
-                      ),
-                      width: MediaQuery.of(context).size.width * 10.6,
-                    );
+                    return FutureBuilder<String>(
+                        future: Utils.getProfilePicture(),
+                        builder: (context, pic) {
+                          return Container(
+                            height: 200,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                fit: BoxFit.fill,
+                                image: pic.hasData
+                                    ? NetworkImage(
+                                        pic?.data,
+                                      )
+                                    : AssetImage('assets/dp.png'),
+                              ),
+                              border: Border.all(
+                                color: Constants.lightAccent,
+                                width: 1,
+                              ),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 16.0,
+                            ),
+                            width: MediaQuery.of(context).size.width * 10.6,
+                          );
+                        });
                   },
                 ))
             : Container(
