@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:quickfix/helpers/custom_lodder.dart';
 import 'package:quickfix/models/failure.dart';
+import 'package:quickfix/modules/artisan/model/review.dart';
 import 'package:quickfix/modules/profile/model/bank_code.dart';
 import 'package:quickfix/modules/profile/model/service_image.dart';
 import 'package:quickfix/modules/profile/model/user.dart';
@@ -360,6 +361,40 @@ class ProfileProvider extends ChangeNotifier {
           message: 'Error occurred while trying to update profile count',
         ),
       );
+    }
+  }
+
+  Future<List> getArtisanReview(String phone) async {
+    try {
+      List<ReviewModel> reviewList;
+      String apiKey = await Utils.getApiKey();
+      Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
+      Map<String, dynamic> body = {"mobile": phone};
+
+      String url = "https://manager.fixme.ng/get-reviews?mobile=$phone";
+
+      final response = await NetworkService().post(
+        url: url,
+        body: body,
+        contentType: ContentType.URL_ENCODED,
+        headers: headers,
+      );
+      List review = response.data['reviews'];
+      // print(review);
+      // reviewList = ReviewList.fromData(review).reviewList;
+      return review;
+    } catch (e) {
+      CustomLogger().errorPrint(
+        e.toString(),
+      );
+      loading = false;
+      notifyListeners();
+      return e;
+      // return(
+      //   Failure(
+      //     message: 'Unable to fetch artisan at the moment',
+
+      // );
     }
   }
 }

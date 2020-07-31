@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:location/location.dart';
 import 'package:quickfix/helpers/custom_lodder.dart';
 import 'package:quickfix/models/failure.dart';
+import 'package:quickfix/modules/artisan/model/review.dart';
 import 'package:quickfix/modules/artisan/model/service_request.dart';
 import 'package:quickfix/modules/artisan/service/artisan.dart';
 import 'package:quickfix/services/network/network_service.dart';
@@ -153,12 +154,6 @@ class ArtisanProvider with ChangeNotifier {
         ),
       );
     }
-  }
-
-  Future<Either<Failure, List>> getArtisanReview(String phone) async {
-    try {
-      String apiKey = await Utils.getApiKey();
-    } catch (e) {}
   }
 
   Future<Either<Failure, bool>> rejectRequest(
