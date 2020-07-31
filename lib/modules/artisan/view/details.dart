@@ -3,6 +3,7 @@ import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:provider/provider.dart';
 import 'package:quickfix/helpers/flush_bar.dart';
 import 'package:quickfix/models/failure.dart';
+import 'package:quickfix/modules/artisan/model/review.dart';
 import 'package:quickfix/modules/artisan/provider/artisan_provider.dart';
 import 'package:quickfix/modules/chat/view/chat_screen.dart';
 import 'package:quickfix/modules/profile/provider/profile_provider.dart';
@@ -24,12 +25,14 @@ class ProductDetails extends StatefulWidget {
 class _ProductDetailsState extends State<ProductDetails>
     with WidgetsBindingObserver {
   bool isFav = false;
+  List artisanReviews;
 
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
 
     updateArtisanProfileView();
+    getReviews();
     super.initState();
   }
 
@@ -68,6 +71,22 @@ class _ProductDetailsState extends State<ProductDetails>
       (Failure failure) => print(failure.message),
       (r) => print('profile view count updated'),
     );
+  }
+
+  void getReviews() async {
+    final profileProvider = Provider.of<ProfileProvider>(
+      context,
+      listen: false,
+    );
+
+    final reviews = await profileProvider.getArtisanReview(
+      widget.userData['user_mobile'],
+    );
+
+    setState(() {
+      artisanReviews = reviews;
+    });
+    // artisanReviews = ReviewList.fromData(reviews).reviewList;
   }
 
   @override
@@ -287,7 +306,9 @@ class _ProductDetailsState extends State<ProductDetails>
               maxLines: 2,
             ),
             SizedBox(height: 20.0),
-            Reviews(),
+            Reviews(
+              reviews: artisanReviews,
+            ),
             SizedBox(height: 10.0),
           ],
         ),
