@@ -3,8 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:quickfix/helpers/flush_bar.dart';
 import 'package:quickfix/modules/main_screen/view/main_screen.dart';
 import 'package:quickfix/modules/profile/provider/profile_provider.dart';
-import 'package:quickfix/util/Utils.dart';
-import 'package:quickfix/util/const.dart';
 
 class NoProfileImage extends StatefulWidget {
   NoProfileImage({Key key}) : super(key: key);
@@ -16,20 +14,7 @@ class NoProfileImage extends StatefulWidget {
 class _NoProfileImageState extends State<NoProfileImage> {
   @override
   void initState() {
-    sendUsertoMainScreen();
     super.initState();
-  }
-
-  void sendUsertoMainScreen() async {
-    final picture = await Utils.getProfilePicture();
-
-    if (picture != '${Constants.uploadUrl}no_picture_upload') {
-      Navigator.of(context).push(
-        MaterialPageRoute(builder: (BuildContext context) {
-          return MainScreen();
-        }),
-      );
-    }
   }
 
   @override

@@ -8,9 +8,11 @@ import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:quickfix/helpers/flush_bar.dart';
 import 'package:quickfix/modules/auth/view/login.dart';
+import 'package:quickfix/modules/main_screen/view/main_screen.dart';
 import 'package:quickfix/modules/main_screen/view/no_profile_image.dart';
 import 'package:quickfix/modules/profile/model/user.dart';
 import 'package:quickfix/util/Utils.dart';
+import 'package:quickfix/util/const.dart';
 
 class PhoneNumberVerification extends StatefulWidget {
   final User user;
@@ -186,11 +188,22 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
     timer.cancel();
     Utils.setUserSession(json.encode(widget.user));
     Utils.setProfilePicture(widget.user.profilePicture);
-    Navigator.of(context).push(
-      MaterialPageRoute(builder: (BuildContext context) {
-        return NoProfileImage();
-      }),
-    );
+
+    final picture = widget.user.profilePicture;
+
+    if (picture != '${Constants.uploadUrl}no_picture_upload') {
+      Navigator.of(context).push(
+        MaterialPageRoute(builder: (BuildContext context) {
+          return MainScreen();
+        }),
+      );
+    } else {
+      Navigator.of(context).push(
+        MaterialPageRoute(builder: (BuildContext context) {
+          return NoProfileImage();
+        }),
+      );
+    }
   }
 
   void verifyPhoneManually(String verficationId, String smsCode) async {

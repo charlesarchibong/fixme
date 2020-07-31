@@ -375,12 +375,12 @@ class _HomeState extends State<HomeW>
     return users != null
         ? GridView.builder(
             shrinkWrap: true,
-            primary: false,
+            primary: true,
             physics: NeverScrollableScrollPhysics(),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               childAspectRatio: MediaQuery.of(context).size.width /
-                  (MediaQuery.of(context).size.height / 1.25),
+                  (MediaQuery.of(context).size.height / 1.1),
             ),
             itemCount: users == null ? 0 : users.length,
             itemBuilder: (BuildContext context, int index) {
