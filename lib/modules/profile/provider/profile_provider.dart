@@ -5,10 +5,12 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:logger/logger.dart';
 import 'package:quickfix/helpers/custom_lodder.dart';
 import 'package:quickfix/models/failure.dart';
 import 'package:quickfix/modules/artisan/model/review.dart';
 import 'package:quickfix/modules/profile/model/bank_code.dart';
+import 'package:quickfix/modules/profile/model/bank_information.dart';
 import 'package:quickfix/modules/profile/model/service_image.dart';
 import 'package:quickfix/modules/profile/model/user.dart';
 import 'package:quickfix/services/network/network_service.dart';
@@ -395,6 +397,42 @@ class ProfileProvider extends ChangeNotifier {
       //     message: 'Unable to fetch artisan at the moment',
 
       // );
+    }
+  }
+
+  Future<Either<Failure, BankInformation>> getAccountInfo() async {
+    try {
+      String url = 'https://manager.fixme.ng/get-user-bank-info';
+      User currentUser = await Utils.getUserSession();
+      String apiKey = await Utils.getApiKey();
+      Map<String, String> body = {
+        'mobile': currentUser.phoneNumber,
+      };
+      Map<String, String> headers = {'Bearer': '$apiKey'};
+      final response = await NetworkService().post(
+        url: url,
+        body: body,
+        contentType: ContentType.URL_ENCODED,
+        headers: headers,
+      );
+      if (response.data['reqRes'] == 'true') {
+        final bankInfo = BankInformation.fromMap(
+          response.data['accountInfo'],
+        );
+        return Right(
+          bankInfo,
+        );
+      }
+      throw Exception(
+        'Unable to retrieve account information',
+      );
+    } catch (e) {
+      Logger().e(e.toString());
+      return Left(
+        Failure(
+          message: 'Unable to get account information.',
+        ),
+      );
     }
   }
 }
