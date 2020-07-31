@@ -400,7 +400,7 @@ class ProfileProvider extends ChangeNotifier {
     }
   }
 
-  Future<Either<Failure, BankInformation>> getAccountInfo() async {
+  Future<BankInformation> getAccountInfo() async {
     try {
       String url = 'https://manager.fixme.ng/get-user-bank-info';
       User currentUser = await Utils.getUserSession();
@@ -419,19 +419,15 @@ class ProfileProvider extends ChangeNotifier {
         final bankInfo = BankInformation.fromMap(
           response.data['accountInfo'],
         );
-        return Right(
-          bankInfo,
-        );
+        return bankInfo;
       }
       throw Exception(
         'Unable to retrieve account information',
       );
     } catch (e) {
       Logger().e(e.toString());
-      return Left(
-        Failure(
-          message: 'Unable to get account information.',
-        ),
+      return BankInformation(
+        balance: 0.0,
       );
     }
   }
