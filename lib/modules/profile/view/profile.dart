@@ -161,8 +161,8 @@ class _ProfileState extends State<Profile> {
                     ),
                   ),
                   Consumer<ProfileProvider>(
-                      builder: (context, profileProvider, child) {
-                    return FutureBuilder<BankInformation>(
+                    builder: (context, profileProvider, child) {
+                      return FutureBuilder<BankInformation>(
                         future: profileProiver.getAccountInfo(),
                         builder: (context, snapshot) {
                           return snapshot.hasData
@@ -172,8 +172,10 @@ class _ProfileState extends State<Profile> {
                                   hasTrailing: false,
                                 )
                               : ListTileShimmer();
-                        });
-                  }),
+                        },
+                      );
+                    },
+                  ),
                   _profileDetailsTiles(
                     title: 'Account Number',
                     subTitle: user.accountNumber,
