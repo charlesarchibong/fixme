@@ -50,8 +50,15 @@ class _EnterSecurityPinState extends State<EnterSecurityPin> {
                     ),
                     child: Column(
                       children: <Widget>[
+                        Image.asset(
+                          'assets/logo.png',
+                          width: 250,
+                        ),
+                        SizedBox(
+                          height: 50,
+                        ),
                         Text(
-                          'Kindly enter a four (4) digit security pin for secure your account and transaction.',
+                          'Kindly enter a four (4) digit security pin to secure your account and transaction.',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 20.0,
@@ -148,9 +155,10 @@ class _EnterSecurityPinState extends State<EnterSecurityPin> {
               ),
               prefixIcon: Icon(
                 Icons.lock,
-                color: Colors.black,
+                color: Colors.grey,
               ),
             ),
+            maxLength: 4,
             maxLines: 1,
             controller: _securityPinController,
           ),
