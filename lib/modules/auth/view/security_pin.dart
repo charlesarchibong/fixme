@@ -53,6 +53,7 @@ class _EnterSecurityPinState extends State<EnterSecurityPin> {
                         SizedBox(
                           height: 20,
                         ),
+                        _securityPin(),
                         SizedBox(
                           height: 20,
                         ),
@@ -99,6 +100,7 @@ class _EnterSecurityPinState extends State<EnterSecurityPin> {
               if (value.length != 4) {
                 return 'Security pin should be four (4) digit';
               }
+              int.parse(value);
               return null;
             } catch (e) {
               Logger().e(e.toString());
@@ -141,4 +143,6 @@ class _EnterSecurityPinState extends State<EnterSecurityPin> {
       ),
     );
   }
+
+  void _savedSecurityPin(int pin) {}
 }
