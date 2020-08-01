@@ -147,6 +147,7 @@ class _TransferFundState extends State<TransferFund> {
                                 child: TextFormField(
                                   controller: _accountNumberController,
                                   keyboardType: TextInputType.phone,
+                                  maxLength: 10,
                                   validator: (value) {
                                     return value == ''
                                         ? 'Account Number can not be empty'
@@ -159,6 +160,13 @@ class _TransferFundState extends State<TransferFund> {
                                     ),
                                     border: InputBorder.none,
                                   ),
+                                  onChanged: (value) {
+                                    if (value.length == 10) {
+                                      _verifyAccountNumber(
+                                          _accountNumberController.text,
+                                          bankSelected.code);
+                                    }
+                                  },
                                 ),
                               ),
                             ),
@@ -352,6 +360,35 @@ class _TransferFundState extends State<TransferFund> {
             // }));
             print('Success');
           });
+    });
+  }
+
+  void _verifyAccountNumber(String accountNumber, String code) async {
+    setState(() {
+      _loading = true;
+    });
+    final transferProvider = Provider.of<TransferProvider>(
+      context,
+      listen: false,
+    );
+    final fetched = await transferProvider.getAccountName(
+      code,
+      accountNumber,
+    );
+    fetched.fold((Failure failure) {
+      FlushBarCustomHelper.showErrorFlushbar(
+        context,
+        'Error',
+        failure.message,
+      );
+      setState(() {
+        _loading = false;
+      });
+    }, (String accounName) {
+      setState(() {
+        _accountNameController.text = accounName;
+        _loading = false;
+      });
     });
   }
 }

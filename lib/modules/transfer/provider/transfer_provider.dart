@@ -24,4 +24,22 @@ class TransferProvider with ChangeNotifier {
       );
     }
   }
+
+  Future<Either<Failure, String>> getAccountName(
+      String code, String accountNumber) async {
+    try {
+      String accountName =
+          await TransferApi().getAccountName(accountNumber, code);
+      return right(accountName);
+    } catch (e) {
+      Logger().e(
+        e.toString(),
+      );
+      return left(
+        Failure(
+          message: 'An error occured, please try again',
+        ),
+      );
+    }
+  }
 }

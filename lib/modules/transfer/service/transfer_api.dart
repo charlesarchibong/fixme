@@ -45,4 +45,34 @@ class TransferApi extends TransferInterface {
       rethrow;
     }
   }
+
+  @override
+  Future<String> getAccountName(String accountNumber, String code) async {
+    try {
+      User currentUser = await Utils.getUserSession();
+      String apiKey = await Utils.getApiKey();
+      String url = 'https://manager.fixme.ng/validate-acount-number';
+      Map<String, dynamic> body = {
+        'mobile': currentUser.phoneNumber,
+        'bankCode': code,
+        'accountNumber': accountNumber,
+      };
+      Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
+      Response response = await NetworkService().post(
+        url: url,
+        body: {},
+        queryParam: body,
+        headers: headers,
+        contentType: ContentType.JSON,
+      );
+      if (response.statusCode == 200 && response.data['reqRes'] == 'true') {
+        return response.data['account_name'];
+      } else {
+        throw Exception('Request was not successful, please try again.');
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+      rethrow;
+    }
+  }
 }
