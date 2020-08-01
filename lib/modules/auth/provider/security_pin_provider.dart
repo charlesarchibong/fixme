@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
@@ -13,9 +15,19 @@ class SecurityPinProvider with ChangeNotifier {
       String url = 'https://manager.fixme.ng/save-security-pin';
       User currentUser = await Utils.getUserSession();
       String apiKey = await Utils.getApiKey();
+      String randomToken = Utils.generateId(10);
+
+      String token = base64.encode(
+        utf8.encode(
+          'PIN $randomToken:$pin',
+        ),
+      );
+      ;
+      print(token);
+
       Map<String, String> body = {
         'mobile': currentUser.phoneNumber,
-        'secPin': pin,
+        'secPin': token
       };
       Map<String, String> headers = {'Bearer': '$apiKey'};
       final response = await NetworkService().post(

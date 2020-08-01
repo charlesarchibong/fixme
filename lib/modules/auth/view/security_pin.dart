@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:provider/provider.dart';
+
+import '../../../helpers/flush_bar.dart';
+import '../../../models/failure.dart';
+import '../../main_screen/view/main_screen.dart';
+import '../provider/security_pin_provider.dart';
 
 class EnterSecurityPin extends StatefulWidget {
   EnterSecurityPin({Key key}) : super(key: key);
@@ -11,6 +17,7 @@ class EnterSecurityPin extends StatefulWidget {
 class _EnterSecurityPinState extends State<EnterSecurityPin> {
   bool _loading = false;
   final _securityPinController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
   @override
   void initState() {
     super.initState();
@@ -91,58 +98,80 @@ class _EnterSecurityPinState extends State<EnterSecurityPin> {
             Radius.circular(5.0),
           ),
         ),
-        child: TextFormField(
-          validator: (value) {
-            try {
-              if (value.isEmpty) {
-                return 'Please enter a security pin';
+        child: Form(
+          key: _formKey,
+          child: TextFormField(
+            validator: (value) {
+              try {
+                if (value.isEmpty) {
+                  return 'Please enter a security pin';
+                }
+                if (value.length != 4) {
+                  return 'Security pin should be four (4) digit';
+                }
+                int.parse(value);
+                return null;
+              } catch (e) {
+                Logger().e(e.toString());
+                return 'Security pin can only contain 6 digit numbers';
               }
-              if (value.length != 4) {
-                return 'Security pin should be four (4) digit';
-              }
-              int.parse(value);
-              return null;
-            } catch (e) {
-              Logger().e(e.toString());
-              return 'Security pin can only contain 6 digit numbers';
-            }
-          },
-          keyboardType: TextInputType.phone,
-          textCapitalization: TextCapitalization.none,
-          style: TextStyle(
-            fontSize: 15.0,
-            color: Colors.black,
-          ),
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.all(10.0),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(5.0),
-              borderSide: BorderSide(
-                color: Colors.white,
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.white,
-              ),
-              borderRadius: BorderRadius.circular(5.0),
-            ),
-            hintText: "Enter 4 Digit Pin",
-            hintStyle: TextStyle(
+            },
+            keyboardType: TextInputType.phone,
+            textCapitalization: TextCapitalization.none,
+            style: TextStyle(
               fontSize: 15.0,
-              color: Colors.grey,
-            ),
-            prefixIcon: Icon(
-              Icons.lock,
               color: Colors.black,
             ),
+            decoration: InputDecoration(
+              contentPadding: EdgeInsets.all(10.0),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5.0),
+                borderSide: BorderSide(
+                  color: Colors.white,
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: Colors.white,
+                ),
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              hintText: "Enter 4 Digit Pin",
+              hintStyle: TextStyle(
+                fontSize: 15.0,
+                color: Colors.grey,
+              ),
+              prefixIcon: Icon(
+                Icons.lock,
+                color: Colors.black,
+              ),
+            ),
+            maxLines: 1,
+            controller: _securityPinController,
           ),
-          maxLines: 1,
-          controller: _securityPinController,
         ),
       ),
     );
   }
 
-  void _savedSecurityPin(int pin) {}
+  void _savedSecurityPin(String pin) async {
+    final securityPinProvider = Provider.of<SecurityPinProvider>(
+      context,
+      listen: false,
+    );
+    final saved = await securityPinProvider.savedSecurityPin(pin);
+    saved.fold((Failure failure) {
+      FlushBarCustomHelper.showErrorFlushbar(
+        context,
+        'Error',
+        failure.message,
+      );
+    }, (bool save) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => MainScreen(),
+        ),
+      );
+    });
+  }
 }
