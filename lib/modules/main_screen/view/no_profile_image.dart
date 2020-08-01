@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:quickfix/helpers/flush_bar.dart';
-import 'package:quickfix/modules/main_screen/view/main_screen.dart';
-import 'package:quickfix/modules/profile/provider/profile_provider.dart';
-import 'package:quickfix/util/Utils.dart';
-import 'package:quickfix/util/const.dart';
+import 'package:quickfix/modules/auth/view/security_pin.dart';
+
+import '../../../helpers/flush_bar.dart';
+import '../../../util/Utils.dart';
+import '../../profile/provider/profile_provider.dart';
+import 'main_screen.dart';
 
 class NoProfileImage extends StatefulWidget {
   NoProfileImage({Key key}) : super(key: key);
@@ -14,22 +15,18 @@ class NoProfileImage extends StatefulWidget {
 }
 
 class _NoProfileImageState extends State<NoProfileImage> {
+  bool securityPinExist;
   @override
   void initState() {
-    sendUsertoMainScreen();
     super.initState();
   }
 
-  void sendUsertoMainScreen() async {
-    final picture = await Utils.getProfilePicture();
+  getSecurityPinExist() async {
+    bool exist = await Utils.getSecurityPinExist();
 
-    if (picture != '${Constants.uploadUrl}no_picture_upload') {
-      Navigator.of(context).push(
-        MaterialPageRoute(builder: (BuildContext context) {
-          return MainScreen();
-        }),
-      );
-    }
+    setState(() {
+      securityPinExist = exist;
+    });
   }
 
   @override
@@ -58,6 +55,13 @@ class _NoProfileImageState extends State<NoProfileImage> {
                     ),
                     child: Column(
                       children: <Widget>[
+                        Image.asset(
+                          'assets/logo.png',
+                          width: 250,
+                        ),
+                        SizedBox(
+                          height: 50,
+                        ),
                         Text(
                           'Kindly upload a profile picture to continue.',
                           style: TextStyle(
@@ -100,11 +104,20 @@ class _NoProfileImageState extends State<NoProfileImage> {
                                       );
                                       profileProvider.setNotLoading();
                                       Future.delayed(Duration(seconds: 2), () {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (_) => MainScreen(),
-                                          ),
-                                        );
+                                        if (securityPinExist) {
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (_) => MainScreen(),
+                                            ),
+                                          );
+                                        } else {
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (_) =>
+                                                  EnterSecurityPin(),
+                                            ),
+                                          );
+                                        }
                                       });
                                     }).catchError((e) {
                                       FlushBarCustomHelper.showInfoFlushbar(

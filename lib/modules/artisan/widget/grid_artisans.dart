@@ -28,9 +28,8 @@ class GridTechnician extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      child: ListView(
-        shrinkWrap: true,
-        primary: false,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Stack(
             children: <Widget>[

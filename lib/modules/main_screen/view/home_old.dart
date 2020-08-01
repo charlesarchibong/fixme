@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
@@ -376,33 +377,46 @@ class _HomeState extends State<HomeW>
 
   Widget _serviceProvidersAroundMe() {
     return users != null
-        ? GridView.builder(
-            shrinkWrap: true,
-            primary: false,
-            physics: NeverScrollableScrollPhysics(),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: MediaQuery.of(context).size.width /
-                  (MediaQuery.of(context).size.height / 1.25),
+        ? AnimationLimiter(
+            child: GridView.builder(
+              shrinkWrap: true,
+              primary: true,
+              physics: NeverScrollableScrollPhysics(),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: MediaQuery.of(context).size.width /
+                    (MediaQuery.of(context).size.height / 1.1),
+              ),
+              itemCount: users == null ? 0 : users.length,
+              itemBuilder: (BuildContext context, int index) {
+                Map technician = users[index];
+                return AnimationConfiguration.staggeredGrid(
+                  position: index,
+                  duration: const Duration(milliseconds: 375),
+                  columnCount: 2,
+                  child: SlideAnimation(
+                    verticalOffset: 50.0,
+                    child: FadeInAnimation(
+                      child: GridTechnician(
+                        userData: technician,
+                        mobile: technician['user_mobile'],
+                        img: Constants.uploadUrl +
+                            technician['profile_pic_file_name'],
+                        distance: technician['distance'],
+                        name:
+                            '${technician['user_first_name']} ${technician['user_last_name']}',
+                        rating: double.parse(
+                              technician['user_rating'].toString(),
+                            ) ??
+                            0.0,
+                        raters: technician['reviews'] ?? 0,
+                        serviceArea: technician['service_area'],
+                      ),
+                    ),
+                  ),
+                );
+              },
             ),
-            itemCount: users == null ? 0 : users.length,
-            itemBuilder: (BuildContext context, int index) {
-              Map technician = users[index];
-              return GridTechnician(
-                userData: technician,
-                mobile: technician['user_mobile'],
-                img: Constants.uploadUrl + technician['profile_pic_file_name'],
-                distance: technician['distance'],
-                name:
-                    '${technician['user_first_name']} ${technician['user_last_name']}',
-                rating: double.parse(
-                      technician['user_rating'].toString(),
-                    ) ??
-                    0.0,
-                raters: technician['reviews'] ?? 0,
-                serviceArea: technician['service_area'],
-              );
-            },
           )
         : Center(
             child: Container(

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_shimmer/flutter_shimmer.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:quickfix/helpers/flush_bar.dart';
 import 'package:quickfix/models/failure.dart';
 import 'package:quickfix/modules/auth/view/login.dart';
 import 'package:quickfix/modules/profile/model/bank_code.dart';
+import 'package:quickfix/modules/profile/model/bank_information.dart';
 import 'package:quickfix/modules/profile/model/service_image.dart';
 import 'package:quickfix/modules/profile/model/user.dart';
 import 'package:quickfix/modules/profile/provider/profile_provider.dart';
@@ -158,10 +160,23 @@ class _ProfileState extends State<Profile> {
                       ),
                     ),
                   ),
-                  _profileDetailsTiles(
-                    title: 'Wallet Balance',
-                    subTitle: 'N200',
-                    hasTrailing: false,
+                  Consumer<ProfileProvider>(
+                    builder: (context, profileProvider, child) {
+                      return FutureBuilder<BankInformation>(
+                        future: profileProiver.getAccountInfo(),
+                        builder: (context, snapshot) {
+                          return snapshot.hasData
+                              ? _profileDetailsTiles(
+                                  title: 'Wallet Balance',
+                                  subTitle: 'N${double.parse(
+                                    snapshot.data.balance.toString(),
+                                  )}',
+                                  hasTrailing: false,
+                                )
+                              : ListTileShimmer();
+                        },
+                      );
+                    },
                   ),
                   _profileDetailsTiles(
                     title: 'Account Number',
@@ -181,20 +196,7 @@ class _ProfileState extends State<Profile> {
                     children: <Widget>[
                       RaisedButton(
                         child: Text(
-                          "Withdraw Fund",
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
-                        color: Theme.of(context).accentColor,
-                        onPressed: () async {
-                          // getArtisanByLocation();
-                        },
-                      ),
-                      SizedBox(width: 15),
-                      RaisedButton(
-                        child: Text(
-                          "Transfer Fund",
+                          "Transfer Fund From Fixme Wallet",
                           style: TextStyle(
                             color: Colors.white,
                           ),

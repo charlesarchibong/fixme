@@ -76,6 +76,7 @@ class LoginFormValidation extends ChangeNotifier {
         } else {
           String apiKey = response.headers.value('bearer');
           Utils.setApiKey(apiKey);
+          Utils.setSecurityPinExist(response.data['sec_pin_status']);
           User user = User.fromjson(response.data);
           debugPrint(user.toJson().toString());
           await UsersService(userPhone: user.phoneNumber).updateUserDate(

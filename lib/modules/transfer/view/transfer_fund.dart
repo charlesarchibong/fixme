@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_lock_screen/flutter_lock_screen.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
-import 'package:quickfix/helpers/flush_bar.dart';
-import 'package:quickfix/models/failure.dart';
-import 'package:quickfix/modules/transfer/model/bank_list.dart';
-import 'package:quickfix/modules/transfer/provider/transfer_provider.dart';
-import 'package:quickfix/util/const.dart';
 import 'package:searchable_dropdown/searchable_dropdown.dart';
+
+import '../../../helpers/flush_bar.dart';
+import '../../../models/failure.dart';
+import '../../../util/const.dart';
+import '../model/bank_list.dart';
+import '../provider/transfer_provider.dart';
 
 class TransferFund extends StatefulWidget {
   @override
@@ -26,6 +28,8 @@ class _TransferFundState extends State<TransferFund> {
   bool _loading = false;
   bool _initialLoading = false;
   bool isFingerprint = false;
+
+  String pin;
 
   List<BankList> bankList = List();
 
@@ -113,34 +117,6 @@ class _TransferFundState extends State<TransferFund> {
                                   left: 10.0,
                                   right: 10.0,
                                 ),
-                                child: TextFormField(
-                                  controller: _accountNumberController,
-                                  keyboardType: TextInputType.text,
-                                  validator: (value) {
-                                    return value == ''
-                                        ? 'Account Number can not be empty'
-                                        : null;
-                                  },
-                                  decoration: InputDecoration(
-                                    hintText: 'Enter Account Number',
-                                    hintStyle: TextStyle(
-                                      color: Colors.grey,
-                                    ),
-                                    border: InputBorder.none,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 15,
-                            ),
-                            Card(
-                              elevation: 4.0,
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                  left: 10.0,
-                                  right: 10.0,
-                                ),
                                 child: SearchableDropdown.single(
                                   items: bankList.map((BankList v) {
                                     return DropdownMenuItem<BankList>(
@@ -152,9 +128,17 @@ class _TransferFundState extends State<TransferFund> {
                                   hint: "Select Bank",
                                   searchHint: "Search Bank",
                                   onChanged: (value) {
+                                    Logger().i(value);
                                     setState(() {
                                       bankSelected = value;
                                     });
+                                    if (_accountNumberController.text.length ==
+                                        10) {
+                                      _verifyAccountNumber(
+                                        _accountNumberController.text,
+                                        bankSelected.code,
+                                      );
+                                    }
                                   },
                                   isExpanded: true,
                                 ),
@@ -171,6 +155,53 @@ class _TransferFundState extends State<TransferFund> {
                                   right: 10.0,
                                 ),
                                 child: TextFormField(
+                                  controller: _accountNumberController,
+                                  keyboardType: TextInputType.phone,
+                                  maxLength: 10,
+                                  enabled: _loading == true ? false : true,
+                                  validator: (value) {
+                                    return value == ''
+                                        ? 'Account Number can not be empty'
+                                        : null;
+                                  },
+                                  decoration: InputDecoration(
+                                    hintText: 'Enter Account Number',
+                                    hintStyle: TextStyle(
+                                      color: Colors.grey,
+                                    ),
+                                    border: InputBorder.none,
+                                  ),
+                                  onChanged: (value) {
+                                    if (value.length == 10) {
+                                      if (bankSelected == null) {
+                                        FlushBarCustomHelper.showErrorFlushbar(
+                                          context,
+                                          'Error',
+                                          'Please select reciever bank',
+                                        );
+                                        return;
+                                      }
+                                      _verifyAccountNumber(
+                                        _accountNumberController.text,
+                                        bankSelected.code,
+                                      );
+                                    }
+                                  },
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Card(
+                              elevation: 4.0,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 10.0,
+                                  right: 10.0,
+                                ),
+                                child: TextFormField(
+                                  readOnly: true,
                                   controller: _accountNameController,
                                   keyboardType: TextInputType.text,
                                   validator: (value) {
@@ -199,12 +230,18 @@ class _TransferFundState extends State<TransferFund> {
                                   right: 10.0,
                                 ),
                                 child: TextFormField(
+                                  enabled: _loading == true ? false : true,
                                   controller: _amountController,
                                   keyboardType: TextInputType.phone,
                                   validator: (value) {
-                                    return value == ''
-                                        ? 'Amount can not be empty'
-                                        : null;
+                                    try {
+                                      int.parse(value);
+                                      return value == ''
+                                          ? 'Amount can not be empty'
+                                          : null;
+                                    } catch (e) {
+                                      return 'Amount should contain only numbers';
+                                    }
                                   },
                                   decoration: InputDecoration(
                                     hintText: 'Amount',
@@ -228,6 +265,7 @@ class _TransferFundState extends State<TransferFund> {
                                 ),
                                 child: TextFormField(
                                   maxLines: 10,
+                                  enabled: _loading == true ? false : true,
                                   controller: _descriptionController,
                                   keyboardType: TextInputType.multiline,
                                   decoration: InputDecoration(
@@ -244,20 +282,18 @@ class _TransferFundState extends State<TransferFund> {
                               height: 15,
                             ),
                             _loading
-                                ? CircularProgressIndicator(
-                                    backgroundColor:
-                                        Theme.of(context).accentColor,
-                                  )
+                                ? CircularProgressIndicator()
                                 : FlatButton(
-                                    child: Text("Transfer"),
-                                    padding: EdgeInsets.all(10.0),
+                                    child: Text(
+                                      "Transfer Fund",
+                                    ),
+                                    padding: EdgeInsets.all(
+                                      14.0,
+                                    ),
                                     textColor: Colors.white,
                                     color: Theme.of(context).accentColor,
                                     onPressed: () async {
                                       if (_formKey.currentState.validate()) {
-                                        // setState(() {
-                                        //   _loading = true;
-                                        // });
                                         _authTransfer();
                                       }
                                     },
@@ -305,7 +341,7 @@ class _TransferFundState extends State<TransferFund> {
       authenticated = await auth.authenticateWithBiometrics(
         localizedReason: 'Scan your fingerprint to authenticate',
         useErrorDialogs: true,
-        stickyAuth: false,
+        stickyAuth: true,
       );
     } on PlatformException catch (e) {
       print(e);
@@ -319,37 +355,114 @@ class _TransferFundState extends State<TransferFund> {
   }
 
   _showBottomSheet() {
-    var myPass = [1, 2, 3, 4];
     _scaffoldKey.currentState.showBottomSheet((context) {
       return LockScreen(
-          title: "Enter your security pin",
-          passLength: 4,
-          bgImage: "assets/pin.png",
-          fingerPrintImage: "assets/fingerprint.png",
-          showFingerPass: true,
-          fingerFunction: biometrics,
-          fingerVerify: isFingerprint,
-          borderColor: Colors.white,
-          showWrongPassDialog: true,
-          wrongPassContent: "Wrong security pin, please try again.",
-          wrongPassTitle: "Opps!",
-          wrongPassCancelButtonText: "Cancel",
-          passCodeVerify: (passcode) async {
-            for (int i = 0; i < myPass.length; i++) {
-              if (passcode[i] != myPass[i]) {
-                return false;
-              }
+        title: "Enter your security pin",
+        passLength: 4,
+        bgImage: "assets/pin.png",
+        fingerPrintImage: "assets/fingerprint.png",
+        showFingerPass: true,
+        fingerFunction: biometrics,
+        fingerVerify: isFingerprint,
+        borderColor: Colors.white,
+        showWrongPassDialog: true,
+        wrongPassContent: "Wrong security pin, please try again.",
+        wrongPassTitle: "Opps!",
+        wrongPassCancelButtonText: "Cancel",
+        passCodeVerify: (passcode) async {
+          if (passcode.length == 4) {
+            for (int i = 0; i < 4; i++) {
+              pin += passcode[i].toString();
             }
-
             return true;
-          },
-          onSuccess: () {
-            // Navigator.of(context).pushReplacement(
-            //     new MaterialPageRoute(builder: (BuildContext context) {
-            //   return EmptyPage();
-            // }));
-            print('Success');
-          });
+          }
+
+          return false;
+        },
+        onSuccess: () {
+          // Navigator.of(context).pushReplacement(
+          //     new MaterialPageRoute(builder: (BuildContext context) {
+          //   return EmptyPage();
+          // }));
+          print('Success');
+          Logger().i(
+            'Pin was successfully entered and the pin is = $pin',
+          );
+          transferFund();
+        },
+      );
+    });
+  }
+
+  void _verifyAccountNumber(String accountNumber, String code) async {
+    setState(() {
+      _loading = true;
+    });
+    final transferProvider = Provider.of<TransferProvider>(
+      context,
+      listen: false,
+    );
+    final fetched = await transferProvider.getAccountName(
+      code,
+      accountNumber,
+    );
+    fetched.fold((Failure failure) {
+      FlushBarCustomHelper.showErrorFlushbar(
+        context,
+        'Error',
+        failure.message,
+      );
+      setState(() {
+        _loading = false;
+      });
+    }, (String accounName) {
+      setState(() {
+        _accountNameController.text = accounName;
+        _loading = false;
+      });
+    });
+  }
+
+  void transferFund() async {
+    String accountNumber = _accountNumberController.text;
+    String accountName = _accountNameController.text;
+    String narration = _descriptionController.text;
+    double amount = double.parse(_amountController.text);
+    String code = bankSelected.code;
+    bool isBeneficiary = false;
+
+    Navigator.pop(context);
+    setState(() {
+      _loading = true;
+    });
+    final transferProvider = Provider.of<TransferProvider>(
+      context,
+      listen: false,
+    );
+    final transfered = await transferProvider.tranfersFund(
+      accountName: accountName,
+      accountNumber: accountNumber,
+      amount: amount,
+      code: code,
+      isBeneficiary: isBeneficiary,
+      narration: narration,
+      pin: pin,
+    );
+    setState(() {
+      _loading = false;
+    });
+    transfered.fold((Failure failure) {
+      FlushBarCustomHelper.showErrorFlushbar(
+        context,
+        'Error',
+        failure.message,
+      );
+    }, (bool success) {
+      FlushBarCustomHelper.showInfoFlushbar(
+        context,
+        'Success',
+        'Congrats!!! Your Transaction was successful.',
+      );
     });
   }
 }

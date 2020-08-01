@@ -24,6 +24,11 @@ class Utils {
     sp.setString("user", user);
   }
 
+  static void setSecurityPinExist(bool exist) async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    sp.setBool("exist", exist);
+  }
+
   static void setProfilePicture(String imagePath) async {
     SharedPreferences sp = await SharedPreferences.getInstance();
     sp.setString("profilePicture", imagePath);
@@ -49,6 +54,11 @@ class Utils {
   static Future<String> getProfilePicture() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
     return sp.get('profilePicture') ?? null;
+  }
+
+  static Future<bool> getSecurityPinExist() async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    return sp.get('exist') ?? false;
   }
 
   static Future<String> getSubService() async {
