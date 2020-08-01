@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_lock_screen/flutter_lock_screen.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:quickfix/helpers/flush_bar.dart';
 import 'package:quickfix/models/failure.dart';
@@ -124,6 +125,7 @@ class _TransferFundState extends State<TransferFund> {
                                   hint: "Select Bank",
                                   searchHint: "Search Bank",
                                   onChanged: (value) {
+                                    Logger().i(value);
                                     setState(() {
                                       bankSelected = value;
                                     });
@@ -249,7 +251,7 @@ class _TransferFundState extends State<TransferFund> {
                                         Theme.of(context).accentColor,
                                   )
                                 : FlatButton(
-                                    child: Text("Transfer"),
+                                    child: Text("Transfer Fund"),
                                     padding: EdgeInsets.all(10.0),
                                     textColor: Colors.white,
                                     color: Theme.of(context).accentColor,
