@@ -16,7 +16,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:location/location.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
-import 'package:quickfix/modules/auth/view/security_pin.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../helpers/flush_bar.dart';
@@ -811,7 +810,6 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
-    _checkIfSecurityKeyIsSet();
     try {
       versionCheck(context);
     } catch (e) {
@@ -841,17 +839,6 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
     //        statusBarBrightness:
     //            Brightness.dark // Dark == white status bar -- for IOS.
     //        ));
-  }
-
-  _checkIfSecurityKeyIsSet() async {
-    final bool exist = await Utils.getSecurityPinExist();
-    if (!exist) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (_) => EnterSecurityPin(),
-        ),
-      );
-    }
   }
 
   versionCheck(context) async {

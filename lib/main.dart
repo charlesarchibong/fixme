@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
+import 'package:quickfix/modules/auth/view/security_pin.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -205,7 +206,9 @@ class _MyAppState extends State<MyApp> {
               ? widget.user?.profilePicture == null ||
                       widget.user?.profilePicture == 'no_picture_upload'
                   ? NoProfileImage()
-                  : MainScreen()
+                  : widget.sp.get('exist') == false
+                      ? EnterSecurityPin()
+                      : MainScreen()
               : Walkthrough(),
         );
       },
