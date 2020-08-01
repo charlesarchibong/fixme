@@ -232,9 +232,14 @@ class _TransferFundState extends State<TransferFund> {
                                   controller: _amountController,
                                   keyboardType: TextInputType.phone,
                                   validator: (value) {
-                                    return value == ''
-                                        ? 'Amount can not be empty'
-                                        : null;
+                                    try {
+                                      int.parse(value);
+                                      return value == ''
+                                          ? 'Amount can not be empty'
+                                          : null;
+                                    } catch (e) {
+                                      return 'Amount should contain only numbers';
+                                    }
                                   },
                                   decoration: InputDecoration(
                                     hintText: 'Amount',
@@ -351,34 +356,35 @@ class _TransferFundState extends State<TransferFund> {
     var myPass = [1, 2, 3, 4];
     _scaffoldKey.currentState.showBottomSheet((context) {
       return LockScreen(
-          title: "Enter your security pin",
-          passLength: 4,
-          bgImage: "assets/pin.png",
-          fingerPrintImage: "assets/fingerprint.png",
-          showFingerPass: true,
-          fingerFunction: biometrics,
-          fingerVerify: isFingerprint,
-          borderColor: Colors.white,
-          showWrongPassDialog: true,
-          wrongPassContent: "Wrong security pin, please try again.",
-          wrongPassTitle: "Opps!",
-          wrongPassCancelButtonText: "Cancel",
-          passCodeVerify: (passcode) async {
-            for (int i = 0; i < myPass.length; i++) {
-              if (passcode[i] != myPass[i]) {
-                return false;
-              }
+        title: "Enter your security pin",
+        passLength: 4,
+        bgImage: "assets/pin.png",
+        fingerPrintImage: "assets/fingerprint.png",
+        showFingerPass: true,
+        fingerFunction: biometrics,
+        fingerVerify: isFingerprint,
+        borderColor: Colors.white,
+        showWrongPassDialog: true,
+        wrongPassContent: "Wrong security pin, please try again.",
+        wrongPassTitle: "Opps!",
+        wrongPassCancelButtonText: "Cancel",
+        passCodeVerify: (passcode) async {
+          for (int i = 0; i < myPass.length; i++) {
+            if (passcode[i] != myPass[i]) {
+              return false;
             }
+          }
 
-            return true;
-          },
-          onSuccess: () {
-            // Navigator.of(context).pushReplacement(
-            //     new MaterialPageRoute(builder: (BuildContext context) {
-            //   return EmptyPage();
-            // }));
-            print('Success');
-          });
+          return true;
+        },
+        onSuccess: () {
+          // Navigator.of(context).pushReplacement(
+          //     new MaterialPageRoute(builder: (BuildContext context) {
+          //   return EmptyPage();
+          // }));
+          print('Success');
+        },
+      );
     });
   }
 
