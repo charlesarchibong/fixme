@@ -265,15 +265,16 @@ class _TransferFundState extends State<TransferFund> {
                                         Theme.of(context).accentColor,
                                   )
                                 : FlatButton(
-                                    child: Text("Transfer Fund"),
-                                    padding: EdgeInsets.all(10.0),
+                                    child: Text(
+                                      "Transfer Fund",
+                                    ),
+                                    padding: EdgeInsets.all(
+                                      20.0,
+                                    ),
                                     textColor: Colors.white,
                                     color: Theme.of(context).accentColor,
                                     onPressed: () async {
                                       if (_formKey.currentState.validate()) {
-                                        // setState(() {
-                                        //   _loading = true;
-                                        // });
                                         _authTransfer();
                                       }
                                     },
