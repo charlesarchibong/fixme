@@ -37,10 +37,22 @@ class _HomeState extends State<HomeW>
   bool _loadingArtisan = false;
   String phoneNumber = '';
   String accountNumber = '0348861021';
+  ScrollController _controller;
   // final TextEditingController _searchControl = new TextEditingController();
+  _scrollListener() {
+    if (_controller.offset >= _controller.position.maxScrollExtent &&
+        !_controller.position.outOfRange) {
+      getMoreArtisanByLocation();
+      setState(() {
+        print("i have reach the end");
+        // message = "reach the bottom";
+      });
+    }
+  }
 
   @override
   void initState() {
+    print("sjsj");
     location = new Location();
     location.getLocation().then((value) {
       locationData = value;
@@ -59,6 +71,9 @@ class _HomeState extends State<HomeW>
       getArtisanByLocation();
     });
     getUserPhone();
+
+    _controller = ScrollController();
+    _controller.addListener(_scrollListener);
     super.initState();
   }
 
@@ -97,6 +112,47 @@ class _HomeState extends State<HomeW>
     }
   }
 
+  // ************************** get more users *****************************************************
+  Future<List> getMoreArtisanByLocation() async {
+    try {
+      final artisanProvider = Provider.of<ArtisanProvider>(
+        context,
+        listen: false,
+      );
+      var length = users.last["id"];
+      print(length);
+
+      // setState(() {
+      //   _loadingArtisan = true;
+      // });
+
+      final fetched = await artisanProvider.getMoreArtisanByLocation(
+          locationData: locationData, lastUser: length);
+      // setState(() {
+      //   _loadingArtisan = false;
+      // });
+      return fetched.fold((Failure failure) {
+        setState(() {
+          users = users;
+        });
+        return List();
+      }, (List listArtisan) {
+        List newList = [...users, ...listArtisan];
+        setState(() {
+          users = newList;
+        });
+        return newList;
+      });
+    } catch (error) {
+      // setState(() {
+      //   users = List();
+      // });
+
+      print(error.toString());
+      return List();
+    }
+  }
+
   Future getUserPhone() async {
     final user = await Utils.getUserSession();
     setState(() {
@@ -121,6 +177,7 @@ class _HomeState extends State<HomeW>
       body: RefreshIndicator(
         onRefresh: () => getArtisanByLocation(),
         child: SingleChildScrollView(
+          controller: _controller,
           physics: AlwaysScrollableScrollPhysics(),
           scrollDirection: Axis.vertical,
           child: Padding(
@@ -128,60 +185,6 @@ class _HomeState extends State<HomeW>
             child: Column(
               children: <Widget>[
                 SizedBox(height: 10.0),
-
-                //Slider Here
-
-                // CarouselSlider(
-                //   options: CarouselOptions(
-                //     autoPlay: true,
-                //     viewportFraction: 1.0,
-                //     height: MediaQuery.of(context).size.height / 2.4,
-                //     onPageChanged: (index, reason) {
-                //       setState(() {
-                //         _current = index;
-                //       });
-                //     },
-                //   ),
-                //   items: map<Widget>(
-                //     technicians,
-                //     (index, i) {
-                //       Map food = technicians[index];
-                //       return SliderItem(
-                //         img: food['img'],
-                //         isFav: true,
-                //         name: food['name'],
-                //         rating: 5.0,
-                //         raters: 23,
-                //       );
-                //     },
-                //   ).toList(),
-                // ),
-                // SizedBox(height: 20.0),
-
-                // Text(
-                //   "Search Service or Business",
-                //   style: TextStyle(
-                //     fontSize: 19,
-                //     fontWeight: FontWeight.w800,
-                //   ),
-                // ),
-                // Container(
-                //   height: 65.0,
-                //   child: ListView.builder(
-                //     scrollDirection: Axis.horizontal,
-                //     shrinkWrap: true,
-                //     itemCount: categories == null ? 0 : categories.length,
-                //     itemBuilder: (BuildContext context, int index) {
-                //       Map cat = categories[index];
-                //       return HomeCategory(
-                //         icon: cat['icon'],
-                //         title: cat['name'],
-                //         items: cat['items'].toString(),
-                //         isHome: true,
-                //       );
-                //     },
-                //   ),
-                // ),
                 InkWell(
                   onTap: () {
                     Clipboard.setData(
