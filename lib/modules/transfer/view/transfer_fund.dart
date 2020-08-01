@@ -148,6 +148,7 @@ class _TransferFundState extends State<TransferFund> {
                                   controller: _accountNumberController,
                                   keyboardType: TextInputType.phone,
                                   maxLength: 10,
+                                  enabled: _loading == true ? false : true,
                                   validator: (value) {
                                     return value == ''
                                         ? 'Account Number can not be empty'
@@ -181,6 +182,7 @@ class _TransferFundState extends State<TransferFund> {
                                   right: 10.0,
                                 ),
                                 child: TextFormField(
+                                  readOnly: true,
                                   controller: _accountNameController,
                                   keyboardType: TextInputType.text,
                                   validator: (value) {
@@ -209,6 +211,7 @@ class _TransferFundState extends State<TransferFund> {
                                   right: 10.0,
                                 ),
                                 child: TextFormField(
+                                  enabled: _loading == true ? false : true,
                                   controller: _amountController,
                                   keyboardType: TextInputType.phone,
                                   validator: (value) {
@@ -238,6 +241,7 @@ class _TransferFundState extends State<TransferFund> {
                                 ),
                                 child: TextFormField(
                                   maxLines: 10,
+                                  enabled: _loading == true ? false : true,
                                   controller: _descriptionController,
                                   keyboardType: TextInputType.multiline,
                                   decoration: InputDecoration(
