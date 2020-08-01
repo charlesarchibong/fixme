@@ -29,6 +29,8 @@ class _TransferFundState extends State<TransferFund> {
   bool _initialLoading = false;
   bool isFingerprint = false;
 
+  String pin;
+
   List<BankList> bankList = List();
 
   getBankList() async {
@@ -339,7 +341,7 @@ class _TransferFundState extends State<TransferFund> {
       authenticated = await auth.authenticateWithBiometrics(
         localizedReason: 'Scan your fingerprint to authenticate',
         useErrorDialogs: true,
-        stickyAuth: false,
+        stickyAuth: true,
       );
     } on PlatformException catch (e) {
       print(e);
@@ -353,7 +355,6 @@ class _TransferFundState extends State<TransferFund> {
   }
 
   _showBottomSheet() {
-    var myPass = [1, 2, 3, 4];
     _scaffoldKey.currentState.showBottomSheet((context) {
       return LockScreen(
         title: "Enter your security pin",
@@ -369,13 +370,14 @@ class _TransferFundState extends State<TransferFund> {
         wrongPassTitle: "Opps!",
         wrongPassCancelButtonText: "Cancel",
         passCodeVerify: (passcode) async {
-          for (int i = 0; i < myPass.length; i++) {
-            if (passcode[i] != myPass[i]) {
-              return false;
+          if (passcode.length == 4) {
+            for (int i = 0; i < 4; i++) {
+              pin += passcode[i].toString();
             }
+            return true;
           }
 
-          return true;
+          return false;
         },
         onSuccess: () {
           // Navigator.of(context).pushReplacement(
@@ -383,6 +385,10 @@ class _TransferFundState extends State<TransferFund> {
           //   return EmptyPage();
           // }));
           print('Success');
+          Logger().i(
+            'Pin was successfully entered and the pin is = $pin',
+          );
+          transferFund();
         },
       );
     });
@@ -414,6 +420,49 @@ class _TransferFundState extends State<TransferFund> {
         _accountNameController.text = accounName;
         _loading = false;
       });
+    });
+  }
+
+  void transferFund() async {
+    String accountNumber = _accountNumberController.text;
+    String accountName = _accountNameController.text;
+    String narration = _descriptionController.text;
+    double amount = double.parse(_amountController.text);
+    String code = bankSelected.code;
+    bool isBeneficiary = false;
+
+    Navigator.pop(context);
+    setState(() {
+      _loading = true;
+    });
+    final transferProvider = Provider.of<TransferProvider>(
+      context,
+      listen: false,
+    );
+    final transfered = await transferProvider.tranfersFund(
+      accountName: accountName,
+      accountNumber: accountNumber,
+      amount: amount,
+      code: code,
+      isBeneficiary: isBeneficiary,
+      narration: narration,
+      pin: pin,
+    );
+    setState(() {
+      _loading = false;
+    });
+    transfered.fold((Failure failure) {
+      FlushBarCustomHelper.showErrorFlushbar(
+        context,
+        'Error',
+        failure.message,
+      );
+    }, (bool success) {
+      FlushBarCustomHelper.showInfoFlushbar(
+        context,
+        'Success',
+        'Congrats!!! Your Transaction was successful.',
+      );
     });
   }
 }
