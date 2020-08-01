@@ -155,6 +155,42 @@ class ArtisanProvider with ChangeNotifier {
     }
   }
 
+  Future<Either<Failure, List>> getMoreArtisanByLocation(
+      {LocationData locationData, lastUser}) async {
+    try {
+      final user = await Utils.getUserSession();
+      String apiKey = await Utils.getApiKey();
+      Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
+      Map<String, dynamic> body = {
+        'mobile': user.phoneNumber,
+        'latitude': locationData.latitude,
+        'longitude': locationData.longitude,
+        'last_user_id': lastUser
+      };
+      String url = Constants.getMoreArtisan;
+      final response = await NetworkService().post(
+        url: url,
+        body: body,
+        contentType: ContentType.URL_ENCODED,
+        headers: headers,
+      );
+      var artisans = response.data['sortedUsers'] as List;
+      print(artisans.toString());
+      return right(artisans);
+    } catch (e) {
+      CustomLogger().errorPrint(
+        e.toString(),
+      );
+      loading = false;
+      notifyListeners();
+      return Left(
+        Failure(
+          message: 'Unable to fetch artisan at the moment',
+        ),
+      );
+    }
+  }
+
   Future<Either<Failure, bool>> rejectRequest(
       ServiceRequest serviceRequest) async {
     try {
