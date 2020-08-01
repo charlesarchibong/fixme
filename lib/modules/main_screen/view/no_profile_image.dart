@@ -55,6 +55,13 @@ class _NoProfileImageState extends State<NoProfileImage> {
                     ),
                     child: Column(
                       children: <Widget>[
+                        Image.asset(
+                          'assets/logo.png',
+                          width: 250,
+                        ),
+                        SizedBox(
+                          height: 50,
+                        ),
                         Text(
                           'Kindly upload a profile picture to continue.',
                           style: TextStyle(
