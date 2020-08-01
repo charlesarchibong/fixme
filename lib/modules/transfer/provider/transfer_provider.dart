@@ -55,9 +55,10 @@ class TransferProvider with ChangeNotifier {
       String narration,
       bool isBeneficiary}) async {
     try {
+      // Logger().i(a)
       bool transfered = await TransferApi().transferFund(
         accountName: accountName,
-        accountNumber: accountName,
+        accountNumber: accountNumber,
         amount: amount,
         code: code,
         isBeneficiary: isBeneficiary,
@@ -79,7 +80,8 @@ class TransferProvider with ChangeNotifier {
 
       return left(
         Failure(
-          message: 'An error occured, please try again',
+          message:
+              'An error occured while trying to transfer fund from your Fixme account, please try again',
         ),
       );
     }

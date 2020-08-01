@@ -125,7 +125,11 @@ class TransferApi extends TransferInterface {
         throw Exception('Request was not successful, please try again.');
       }
     } catch (e) {
-      Logger().e(e.toString());
+      if (e is DioError) {
+        Logger().e(e.response.data);
+      } else {
+        Logger().e(e.toString());
+      }
       rethrow;
     }
   }

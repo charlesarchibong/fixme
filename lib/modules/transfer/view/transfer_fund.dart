@@ -29,7 +29,7 @@ class _TransferFundState extends State<TransferFund> {
   bool _initialLoading = false;
   bool isFingerprint = false;
 
-  String pin;
+  String pin = '';
 
   List<BankList> bankList = List();
 
@@ -370,10 +370,15 @@ class _TransferFundState extends State<TransferFund> {
         wrongPassTitle: "Opps!",
         wrongPassCancelButtonText: "Cancel",
         passCodeVerify: (passcode) async {
+          Logger().i(String.fromCharCodes(passcode));
           if (passcode.length == 4) {
             for (int i = 0; i < 4; i++) {
-              pin += passcode[i].toString();
+              setState(() {
+                pin += passcode[i].toString();
+              });
             }
+            print('fjkdncjkndje ');
+
             return true;
           }
 
@@ -448,7 +453,9 @@ class _TransferFundState extends State<TransferFund> {
       narration: narration,
       pin: pin,
     );
+
     setState(() {
+      pin = '';
       _loading = false;
     });
     transfered.fold((Failure failure) {
@@ -461,7 +468,7 @@ class _TransferFundState extends State<TransferFund> {
       FlushBarCustomHelper.showInfoFlushbar(
         context,
         'Success',
-        'Congrats!!! Your Transaction was successful.',
+        'Your Transaction was successful.',
       );
     });
   }
