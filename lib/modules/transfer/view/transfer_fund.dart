@@ -4,12 +4,13 @@ import 'package:flutter_lock_screen/flutter_lock_screen.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
-import 'package:quickfix/helpers/flush_bar.dart';
-import 'package:quickfix/models/failure.dart';
-import 'package:quickfix/modules/transfer/model/bank_list.dart';
-import 'package:quickfix/modules/transfer/provider/transfer_provider.dart';
-import 'package:quickfix/util/const.dart';
 import 'package:searchable_dropdown/searchable_dropdown.dart';
+
+import '../../../helpers/flush_bar.dart';
+import '../../../models/failure.dart';
+import '../../../util/const.dart';
+import '../model/bank_list.dart';
+import '../provider/transfer_provider.dart';
 
 class TransferFund extends StatefulWidget {
   @override
