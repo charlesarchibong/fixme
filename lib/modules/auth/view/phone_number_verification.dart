@@ -6,13 +6,15 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:quickfix/helpers/flush_bar.dart';
-import 'package:quickfix/modules/auth/view/login.dart';
-import 'package:quickfix/modules/main_screen/view/main_screen.dart';
-import 'package:quickfix/modules/main_screen/view/no_profile_image.dart';
-import 'package:quickfix/modules/profile/model/user.dart';
-import 'package:quickfix/util/Utils.dart';
-import 'package:quickfix/util/const.dart';
+import 'package:quickfix/modules/auth/view/security_pin.dart';
+
+import '../../../helpers/flush_bar.dart';
+import '../../../util/Utils.dart';
+import '../../../util/const.dart';
+import '../../main_screen/view/main_screen.dart';
+import '../../main_screen/view/no_profile_image.dart';
+import '../../profile/model/user.dart';
+import 'login.dart';
 
 class PhoneNumberVerification extends StatefulWidget {
   final User user;
@@ -188,15 +190,24 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
     timer.cancel();
     Utils.setUserSession(json.encode(widget.user));
     Utils.setProfilePicture(widget.user.profilePicture);
+    bool exist = await Utils.getSecurityPinExist();
 
     final picture = widget.user.profilePicture;
 
     if (picture != '${Constants.uploadUrl}no_picture_upload') {
-      Navigator.of(context).push(
-        MaterialPageRoute(builder: (BuildContext context) {
-          return MainScreen();
-        }),
-      );
+      if (exist) {
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (BuildContext context) {
+            return MainScreen();
+          }),
+        );
+      } else {
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (BuildContext context) {
+            return EnterSecurityPin();
+          }),
+        );
+      }
     } else {
       Navigator.of(context).push(
         MaterialPageRoute(builder: (BuildContext context) {

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:quickfix/helpers/flush_bar.dart';
-import 'package:quickfix/modules/main_screen/view/main_screen.dart';
-import 'package:quickfix/modules/profile/provider/profile_provider.dart';
+import 'package:quickfix/modules/auth/view/security_pin.dart';
+
+import '../../../helpers/flush_bar.dart';
+import '../../../util/Utils.dart';
+import '../../profile/provider/profile_provider.dart';
+import 'main_screen.dart';
 
 class NoProfileImage extends StatefulWidget {
   NoProfileImage({Key key}) : super(key: key);
@@ -12,9 +15,18 @@ class NoProfileImage extends StatefulWidget {
 }
 
 class _NoProfileImageState extends State<NoProfileImage> {
+  bool securityPinExist;
   @override
   void initState() {
     super.initState();
+  }
+
+  getSecurityPinExist() async {
+    bool exist = await Utils.getSecurityPinExist();
+
+    setState(() {
+      securityPinExist = exist;
+    });
   }
 
   @override
@@ -85,11 +97,20 @@ class _NoProfileImageState extends State<NoProfileImage> {
                                       );
                                       profileProvider.setNotLoading();
                                       Future.delayed(Duration(seconds: 2), () {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (_) => MainScreen(),
-                                          ),
-                                        );
+                                        if (securityPinExist) {
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (_) => MainScreen(),
+                                            ),
+                                          );
+                                        } else {
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (_) =>
+                                                  EnterSecurityPin(),
+                                            ),
+                                          );
+                                        }
                                       });
                                     }).catchError((e) {
                                       FlushBarCustomHelper.showInfoFlushbar(
