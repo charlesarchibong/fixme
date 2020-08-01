@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
+import 'package:quickfix/util/Utils.dart';
 
 import '../../../helpers/flush_bar.dart';
 import '../../../models/failure.dart';
@@ -74,7 +75,11 @@ class _EnterSecurityPinState extends State<EnterSecurityPin> {
                                   ),
                                 ),
                                 color: Theme.of(context).accentColor,
-                                onPressed: () async {},
+                                onPressed: () async {
+                                  _savedSecurityPin(
+                                    _securityPinController.text,
+                                  );
+                                },
                               ),
                       ],
                     ),
@@ -155,11 +160,17 @@ class _EnterSecurityPinState extends State<EnterSecurityPin> {
   }
 
   void _savedSecurityPin(String pin) async {
+    setState(() {
+      _loading = true;
+    });
     final securityPinProvider = Provider.of<SecurityPinProvider>(
       context,
       listen: false,
     );
     final saved = await securityPinProvider.savedSecurityPin(pin);
+    setState(() {
+      _loading = false;
+    });
     saved.fold((Failure failure) {
       FlushBarCustomHelper.showErrorFlushbar(
         context,
@@ -167,6 +178,7 @@ class _EnterSecurityPinState extends State<EnterSecurityPin> {
         failure.message,
       );
     }, (bool save) {
+      Utils.setSecurityPinExist(true);
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (_) => MainScreen(),
