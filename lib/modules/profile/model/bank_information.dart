@@ -3,9 +3,9 @@ class BankInformation {
   final String bankName;
   final String bankCode;
   final String accountNumber;
-  final double balance;
-  final double totalIncome;
-  final double totalWithdrawal;
+  final int balance;
+  final int totalIncome;
+  final int totalWithdrawal;
   BankInformation({
     this.mobile,
     this.bankName,
