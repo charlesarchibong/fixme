@@ -130,6 +130,13 @@ class _TransferFundState extends State<TransferFund> {
                                     setState(() {
                                       bankSelected = value;
                                     });
+                                    if (_accountNumberController.text.length ==
+                                        10) {
+                                      _verifyAccountNumber(
+                                        _accountNumberController.text,
+                                        bankSelected.code,
+                                      );
+                                    }
                                   },
                                   isExpanded: true,
                                 ),
@@ -164,6 +171,14 @@ class _TransferFundState extends State<TransferFund> {
                                   ),
                                   onChanged: (value) {
                                     if (value.length == 10) {
+                                      if (bankSelected == null) {
+                                        FlushBarCustomHelper.showErrorFlushbar(
+                                          context,
+                                          'Error',
+                                          'Please select reciever bank',
+                                        );
+                                        return;
+                                      }
                                       _verifyAccountNumber(
                                         _accountNumberController.text,
                                         bankSelected.code,
@@ -260,16 +275,13 @@ class _TransferFundState extends State<TransferFund> {
                               height: 15,
                             ),
                             _loading
-                                ? CircularProgressIndicator(
-                                    backgroundColor:
-                                        Theme.of(context).accentColor,
-                                  )
+                                ? CircularProgressIndicator()
                                 : FlatButton(
                                     child: Text(
                                       "Transfer Fund",
                                     ),
                                     padding: EdgeInsets.all(
-                                      20.0,
+                                      14.0,
                                     ),
                                     textColor: Colors.white,
                                     color: Theme.of(context).accentColor,
