@@ -16,33 +16,35 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:location/location.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
-import 'package:quickfix/helpers/flush_bar.dart';
-import 'package:quickfix/helpers/notification.dart';
-import 'package:quickfix/main.dart';
-import 'package:quickfix/modules/artisan/provider/artisan_provider.dart';
-import 'package:quickfix/modules/artisan/view/my_requested_service.dart';
-import 'package:quickfix/modules/artisan/view/my_service_requests.dart';
-import 'package:quickfix/modules/chat/view/chats.dart';
-import 'package:quickfix/modules/dashboard/provider/dashboard_provider.dart';
-import 'package:quickfix/modules/dashboard/view/dashboard.dart';
-import 'package:quickfix/modules/job/provider/approve_bid_provider.dart';
-import 'package:quickfix/modules/job/provider/pending_job_provider.dart';
-import 'package:quickfix/modules/job/view/approved_jobs.dart';
-import 'package:quickfix/modules/job/view/my_requests.dart';
-import 'package:quickfix/modules/job/view/pending_appointment.dart';
-import 'package:quickfix/modules/job/view/post_job.dart';
-import 'package:quickfix/modules/main_screen/view/home_old.dart';
-import 'package:quickfix/modules/profile/model/user.dart';
-import 'package:quickfix/modules/profile/provider/profile_provider.dart';
-import 'package:quickfix/modules/profile/view/profile.dart';
-import 'package:quickfix/modules/search/view/search.dart';
-import 'package:quickfix/modules/transfer/view/transfer_fund.dart';
-import 'package:quickfix/services/firebase/messages.dart';
-import 'package:quickfix/services/network/network_service.dart';
-import 'package:quickfix/util/Utils.dart';
-import 'package:quickfix/util/const.dart';
-import 'package:quickfix/util/content_type.dart';
+import 'package:quickfix/modules/auth/view/security_pin.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../../../helpers/flush_bar.dart';
+import '../../../helpers/notification.dart';
+import '../../../main.dart';
+import '../../../services/firebase/messages.dart';
+import '../../../services/network/network_service.dart';
+import '../../../util/Utils.dart';
+import '../../../util/const.dart';
+import '../../../util/content_type.dart';
+import '../../artisan/provider/artisan_provider.dart';
+import '../../artisan/view/my_requested_service.dart';
+import '../../artisan/view/my_service_requests.dart';
+import '../../chat/view/chats.dart';
+import '../../dashboard/provider/dashboard_provider.dart';
+import '../../dashboard/view/dashboard.dart';
+import '../../job/provider/approve_bid_provider.dart';
+import '../../job/provider/pending_job_provider.dart';
+import '../../job/view/approved_jobs.dart';
+import '../../job/view/my_requests.dart';
+import '../../job/view/pending_appointment.dart';
+import '../../job/view/post_job.dart';
+import '../../profile/model/user.dart';
+import '../../profile/provider/profile_provider.dart';
+import '../../profile/view/profile.dart';
+import '../../search/view/search.dart';
+import '../../transfer/view/transfer_fund.dart';
+import 'home_old.dart';
 
 Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) {
   if (message.containsKey('data')) {
@@ -809,6 +811,7 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
+    _checkIfSecurityKeyIsSet();
     try {
       versionCheck(context);
     } catch (e) {
@@ -838,6 +841,17 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
     //        statusBarBrightness:
     //            Brightness.dark // Dark == white status bar -- for IOS.
     //        ));
+  }
+
+  _checkIfSecurityKeyIsSet() async {
+    final bool exist = await Utils.getSecurityPinExist();
+    if (!exist) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => EnterSecurityPin(),
+        ),
+      );
+    }
   }
 
   versionCheck(context) async {
