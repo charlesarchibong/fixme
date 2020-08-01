@@ -196,20 +196,7 @@ class _ProfileState extends State<Profile> {
                     children: <Widget>[
                       RaisedButton(
                         child: Text(
-                          "Withdraw Fund",
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
-                        color: Theme.of(context).accentColor,
-                        onPressed: () async {
-                          // getArtisanByLocation();
-                        },
-                      ),
-                      SizedBox(width: 15),
-                      RaisedButton(
-                        child: Text(
-                          "Transfer Fund",
+                          "Transfer Fund From Fixme Wallet",
                           style: TextStyle(
                             color: Colors.white,
                           ),

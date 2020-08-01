@@ -113,34 +113,6 @@ class _TransferFundState extends State<TransferFund> {
                                   left: 10.0,
                                   right: 10.0,
                                 ),
-                                child: TextFormField(
-                                  controller: _accountNumberController,
-                                  keyboardType: TextInputType.text,
-                                  validator: (value) {
-                                    return value == ''
-                                        ? 'Account Number can not be empty'
-                                        : null;
-                                  },
-                                  decoration: InputDecoration(
-                                    hintText: 'Enter Account Number',
-                                    hintStyle: TextStyle(
-                                      color: Colors.grey,
-                                    ),
-                                    border: InputBorder.none,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 15,
-                            ),
-                            Card(
-                              elevation: 4.0,
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                  left: 10.0,
-                                  right: 10.0,
-                                ),
                                 child: SearchableDropdown.single(
                                   items: bankList.map((BankList v) {
                                     return DropdownMenuItem<BankList>(
@@ -162,6 +134,34 @@ class _TransferFundState extends State<TransferFund> {
                             ),
                             SizedBox(
                               height: 20,
+                            ),
+                            Card(
+                              elevation: 4.0,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 10.0,
+                                  right: 10.0,
+                                ),
+                                child: TextFormField(
+                                  controller: _accountNumberController,
+                                  keyboardType: TextInputType.phone,
+                                  validator: (value) {
+                                    return value == ''
+                                        ? 'Account Number can not be empty'
+                                        : null;
+                                  },
+                                  decoration: InputDecoration(
+                                    hintText: 'Enter Account Number',
+                                    hintStyle: TextStyle(
+                                      color: Colors.grey,
+                                    ),
+                                    border: InputBorder.none,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 15,
                             ),
                             Card(
                               elevation: 4.0,

@@ -113,6 +113,10 @@ class _EnterSecurityPinState extends State<EnterSecurityPin> {
         child: Form(
           key: _formKey,
           child: TextFormField(
+            autofocus: true,
+            focusNode: FocusNode(
+              canRequestFocus: true,
+            ),
             validator: (value) {
               try {
                 if (value.isEmpty) {

@@ -17,15 +17,14 @@ class SecurityPinProvider with ChangeNotifier {
       String apiKey = await Utils.getApiKey();
       String randomToken = Utils.generateId(10);
 
-      String token = base64.encode(
+      String token64 = base64.encode(
         utf8.encode(
-          'PIN $randomToken:$pin',
+          '$randomToken:$pin',
         ),
       );
+      String token = 'PIN $token64';
 
       print(token);
-
-      Logger().i('PIN $randomToken:$pin');
 
       Map<String, String> body = {
         'mobile': currentUser.phoneNumber,
