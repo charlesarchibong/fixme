@@ -168,7 +168,9 @@ class _ProfileState extends State<Profile> {
                           return snapshot.hasData
                               ? _profileDetailsTiles(
                                   title: 'Wallet Balance',
-                                  subTitle: 'N${snapshot.data.balance}',
+                                  subTitle: 'N${double.parse(
+                                    snapshot.data.balance.toString(),
+                                  )}',
                                   hasTrailing: false,
                                 )
                               : ListTileShimmer();
