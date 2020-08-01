@@ -18,6 +18,8 @@ class Constants {
   static String updateLocationUrl = 'https://manager.fixme.ng/gpsl';
   static String getArtisanByLocationUrl =
       'https://manager.fixme.ng/near-artisans';
+  static String getMoreArtisan =
+      "https://manager.fixme.ng/load-more-service-providers";
   static String loginUserUrl = "m-login";
   static String addSubService = "add-sub-service";
   static String userInfo = "user-info";
