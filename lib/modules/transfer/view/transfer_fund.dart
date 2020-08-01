@@ -164,8 +164,9 @@ class _TransferFundState extends State<TransferFund> {
                                   onChanged: (value) {
                                     if (value.length == 10) {
                                       _verifyAccountNumber(
-                                          _accountNumberController.text,
-                                          bankSelected.code);
+                                        _accountNumberController.text,
+                                        bankSelected.code,
+                                      );
                                     }
                                   },
                                 ),
