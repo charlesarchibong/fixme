@@ -289,7 +289,7 @@ class ProfileProvider extends ChangeNotifier {
       'mobile': currentUser.phoneNumber,
       'email': currentUser.email,
     };
-    Map<String, String> headers = {'Bearer': '$apiKey'};
+    Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
     final response = await NetworkService().post(
       url: url,
       body: body,
@@ -405,10 +405,11 @@ class ProfileProvider extends ChangeNotifier {
       String url = 'https://manager.fixme.ng/get-user-bank-info';
       User currentUser = await Utils.getUserSession();
       String apiKey = await Utils.getApiKey();
+      Logger().i(apiKey);
       Map<String, String> body = {
         'mobile': currentUser.phoneNumber,
       };
-      Map<String, String> headers = {'Bearer': '$apiKey'};
+      Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
       final response = await NetworkService().post(
         url: url,
         body: body,
@@ -427,7 +428,7 @@ class ProfileProvider extends ChangeNotifier {
     } catch (e) {
       Logger().e(e.toString());
       return BankInformation(
-        balance: 0.0,
+        balance: 0,
       );
     }
   }
