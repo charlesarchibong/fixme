@@ -22,14 +22,16 @@ class SecurityPinProvider with ChangeNotifier {
           'PIN $randomToken:$pin',
         ),
       );
-      ;
+
       print(token);
+
+      Logger().i('PIN $randomToken:$pin');
 
       Map<String, String> body = {
         'mobile': currentUser.phoneNumber,
         'secPin': token
       };
-      Map<String, String> headers = {'Bearer': '$apiKey'};
+      Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
       final response = await NetworkService().post(
         url: url,
         body: body,
@@ -46,6 +48,9 @@ class SecurityPinProvider with ChangeNotifier {
         ),
       );
     } catch (e) {
+      // if (e is DioError) {
+      //   Logger().e(e.response.data);
+      // }
       Logger().e(e.toString());
       return Left(
         Failure(
