@@ -1,10 +1,11 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:logger/logger.dart';
-import 'package:quickfix/helpers/errors.dart';
-import 'package:quickfix/models/failure.dart';
-import 'package:quickfix/modules/transfer/model/bank_list.dart';
-import 'package:quickfix/modules/transfer/service/transfer_api.dart';
+
+import '../../../helpers/errors.dart';
+import '../../../models/failure.dart';
+import '../model/bank_list.dart';
+import '../service/transfer_api.dart';
 
 class TransferProvider with ChangeNotifier {
   List<BankList> _bankList = List();
@@ -55,9 +56,10 @@ class TransferProvider with ChangeNotifier {
       String narration,
       bool isBeneficiary}) async {
     try {
+      // Logger().i(a)
       bool transfered = await TransferApi().transferFund(
         accountName: accountName,
-        accountNumber: accountName,
+        accountNumber: accountNumber,
         amount: amount,
         code: code,
         isBeneficiary: isBeneficiary,
@@ -79,7 +81,8 @@ class TransferProvider with ChangeNotifier {
 
       return left(
         Failure(
-          message: 'An error occured, please try again',
+          message:
+              'An error occured while trying to transfer fund from your Fixme account, please try again',
         ),
       );
     }

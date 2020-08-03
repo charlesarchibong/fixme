@@ -47,6 +47,7 @@ class _ProfileState extends State<Profile> {
     final profileProvider =
         Provider.of<ProfileProvider>(context, listen: false);
     String service = await profileProvider.getSubService();
+    print(service);
     setState(() {
       subServices = service;
     });
@@ -97,8 +98,6 @@ class _ProfileState extends State<Profile> {
       body: user == null
           ? Center(
               child: Container(
-                height: 50,
-                width: 50,
                 child: CircularProgressIndicator(),
               ),
             )
@@ -710,91 +709,94 @@ _showSubCategoryDialog(
   String input = '';
   showDialog(
     context: context,
-    builder: (context) => Dialog(
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20.0)), //this right here
-      child: Container(
-        height: 200,
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Card(
-                elevation: 3.0,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(5.0),
+    builder: (context) => StatefulBuilder(builder: (context, setState) {
+      return Dialog(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0)), //this right here
+        child: Container(
+          height: 200,
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Card(
+                  elevation: 3.0,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(5.0),
+                      ),
                     ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 5.0, right: 5.0),
-                    child: Form(
-                      key: _formKey,
-                      child: TextFormField(
-                        controller: _controller,
-                        keyboardType: TextInputType.text,
-                        validator: (value) {
-                          return value.isEmpty
-                              ? 'Subcategory can not be empty'
-                              : null;
-                        },
-                        onChanged: (value) {
-                          input = value;
-                        },
-                        decoration: InputDecoration(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 5.0, right: 5.0),
+                      child: Form(
+                        key: _formKey,
+                        child: TextFormField(
+                          controller: _controller,
+                          keyboardType: TextInputType.text,
+                          validator: (value) {
+                            return value.isEmpty
+                                ? 'Subcategory can not be empty'
+                                : null;
+                          },
+                          onChanged: (value) {
+                            input = value;
+                          },
+                          decoration: InputDecoration(
                             hintText: 'Enter subcategory',
                             hintStyle: TextStyle(color: Colors.grey),
-                            border: InputBorder.none),
+                            border: InputBorder.none,
+                          ),
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              FlatButton(
-                child: profileProvider.loading
-                    ? Container(
-                        alignment: Alignment.center,
-                        width: 50,
-                        height: 50,
-                        child: CircularProgressIndicator(
-                          backgroundColor: Colors.white,
-                        ),
-                      )
-                    : Text("Save"),
-                padding: EdgeInsets.all(10.0),
-                textColor: Colors.white,
-                color: Theme.of(context).accentColor,
-                onPressed: () async {
-                  if (_formKey.currentState.validate()) {
-                    profileProvider.setLoading();
+                SizedBox(
+                  height: 10,
+                ),
+                FlatButton(
+                  child: profileProvider.loading
+                      ? Container(
+                          alignment: Alignment.center,
+                          width: 50,
+                          height: 50,
+                          child: CircularProgressIndicator(
+                            backgroundColor: Colors.white,
+                          ),
+                        )
+                      : Text("Save"),
+                  padding: EdgeInsets.all(10.0),
+                  textColor: Colors.white,
+                  color: Theme.of(context).accentColor,
+                  onPressed: () async {
+                    if (_formKey.currentState.validate()) {
+                      profileProvider.setLoading();
 
-                    final added = await profileProvider.addSubCategory(input);
-                    Navigator.of(context).pop();
+                      final added = await profileProvider.addSubCategory(input);
+                      Navigator.of(context).pop();
 
-                    profileProvider.setNotLoading();
-                    added.fold((Failure failure) {
-                      FlushBarCustomHelper.showErrorFlushbar(
-                          context, 'Error', failure.message);
-                    }, (bool added) {
-                      FlushBarCustomHelper.showInfoFlushbar(
-                        context,
-                        'Success',
-                        'Subservice was added',
-                      );
-                    });
-                  }
-                },
-              ),
-            ],
+                      profileProvider.setNotLoading();
+                      added.fold((Failure failure) {
+                        FlushBarCustomHelper.showErrorFlushbar(
+                            context, 'Error', failure.message);
+                      }, (bool added) {
+                        FlushBarCustomHelper.showInfoFlushbar(
+                          context,
+                          'Success',
+                          'Subservice was added',
+                        );
+                      });
+                    }
+                  },
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-    ),
+      );
+    }),
   );
 }

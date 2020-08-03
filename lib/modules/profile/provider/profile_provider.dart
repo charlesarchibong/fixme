@@ -83,12 +83,12 @@ class ProfileProvider extends ChangeNotifier {
   }
 
   String arrayToString(List list) {
-    List<String> stringList = List();
+    String subService = '';
     list.forEach((element) {
       String e = element['subservice'];
-      stringList.add(e);
+      subService += '$e, ';
     });
-    return stringList.toString();
+    return subService;
   }
 
   Future<String> myProfilePicture() async {

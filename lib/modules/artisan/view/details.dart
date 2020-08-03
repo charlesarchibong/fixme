@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:provider/provider.dart';
-import 'package:quickfix/helpers/flush_bar.dart';
-import 'package:quickfix/models/failure.dart';
-import 'package:quickfix/modules/artisan/model/review.dart';
-import 'package:quickfix/modules/artisan/provider/artisan_provider.dart';
-import 'package:quickfix/modules/chat/view/chat_screen.dart';
-import 'package:quickfix/modules/profile/provider/profile_provider.dart';
-import 'package:quickfix/util/const.dart';
-import 'package:quickfix/widgets/reviews.dart';
-import 'package:quickfix/widgets/smooth_star_rating.dart';
+
+import '../../../helpers/flush_bar.dart';
+import '../../../models/failure.dart';
+import '../../../util/const.dart';
+import '../../../widgets/reviews.dart';
+import '../../../widgets/smooth_star_rating.dart';
+import '../../chat/view/chat_screen.dart';
+import '../../profile/provider/profile_provider.dart';
+import '../provider/artisan_provider.dart';
 
 class ProductDetails extends StatefulWidget {
   final Map userData;
