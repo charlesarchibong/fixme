@@ -372,7 +372,7 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
                                               obsecureText: false,
                                               animationType: AnimationType.fade,
                                               pinTheme: PinTheme(
-                                                shape: PinCodeFieldShape.circle,
+                                                shape: PinCodeFieldShape.box,
                                                 borderRadius:
                                                     BorderRadius.circular(
                                                   10,
