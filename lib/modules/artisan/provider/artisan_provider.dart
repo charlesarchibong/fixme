@@ -14,6 +14,7 @@ class ArtisanProvider with ChangeNotifier {
   bool loading = false;
   List<ServiceRequest> serviceRequests = List();
   List<ServiceRequest> myRequestedRequest = List();
+  var higestId;
 
   Future<Either<Failure, bool>> request(String artisanPhone) async {
     try {
@@ -124,6 +125,7 @@ class ArtisanProvider with ChangeNotifier {
       LocationData locationData) async {
     try {
       final user = await Utils.getUserSession();
+
       String apiKey = await Utils.getApiKey();
       Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
       Map<String, dynamic> body = {
@@ -139,6 +141,10 @@ class ArtisanProvider with ChangeNotifier {
         headers: headers,
       );
       var artisans = response.data['sortedUsers'] as List;
+
+      higestId = response.data['highestId'];
+
+      print(higestId);
       print(artisans.toString());
       return right(artisans);
     } catch (e) {
@@ -156,16 +162,17 @@ class ArtisanProvider with ChangeNotifier {
   }
 
   Future<Either<Failure, List>> getMoreArtisanByLocation(
-      {LocationData locationData, lastUser}) async {
+      {LocationData locationData}) async {
     try {
       final user = await Utils.getUserSession();
+
       String apiKey = await Utils.getApiKey();
       Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
       Map<String, dynamic> body = {
         'mobile': user.phoneNumber,
         'latitude': locationData.latitude,
         'longitude': locationData.longitude,
-        'last_user_id': lastUser
+        'last_user_id': higestId
       };
       String url = Constants.getMoreArtisan;
       final response = await NetworkService().post(
@@ -174,7 +181,12 @@ class ArtisanProvider with ChangeNotifier {
         contentType: ContentType.URL_ENCODED,
         headers: headers,
       );
-      var artisans = response.data['sortedUsers'] as List;
+      var artisans = [];
+      if (response.data['highestId'] > 0) {
+        artisans = response.data['sortedUsers'] as List;
+        higestId = response.data['highestId'];
+      }
+
       print(artisans.toString());
       return right(artisans);
     } catch (e) {

@@ -52,7 +52,6 @@ class _HomeState extends State<HomeW>
 
   @override
   void initState() {
-    print("sjsj");
     location = new Location();
     location.getLocation().then((value) {
       locationData = value;
@@ -119,18 +118,10 @@ class _HomeState extends State<HomeW>
         context,
         listen: false,
       );
-      var length = users.last["id"];
-      print(length);
-
-      // setState(() {
-      //   _loadingArtisan = true;
-      // });
 
       final fetched = await artisanProvider.getMoreArtisanByLocation(
-          locationData: locationData, lastUser: length);
-      // setState(() {
-      //   _loadingArtisan = false;
-      // });
+        locationData: locationData,
+      );
       return fetched.fold((Failure failure) {
         setState(() {
           users = users;
@@ -144,10 +135,6 @@ class _HomeState extends State<HomeW>
         return newList;
       });
     } catch (error) {
-      // setState(() {
-      //   users = List();
-      // });
-
       print(error.toString());
       return List();
     }
@@ -390,6 +377,7 @@ class _HomeState extends State<HomeW>
               itemCount: users == null ? 0 : users.length,
               itemBuilder: (BuildContext context, int index) {
                 Map technician = users[index];
+                // print(technician['id']);
                 return AnimationConfiguration.staggeredGrid(
                   position: index,
                   duration: const Duration(milliseconds: 375),
