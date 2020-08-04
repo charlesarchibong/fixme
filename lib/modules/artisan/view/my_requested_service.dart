@@ -61,7 +61,7 @@ class _MyRequestedServiceState extends State<MyRequestedService> {
                       }, (List<ServiceRequest> jobs) {
                         return RefreshIndicator(
                           onRefresh: () {
-                            artisanProvider.getRequests();
+                            artisanProvider.getMyRequestedService();
                             return Future.value();
                           },
                           child: ListView.builder(
