@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../helpers/flush_bar.dart';
 import '../../../models/failure.dart';
@@ -353,6 +354,19 @@ class _ProductDetailsState extends State<ProductDetails>
                           },
                         );
                 },
+              ),
+              Spacer(),
+              FloatingActionButton(
+                onPressed: () async {
+                  var url = "tel:0${widget.userData['user_mobile']}";
+                  if (await canLaunch(url)) {
+                    await launch(url);
+                  } else {
+                    throw 'Could not launch $url';
+                  }
+                },
+                backgroundColor: Colors.green,
+                child: Icon(Icons.phone),
               ),
               Spacer(),
               RaisedButton(
