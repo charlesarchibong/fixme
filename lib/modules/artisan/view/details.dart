@@ -214,52 +214,76 @@ class _ProductDetailsState extends State<ProductDetails>
               ],
             ),
             SizedBox(height: 10.0),
-            Text(
-              "${widget.userData['user_first_name']} ${widget.userData['user_last_name']} (${widget.userData['service_area']})",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w800,
-              ),
-              maxLines: 2,
-            ),
-            Padding(
-              padding: EdgeInsets.only(bottom: 5.0, top: 2.0),
-              child: Row(
-                children: <Widget>[
-                  SmoothStarRating(
-                    starCount: 5,
-                    color: Constants.ratingBG,
-                    allowHalfRating: true,
-                    borderColor: Constants.ratingBG,
-                    rating: double.parse(
-                      widget.userData['user_rating'].toString(),
-                    ),
-                    size: 10.0,
+            Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "${widget.userData['user_first_name']} ${widget.userData['user_last_name']} (${widget.userData['service_area']})",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w800,
+                        ),
+                        maxLines: 2,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 5.0, top: 2.0),
+                        child: Row(
+                          children: <Widget>[
+                            SmoothStarRating(
+                              starCount: 5,
+                              color: Constants.ratingBG,
+                              allowHalfRating: true,
+                              borderColor: Constants.ratingBG,
+                              rating: double.parse(
+                                widget.userData['user_rating'].toString(),
+                              ),
+                              size: 10.0,
+                            ),
+                            SizedBox(width: 10.0),
+                            Text(
+                              "(${widget.userData['reviews']} Reviews)",
+                              style: TextStyle(
+                                fontSize: 11.0,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 5.0, top: 2.0),
+                        child: Row(
+                          children: <Widget>[
+                            Text(
+                              "${widget.userData['user_rating']} Stars",
+                              style: TextStyle(
+                                fontSize: 11.0,
+                                fontWeight: FontWeight.w300,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                  SizedBox(width: 10.0),
-                  Text(
-                    "(${widget.userData['reviews']} Reviews)",
-                    style: TextStyle(
-                      fontSize: 11.0,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+                FloatingActionButton(
+                  onPressed: () async {
+                    var url = "tel:0${widget.userData['user_mobile']}";
+                    if (await canLaunch(url)) {
+                      await launch(url);
+                    } else {
+                      throw 'Could not launch $url';
+                    }
+                  },
+                  // backgroundColor: Colors.green,
+                  child: Icon(Icons.phone),
+                ),
+              ],
             ),
-            Padding(
-              padding: EdgeInsets.only(bottom: 5.0, top: 2.0),
-              child: Row(
-                children: <Widget>[
-                  Text(
-                    "${widget.userData['user_rating']} Stars",
-                    style: TextStyle(
-                      fontSize: 11.0,
-                      fontWeight: FontWeight.w300,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+
             // SizedBox(height: 20.0),
             // Text(
             //   "Bio",
@@ -356,19 +380,19 @@ class _ProductDetailsState extends State<ProductDetails>
                 },
               ),
               Spacer(),
-              FloatingActionButton(
-                onPressed: () async {
-                  var url = "tel:0${widget.userData['user_mobile']}";
-                  if (await canLaunch(url)) {
-                    await launch(url);
-                  } else {
-                    throw 'Could not launch $url';
-                  }
-                },
-                backgroundColor: Colors.green,
-                child: Icon(Icons.phone),
-              ),
-              Spacer(),
+              // FloatingActionButton(
+              //   onPressed: () async {
+              //     var url = "tel:0${widget.userData['user_mobile']}";
+              //     if (await canLaunch(url)) {
+              //       await launch(url);
+              //     } else {
+              //       throw 'Could not launch $url';
+              //     }
+              //   },
+              //   // backgroundColor: Colors.green,
+              //   child: Icon(Icons.phone),
+              // ),
+              // Spacer(),
               RaisedButton(
                 child: Text(
                   "Send Message",
