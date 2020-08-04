@@ -14,6 +14,7 @@ import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:location/location.dart';
+import 'package:logger/logger.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -855,10 +856,17 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
       await remoteConfig.fetch(expiration: const Duration(seconds: 0));
       await remoteConfig.activateFetched();
       remoteConfig.getString('force_update_current_version');
-      double newVersion = double.parse(remoteConfig
-          .getString('force_update_current_version')
-          .trim()
-          .replaceAll(".", ""));
+      double newVersion = double.parse(
+        remoteConfig
+            .getString('force_update_current_version')
+            .trim()
+            .replaceAll(".", ""),
+      );
+      Logger().i(
+        double.parse(
+          remoteConfig.getString('force_update_current_version'),
+        ),
+      );
       if (newVersion > currentVersion) {
         _showVersionDialog(context);
       }
