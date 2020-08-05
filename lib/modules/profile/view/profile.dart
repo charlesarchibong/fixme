@@ -65,6 +65,8 @@ class _ProfileState extends State<Profile> {
         serviceImages = List();
       });
     }, (List<ServiceImage> list) {
+      print("I got here");
+      print(list);
       setState(() {
         serviceImages = list;
       });
@@ -291,6 +293,8 @@ class _ProfileState extends State<Profile> {
       List<ServiceImage> list, ProfileProvider profileProvider) {
     return StatefulBuilder(
       builder: (BuildContext context, void Function(void Function()) setState) {
+        print("I got here again");
+        print(list);
         return Padding(
             padding: const EdgeInsets.only(
               left: 15.0,
@@ -310,6 +314,7 @@ class _ProfileState extends State<Profile> {
                     ),
                     InkWell(
                       onTap: () async {
+                        print("skskkk");
                         if (list.length <= 5) {
                           profileProvider.setLoading();
                           profileProvider.getServiceImage().then((value) {
@@ -353,7 +358,9 @@ class _ProfileState extends State<Profile> {
                     ? Center(
                         child: Text('No images uploaded yet'),
                       )
-                    : ServicesImages(),
+                    : ServicesImages(
+                        listImages: list,
+                      ),
               ],
             ));
       },
