@@ -42,7 +42,13 @@ class GridTechnician extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8.0),
                   child: Image(
                     fit: BoxFit.cover,
-                    image: CacheImage("$img"),
+                    image: CacheImage(
+                      "$img",
+                      cache: true,
+                      durationExpiration: Duration(
+                        hours: 1,
+                      ),
+                    ),
                   ),
                 ),
               ),

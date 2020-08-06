@@ -2,12 +2,12 @@ name: quickfix
 description: A platform to order for a technician service and get it done immediately.
 
 version: 1.0.0+2
-
+ 
 environment:
   sdk: ">=2.2.0 <3.0.0"
-
+  
 dependencies:
-  flutter:
+  flutter: 
     sdk: flutter
   cupertino_icons: ^0.1.3
   introduction_screen: ^1.0.8
@@ -49,7 +49,7 @@ dependencies:
   firebase_remote_config: ^0.3.1
   searchable_dropdown: ^1.1.3
   local_auth: ^0.6.2+3
-  flutter_lock_screen: "^1.0.5"
+  flutter_lock_screen: "^1.0.5" 
   pin_code_fields: ^4.0.0
   flutter_custom_clippers: ^1.1.1
   flutter_staggered_animations: ^0.1.2
