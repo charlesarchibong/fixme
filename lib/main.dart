@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
-import 'package:quickfix/modules/auth/view/security_pin.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'modules/artisan/provider/artisan_provider.dart';
 import 'modules/auth/provider/login_form_validation.dart';
 import 'modules/auth/provider/security_pin_provider.dart';
+import 'modules/auth/view/security_pin.dart';
 import 'modules/custom/view/walkthrough.dart';
 import 'modules/dashboard/provider/dashboard_provider.dart';
 import 'modules/job/provider/approve_bid_provider.dart';
