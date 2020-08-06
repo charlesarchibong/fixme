@@ -4,21 +4,22 @@ import 'package:flutter/services.dart';
 import 'package:flutter_shimmer/flutter_shimmer.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:quickfix/helpers/flush_bar.dart';
-import 'package:quickfix/models/failure.dart';
-import 'package:quickfix/modules/auth/view/login.dart';
-import 'package:quickfix/modules/profile/model/bank_code.dart';
-import 'package:quickfix/modules/profile/model/bank_information.dart';
-import 'package:quickfix/modules/profile/model/service_image.dart';
-import 'package:quickfix/modules/profile/model/user.dart';
-import 'package:quickfix/modules/profile/provider/profile_provider.dart';
-import 'package:quickfix/modules/profile/widget/edit_profile.dart';
-import 'package:quickfix/modules/profile/widget/service_images.dart';
-import 'package:quickfix/modules/transfer/view/transfer_fund.dart';
-import 'package:quickfix/providers/app_provider.dart';
-import 'package:quickfix/util/Utils.dart';
-import 'package:quickfix/util/const.dart';
-import 'package:quickfix/widgets/spinner.dart';
+
+import '../../../helpers/flush_bar.dart';
+import '../../../models/failure.dart';
+import '../../../providers/app_provider.dart';
+import '../../../util/Utils.dart';
+import '../../../util/const.dart';
+import '../../../widgets/spinner.dart';
+import '../../auth/view/login.dart';
+import '../../transfer/view/transfer_fund.dart';
+import '../model/bank_code.dart';
+import '../model/bank_information.dart';
+import '../model/service_image.dart';
+import '../model/user.dart';
+import '../provider/profile_provider.dart';
+import '../widget/edit_profile.dart';
+import '../widget/service_images.dart';
 
 class Profile extends StatefulWidget {
   @override

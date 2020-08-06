@@ -1,11 +1,11 @@
+import 'package:cache_image/cache_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_shimmer/flutter_shimmer.dart';
 import 'package:provider/provider.dart';
-import 'package:quickfix/models/failure.dart';
 
-import 'package:quickfix/modules/profile/model/service_image.dart';
-import 'package:quickfix/modules/profile/provider/profile_provider.dart';
-import 'package:quickfix/util/const.dart';
+import '../../../util/const.dart';
+import '../model/service_image.dart';
+import '../provider/profile_provider.dart';
 
 class ServicesImages extends StatefulWidget {
   final List<ServiceImage> listImages;
@@ -42,8 +42,8 @@ class _ServicesImagesState extends State<ServicesImages> {
                       height: 100,
                       padding: EdgeInsets.only(left: 10, right: 10),
                       decoration: BoxDecoration(),
-                      child: Image.network(
-                        image,
+                      child: Image(
+                        image: CacheImage(image),
                       ),
                     ),
                     RaisedButton(

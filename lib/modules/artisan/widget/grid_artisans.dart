@@ -1,8 +1,9 @@
 import 'package:cache_image/cache_image.dart';
 import 'package:flutter/material.dart';
-import 'package:quickfix/modules/artisan/view/details.dart';
-import 'package:quickfix/util/const.dart';
-import 'package:quickfix/widgets/smooth_star_rating.dart';
+
+import '../../../util/const.dart';
+import '../../../widgets/smooth_star_rating.dart';
+import '../view/details.dart';
 
 class GridTechnician extends StatelessWidget {
   final String name;
