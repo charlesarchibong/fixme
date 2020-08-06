@@ -219,11 +219,11 @@ class TrackArtisanState extends State<TrackArtisan> {
         destinationLocation.longitude,
       ),
       travelMode: TravelMode.driving,
-      wayPoints: [
-        PolylineWayPoint(
-          location: location.toString(),
-        )
-      ],
+      // wayPoints: [
+      //   PolylineWayPoint(
+      //     location: location,
+      //   )
+      // ],
     );
     print(result.points);
     if (result.points.isNotEmpty) {
