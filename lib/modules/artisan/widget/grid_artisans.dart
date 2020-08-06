@@ -1,4 +1,3 @@
-import 'package:cache_image/cache_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../../util/const.dart';
@@ -40,15 +39,9 @@ class GridTechnician extends StatelessWidget {
                 width: MediaQuery.of(context).size.width / 2.2,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
-                  child: Image(
+                  child: Image.network(
+                    "$img",
                     fit: BoxFit.cover,
-                    image: CacheImage(
-                      "$img",
-                      cache: true,
-                      durationExpiration: Duration(
-                        hours: 1,
-                      ),
-                    ),
                   ),
                 ),
               ),
