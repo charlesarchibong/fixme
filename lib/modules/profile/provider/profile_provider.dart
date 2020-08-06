@@ -122,9 +122,11 @@ class ProfileProvider extends ChangeNotifier {
       );
       if (response.statusCode == 200) {
         List images = response.data['servicePictures'] as List;
+        print(images);
         List<ServiceImage> servicesImages = List();
         for (var i = 0; i < images.length; i++) {
           ServiceImage image = ServiceImage().fromMap(images[i]);
+          print(image.imageFileName);
           servicesImages.add(image);
         }
         if (servicesImages.length <= 0) {
@@ -175,7 +177,7 @@ class ProfileProvider extends ChangeNotifier {
       String apiKey = await Utils.getApiKey();
       String url = 'https://uploads.fixme.ng/uploads-processing';
       Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
-      print(headers);
+      // print(headers);
       FormData formData = FormData.fromMap({
         "mobile": user.phoneNumber,
         "uploadType": uploadType,
@@ -188,9 +190,11 @@ class ProfileProvider extends ChangeNotifier {
         contentType: ContentType.FORM_DATA,
         headers: headers,
       );
+      print(response);
       return response.data;
     } catch (e) {
       if (e is DioError) {
+        print("error here");
         // CustomLogger(className: 'ProfileProvider').errorPrint(e.response.data);
         debugPrint(e.response.data);
       }

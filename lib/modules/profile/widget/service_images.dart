@@ -8,28 +8,13 @@ import 'package:quickfix/modules/profile/provider/profile_provider.dart';
 import 'package:quickfix/util/const.dart';
 
 class ServicesImages extends StatefulWidget {
+  final List<ServiceImage> listImages;
+  ServicesImages({@required this.listImages});
   @override
   _ServicesImagesState createState() => _ServicesImagesState();
 }
 
 class _ServicesImagesState extends State<ServicesImages> {
-  List<ServiceImage> listImages = List();
-  getServiceImages() async {
-    final profileProvider =
-        Provider.of<ProfileProvider>(context, listen: false);
-    final images = await profileProvider.getServiceImagesFromServer();
-    images.fold((Failure failure) {
-      print(failure.message);
-      setState(() {
-        listImages = List();
-      });
-    }, (List<ServiceImage> list) {
-      setState(() {
-        listImages = list;
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Consumer<ProfileProvider>(
@@ -42,24 +27,23 @@ class _ServicesImagesState extends State<ServicesImages> {
           childAspectRatio: MediaQuery.of(context).size.width /
               (MediaQuery.of(context).size.height / 2),
         ),
-        itemCount: listImages.length == null ? 0 : listImages.length,
+        itemCount:
+            widget.listImages.length == null ? 0 : widget.listImages.length,
         itemBuilder: (BuildContext context, int index) {
-          String image = Constants.uploadUrl + listImages[index].imageFileName;
-          print(listImages[index].imageFileName);
-          print(listImages[index].imageFileName);
-          print(listImages[index].imageFileName);
+          String image =
+              Constants.uploadUrl + widget.listImages[index].imageFileName;
 
-          return listImages.isNotEmpty
+          return widget.listImages.isNotEmpty
               ? Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     Container(
                       width: 500,
+                      height: 100,
                       padding: EdgeInsets.only(left: 10, right: 10),
                       decoration: BoxDecoration(),
                       child: Image.network(
                         image,
-                        width: 500,
                       ),
                     ),
                     RaisedButton(
