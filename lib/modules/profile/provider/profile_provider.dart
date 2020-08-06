@@ -39,8 +39,14 @@ class ProfileProvider extends ChangeNotifier {
   }
 
   Future<void> getImage() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
-    var uploaded = await uploadImageToServer('profilePicture', image);
+    ImagePicker imagePicker = ImagePicker();
+    var image = await imagePicker.getImage(source: ImageSource.gallery);
+    var uploaded = await uploadImageToServer(
+      'profilePicture',
+      File(
+        image.path,
+      ),
+    );
     String uploadUrl = 'https://uploads.fixme.ng/thumbnails/';
     _profilePicture = uploadUrl + uploaded['imageFileName'] ?? null;
     User user = await Utils.getUserSession();
