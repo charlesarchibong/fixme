@@ -8,7 +8,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 import 'package:quickfix/helpers/custom_lodder.dart';
 import 'package:quickfix/models/failure.dart';
-import 'package:quickfix/modules/artisan/model/review.dart';
 import 'package:quickfix/modules/profile/model/bank_code.dart';
 import 'package:quickfix/modules/profile/model/bank_information.dart';
 import 'package:quickfix/modules/profile/model/service_image.dart';
@@ -39,8 +38,14 @@ class ProfileProvider extends ChangeNotifier {
   }
 
   Future<void> getImage() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
-    var uploaded = await uploadImageToServer('profilePicture', image);
+    ImagePicker imagePicker = ImagePicker();
+    var image = await imagePicker.getImage(source: ImageSource.gallery);
+    var uploaded = await uploadImageToServer(
+      'profilePicture',
+      File(
+        image.path,
+      ),
+    );
     String uploadUrl = 'https://uploads.fixme.ng/thumbnails/';
     _profilePicture = uploadUrl + uploaded['imageFileName'] ?? null;
     User user = await Utils.getUserSession();
@@ -99,8 +104,14 @@ class ProfileProvider extends ChangeNotifier {
   }
 
   Future<void> getServiceImage() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
-    await uploadImageToServer('servicePicture', image);
+    ImagePicker imagePicker = ImagePicker();
+    var image = await imagePicker.getImage(source: ImageSource.gallery);
+    await uploadImageToServer(
+      'servicePicture',
+      File(
+        image.path,
+      ),
+    );
     getServiceImagesFromServer();
     notifyListeners();
   }
@@ -372,7 +383,7 @@ class ProfileProvider extends ChangeNotifier {
 
   Future<List> getArtisanReview(String phone) async {
     try {
-      List<ReviewModel> reviewList;
+      // List<ReviewModel> reviewList;
       String apiKey = await Utils.getApiKey();
       Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
       Map<String, dynamic> body = {"mobile": phone};

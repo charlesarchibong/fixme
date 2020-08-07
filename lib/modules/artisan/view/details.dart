@@ -1,3 +1,4 @@
+import 'package:cache_image/cache_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:provider/provider.dart';
@@ -183,8 +184,10 @@ class _ProductDetailsState extends State<ProductDetails>
                   width: MediaQuery.of(context).size.width,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8.0),
-                    child: Image.network(
-                      "${Constants.uploadUrl + widget.userData['profile_pic_file_name']}",
+                    child: Image(
+                      image: CacheImage(
+                        "${Constants.uploadUrl + widget.userData['profile_pic_file_name']}",
+                      ),
                       fit: BoxFit.cover,
                     ),
                   ),
