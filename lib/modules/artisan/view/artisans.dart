@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:quickfix/modules/artisan/widget/grid_artisans.dart';
-import 'package:quickfix/modules/notification/view/notifications.dart';
-import 'package:quickfix/util/foods.dart';
-import 'package:quickfix/widgets/badge.dart';
+
+import '../../../util/foods.dart';
+import '../../../widgets/badge.dart';
+import '../../notification/view/notifications.dart';
+import '../widget/grid_artisans.dart';
 
 class Aritsans extends StatefulWidget {
   @override

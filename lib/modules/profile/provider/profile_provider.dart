@@ -8,7 +8,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 import 'package:quickfix/helpers/custom_lodder.dart';
 import 'package:quickfix/models/failure.dart';
-import 'package:quickfix/modules/artisan/model/review.dart';
 import 'package:quickfix/modules/profile/model/bank_code.dart';
 import 'package:quickfix/modules/profile/model/bank_information.dart';
 import 'package:quickfix/modules/profile/model/service_image.dart';
@@ -39,8 +38,14 @@ class ProfileProvider extends ChangeNotifier {
   }
 
   Future<void> getImage() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
-    var uploaded = await uploadImageToServer('profilePicture', image);
+    ImagePicker imagePicker = ImagePicker();
+    var image = await imagePicker.getImage(source: ImageSource.gallery);
+    var uploaded = await uploadImageToServer(
+      'profilePicture',
+      File(
+        image.path,
+      ),
+    );
     String uploadUrl = 'https://uploads.fixme.ng/thumbnails/';
     _profilePicture = uploadUrl + uploaded['imageFileName'] ?? null;
     User user = await Utils.getUserSession();
@@ -99,15 +104,20 @@ class ProfileProvider extends ChangeNotifier {
   }
 
   Future<void> getServiceImage() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
-    await uploadImageToServer('servicePicture', image);
+    ImagePicker imagePicker = ImagePicker();
+    var image = await imagePicker.getImage(source: ImageSource.gallery);
+    await uploadImageToServer(
+      'servicePicture',
+      File(
+        image.path,
+      ),
+    );
     getServiceImagesFromServer();
     notifyListeners();
   }
 
   //Codes to get images from server and display dem on the profile screen
-  Future<Either<Failure, List<ServiceImage>>>
-      getServiceImagesFromServer() async {
+  Future getServiceImagesFromServer() async {
     try {
       final user = await Utils.getUserSession();
       final String apiKey = await Utils.getApiKey();
@@ -122,50 +132,58 @@ class ProfileProvider extends ChangeNotifier {
       );
       if (response.statusCode == 200) {
         List images = response.data['servicePictures'] as List;
+
         List<ServiceImage> servicesImages = List();
         for (var i = 0; i < images.length; i++) {
           ServiceImage image = ServiceImage().fromMap(images[i]);
+
           servicesImages.add(image);
         }
-        if (servicesImages.length <= 0) {
-          return Left(
-            Failure(
-              message: 'No images found',
-            ),
-          );
-        } else {
-          return Right(servicesImages);
-        }
-      } else {
-        return Left(
-          Failure(
-            message: 'No images found',
-          ),
-        );
+
+        _images = servicesImages;
+        notifyListeners();
       }
     } catch (e) {
       if (e is DioError) {
         print(e.message);
-        return Left(
-          Failure(
-            message: 'No images found',
-          ),
-        );
       }
       print(
         e.toString(),
       );
-      return Left(
-        Failure(
-          message: 'No images found',
-        ),
-      );
     }
   }
 
-  Future<void> removeImage(int index) async {
-    _images.removeAt(index);
-    notifyListeners();
+  Future<void> removeImage(String imageName) async {
+    try {
+      final user = await Utils.getUserSession();
+      String apiKey = await Utils.getApiKey();
+
+      Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
+      String url = 'https://manager.fixme.ng/del-svc-img';
+
+      Map<String, String> body = {
+        'mobile': user.phoneNumber,
+        "imageFileName": imageName,
+      };
+      print(body);
+      var response = await NetworkService().post(
+        url: url,
+        queryParam: body,
+        contentType: ContentType.URL_ENCODED,
+        headers: headers,
+      );
+      print(response);
+      await getServiceImagesFromServer();
+      notifyListeners();
+    } catch (e) {
+      if (e is DioError) {
+        print(e.message);
+      }
+      print(
+        e.toString(),
+      );
+    }
+    // _images.removeAt(index);
   }
 
   Future<Map> uploadImageToServer(String uploadType, File file) async {
@@ -175,7 +193,7 @@ class ProfileProvider extends ChangeNotifier {
       String apiKey = await Utils.getApiKey();
       String url = 'https://uploads.fixme.ng/uploads-processing';
       Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
-      print(headers);
+      // print(headers);
       FormData formData = FormData.fromMap({
         "mobile": user.phoneNumber,
         "uploadType": uploadType,
@@ -188,9 +206,11 @@ class ProfileProvider extends ChangeNotifier {
         contentType: ContentType.FORM_DATA,
         headers: headers,
       );
+      print(response);
       return response.data;
     } catch (e) {
       if (e is DioError) {
+        print("error here");
         // CustomLogger(className: 'ProfileProvider').errorPrint(e.response.data);
         debugPrint(e.response.data);
       }
@@ -368,7 +388,7 @@ class ProfileProvider extends ChangeNotifier {
 
   Future<List> getArtisanReview(String phone) async {
     try {
-      List<ReviewModel> reviewList;
+      // List<ReviewModel> reviewList;
       String apiKey = await Utils.getApiKey();
       Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
       Map<String, dynamic> body = {"mobile": phone};

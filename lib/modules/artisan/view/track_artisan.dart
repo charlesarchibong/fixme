@@ -209,17 +209,22 @@ class TrackArtisanState extends State<TrackArtisan> {
   void setPolylines() async {
     PolylinePoints polylinePoints = PolylinePoints();
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-        googleAPIKey,
-        PointLatLng(
-          currentLocation.latitude,
-          currentLocation.longitude,
-        ),
-        PointLatLng(
-          destinationLocation.latitude,
-          destinationLocation.longitude,
-        ),
-        travelMode: TravelMode.driving,
-        wayPoints: [PolylineWayPoint(location: location)]);
+      googleAPIKey,
+      PointLatLng(
+        currentLocation.latitude,
+        currentLocation.longitude,
+      ),
+      PointLatLng(
+        destinationLocation.latitude,
+        destinationLocation.longitude,
+      ),
+      travelMode: TravelMode.driving,
+      // wayPoints: [
+      //   PolylineWayPoint(
+      //     location: location,
+      //   )
+      // ],
+    );
     print(result.points);
     if (result.points.isNotEmpty) {
       result.points.forEach((PointLatLng point) {

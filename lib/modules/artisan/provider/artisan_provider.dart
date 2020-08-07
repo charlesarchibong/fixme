@@ -51,6 +51,7 @@ class ArtisanProvider with ChangeNotifier {
           await ArtisanApi().getServiceRequest();
       loading = false;
       serviceRequests = requests;
+      print(serviceRequests.length);
       notifyListeners();
       return Right(
         requests,

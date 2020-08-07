@@ -1,23 +1,25 @@
+import 'package:cache_image/cache_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_shimmer/flutter_shimmer.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:quickfix/helpers/flush_bar.dart';
-import 'package:quickfix/models/failure.dart';
-import 'package:quickfix/modules/auth/view/login.dart';
-import 'package:quickfix/modules/profile/model/bank_code.dart';
-import 'package:quickfix/modules/profile/model/bank_information.dart';
-import 'package:quickfix/modules/profile/model/service_image.dart';
-import 'package:quickfix/modules/profile/model/user.dart';
-import 'package:quickfix/modules/profile/provider/profile_provider.dart';
-import 'package:quickfix/modules/profile/widget/edit_profile.dart';
-import 'package:quickfix/modules/profile/widget/service_images.dart';
-import 'package:quickfix/modules/transfer/view/transfer_fund.dart';
-import 'package:quickfix/providers/app_provider.dart';
-import 'package:quickfix/util/Utils.dart';
-import 'package:quickfix/util/const.dart';
-import 'package:quickfix/widgets/spinner.dart';
+
+import '../../../helpers/flush_bar.dart';
+import '../../../models/failure.dart';
+import '../../../providers/app_provider.dart';
+import '../../../util/Utils.dart';
+import '../../../util/const.dart';
+import '../../../widgets/spinner.dart';
+import '../../auth/view/login.dart';
+import '../../transfer/view/transfer_fund.dart';
+import '../model/bank_code.dart';
+import '../model/bank_information.dart';
+import '../model/service_image.dart';
+import '../model/user.dart';
+import '../provider/profile_provider.dart';
+import '../widget/edit_profile.dart';
+import '../widget/service_images.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -58,17 +60,7 @@ class _ProfileState extends State<Profile> {
       context,
       listen: false,
     );
-    final images = await profileProvider.getServiceImagesFromServer();
-    images.fold((Failure failure) {
-      print(failure.message);
-      setState(() {
-        serviceImages = List();
-      });
-    }, (List<ServiceImage> list) {
-      setState(() {
-        serviceImages = list;
-      });
-    });
+    await profileProvider.getServiceImagesFromServer();
   }
 
   void getUser() async {
@@ -291,71 +283,71 @@ class _ProfileState extends State<Profile> {
       List<ServiceImage> list, ProfileProvider profileProvider) {
     return StatefulBuilder(
       builder: (BuildContext context, void Function(void Function()) setState) {
-        return Padding(
-            padding: const EdgeInsets.only(
-              left: 15.0,
-              right: 30.0,
-            ),
-            child: Column(
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      "Service Images",
-                      style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w700,
+        print(list);
+        return Consumer<ProfileProvider>(
+            builder: (context, profileProvider1, child) {
+          return Padding(
+              padding: const EdgeInsets.only(
+                left: 15.0,
+                right: 30.0,
+              ),
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        "Service Images",
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
-                    ),
-                    InkWell(
-                      onTap: () async {
-                        if (list.length <= 5) {
-                          profileProvider.setLoading();
-                          profileProvider.getServiceImage().then((value) {
-                            profileProvider.setNotLoading();
-                            print('s');
-                          }).catchError((onError) {
-                            print('e');
+                      InkWell(
+                        onTap: () async {
+                          if (profileProvider1.images.length <= 5) {
+                            profileProvider.setLoading();
+                            await profileProvider1
+                                .getServiceImage()
+                                .then((value) async {
+                              profileProvider1.setNotLoading();
+                              print('s');
+                              await profileProvider1
+                                  .getServiceImagesFromServer();
+                              profileProvider1.setNotLoading();
+                            }).catchError((onError) {
+                              print('e');
 
-                            profileProvider.setNotLoading();
-                          });
-                          final images = await profileProvider
-                              .getServiceImagesFromServer();
-
-                          setState(() {
-                            images.fold((Failure failure) {
-                              print(failure.message);
-                              list = List();
-                            }, (List<ServiceImage> imges) {
-                              list = imges;
+                              profileProvider1.setNotLoading();
                             });
-                          });
-                        } else {}
-                      },
-                      child: profileProvider.loading
-                          ? Spinner(
-                              icon: FontAwesomeIcons.spinner,
-                              color: Colors.grey,
-                            )
-                          : FaIcon(
-                              FontAwesomeIcons.plus,
-                              color: Colors.grey,
-                              size: 25.0,
-                            ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                list.length == 0
-                    ? Center(
-                        child: Text('No images uploaded yet'),
-                      )
-                    : ServicesImages(),
-              ],
-            ));
+                          } else {}
+                        },
+                        child: profileProvider1.loading
+                            ? Spinner(
+                                icon: FontAwesomeIcons.spinner,
+                                color: Colors.grey,
+                              )
+                            : FaIcon(
+                                FontAwesomeIcons.plus,
+                                color: Colors.grey,
+                                size: 25.0,
+                              ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  profileProvider1.images.length == 0
+                      ? Center(
+                          child: Text('No images uploaded yet'),
+                        )
+                      : ServicesImages(
+                          listImages: profileProvider1.images,
+                        ),
+                ],
+              ));
+        });
       },
     );
   }
@@ -471,8 +463,8 @@ Widget _profileImage(
   return Stack(
     alignment: Alignment.bottomCenter,
     children: <Widget>[
-      Image.network(
-        '$profileImage',
+      Image(
+        image: CacheImage('$profileImage'),
         fit: BoxFit.cover,
         width: 100.0,
         height: 100.0,
