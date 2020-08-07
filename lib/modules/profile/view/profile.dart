@@ -60,19 +60,7 @@ class _ProfileState extends State<Profile> {
       context,
       listen: false,
     );
-    final images = await profileProvider.getServiceImagesFromServer();
-    images.fold((Failure failure) {
-      print(failure.message);
-      setState(() {
-        serviceImages = List();
-      });
-    }, (List<ServiceImage> list) {
-      print("I got here");
-      print(list);
-      setState(() {
-        serviceImages = list;
-      });
-    });
+    await profileProvider.getServiceImagesFromServer();
   }
 
   void getUser() async {
@@ -295,76 +283,71 @@ class _ProfileState extends State<Profile> {
       List<ServiceImage> list, ProfileProvider profileProvider) {
     return StatefulBuilder(
       builder: (BuildContext context, void Function(void Function()) setState) {
-        print("I got here again");
         print(list);
-        return Padding(
-            padding: const EdgeInsets.only(
-              left: 15.0,
-              right: 30.0,
-            ),
-            child: Column(
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      "Service Images",
-                      style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w700,
+        return Consumer<ProfileProvider>(
+            builder: (context, profileProvider1, child) {
+          return Padding(
+              padding: const EdgeInsets.only(
+                left: 15.0,
+                right: 30.0,
+              ),
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        "Service Images",
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
-                    ),
-                    InkWell(
-                      onTap: () async {
-                        print("skskkk");
-                        if (list.length <= 5) {
-                          profileProvider.setLoading();
-                          profileProvider.getServiceImage().then((value) {
-                            profileProvider.setNotLoading();
-                            print('s');
-                          }).catchError((onError) {
-                            print('e');
+                      InkWell(
+                        onTap: () async {
+                          if (profileProvider1.images.length <= 5) {
+                            profileProvider.setLoading();
+                            await profileProvider1
+                                .getServiceImage()
+                                .then((value) async {
+                              profileProvider1.setNotLoading();
+                              print('s');
+                              await profileProvider1
+                                  .getServiceImagesFromServer();
+                              profileProvider1.setNotLoading();
+                            }).catchError((onError) {
+                              print('e');
 
-                            profileProvider.setNotLoading();
-                          });
-                          final images = await profileProvider
-                              .getServiceImagesFromServer();
-
-                          setState(() {
-                            images.fold((Failure failure) {
-                              print(failure.message);
-                              list = List();
-                            }, (List<ServiceImage> imges) {
-                              list = imges;
+                              profileProvider1.setNotLoading();
                             });
-                          });
-                        } else {}
-                      },
-                      child: profileProvider.loading
-                          ? Spinner(
-                              icon: FontAwesomeIcons.spinner,
-                              color: Colors.grey,
-                            )
-                          : FaIcon(
-                              FontAwesomeIcons.plus,
-                              color: Colors.grey,
-                              size: 25.0,
-                            ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                list.length == 0
-                    ? Center(
-                        child: Text('No images uploaded yet'),
-                      )
-                    : ServicesImages(
-                        listImages: list,
+                          } else {}
+                        },
+                        child: profileProvider1.loading
+                            ? Spinner(
+                                icon: FontAwesomeIcons.spinner,
+                                color: Colors.grey,
+                              )
+                            : FaIcon(
+                                FontAwesomeIcons.plus,
+                                color: Colors.grey,
+                                size: 25.0,
+                              ),
                       ),
-              ],
-            ));
+                    ],
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  profileProvider1.images.length == 0
+                      ? Center(
+                          child: Text('No images uploaded yet'),
+                        )
+                      : ServicesImages(
+                          listImages: profileProvider1.images,
+                        ),
+                ],
+              ));
+        });
       },
     );
   }

@@ -93,6 +93,7 @@ class _ProductDetailsState extends State<ProductDetails>
 
   @override
   Widget build(BuildContext context) {
+    print(widget.userData);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(153, 0, 153, 1),
@@ -324,6 +325,61 @@ class _ProductDetailsState extends State<ProductDetails>
                 fontWeight: FontWeight.w300,
               ),
             ),
+
+            SizedBox(height: 10.0),
+            Text(
+              "Service Pictures",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w800,
+              ),
+              maxLines: 2,
+            ),
+            SizedBox(height: 10.0),
+            Container(
+              height: 80,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: widget.userData["servicePictures"].length,
+                itemBuilder: (context, index) {
+                  String image = Constants.uploadUrl +
+                      widget.userData["servicePictures"][index];
+                  return InkWell(
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext con) => Dialog(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Container(
+                            height: 500,
+                            width: 300,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: NetworkImage(image),
+                                  fit: BoxFit.cover),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 10.0),
+                      child: Container(
+                        width: 100,
+                        height: 80,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: NetworkImage(image), fit: BoxFit.cover),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+
             SizedBox(height: 20.0),
             Text(
               "Reviews",
