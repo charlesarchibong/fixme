@@ -44,7 +44,6 @@ class _HomeState extends State<HomeW>
         !_controller.position.outOfRange) {
       getMoreArtisanByLocation();
       setState(() {
-        print("i have reach the end");
         // message = "reach the bottom";
       });
     }
@@ -118,10 +117,11 @@ class _HomeState extends State<HomeW>
         context,
         listen: false,
       );
+      var highestId = users.length;
+      print(highestId);
 
       final fetched = await artisanProvider.getMoreArtisanByLocation(
-        locationData: locationData,
-      );
+          locationData: locationData, highestId: highestId);
       return fetched.fold((Failure failure) {
         setState(() {
           users = users;
