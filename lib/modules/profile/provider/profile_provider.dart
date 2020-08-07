@@ -117,8 +117,7 @@ class ProfileProvider extends ChangeNotifier {
   }
 
   //Codes to get images from server and display dem on the profile screen
-  Future<Either<Failure, List<ServiceImage>>>
-      getServiceImagesFromServer() async {
+  Future getServiceImagesFromServer() async {
     try {
       final user = await Utils.getUserSession();
       final String apiKey = await Utils.getApiKey();
@@ -140,44 +139,24 @@ class ProfileProvider extends ChangeNotifier {
           print(image.imageFileName);
           servicesImages.add(image);
         }
-        if (servicesImages.length <= 0) {
-          return Left(
-            Failure(
-              message: 'No images found',
-            ),
-          );
-        } else {
-          return Right(servicesImages);
-        }
-      } else {
-        return Left(
-          Failure(
-            message: 'No images found',
-          ),
-        );
+
+        _images = servicesImages;
+        notifyListeners();
       }
     } catch (e) {
       if (e is DioError) {
         print(e.message);
-        return Left(
-          Failure(
-            message: 'No images found',
-          ),
-        );
       }
       print(
         e.toString(),
-      );
-      return Left(
-        Failure(
-          message: 'No images found',
-        ),
       );
     }
   }
 
   Future<void> removeImage(int index) async {
+    print(index);
     _images.removeAt(index);
+
     notifyListeners();
   }
 
