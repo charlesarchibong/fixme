@@ -48,10 +48,11 @@ class _ServicesImagesState extends State<ServicesImages> {
                     ),
                     RaisedButton(
                       onPressed: () {
-                        profileProvider.removeImage(index);
+                        profileProvider.removeImage(
+                            widget.listImages[index].imageFileName);
                       },
                       child: Icon(
-                        Icons.remove_circle_outline,
+                        Icons.remove,
                         color: Colors.white,
                       ),
                       elevation: 5,

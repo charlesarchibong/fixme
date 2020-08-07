@@ -132,11 +132,11 @@ class ProfileProvider extends ChangeNotifier {
       );
       if (response.statusCode == 200) {
         List images = response.data['servicePictures'] as List;
-        print(images);
+
         List<ServiceImage> servicesImages = List();
         for (var i = 0; i < images.length; i++) {
           ServiceImage image = ServiceImage().fromMap(images[i]);
-          print(image.imageFileName);
+
           servicesImages.add(image);
         }
 
@@ -153,11 +153,37 @@ class ProfileProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> removeImage(int index) async {
-    print(index);
-    _images.removeAt(index);
+  Future<void> removeImage(String imageName) async {
+    try {
+      final user = await Utils.getUserSession();
+      String apiKey = await Utils.getApiKey();
 
-    notifyListeners();
+      Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
+      String url = 'https://manager.fixme.ng/del-svc-img';
+
+      Map<String, String> body = {
+        'mobile': user.phoneNumber,
+        "imageFileName": imageName,
+      };
+      print(body);
+      var response = await NetworkService().post(
+        url: url,
+        queryParam: body,
+        contentType: ContentType.URL_ENCODED,
+        headers: headers,
+      );
+      print(response);
+      await getServiceImagesFromServer();
+      notifyListeners();
+    } catch (e) {
+      if (e is DioError) {
+        print(e.message);
+      }
+      print(
+        e.toString(),
+      );
+    }
+    // _images.removeAt(index);
   }
 
   Future<Map> uploadImageToServer(String uploadType, File file) async {
