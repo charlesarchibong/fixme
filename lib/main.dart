@@ -203,7 +203,7 @@ class _MyAppState extends State<MyApp> {
           navigatorKey: appProvider.navigatorKey,
           title: Constants.appName,
           theme: appProvider.theme,
-          home: widget.sp.get('opened') == null
+          home: widget.sp.get('opened') == null || false
               ? Walkthrough()
               : widget.sp.get('user') != null
                   ? widget.user?.profilePicture == null ||
