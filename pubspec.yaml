@@ -1,13 +1,8 @@
 name: quickfix
 description: A platform to order for a technician service and get it done immediately.
 
-<<<<<<< HEAD
 version: 1.2.0+3
  
-=======
-version: 1.0.0+2
-
->>>>>>> 7c9efd2d6f04b3001429749b60e66154e7d44107
 environment:
   sdk: ">=2.2.0 <3.0.0"
 
