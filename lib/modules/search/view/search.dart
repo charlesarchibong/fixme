@@ -84,6 +84,9 @@ class _SearchScreenState extends State<SearchScreen>
                     ),
                   ),
                   maxLines: 1,
+                  onChanged: (val) {
+                    _searchArtisans(val);
+                  },
                   controller: _searchControl,
                   onSubmitted: (val) {
                     _searchArtisans(val);
