@@ -14,7 +14,6 @@ class ArtisanProvider with ChangeNotifier {
   bool loading = false;
   List<ServiceRequest> serviceRequests = List();
   List<ServiceRequest> myRequestedRequest = List();
-  var higestId;
 
   Future<Either<Failure, bool>> request(String artisanPhone) async {
     try {
@@ -142,10 +141,6 @@ class ArtisanProvider with ChangeNotifier {
         headers: headers,
       );
       var artisans = response.data['sortedUsers'] as List;
-
-      higestId = response.data['highestId'];
-
-      print(higestId);
       print(artisans.toString());
       return right(artisans);
     } catch (e) {
@@ -163,7 +158,7 @@ class ArtisanProvider with ChangeNotifier {
   }
 
   Future<Either<Failure, List>> getMoreArtisanByLocation(
-      {LocationData locationData}) async {
+      {LocationData locationData, highestId}) async {
     try {
       final user = await Utils.getUserSession();
 
@@ -173,7 +168,7 @@ class ArtisanProvider with ChangeNotifier {
         'mobile': user.phoneNumber,
         'latitude': locationData.latitude,
         'longitude': locationData.longitude,
-        'last_user_id': higestId
+        'highestId': highestId
       };
       String url = Constants.getMoreArtisan;
       final response = await NetworkService().post(
@@ -182,11 +177,10 @@ class ArtisanProvider with ChangeNotifier {
         contentType: ContentType.URL_ENCODED,
         headers: headers,
       );
+      print(response);
       var artisans = [];
-      if (response.data['highestId'] > 0) {
-        artisans = response.data['sortedUsers'] as List;
-        higestId = response.data['highestId'];
-      }
+
+      artisans = response.data['sortedUsers'] as List;
 
       print(artisans.toString());
       return right(artisans);
