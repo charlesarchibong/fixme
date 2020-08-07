@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
+import 'package:quickfix/modules/auth/view/login.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -202,14 +203,16 @@ class _MyAppState extends State<MyApp> {
           navigatorKey: appProvider.navigatorKey,
           title: Constants.appName,
           theme: appProvider.theme,
-          home: widget.sp.get('user') != null
-              ? widget.user?.profilePicture == null ||
-                      widget.user?.profilePicture == 'no_picture_upload'
-                  ? NoProfileImage()
-                  : widget.sp.get('exist') == false
-                      ? EnterSecurityPin()
-                      : MainScreen()
-              : Walkthrough(),
+          home: widget.sp.get('opened') == null
+              ? Walkthrough()
+              : widget.sp.get('user') != null
+                  ? widget.user?.profilePicture == null ||
+                          widget.user?.profilePicture == 'no_picture_upload'
+                      ? NoProfileImage()
+                      : widget.sp.get('exist') == false
+                          ? EnterSecurityPin()
+                          : MainScreen()
+                  : LoginScreen(),
         );
       },
     );
