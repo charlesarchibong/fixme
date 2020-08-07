@@ -29,6 +29,11 @@ class Utils {
     sp.setBool("exist", exist);
   }
 
+  static void setAppAlreadyOpened(bool opened) async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    sp.setBool("opened", opened);
+  }
+
   static void setProfilePicture(String imagePath) async {
     SharedPreferences sp = await SharedPreferences.getInstance();
     sp.setString("profilePicture", imagePath);
