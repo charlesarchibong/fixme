@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:quickfix/modules/auth/view/login.dart';
+import 'package:quickfix/util/Utils.dart';
 
 class Walkthrough extends StatefulWidget {
   @override
@@ -10,7 +11,12 @@ class Walkthrough extends StatefulWidget {
 class _WalkthroughState extends State<Walkthrough> {
   @override
   void initState() {
+    setAppAlreadyOpened();
     super.initState();
+  }
+
+  void setAppAlreadyOpened() async {
+    Utils.setAppAlreadyOpened(true);
   }
 
   @override
