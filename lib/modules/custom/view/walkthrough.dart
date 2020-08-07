@@ -9,9 +9,9 @@ class Walkthrough extends StatefulWidget {
 }
 
 class _WalkthroughState extends State<Walkthrough> {
+  final _scaffoldKey = UniqueKey();
   @override
   void initState() {
-    setAppAlreadyOpened();
     super.initState();
   }
 
@@ -95,6 +95,7 @@ class _WalkthroughState extends State<Walkthrough> {
     return WillPopScope(
       onWillPop: () => Future.value(false),
       child: Scaffold(
+        key: _scaffoldKey,
         backgroundColor: Theme.of(context).primaryColor,
         body: Padding(
           padding: EdgeInsets.only(top: 100.0),
@@ -105,6 +106,7 @@ class _WalkthroughState extends State<Walkthrough> {
               activeSize: Size.fromRadius(8),
             ),
             onDone: () {
+              setAppAlreadyOpened();
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (BuildContext context) {
@@ -114,6 +116,7 @@ class _WalkthroughState extends State<Walkthrough> {
               );
             },
             onSkip: () {
+              setAppAlreadyOpened();
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (BuildContext context) {

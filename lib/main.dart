@@ -197,13 +197,14 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return Consumer<AppProvider>(
       builder: (BuildContext context, AppProvider appProvider, Widget child) {
+        print(widget.sp.get('opened'));
         return MaterialApp(
           key: appProvider.key,
           debugShowCheckedModeBanner: false,
           navigatorKey: appProvider.navigatorKey,
           title: Constants.appName,
           theme: appProvider.theme,
-          home: widget.sp.get('opened') == null || false
+          home: widget.sp.get('opened') == null
               ? Walkthrough()
               : widget.sp.get('user') != null
                   ? widget.user?.profilePicture == null ||
