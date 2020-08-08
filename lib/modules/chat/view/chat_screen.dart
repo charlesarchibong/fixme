@@ -216,9 +216,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 children: <Widget>[
                   CircleAvatar(
                     backgroundColor: Theme.of(context).primaryColor,
-                    backgroundImage: snapshot.data.imageUrl == null
-                        ? AssetImage('assets/dp.png')
-                        : NetworkImage(snapshot.data.imageUrl),
+                    backgroundImage: NetworkImage(snapshot.data.profilePicture),
                   ),
                   SizedBox(
                     width: 15,

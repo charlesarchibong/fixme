@@ -1,3 +1,4 @@
+import 'package:logger/logger.dart';
 import 'package:quickfix/util/const.dart';
 
 class User {
@@ -58,6 +59,7 @@ class User {
   }
 
   User.fromjson(Map<String, dynamic> json) {
+    Logger().i(json);
     firstName = json['firstName'];
     lastName = json['lastName'];
     phoneNumber = json['phoneNumber'];
@@ -67,7 +69,8 @@ class User {
     serviceId = json['service_id'];
     imageUrl = json['profile_pic_file_name'];
     accountNumber = json['bank_account_number'];
-    profilePicture = '${Constants.uploadUrl}${json['profile_pic_file_name']}';
+    profilePicture = json['imageUrl'] ??
+        '${Constants.uploadUrl}${json['profile_pic_file_name']}';
     profileViews = json['profile_views'];
     reviews = json['reviews'];
     userRating = json['user_rating'];

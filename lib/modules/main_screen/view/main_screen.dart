@@ -325,7 +325,7 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                 leading: Badge(
                   badgeContent: StreamBuilder<QuerySnapshot>(
                     stream: MessageService().getMyTotalChatCount(
-                      '${currentUser.phoneNumber}',
+                      '${currentUser?.phoneNumber}',
                     ),
                     builder: (context, snapshot) {
                       return Text(
