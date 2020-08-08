@@ -293,6 +293,15 @@ class ProfileProvider extends ChangeNotifier {
       print(response.data);
 
       if (response.data['reqRes'] == 'true') {
+        Map userMap = currentUser.toJson();
+        userMap['firstName'] = firstName;
+        userMap['lastName'] = lastName;
+        Utils.setUserSession(jsonEncode(User.fromjson(userMap)));
+        Utils.setProfilePicture(_profilePicture);
+        await UsersService(userPhone: currentUser.phoneNumber).updateUserDate(
+          user: User.fromjson(userMap),
+          imageUrl: currentUser.profilePicture,
+        );
         return Right(true);
       } else {
         return Left(Failure(message: 'Your profile was not updated'));

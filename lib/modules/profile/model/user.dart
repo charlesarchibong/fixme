@@ -1,4 +1,3 @@
-import 'package:logger/logger.dart';
 import 'package:quickfix/util/const.dart';
 
 class User {
@@ -59,7 +58,7 @@ class User {
   }
 
   User.fromjson(Map<String, dynamic> json) {
-    Logger().i(json);
+    // Logger().i(json);
     firstName = json['firstName'];
     lastName = json['lastName'];
     phoneNumber = json['phoneNumber'];

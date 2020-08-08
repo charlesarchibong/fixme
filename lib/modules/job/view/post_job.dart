@@ -158,6 +158,7 @@ class _PostJobState extends State<PostJob> {
                           ),
                         ),
                         child: TextFormField(
+                          autofillHints: [AutofillHints.jobTitle],
                           textCapitalization: TextCapitalization.none,
                           style: TextStyle(
                             fontSize: 15.0,
@@ -206,6 +207,7 @@ class _PostJobState extends State<PostJob> {
                           ),
                         ),
                         child: TextFormField(
+                          autofillHints: [AutofillHints.name],
                           textCapitalization: TextCapitalization.none,
                           keyboardType: TextInputType.multiline,
                           validator: (value) => value.isEmpty
@@ -294,6 +296,7 @@ class _PostJobState extends State<PostJob> {
                           ),
                         ),
                         child: TextFormField(
+                          autofillHints: [AutofillHints.transactionAmount],
                           textCapitalization: TextCapitalization.none,
                           keyboardType: TextInputType.number,
                           validator: (value) => value.isEmpty
@@ -346,6 +349,7 @@ class _PostJobState extends State<PostJob> {
                           ),
                         ),
                         child: TextFormField(
+                          autofillHints: [AutofillHints.addressCityAndState],
                           textCapitalization: TextCapitalization.none,
                           keyboardType: TextInputType.multiline,
                           validator: (value) => value.isEmpty

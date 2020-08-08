@@ -90,6 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     child: TextField(
+                      autofillHints: [AutofillHints.telephoneNumber],
                       keyboardType: TextInputType.phone,
                       textCapitalization: TextCapitalization.none,
                       style: TextStyle(

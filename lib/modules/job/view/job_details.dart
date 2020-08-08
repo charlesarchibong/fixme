@@ -167,6 +167,10 @@ class _JobDetailsState extends State<JobDetails> {
                                                               ),
                                                               child:
                                                                   TextFormField(
+                                                                autofillHints: [
+                                                                  AutofillHints
+                                                                      .transactionAmount
+                                                                ],
                                                                 controller:
                                                                     _amountController,
                                                                 keyboardType:

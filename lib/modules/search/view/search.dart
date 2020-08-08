@@ -50,6 +50,7 @@ class _SearchScreenState extends State<SearchScreen>
                   ),
                 ),
                 child: TextField(
+                  autofillHints: [AutofillHints.givenName],
                   style: TextStyle(
                     fontSize: 15.0,
                     color: Colors.black,
