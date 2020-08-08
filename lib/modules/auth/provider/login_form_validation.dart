@@ -81,7 +81,7 @@ class LoginFormValidation extends ChangeNotifier {
           debugPrint(user.toJson().toString());
           await UsersService(userPhone: user.phoneNumber).updateUserDate(
             user: user,
-            imageUrl: null,
+            imageUrl: Constants.uploadUrl + user.profilePicture,
           );
           return user;
         }
