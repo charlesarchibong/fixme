@@ -297,7 +297,6 @@ class ProfileProvider extends ChangeNotifier {
         userMap['firstName'] = firstName;
         userMap['lastName'] = lastName;
         Utils.setUserSession(jsonEncode(User.fromjson(userMap)));
-        Utils.setProfilePicture(_profilePicture);
         await UsersService(userPhone: currentUser.phoneNumber).updateUserDate(
           user: User.fromjson(userMap),
           imageUrl: currentUser.profilePicture,
