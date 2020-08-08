@@ -154,6 +154,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   void sendMessage(String messageText) async {
     try {
+      _messageController.clear();
       String messageId = Utils.generateId(30);
 
       Message message = Message(
@@ -175,7 +176,7 @@ class _ChatScreenState extends State<ChatScreen> {
       FlutterAppBadger.updateBadgeCount(1);
 
       // FocusScope.of(context).requestFocus(FocusNode());
-      _messageController.clear();
+
     } catch (e) {
       print(e.toString());
       FlushBarCustomHelper.showErrorFlushbar(
