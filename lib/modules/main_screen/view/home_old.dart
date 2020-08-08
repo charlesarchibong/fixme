@@ -35,6 +35,7 @@ class _HomeState extends State<HomeW>
   LocationData locationData;
   List users = List();
   bool _loadingArtisan = false;
+  bool _loadingMoreArtisan = false;
   String phoneNumber = '';
   String accountNumber = '0348861021';
   ScrollController _controller;
@@ -117,19 +118,25 @@ class _HomeState extends State<HomeW>
         context,
         listen: false,
       );
-      var highestId = users.length;
+      setState(() {
+        _loadingMoreArtisan = true;
+      });
+
+      var highestId = users.length + 1;
       print(highestId);
 
       final fetched = await artisanProvider.getMoreArtisanByLocation(
           locationData: locationData, highestId: highestId);
       return fetched.fold((Failure failure) {
         setState(() {
+          _loadingArtisan = false;
           users = users;
         });
         return List();
       }, (List listArtisan) {
         List newList = [...users, ...listArtisan];
         setState(() {
+          _loadingMoreArtisan = false;
           users = newList;
         });
         return newList;
