@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:quickfix/helpers/errors.dart';
 
 import '../../../helpers/flush_bar.dart';
 import '../provider/login_form_validation.dart';
@@ -30,15 +31,20 @@ class _LoginScreenState extends State<LoginScreen> {
             }),
           );
         } else {
-          throw new Exception('Invalid phone number, please try again!');
+          throw new InvalidPhoneException(
+            message: 'Invalid phone number, please try again!',
+          );
         }
       }).catchError((error) {
         loginForm.setNotLoading();
         // print(error.toString().split(":")[1]);
-        String message = error is SocketException
-            ? 'No Internet connection available'
-            : 'Your request can not be processed, please try again.';
+        String message;
 
+        if (error is SocketException) {
+          message = 'No Internet connection available';
+        } else if (error is InvalidPhoneException) {
+          message = 'Invalid phone number, please try again!';
+        }
         FlushBarCustomHelper.showErrorFlushbar(
           context,
           'Error',

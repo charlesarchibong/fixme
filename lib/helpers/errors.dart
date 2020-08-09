@@ -4,3 +4,10 @@ class TransactionFailedException implements Exception {
     this.message,
   }) : super();
 }
+
+class InvalidPhoneException implements Exception {
+  final String message;
+  InvalidPhoneException({
+    this.message,
+  }) : super();
+}

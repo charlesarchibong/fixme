@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:quickfix/helpers/errors.dart';
 import 'package:quickfix/modules/profile/model/user.dart';
 import 'package:quickfix/services/firebase/users.dart';
 import 'package:quickfix/services/network/network_service.dart';
@@ -72,7 +73,9 @@ class LoginFormValidation extends ChangeNotifier {
       if (response.statusCode == 200) {
         debugPrint(response.data.toString());
         if (response.data['reqRes'] == "false") {
-          throw new Exception('Invalid phone number, please try again!');
+          throw new InvalidPhoneException(
+            message: 'Invalid phone number, please try again!',
+          );
         } else {
           String apiKey = response.headers.value('bearer');
           Utils.setApiKey(apiKey);
