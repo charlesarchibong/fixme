@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+const FIXME_TOKEN = 'FIXME_LOGIN_TOKEN';
+const FCM_KEY = 'FCM_KEY';
+
 class Constants {
   static String appName = "Fixme Business";
   static String appVersion = "5.0.0";

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:quickfix/modules/profile/model/user.dart';
 import 'package:quickfix/services/firebase/users.dart';
 import 'package:quickfix/services/network/network_service.dart';
@@ -54,8 +55,7 @@ class LoginFormValidation extends ChangeNotifier {
 
   Future<User> loginUser(String phone) async {
     try {
-      String token =
-          'FIXME_1U90P3444ANdroidAPP4HUisallOkayBY_FIXME_APP_UIONSISJGJANKKI3445fv';
+      String token = DotEnv().env[FIXME_TOKEN];
       // String tokenEncoded = base64.encode(utf8.encode(token));
       Map<String, String> headers = {
         "Content-type": "application/x-www-form-urlencoded",
