@@ -1,23 +1,20 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_badger/flutter_app_badger.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
-import 'package:quickfix/helpers/custom_lodder.dart';
 import 'package:quickfix/helpers/flush_bar.dart';
 import 'package:quickfix/modules/chat/model/message.dart';
 import 'package:quickfix/modules/profile/model/user.dart';
 import 'package:quickfix/services/firebase/messages.dart';
 import 'package:quickfix/services/firebase/users.dart';
-import 'package:quickfix/services/network/network_service.dart';
 import 'package:quickfix/util/Utils.dart';
 import 'package:quickfix/util/const.dart';
-import 'package:quickfix/util/content_type.dart';
 
 class ChatScreen extends StatefulWidget {
   final String receiver;
@@ -221,7 +218,9 @@ class _ChatScreenState extends State<ChatScreen> {
                 children: <Widget>[
                   CircleAvatar(
                     backgroundColor: Theme.of(context).primaryColor,
-                    backgroundImage: NetworkImage(snapshot.data.profilePicture),
+                    backgroundImage: snapshot.data != null
+                        ? NetworkImage(snapshot.data.profilePicture)
+                        : Text(''),
                   ),
                   SizedBox(
                     width: 15,
@@ -301,15 +300,16 @@ class _ChatScreenState extends State<ChatScreen> {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   Future<Map<String, dynamic>> sendAndRetrieveMessage(unReadMSGCount) async {
     var firebaseCloudserverToken = DotEnv().env[FCM_KEY];
+    Logger().i(firebaseCloudserverToken);
     Logger().i(widget.receiverToken);
 
-    Map<String, String> header = {
-      'Content-Type': 'application/json',
-      'Authorization': 'key=$firebaseCloudserverToken',
-    };
-    final Response res = await NetworkService().post(
-      url: 'https://fcm.googleapis.com/fcm/send',
-      contentType: ContentType.JSON,
+    // final Response res = await NetworkService().post(url: 'https://fcm.googleapis.com/fcm/send', contentType: ContentType.JSON,)
+    final response = await http.post(
+      'https://fcm.googleapis.com/fcm/send',
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        'Authorization': 'key=$firebaseCloudserverToken',
+      },
       body: jsonEncode(
         <String, dynamic>{
           'notification': <String, dynamic>{
@@ -327,18 +327,10 @@ class _ChatScreenState extends State<ChatScreen> {
           'to': widget.receiverToken,
         },
       ),
-      headers: header,
     );
-    // final response = await http.post(
-    //   'https://fcm.googleapis.com/fcm/send',
-    //   headers: <String, String>{
-    //     'Content-Type': 'application/json',
-    //     'Authorization': 'key=$firebaseCloudserverToken',
-    //   },
-    //   body: ,
-    // );
 
-    CustomLogger(className: 'ChatScreen').messagePrint(res.data);
+    // Logger().i(response.statusCode);
+    Logger().i(response.body);
 
     final Completer<Map<String, dynamic>> completer =
         Completer<Map<String, dynamic>>();

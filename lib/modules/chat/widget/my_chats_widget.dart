@@ -66,9 +66,11 @@ class _MyChatWidgetState extends State<MyChatWidget> {
                                     leading: CircleAvatar(
                                       backgroundColor:
                                           Theme.of(context).primaryColor,
-                                      backgroundImage: NetworkImage(
-                                        user.data.profilePicture,
-                                      ),
+                                      backgroundImage: user.data != null
+                                          ? NetworkImage(
+                                              user.data.profilePicture,
+                                            )
+                                          : Text(''),
                                     ),
                                     title: Text(
                                       // ignore: null_aware_before_operator
