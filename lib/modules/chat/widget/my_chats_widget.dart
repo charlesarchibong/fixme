@@ -70,7 +70,7 @@ class _MyChatWidgetState extends State<MyChatWidget> {
                                           ? NetworkImage(
                                               user.data.profilePicture,
                                             )
-                                          : Text(''),
+                                          : AssetImage('assets/dp.png'),
                                     ),
                                     title: Text(
                                       // ignore: null_aware_before_operator

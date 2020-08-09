@@ -17,6 +17,7 @@ class User {
   String status;
   String bio;
   String address;
+  String firebaseToken;
 
   User.name({
     this.firstName,
@@ -29,6 +30,7 @@ class User {
     this.imageUrl,
     this.address,
     this.reviews,
+    this.firebaseToken,
     this.userRating,
     this.serviceArea,
     this.serviceId,
@@ -54,6 +56,7 @@ class User {
     map['user_rating'] = userRating;
     map['status'] = status;
     map['user_address'] = address;
+    map['mobile_device_token'] = firebaseToken;
     return map;
   }
 
@@ -75,5 +78,6 @@ class User {
     userRating = json['user_rating'];
     address = json['address'];
     status = json['status'];
+    firebaseToken = json['mobile_device_token'];
   }
 }

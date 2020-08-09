@@ -220,7 +220,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     backgroundColor: Theme.of(context).primaryColor,
                     backgroundImage: snapshot.data != null
                         ? NetworkImage(snapshot.data.profilePicture)
-                        : Text(''),
+                        : AssetImage('assets/dp.png'),
                   ),
                   SizedBox(
                     width: 15,
