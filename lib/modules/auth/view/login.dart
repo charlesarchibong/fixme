@@ -44,6 +44,8 @@ class _LoginScreenState extends State<LoginScreen> {
           message = 'No Internet connection available';
         } else if (error is InvalidPhoneException) {
           message = 'Invalid phone number, please try again!';
+        } else {
+          message = 'An error occurred, please try again later!';
         }
         FlushBarCustomHelper.showErrorFlushbar(
           context,
