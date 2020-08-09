@@ -299,6 +299,7 @@ class _ChatScreenState extends State<ChatScreen> {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   Future<Map<String, dynamic>> sendAndRetrieveMessage(unReadMSGCount) async {
     var firebaseCloudserverToken = DotEnv().env[FCM_KEY];
+    Logger().i(widget.receiverToken);
     final response = await http.post(
       'https://fcm.googleapis.com/fcm/send',
       headers: <String, String>{
