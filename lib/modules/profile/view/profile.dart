@@ -46,13 +46,17 @@ class _ProfileState extends State<Profile> {
   String profileImage;
 
   getSubService() async {
-    final profileProvider =
-        Provider.of<ProfileProvider>(context, listen: false);
+    final profileProvider = Provider.of<ProfileProvider>(
+      context,
+      listen: false,
+    );
     String service = await profileProvider.getSubService();
     print(service);
-    setState(() {
-      subServices = service;
-    });
+    if (mounted) {
+      setState(() {
+        subServices = service;
+      });
+    }
   }
 
   getServiceImages() async {

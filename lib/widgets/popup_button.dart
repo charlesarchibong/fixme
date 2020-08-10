@@ -79,6 +79,10 @@ class _CustomPopupButtonState extends State<CustomPopupButton> {
                                                   right: 5.0,
                                                 ),
                                                 child: TextFormField(
+                                                  autofillHints: [
+                                                    AutofillHints
+                                                        .transactionAmount
+                                                  ],
                                                   controller: _amountController,
                                                   keyboardType:
                                                       TextInputType.number,

@@ -16,6 +16,7 @@ class MessageService {
       message.receiverPhone,
     ))
         .setData({
+      'time': message.time,
       'chatId': message.receiverPhone,
       'receiver': getChatNode(
         message.senderPhone,
@@ -51,7 +52,9 @@ class MessageService {
 
   Stream<QuerySnapshot> getUserChats() {
     return _collectionReference
+
         // .where('chatId', isEqualTo: receiverPhone)
+        .orderBy('time', descending: true)
         .snapshots();
   }
 

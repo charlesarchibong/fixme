@@ -325,7 +325,7 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                 leading: Badge(
                   badgeContent: StreamBuilder<QuerySnapshot>(
                     stream: MessageService().getMyTotalChatCount(
-                      '${currentUser.phoneNumber}',
+                      '${currentUser?.phoneNumber}',
                     ),
                     builder: (context, snapshot) {
                       return Text(
@@ -1095,7 +1095,7 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
         contentType: ContentType.URL_ENCODED,
         headers: headers,
       );
-      print(response.data);
+      Logger().i(response.data);
     } catch (e) {
       if (e is DioError) {
         print(e.message);

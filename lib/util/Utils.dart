@@ -26,7 +26,12 @@ class Utils {
 
   static void setSecurityPinExist(bool exist) async {
     SharedPreferences sp = await SharedPreferences.getInstance();
-    sp.setBool("exist", exist);
+    await sp.setBool("exist", exist);
+  }
+
+  static void setAppAlreadyOpened(bool opened) async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    await sp.setBool("opened", opened);
   }
 
   static void setProfilePicture(String imagePath) async {

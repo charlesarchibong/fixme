@@ -17,6 +17,7 @@ class User {
   String status;
   String bio;
   String address;
+  String firebaseToken;
 
   User.name({
     this.firstName,
@@ -29,6 +30,7 @@ class User {
     this.imageUrl,
     this.address,
     this.reviews,
+    this.firebaseToken,
     this.userRating,
     this.serviceArea,
     this.serviceId,
@@ -54,10 +56,12 @@ class User {
     map['user_rating'] = userRating;
     map['status'] = status;
     map['user_address'] = address;
+    map['mobile_device_token'] = firebaseToken;
     return map;
   }
 
   User.fromjson(Map<String, dynamic> json) {
+    // Logger().i(json);
     firstName = json['firstName'];
     lastName = json['lastName'];
     phoneNumber = json['phoneNumber'];
@@ -67,11 +71,13 @@ class User {
     serviceId = json['service_id'];
     imageUrl = json['profile_pic_file_name'];
     accountNumber = json['bank_account_number'];
-    profilePicture = '${Constants.uploadUrl}${json['profile_pic_file_name']}';
+    profilePicture = json['imageUrl'] ??
+        '${Constants.uploadUrl}${json['profile_pic_file_name']}';
     profileViews = json['profile_views'];
     reviews = json['reviews'];
     userRating = json['user_rating'];
     address = json['address'];
     status = json['status'];
+    firebaseToken = json['mobile_device_token'];
   }
 }

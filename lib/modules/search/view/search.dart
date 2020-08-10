@@ -50,6 +50,7 @@ class _SearchScreenState extends State<SearchScreen>
                   ),
                 ),
                 child: TextField(
+                  autofillHints: [AutofillHints.givenName],
                   style: TextStyle(
                     fontSize: 15.0,
                     color: Colors.black,
@@ -84,6 +85,9 @@ class _SearchScreenState extends State<SearchScreen>
                     ),
                   ),
                   maxLines: 1,
+                  onChanged: (val) {
+                    _searchArtisans(val);
+                  },
                   controller: _searchControl,
                   onSubmitted: (val) {
                     _searchArtisans(val);

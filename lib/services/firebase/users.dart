@@ -20,6 +20,7 @@ class UsersService {
       'firstName': '${user.firstName}',
       'lastName': '${user.lastName}',
       'imageUrl': imageUrl,
+      'mobile_device_token': user.firebaseToken,
     };
     return await _collectionReference.document(userPhone).setData(userMap);
   }

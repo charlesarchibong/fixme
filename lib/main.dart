@@ -1,9 +1,15 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
+import 'package:quickfix/modules/auth/view/login.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:sentry/sentry.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'modules/artisan/provider/artisan_provider.dart';
@@ -18,7 +24,6 @@ import 'modules/job/provider/pending_job_provider.dart';
 import 'modules/job/provider/post_job_provider.dart';
 import 'modules/main_screen/view/main_screen.dart';
 import 'modules/main_screen/view/no_profile_image.dart';
-import 'modules/profile/model/user.dart';
 import 'modules/profile/provider/profile_provider.dart';
 import 'modules/rate_review/provider/rate_review_provider.dart';
 import 'modules/search/provider/search_provider.dart';
@@ -38,6 +43,42 @@ final BehaviorSubject<String> selectNotificationSubject =
     BehaviorSubject<String>();
 
 NotificationAppLaunchDetails notificationAppLaunchDetails;
+final SentryClient _sentry = new SentryClient(
+  dsn: Constants.SENTRY_DSN,
+);
+
+bool get isInDebugMode {
+  bool inDebugMode = false;
+  assert(inDebugMode = true);
+  return inDebugMode;
+}
+
+/// Reports [error] along with its [stackTrace] to Sentry.io.
+Future<Null> _reportError(dynamic error, dynamic stackTrace) async {
+  Logger().e('Caught error: $error');
+
+  // Errors thrown in development mode are unlikely to be interesting. You can
+  // check if you are running in dev mode using an assertion and omit sending
+  // the report.
+  if (isInDebugMode) {
+    Logger().e(stackTrace);
+    Logger().i('In dev mode. Not sending report to Sentry.io.');
+    return;
+  }
+
+  print('Reporting to Sentry.io...');
+
+  final SentryResponse response = await _sentry.captureException(
+    exception: error,
+    stackTrace: stackTrace,
+  );
+
+  if (response.isSuccessful) {
+    Logger().i('Success! Event ID: ${response.eventId}');
+  } else {
+    Logger().e('Failed to report to Sentry.io: ${response.error}');
+  }
+}
 
 class ReceivedNotification {
   final int id;
@@ -57,6 +98,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   final user = await Utils.getUserSession();
+  await DotEnv().load('.env');
+
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
       systemNavigationBarColor:
@@ -92,36 +135,53 @@ void main() async {
     }
     selectNotificationSubject.add(payload);
   });
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => AppProvider()),
-        ChangeNotifierProvider(create: (_) => LoginFormValidation()),
-        ChangeNotifierProvider(create: (_) => PostJobProvider()),
-        ChangeNotifierProvider(create: (_) => ProfileProvider()),
-        ChangeNotifierProvider(create: (_) => DashBoardProvider()),
-        ChangeNotifierProvider(create: (_) => PendingJobProvider()),
-        ChangeNotifierProvider(create: (_) => MyRequestProvider()),
-        ChangeNotifierProvider(create: (_) => SearchProvider()),
-        ChangeNotifierProvider(create: (_) => ArtisanProvider()),
-        ChangeNotifierProvider(create: (_) => ApprovedBidProvider()),
-        ChangeNotifierProvider(create: (_) => RateReviewProvider()),
-        ChangeNotifierProvider(create: (_) => TransferProvider()),
-        ChangeNotifierProvider(create: (_) => SecurityPinProvider()),
-      ],
-      child: MyApp(
-        sp: prefs,
-        user: user,
+
+  // This captures errors reported by the Flutter framework.
+  FlutterError.onError = (FlutterErrorDetails details) async {
+    if (isInDebugMode) {
+      // In development mode simply print to console.
+      FlutterError.dumpErrorToConsole(details);
+    } else {
+      // In production mode report to the application zone to report to
+      // Sentry.
+      Zone.current.handleUncaughtError(details.exception, details.stack);
+    }
+  };
+
+  runZonedGuarded<Future<Null>>(() async {
+    runApp(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => AppProvider()),
+          ChangeNotifierProvider(create: (_) => LoginFormValidation()),
+          ChangeNotifierProvider(create: (_) => PostJobProvider()),
+          ChangeNotifierProvider(create: (_) => ProfileProvider()),
+          ChangeNotifierProvider(create: (_) => DashBoardProvider()),
+          ChangeNotifierProvider(create: (_) => PendingJobProvider()),
+          ChangeNotifierProvider(create: (_) => MyRequestProvider()),
+          ChangeNotifierProvider(create: (_) => SearchProvider()),
+          ChangeNotifierProvider(create: (_) => ArtisanProvider()),
+          ChangeNotifierProvider(create: (_) => ApprovedBidProvider()),
+          ChangeNotifierProvider(create: (_) => RateReviewProvider()),
+          ChangeNotifierProvider(create: (_) => TransferProvider()),
+          ChangeNotifierProvider(create: (_) => SecurityPinProvider()),
+        ],
+        child: MyApp(
+          sp: prefs,
+          userModel: user,
+        ),
       ),
-    ),
-  );
+    );
+  }, (error, stackTrace) async {
+    await _reportError(error, stackTrace);
+  });
 }
 
 class MyApp extends StatefulWidget {
   final SharedPreferences sp;
-  final User user;
+  final userModel;
 
-  const MyApp({Key key, this.sp, this.user}) : super(key: key);
+  const MyApp({Key key, this.sp, this.userModel}) : super(key: key);
 
   @override
   _MyAppState createState() => _MyAppState();
@@ -196,20 +256,24 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return Consumer<AppProvider>(
       builder: (BuildContext context, AppProvider appProvider, Widget child) {
+        print(widget.sp.get('opened'));
         return MaterialApp(
           key: appProvider.key,
           debugShowCheckedModeBanner: false,
           navigatorKey: appProvider.navigatorKey,
           title: Constants.appName,
           theme: appProvider.theme,
-          home: widget.sp.get('user') != null
-              ? widget.user?.profilePicture == null ||
-                      widget.user?.profilePicture == 'no_picture_upload'
-                  ? NoProfileImage()
-                  : widget.sp.get('exist') == false
-                      ? EnterSecurityPin()
-                      : MainScreen()
-              : Walkthrough(),
+          home: widget.sp.get('opened') == null
+              ? Walkthrough()
+              : widget.sp.get('user') != null
+                  ? widget.userModel?.profilePicture == null ||
+                          widget.userModel?.profilePicture ==
+                              'no_picture_upload'
+                      ? NoProfileImage()
+                      : widget.sp.get('exist') == false
+                          ? EnterSecurityPin()
+                          : MainScreen()
+                  : LoginScreen(),
         );
       },
     );

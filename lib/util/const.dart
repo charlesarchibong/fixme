@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+const FIXME_TOKEN = 'FIXME_LOGIN_TOKEN';
+const FCM_KEY = 'FCM_KEY';
+
 class Constants {
   static String appName = "Fixme Business";
   static String appVersion = "5.0.0";
@@ -33,6 +36,8 @@ class Constants {
       'https://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftwareUpdate?id=com.fixme.business&mt=8';
   static const PLAY_STORE_URL =
       'https://play.google.com/store/apps/details?id=com.fixme.business';
+  static const SENTRY_DSN =
+      'https://31ef3de468154251b8876f56608cc328@o431422.ingest.sentry.io/5382465';
 
   //Colors for theme
 //  Color(0xfffcfcff);

@@ -2,15 +2,16 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:quickfix/modules/auth/provider/login_form_validation.dart';
-import 'package:quickfix/modules/auth/view/phone_number_verification.dart';
+import 'package:quickfix/helpers/errors.dart';
+
+import '../../../helpers/flush_bar.dart';
+import '../provider/login_form_validation.dart';
+import 'phone_number_verification.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
-
-final _scaffoldKey = GlobalKey<ScaffoldState>();
 
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _phoneControl = new TextEditingController();
@@ -30,20 +31,26 @@ class _LoginScreenState extends State<LoginScreen> {
             }),
           );
         } else {
-          throw new Exception('Invalid phone number, please try again!');
+          throw new InvalidPhoneException(
+            message: 'Invalid phone number, please try again!',
+          );
         }
       }).catchError((error) {
         loginForm.setNotLoading();
         // print(error.toString().split(":")[1]);
-        String message = error is SocketException
-            ? 'No Internet connection available'
-            : 'Your request can not be processed, please try again.';
-//        _showAlert(context, error.toString().split(":")[1]);
-        _scaffoldKey.currentState.showSnackBar(
-          SnackBar(
-            content: Text(message),
-            duration: Duration(seconds: 5),
-          ),
+        String message;
+
+        if (error is SocketException) {
+          message = 'No Internet connection available';
+        } else if (error is InvalidPhoneException) {
+          message = 'Invalid phone number, please try again!';
+        } else {
+          message = 'An error occurred, please try again later!';
+        }
+        FlushBarCustomHelper.showErrorFlushbar(
+          context,
+          'Error',
+          message,
         );
       });
     }
@@ -61,9 +68,8 @@ class _LoginScreenState extends State<LoginScreen> {
       onWillPop: () async {
         return false;
       },
-      key: UniqueKey(),
       child: Scaffold(
-        key: _scaffoldKey,
+        key: UniqueKey(),
         body: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.fromLTRB(20.0, 50, 20, 0),
@@ -92,6 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     child: TextField(
+                      autofillHints: [AutofillHints.telephoneNumber],
                       keyboardType: TextInputType.phone,
                       textCapitalization: TextCapitalization.none,
                       style: TextStyle(

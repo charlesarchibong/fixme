@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:quickfix/modules/auth/view/login.dart';
+import 'package:quickfix/util/Utils.dart';
 
 class Walkthrough extends StatefulWidget {
   @override
@@ -8,9 +9,14 @@ class Walkthrough extends StatefulWidget {
 }
 
 class _WalkthroughState extends State<Walkthrough> {
+  final _scaffoldKey = UniqueKey();
   @override
   void initState() {
     super.initState();
+  }
+
+  void setAppAlreadyOpened() async {
+    Utils.setAppAlreadyOpened(true);
   }
 
   @override
@@ -89,6 +95,7 @@ class _WalkthroughState extends State<Walkthrough> {
     return WillPopScope(
       onWillPop: () => Future.value(false),
       child: Scaffold(
+        key: _scaffoldKey,
         backgroundColor: Theme.of(context).primaryColor,
         body: Padding(
           padding: EdgeInsets.only(top: 100.0),
@@ -99,6 +106,7 @@ class _WalkthroughState extends State<Walkthrough> {
               activeSize: Size.fromRadius(8),
             ),
             onDone: () {
+              setAppAlreadyOpened();
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (BuildContext context) {
@@ -108,6 +116,7 @@ class _WalkthroughState extends State<Walkthrough> {
               );
             },
             onSkip: () {
+              setAppAlreadyOpened();
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (BuildContext context) {

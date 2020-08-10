@@ -4,15 +4,17 @@ import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_badger/flutter_app_badger.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import 'package:quickfix/helpers/custom_lodder.dart';
+import 'package:logger/logger.dart';
 import 'package:quickfix/helpers/flush_bar.dart';
 import 'package:quickfix/modules/chat/model/message.dart';
 import 'package:quickfix/modules/profile/model/user.dart';
 import 'package:quickfix/services/firebase/messages.dart';
 import 'package:quickfix/services/firebase/users.dart';
 import 'package:quickfix/util/Utils.dart';
+import 'package:quickfix/util/const.dart';
 
 class ChatScreen extends StatefulWidget {
   final String receiver;
@@ -154,6 +156,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   void sendMessage(String messageText) async {
     try {
+      _messageController.clear();
       String messageId = Utils.generateId(30);
 
       Message message = Message(
@@ -175,9 +178,9 @@ class _ChatScreenState extends State<ChatScreen> {
       FlutterAppBadger.updateBadgeCount(1);
 
       // FocusScope.of(context).requestFocus(FocusNode());
-      _messageController.clear();
+
     } catch (e) {
-      print(e.toString());
+      Logger().e(e);
       FlushBarCustomHelper.showErrorFlushbar(
         context,
         'Error',
@@ -215,9 +218,9 @@ class _ChatScreenState extends State<ChatScreen> {
                 children: <Widget>[
                   CircleAvatar(
                     backgroundColor: Theme.of(context).primaryColor,
-                    backgroundImage: snapshot.data.imageUrl == null
-                        ? AssetImage('assets/dp.png')
-                        : NetworkImage(snapshot.data.imageUrl),
+                    backgroundImage: snapshot.data != null
+                        ? NetworkImage(snapshot.data.profilePicture)
+                        : AssetImage('assets/dp.png'),
                   ),
                   SizedBox(
                     width: 15,
@@ -296,8 +299,11 @@ class _ChatScreenState extends State<ChatScreen> {
 
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   Future<Map<String, dynamic>> sendAndRetrieveMessage(unReadMSGCount) async {
-    var firebaseCloudserverToken =
-        'AAAAyf72URY:APA91bG0N1JMxXJqu_E21ijGzuNf6qAKROxBj163xMiWI0lhtxsoNsYF559XUE0vLxtN79xNqZlvj5QT8pw7W-7lLNOuL2OuwHlydN6_WWxxZe1z9px_IYAQl2bTOkzPwMx1QCLo-dpE';
+    var firebaseCloudserverToken = DotEnv().env[FCM_KEY];
+    Logger().i(firebaseCloudserverToken);
+    Logger().i(widget.receiverToken);
+
+    // final Response res = await NetworkService().post(url: 'https://fcm.googleapis.com/fcm/send', contentType: ContentType.JSON,)
     final response = await http.post(
       'https://fcm.googleapis.com/fcm/send',
       headers: <String, String>{
@@ -323,7 +329,8 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
     );
 
-    CustomLogger(className: 'ChatScreen').messagePrint(response.body);
+    // Logger().i(response.statusCode);
+    Logger().i(response.body);
 
     final Completer<Map<String, dynamic>> completer =
         Completer<Map<String, dynamic>>();

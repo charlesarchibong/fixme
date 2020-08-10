@@ -12,6 +12,7 @@ import 'package:quickfix/modules/profile/model/bank_code.dart';
 import 'package:quickfix/modules/profile/model/bank_information.dart';
 import 'package:quickfix/modules/profile/model/service_image.dart';
 import 'package:quickfix/modules/profile/model/user.dart';
+import 'package:quickfix/services/firebase/users.dart';
 import 'package:quickfix/services/network/network_service.dart';
 import 'package:quickfix/util/Utils.dart';
 import 'package:quickfix/util/const.dart';
@@ -53,6 +54,10 @@ class ProfileProvider extends ChangeNotifier {
     userMap['profilePicture'] = _profilePicture;
     Utils.setUserSession(jsonEncode(User.fromjson(userMap)));
     Utils.setProfilePicture(_profilePicture);
+    await UsersService(userPhone: user.phoneNumber).updateUserDate(
+      user: User.fromjson(userMap),
+      imageUrl: _profilePicture,
+    );
     notifyListeners();
   }
 
@@ -288,6 +293,14 @@ class ProfileProvider extends ChangeNotifier {
       print(response.data);
 
       if (response.data['reqRes'] == 'true') {
+        Map userMap = currentUser.toJson();
+        userMap['firstName'] = firstName;
+        userMap['lastName'] = lastName;
+        Utils.setUserSession(jsonEncode(User.fromjson(userMap)));
+        await UsersService(userPhone: currentUser.phoneNumber).updateUserDate(
+          user: User.fromjson(userMap),
+          imageUrl: currentUser.profilePicture,
+        );
         return Right(true);
       } else {
         return Left(Failure(message: 'Your profile was not updated'));
