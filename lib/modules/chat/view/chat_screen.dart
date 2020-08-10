@@ -172,7 +172,7 @@ class _ChatScreenState extends State<ChatScreen> {
         unread: false,
       );
       await MessageService(messageId: messageId).updateMessage(message);
-      sendAndRetrieveMessage(1);
+      sendAndRetrieveMessage(1, messageText);
 
       //Message Count
       FlutterAppBadger.updateBadgeCount(1);
@@ -298,7 +298,8 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-  Future<Map<String, dynamic>> sendAndRetrieveMessage(unReadMSGCount) async {
+  Future<Map<String, dynamic>> sendAndRetrieveMessage(
+      unReadMSGCount, message) async {
     var firebaseCloudserverToken = DotEnv().env[FCM_KEY];
     Logger().i(firebaseCloudserverToken);
     Logger().i(widget.receiverToken);
@@ -313,7 +314,7 @@ class _ChatScreenState extends State<ChatScreen> {
       body: jsonEncode(
         <String, dynamic>{
           'notification': <String, dynamic>{
-            'body': '${_messageController.text}',
+            'body': '$message',
             'title': '${currentUser.firstName} ${currentUser.lastName}',
             'badge': '$unReadMSGCount' //'$unReadMSGCount'
           },

@@ -55,6 +55,8 @@ class _MyChatWidgetState extends State<MyChatWidget> {
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
                                           builder: (_) => ChatScreen(
+                                            receiverToken:
+                                                user.data.firebaseToken,
                                             receiver: message.receiverPhone ==
                                                     widget.me
                                                 ? message.senderPhone
