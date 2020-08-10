@@ -35,6 +35,7 @@ class _HomeState extends State<HomeW>
   LocationData locationData;
   List users = List();
   bool _loadingArtisan = false;
+  bool _loadingMoreArtisan = false;
   String phoneNumber = '';
   String accountNumber = '0348861021';
   ScrollController _controller;
@@ -117,19 +118,25 @@ class _HomeState extends State<HomeW>
         context,
         listen: false,
       );
-      var highestId = users.length;
+      setState(() {
+        _loadingMoreArtisan = true;
+      });
+
+      var highestId = users.length + 1;
       print(highestId);
 
       final fetched = await artisanProvider.getMoreArtisanByLocation(
           locationData: locationData, highestId: highestId);
       return fetched.fold((Failure failure) {
         setState(() {
+          _loadingMoreArtisan = false;
           users = users;
         });
         return List();
       }, (List listArtisan) {
         List newList = [...users, ...listArtisan];
         setState(() {
+          _loadingMoreArtisan = false;
           users = newList;
         });
         return newList;
@@ -365,45 +372,59 @@ class _HomeState extends State<HomeW>
   Widget _serviceProvidersAroundMe() {
     return users != null
         ? AnimationLimiter(
-            child: GridView.builder(
-              shrinkWrap: true,
-              primary: true,
-              physics: NeverScrollableScrollPhysics(),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: MediaQuery.of(context).size.width /
-                    (MediaQuery.of(context).size.height / 1.1),
-              ),
-              itemCount: users == null ? 0 : users.length,
-              itemBuilder: (BuildContext context, int index) {
-                Map technician = users[index];
-                // print(technician['id']);
-                return AnimationConfiguration.staggeredGrid(
-                  position: index,
-                  duration: const Duration(milliseconds: 375),
-                  columnCount: 2,
-                  child: SlideAnimation(
-                    verticalOffset: 50.0,
-                    child: FadeInAnimation(
-                      child: GridTechnician(
-                        userData: technician,
-                        mobile: technician['user_mobile'],
-                        img: Constants.uploadUrl +
-                            technician['profile_pic_file_name'],
-                        distance: technician['distance'],
-                        name:
-                            '${technician['user_first_name']} ${technician['user_last_name']}',
-                        rating: double.parse(
-                              technician['user_rating'].toString(),
-                            ) ??
-                            0.0,
-                        raters: technician['reviews'] ?? 0,
-                        serviceArea: technician['service_area'],
-                      ),
-                    ),
+            child: Column(
+              children: [
+                GridView.builder(
+                  shrinkWrap: true,
+                  primary: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: MediaQuery.of(context).size.width /
+                        (MediaQuery.of(context).size.height / 1.1),
                   ),
-                );
-              },
+                  itemCount: users == null ? 0 : users.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    Map technician = users[index];
+                    // print(technician['id']);
+                    return AnimationConfiguration.staggeredGrid(
+                      position: index,
+                      duration: const Duration(milliseconds: 375),
+                      columnCount: 2,
+                      child: SlideAnimation(
+                        verticalOffset: 50.0,
+                        child: FadeInAnimation(
+                          child: GridTechnician(
+                            userData: technician,
+                            mobile: technician['user_mobile'],
+                            img: Constants.uploadUrl +
+                                technician['profile_pic_file_name'],
+                            distance: technician['distance'],
+                            name:
+                                '${technician['user_first_name']} ${technician['user_last_name']}',
+                            rating: double.parse(
+                                  technician['user_rating'].toString(),
+                                ) ??
+                                0.0,
+                            raters: technician['reviews'] ?? 0,
+                            serviceArea: technician['service_area'],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                _loadingMoreArtisan
+                    ? Padding(
+                        padding: const EdgeInsets.only(bottom: 30.0),
+                        child: Center(
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                          ),
+                        ),
+                      )
+                    : Container()
+              ],
             ),
           )
         : Center(
