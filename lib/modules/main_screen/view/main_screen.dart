@@ -17,12 +17,12 @@ import 'package:location/location.dart';
 import 'package:logger/logger.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
+import 'package:quickfix/services/firebase/messeage_count.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../helpers/flush_bar.dart';
 import '../../../helpers/notification.dart';
 import '../../../main.dart';
-import '../../../services/firebase/messages.dart';
 import '../../../services/network/network_service.dart';
 import '../../../util/Utils.dart';
 import '../../../util/const.dart';
@@ -246,8 +246,13 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
               color: Colors.white,
               icon: Badge(
                 badgeContent: StreamBuilder<QuerySnapshot>(
-                  stream: MessageService().getMyTotalChatCount(
-                    '${currentUser?.phoneNumber}',
+                  stream: MessageCount(
+                    messageCountCollection: Firestore.instance.collection(
+                      FIREBASE_MESSAGE_COUNT,
+                    ),
+                  ).getMessageCount(
+                    receiver: currentUser?.phoneNumber,
+                    isRead: false,
                   ),
                   builder: (context, snapshot) {
                     return Text(
@@ -324,8 +329,13 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                 title: Text('My Chats'),
                 leading: Badge(
                   badgeContent: StreamBuilder<QuerySnapshot>(
-                    stream: MessageService().getMyTotalChatCount(
-                      '${currentUser?.phoneNumber}',
+                    stream: MessageCount(
+                      messageCountCollection: Firestore.instance.collection(
+                        FIREBASE_MESSAGE_COUNT,
+                      ),
+                    ).getMessageCount(
+                      receiver: currentUser?.phoneNumber,
+                      isRead: false,
                     ),
                     builder: (context, snapshot) {
                       return Text(

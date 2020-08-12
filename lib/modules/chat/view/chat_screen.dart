@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_badger/flutter_app_badger.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
@@ -12,6 +14,7 @@ import 'package:quickfix/helpers/flush_bar.dart';
 import 'package:quickfix/modules/chat/model/message.dart';
 import 'package:quickfix/modules/profile/model/user.dart';
 import 'package:quickfix/services/firebase/messages.dart';
+import 'package:quickfix/services/firebase/messeage_count.dart';
 import 'package:quickfix/services/firebase/users.dart';
 import 'package:quickfix/util/Utils.dart';
 import 'package:quickfix/util/const.dart';
@@ -28,12 +31,6 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   User currentUser;
-  List isMeList = [false, true, false];
-  List messageList = [
-    'Hi Charles',
-    'Good morning, how are you?',
-    'I am fine and you?'
-  ];
 
   // final _formKey = GlobalKey<FormState>();
 
@@ -42,6 +39,17 @@ class _ChatScreenState extends State<ChatScreen> {
   final df = new DateFormat('dd-MMM-yyyy hh:mm a');
 
   _buildMessage(Message message, bool isMe) {
+    if (isMe) {
+      MessageCount(
+        messageCountCollection: Firestore.instance.collection(
+          FIREBASE_MESSAGE_COUNT,
+        ),
+        messageId: message.id,
+      ).setMessageCount(
+        receiver: message.receiverPhone,
+        read: true,
+      );
+    }
     final Container msg = Container(
       margin: isMe
           ? EdgeInsets.only(
@@ -140,8 +148,8 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ),
           IconButton(
-            icon: Icon(
-              Icons.send,
+            icon: FaIcon(
+              FontAwesomeIcons.paperPlane,
             ),
             iconSize: 25.0,
             color: Theme.of(context).accentColor,
@@ -160,10 +168,7 @@ class _ChatScreenState extends State<ChatScreen> {
       String messageId = Utils.generateId(30);
 
       Message message = Message(
-        id: getChatNode(
-          currentUser.phoneNumber,
-          widget.receiver,
-        ),
+        id: messageId,
         isLiked: false,
         receiverPhone: widget.receiver,
         senderPhone: currentUser.phoneNumber,
@@ -173,6 +178,15 @@ class _ChatScreenState extends State<ChatScreen> {
       );
       await MessageService(messageId: messageId).updateMessage(message);
       sendAndRetrieveMessage(1, messageText);
+      await MessageCount(
+        messageCountCollection: Firestore.instance.collection(
+          FIREBASE_MESSAGE_COUNT,
+        ),
+        messageId: messageId,
+      ).setMessageCount(
+        receiver: widget.receiver,
+        read: false,
+      );
 
       //Message Count
       FlutterAppBadger.updateBadgeCount(1);
@@ -264,29 +278,30 @@ class _ChatScreenState extends State<ChatScreen> {
                           ),
                       child: ClipRRect(
                         child: StreamBuilder<List<Message>>(
-                            stream: MessageService().getMessages(
-                              currentUser.phoneNumber,
-                              widget.receiver,
-                            ),
-                            builder: (context, snapshot) {
-                              return snapshot.hasData
-                                  ? ListView.builder(
-                                      reverse: true,
-                                      padding: EdgeInsets.only(top: 15.0),
-                                      itemCount: snapshot.data.length,
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        final Message message =
-                                            snapshot.data[index];
-                                        final bool isMe = message.senderPhone ==
-                                            currentUser.phoneNumber;
-                                        return _buildMessage(message, isMe);
-                                      },
-                                    )
-                                  : Center(
-                                      child: CircularProgressIndicator(),
-                                    );
-                            }),
+                          stream: MessageService().getMessages(
+                            currentUser.phoneNumber,
+                            widget.receiver,
+                          ),
+                          builder: (context, snapshot) {
+                            return snapshot.hasData
+                                ? ListView.builder(
+                                    reverse: true,
+                                    padding: EdgeInsets.only(top: 15.0),
+                                    itemCount: snapshot.data.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      final Message message =
+                                          snapshot.data[index];
+                                      final bool isMe = message.senderPhone ==
+                                          currentUser.phoneNumber;
+                                      return _buildMessage(message, isMe);
+                                    },
+                                  )
+                                : Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                          },
+                        ),
                       ),
                     ),
             ),
