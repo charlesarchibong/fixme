@@ -38,8 +38,8 @@ class _ChatScreenState extends State<ChatScreen> {
 
   final df = new DateFormat('dd-MMM-yyyy hh:mm a');
 
-  _buildMessage(Message message, bool isMe) {
-    if (isMe) {
+  _buildMessage(Message message, bool isMe, String myPhone) {
+    if (message.receiverPhone == myPhone) {
       MessageCount(
         messageCountCollection: Firestore.instance.collection(
           FIREBASE_MESSAGE_COUNT,
@@ -294,7 +294,8 @@ class _ChatScreenState extends State<ChatScreen> {
                                           snapshot.data[index];
                                       final bool isMe = message.senderPhone ==
                                           currentUser.phoneNumber;
-                                      return _buildMessage(message, isMe);
+                                      return _buildMessage(message, isMe,
+                                          currentUser.phoneNumber);
                                     },
                                   )
                                 : Center(
