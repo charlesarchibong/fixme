@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quickfix/helpers/errors.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../helpers/flush_bar.dart';
 import '../provider/login_form_validation.dart';
@@ -77,6 +78,30 @@ class _LoginScreenState extends State<LoginScreen> {
               shrinkWrap: true,
               children: <Widget>[
                 SizedBox(height: 10.0),
+                Text(
+                  "Hey! Welcome",
+                  style: TextStyle(
+                    color: Theme.of(context).accentColor,
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  "Enter your phone number to",
+                  style: TextStyle(
+                    color: Theme.of(context).accentColor,
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  "Signup or Login",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+                ),
+                SizedBox(height: 60.0),
                 Container(
                   alignment: Alignment.center,
                   margin: EdgeInsets.only(
@@ -165,6 +190,27 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 SizedBox(height: 50.0),
+                InkWell(
+                  onTap: () async {
+                    var url = "https://fixme.ng/reg";
+                    if (await canLaunch(url)) {
+                      await launch(url);
+                    } else {
+                      throw 'Could not launch $url';
+                    }
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        "To Register your Business or Service Click Here",
+                        style: TextStyle(
+                          color: Colors.blue,
+                        ),
+                      )
+                    ],
+                  ),
+                )
               ],
             ),
           ),
