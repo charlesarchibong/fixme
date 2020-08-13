@@ -258,11 +258,12 @@ class _EnterSecurityPinState extends State<EnterSecurityPin> {
     );
     final saved = await securityPinProvider.savedSecurityPin(pin);
     setState(() {
-      _loading = false;
-
       pin = '';
     });
     saved.fold((Failure failure) {
+      setState(() {
+        _loading = false;
+      });
       FlushBarCustomHelper.showErrorFlushbar(
         context,
         'Error',
