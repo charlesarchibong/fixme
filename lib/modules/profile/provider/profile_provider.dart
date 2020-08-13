@@ -407,10 +407,15 @@ class ProfileProvider extends ChangeNotifier {
     try {
       // List<ReviewModel> reviewList;
       String apiKey = await Utils.getApiKey();
+      final User user = await Utils.getUserSession();
       Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
-      Map<String, dynamic> body = {"mobile": phone};
+      Map<String, dynamic> body = {
+        "artisan_mobile": phone,
+        "mobile": user.phoneNumber,
+      };
 
-      String url = "https://manager.fixme.ng/get-reviews?mobile=$phone";
+      String url =
+          "https://manager.fixme.ng/get-reviews?mobile=${user.phoneNumber}&artisan_mobile=$phone";
 
       final response = await NetworkService().post(
         url: url,
