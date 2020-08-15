@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:quickfix/helpers/errors.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../helpers/errors.dart';
 import '../../../helpers/flush_bar.dart';
 import '../provider/login_form_validation.dart';
 import 'phone_number_verification.dart';

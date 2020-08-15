@@ -7,9 +7,7 @@ import 'package:provider/provider.dart';
 
 import '../../../helpers/flush_bar.dart';
 import '../../../models/failure.dart';
-import '../../../providers/app_provider.dart';
 import '../../../util/Utils.dart';
-import '../../../util/const.dart';
 import '../../../widgets/spinner.dart';
 import '../../auth/view/login.dart';
 import '../../transfer/view/transfer_fund.dart';
@@ -246,42 +244,37 @@ class _ProfileState extends State<Profile> {
                     height: 10,
                   ),
                   _servicesImages(serviceImages, profileProiver),
-                  Divider(),
-                  _darkTheme(),
-                  Container(
-                    height: 50,
-                  ),
                 ],
               )),
     );
   }
 
-  Widget _darkTheme() {
-    return ListTile(
-      title: Text(
-        "Dark Theme",
-        style: TextStyle(
-          fontSize: 17,
-          fontWeight: FontWeight.w700,
-        ),
-      ),
-      trailing: Switch(
-        value: Provider.of<AppProvider>(context).theme == Constants.lightTheme
-            ? false
-            : true,
-        onChanged: (v) async {
-          if (v) {
-            Provider.of<AppProvider>(context, listen: false)
-                .setTheme(Constants.darkTheme, "dark");
-          } else {
-            Provider.of<AppProvider>(context, listen: false)
-                .setTheme(Constants.lightTheme, "light");
-          }
-        },
-        activeColor: Theme.of(context).accentColor,
-      ),
-    );
-  }
+  // Widget _darkTheme() {
+  //   return ListTile(
+  //     title: Text(
+  //       "Dark Theme",
+  //       style: TextStyle(
+  //         fontSize: 17,
+  //         fontWeight: FontWeight.w700,
+  //       ),
+  //     ),
+  //     trailing: Switch(
+  //       value: Provider.of<AppProvider>(context).theme == Constants.lightTheme
+  //           ? false
+  //           : true,
+  //       onChanged: (v) async {
+  //         if (v) {
+  //           Provider.of<AppProvider>(context, listen: false)
+  //               .setTheme(Constants.darkTheme, "dark");
+  //         } else {
+  //           Provider.of<AppProvider>(context, listen: false)
+  //               .setTheme(Constants.lightTheme, "light");
+  //         }
+  //       },
+  //       activeColor: Theme.of(context).accentColor,
+  //     ),
+  //   );
+  // }
 
   Widget _servicesImages(
       List<ServiceImage> list, ProfileProvider profileProvider) {
