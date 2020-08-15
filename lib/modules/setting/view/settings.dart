@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:quickfix/modules/artisan/provider/artisan_provider.dart';
-import 'package:quickfix/providers/app_provider.dart';
-import 'package:quickfix/util/const.dart';
 import 'package:share/share.dart';
+
+import '../../../providers/app_provider.dart';
+import '../../../util/const.dart';
+import '../../artisan/provider/artisan_provider.dart';
+import 'help.dart';
 
 class Settings extends StatefulWidget {
   Settings({Key key}) : super(key: key);
@@ -99,6 +101,13 @@ class _SettingsState extends State<Settings> {
 
   Widget _help() {
     return ListTile(
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (_) => Help(),
+          ),
+        );
+      },
       leading: FaIcon(
         FontAwesomeIcons.questionCircle,
         color: Colors.grey,
