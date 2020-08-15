@@ -240,7 +240,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     width: 15,
                   ),
                   Text(
-                    '${snapshot.data.firstName ?? ''} ${snapshot.data.lastName ?? ''}',
+                    '${snapshot.data?.firstName ?? ''} ${snapshot.data?.lastName ?? ''}',
                     style: TextStyle(
                         fontSize: 19.0,
                         fontWeight: FontWeight.bold,
@@ -331,7 +331,7 @@ class _ChatScreenState extends State<ChatScreen> {
         <String, dynamic>{
           'notification': <String, dynamic>{
             'body': '$message',
-            'title': '${currentUser.firstName} ${currentUser.lastName}',
+            'title': '${currentUser?.firstName} ${currentUser?.lastName}',
             'badge': '$unReadMSGCount' //'$unReadMSGCount'
           },
           'priority': 'high',

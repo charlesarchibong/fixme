@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:location/location.dart';
+import 'package:logger/logger.dart';
 import 'package:quickfix/helpers/custom_lodder.dart';
 import 'package:quickfix/models/failure.dart';
 import 'package:quickfix/modules/artisan/model/service_request.dart';
@@ -76,6 +77,7 @@ class ArtisanProvider with ChangeNotifier {
           await ArtisanApi().getMyServiceRequest();
       loading = false;
       myRequestedRequest = requests;
+      Logger().i(requests);
       notifyListeners();
       return Right(
         requests,
