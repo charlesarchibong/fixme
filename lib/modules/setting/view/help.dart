@@ -116,7 +116,7 @@ class _HelpState extends State<Help> {
         }
       },
       leading: FaIcon(
-        FontAwesomeIcons.mailBulk,
+        FontAwesomeIcons.book,
         color: Colors.grey,
       ),
       title: Text(

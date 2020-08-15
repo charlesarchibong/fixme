@@ -244,6 +244,9 @@ class _ProfileState extends State<Profile> {
                     height: 10,
                   ),
                   _servicesImages(serviceImages, profileProiver),
+                  SizedBox(
+                    height: 50,
+                  ),
                 ],
               )),
     );

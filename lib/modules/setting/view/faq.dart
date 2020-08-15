@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../../../util/const.dart';
@@ -45,29 +44,29 @@ class _FaqState extends State<Faq> {
     });
   }
 
-  Widget _help() {
-    return ListTile(
-      onTap: () {},
-      leading: FaIcon(
-        FontAwesomeIcons.questionCircle,
-        color: Colors.grey,
-      ),
-      title: Text(
-        "Help",
-        style: TextStyle(
-          fontSize: 17,
-          fontWeight: FontWeight.w700,
-        ),
-      ),
-      subtitle: Text(
-        "FAQ, Contact us, Privacy policy",
-        style: TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.w700,
-        ),
-      ),
-    );
-  }
+  // Widget _help() {
+  //   return ListTile(
+  //     onTap: () {},
+  //     leading: FaIcon(
+  //       FontAwesomeIcons.questionCircle,
+  //       color: Colors.grey,
+  //     ),
+  //     title: Text(
+  //       "Help",
+  //       style: TextStyle(
+  //         fontSize: 17,
+  //         fontWeight: FontWeight.w700,
+  //       ),
+  //     ),
+  //     subtitle: Text(
+  //       "FAQ, Contact us, Privacy policy",
+  //       style: TextStyle(
+  //         fontSize: 15,
+  //         fontWeight: FontWeight.w700,
+  //       ),
+  //     ),
+  //   );
+  // }
 
   bool get wantKeepAlive => true;
 }
