@@ -58,7 +58,7 @@ class _SettingsState extends State<Settings> {
   Widget _darkTheme() {
     return ListTile(
       leading: FaIcon(
-        FontAwesomeIcons.themeisle,
+        FontAwesomeIcons.adjust,
         color: Colors.grey,
       ),
       title: Text(
@@ -133,7 +133,7 @@ class _SettingsState extends State<Settings> {
     return ListTile(
       onTap: () {
         Share.share(
-          'Fixme makes it easier for you as a service provider or business owner to get hired faster  and more frequently through our platform.',
+          'Fixme makes it easier for you as a service provider or business owner to get hired faster  and more frequently through our platform. Download free at https://fixme.ng/',
           subject: 'Download ${Constants.appName} for Android and iOS',
         );
       },
