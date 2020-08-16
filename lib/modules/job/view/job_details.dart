@@ -143,7 +143,7 @@ class _JobDetailsState extends State<JobDetails> {
                                                   ),
                                                   Container(
                                                     decoration: BoxDecoration(
-                                                      color: Colors.white,
+                                                      // color: Colors.white,
                                                       borderRadius:
                                                           BorderRadius.all(
                                                         Radius.circular(5.0),
@@ -157,6 +157,7 @@ class _JobDetailsState extends State<JobDetails> {
                                                             height: 15,
                                                           ),
                                                           Card(
+                                                            color: Colors.white,
                                                             elevation: 4.0,
                                                             child: Padding(
                                                               padding:

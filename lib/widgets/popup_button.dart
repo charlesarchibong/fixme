@@ -59,7 +59,7 @@ class _CustomPopupButtonState extends State<CustomPopupButton> {
                                     ),
                                     Container(
                                       decoration: BoxDecoration(
-                                        color: Colors.white,
+                                        // color: Colors.white,
                                         borderRadius: BorderRadius.all(
                                           Radius.circular(5.0),
                                         ),
@@ -73,6 +73,7 @@ class _CustomPopupButtonState extends State<CustomPopupButton> {
                                             ),
                                             Card(
                                               elevation: 4.0,
+                                              color: Colors.white,
                                               child: Padding(
                                                 padding: const EdgeInsets.only(
                                                   left: 5.0,

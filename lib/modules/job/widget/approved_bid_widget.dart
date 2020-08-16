@@ -7,6 +7,8 @@ import 'package:quickfix/helpers/flush_bar.dart';
 import 'package:quickfix/models/failure.dart';
 import 'package:quickfix/modules/job/model/project_bid.dart';
 import 'package:quickfix/modules/job/provider/approve_bid_provider.dart';
+import 'package:quickfix/providers/app_provider.dart';
+import 'package:quickfix/util/const.dart';
 
 class ApprovedBidWidget extends StatelessWidget {
   final String title;
@@ -58,7 +60,10 @@ class ApprovedBidWidget extends StatelessWidget {
           text: TextSpan(
             text: 'Description: ',
             style: TextStyle(
-              color: Colors.black,
+              color: Provider.of<AppProvider>(context).theme ==
+                      Constants.lightTheme
+                  ? Colors.black
+                  : Colors.white,
               fontSize: 15,
               fontWeight: FontWeight.bold,
             ),
