@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_shimmer/flutter_shimmer.dart';
 import 'package:provider/provider.dart';
-import 'package:quickfix/models/failure.dart';
-import 'package:quickfix/modules/job/model/job.dart';
-import 'package:quickfix/modules/job/provider/pending_job_provider.dart';
-import 'package:quickfix/modules/job/widget/appointment.dart';
+
+import '../../../models/failure.dart';
+import '../model/job.dart';
+import '../provider/pending_job_provider.dart';
+import '../widget/appointment.dart';
 
 class PendingAppointment extends StatefulWidget {
   @override

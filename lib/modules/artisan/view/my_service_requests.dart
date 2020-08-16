@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:quickfix/models/failure.dart';
-import 'package:quickfix/modules/artisan/model/service_request.dart';
-import 'package:quickfix/modules/artisan/provider/artisan_provider.dart';
-import 'package:quickfix/modules/artisan/widget/my_service_request.dart';
-import 'package:quickfix/util/const.dart';
+
+import '../../../models/failure.dart';
+import '../../../util/const.dart';
+import '../model/service_request.dart';
+import '../provider/artisan_provider.dart';
+import '../widget/my_service_request.dart';
 
 class MyServiceRequests extends StatefulWidget {
   MyServiceRequests({Key key}) : super(key: key);

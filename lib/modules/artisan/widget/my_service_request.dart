@@ -3,13 +3,14 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:quickfix/helpers/flush_bar.dart';
-import 'package:quickfix/models/failure.dart';
-import 'package:quickfix/modules/artisan/model/service_request.dart';
-import 'package:quickfix/modules/artisan/provider/artisan_provider.dart';
-import 'package:quickfix/modules/artisan/widget/request_leading_widget.dart';
-import 'package:quickfix/providers/app_provider.dart';
-import 'package:quickfix/util/const.dart';
+
+import '../../../helpers/flush_bar.dart';
+import '../../../models/failure.dart';
+import '../../../providers/app_provider.dart';
+import '../../../util/const.dart';
+import '../model/service_request.dart';
+import '../provider/artisan_provider.dart';
+import 'request_leading_widget.dart';
 
 class MyServiceRequestWidget extends StatelessWidget {
   final String title;

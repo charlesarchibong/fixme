@@ -6,14 +6,15 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
-import 'package:quickfix/helpers/flush_bar.dart';
-import 'package:quickfix/models/failure.dart';
-import 'package:quickfix/modules/artisan/provider/artisan_provider.dart';
-import 'package:quickfix/modules/artisan/widget/grid_artisans.dart';
-import 'package:quickfix/modules/profile/model/user.dart';
-import 'package:quickfix/util/Utils.dart';
-import 'package:quickfix/util/const.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../helpers/flush_bar.dart';
+import '../../../models/failure.dart';
+import '../../../util/Utils.dart';
+import '../../../util/const.dart';
+import '../../artisan/provider/artisan_provider.dart';
+import '../../artisan/widget/grid_artisans.dart';
+import '../../profile/model/user.dart';
 
 class HomeW extends StatefulWidget {
   @override

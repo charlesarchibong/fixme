@@ -3,12 +3,13 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:quickfix/helpers/flush_bar.dart';
-import 'package:quickfix/models/failure.dart';
-import 'package:quickfix/modules/job/model/project_bid.dart';
-import 'package:quickfix/modules/job/provider/approve_bid_provider.dart';
-import 'package:quickfix/providers/app_provider.dart';
-import 'package:quickfix/util/const.dart';
+
+import '../../../helpers/flush_bar.dart';
+import '../../../models/failure.dart';
+import '../../../providers/app_provider.dart';
+import '../../../util/const.dart';
+import '../model/project_bid.dart';
+import '../provider/approve_bid_provider.dart';
 
 class ApprovedBidWidget extends StatelessWidget {
   final String title;

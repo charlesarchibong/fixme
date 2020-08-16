@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:quickfix/helpers/flush_bar.dart';
-import 'package:quickfix/models/failure.dart';
-import 'package:quickfix/modules/artisan/view/details.dart';
-import 'package:quickfix/modules/job/model/job.dart';
-import 'package:quickfix/modules/job/provider/my_request_provider.dart';
-import 'package:quickfix/modules/job/provider/pending_job_provider.dart';
-import 'package:quickfix/util/const.dart';
-import 'package:quickfix/widgets/smooth_star_rating.dart';
+
+import '../../../helpers/flush_bar.dart';
+import '../../../models/failure.dart';
+import '../../../util/const.dart';
+import '../../../widgets/smooth_star_rating.dart';
+import '../../artisan/view/details.dart';
+import '../model/job.dart';
+import '../provider/my_request_provider.dart';
+import '../provider/pending_job_provider.dart';
 
 class JobDetails extends StatefulWidget {
   final Job job;

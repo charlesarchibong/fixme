@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_shimmer/flutter_shimmer.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:provider/provider.dart';
-import 'package:quickfix/models/failure.dart';
-import 'package:quickfix/modules/job/model/job.dart';
-import 'package:quickfix/modules/job/provider/my_request_provider.dart';
-import 'package:quickfix/modules/job/widget/my_request.dart';
-import 'package:quickfix/util/const.dart';
+
+import '../../../models/failure.dart';
+import '../../../util/const.dart';
+import '../model/job.dart';
+import '../provider/my_request_provider.dart';
+import '../widget/my_request.dart';
 
 class MyRequests extends StatefulWidget {
   @override

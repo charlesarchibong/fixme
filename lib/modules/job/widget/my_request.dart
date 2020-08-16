@@ -2,11 +2,12 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:quickfix/modules/artisan/view/track_artisan.dart';
-import 'package:quickfix/modules/job/model/job.dart';
-import 'package:quickfix/modules/job/view/job_details.dart';
-import 'package:quickfix/providers/app_provider.dart';
-import 'package:quickfix/util/const.dart';
+
+import '../../../providers/app_provider.dart';
+import '../../../util/const.dart';
+import '../../artisan/view/track_artisan.dart';
+import '../model/job.dart';
+import '../view/job_details.dart';
 
 class MyRequestWidget extends StatelessWidget {
   final String title;

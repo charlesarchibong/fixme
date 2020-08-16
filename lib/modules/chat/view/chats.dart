@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:quickfix/modules/chat/widget/my_chats_widget.dart';
-import 'package:quickfix/modules/profile/model/user.dart';
-import 'package:quickfix/services/firebase/messages.dart';
-import 'package:quickfix/util/Utils.dart';
+
+import '../../../services/firebase/messages.dart';
+import '../../../util/Utils.dart';
+import '../../profile/model/user.dart';
+import '../widget/my_chats_widget.dart';
 
 class Chats extends StatefulWidget {
   @override

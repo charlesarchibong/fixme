@@ -2,11 +2,12 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:quickfix/modules/job/model/job.dart';
-import 'package:quickfix/modules/job/view/job_details.dart';
-import 'package:quickfix/providers/app_provider.dart';
-import 'package:quickfix/util/const.dart';
-import 'package:quickfix/widgets/popup_button.dart';
+
+import '../../../providers/app_provider.dart';
+import '../../../util/const.dart';
+import '../../../widgets/popup_button.dart';
+import '../model/job.dart';
+import '../view/job_details.dart';
 
 class PendingAppointments extends StatelessWidget {
   final Job job;

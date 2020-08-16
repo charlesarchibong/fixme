@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:quickfix/helpers/flush_bar.dart';
-import 'package:quickfix/models/failure.dart';
-import 'package:quickfix/modules/job/model/job.dart';
-import 'package:quickfix/modules/job/model/job_category.dart';
-import 'package:quickfix/modules/job/provider/post_job_provider.dart';
-import 'package:quickfix/modules/job/view/my_requests.dart';
+
+import '../../../helpers/flush_bar.dart';
+import '../../../models/failure.dart';
+import '../model/job.dart';
+import '../model/job_category.dart';
+import '../provider/post_job_provider.dart';
+import 'my_requests.dart';
 
 class PostJob extends StatefulWidget {
   @override

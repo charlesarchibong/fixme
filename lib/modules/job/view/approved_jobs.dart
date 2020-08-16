@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:quickfix/models/failure.dart';
-import 'package:quickfix/modules/job/model/project_bid.dart';
-import 'package:quickfix/modules/job/provider/approve_bid_provider.dart';
-import 'package:quickfix/modules/job/widget/approved_bid_widget.dart';
-import 'package:quickfix/util/const.dart';
+
+import '../../../models/failure.dart';
+import '../../../util/const.dart';
+import '../model/project_bid.dart';
+import '../provider/approve_bid_provider.dart';
+import '../widget/approved_bid_widget.dart';
 
 class ApprovedBid extends StatefulWidget {
   ApprovedBid({Key key}) : super(key: key);

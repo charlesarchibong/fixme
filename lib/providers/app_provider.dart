@@ -1,8 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:quickfix/util/const.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../util/const.dart';
 
 class AppProvider extends ChangeNotifier {
   AppProvider() {

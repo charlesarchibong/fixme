@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:quickfix/helpers/flush_bar.dart';
-import 'package:quickfix/models/failure.dart';
-import 'package:quickfix/modules/job/model/job.dart';
-import 'package:quickfix/modules/job/provider/pending_job_provider.dart';
+
+import '../helpers/flush_bar.dart';
+import '../models/failure.dart';
+import '../modules/job/model/job.dart';
+import '../modules/job/provider/pending_job_provider.dart';
 
 class CustomPopupButton extends StatefulWidget {
   final Job job;

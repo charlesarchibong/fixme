@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:quickfix/models/failure.dart';
-import 'package:quickfix/modules/profile/provider/profile_provider.dart';
+
+import '../../../models/failure.dart';
+import '../provider/profile_provider.dart';
 
 class EditProfilePopUp extends StatefulWidget {
   @override
