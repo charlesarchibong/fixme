@@ -8,6 +8,8 @@ import 'package:quickfix/models/failure.dart';
 import 'package:quickfix/modules/artisan/model/service_request.dart';
 import 'package:quickfix/modules/artisan/provider/artisan_provider.dart';
 import 'package:quickfix/modules/artisan/widget/request_leading_widget.dart';
+import 'package:quickfix/providers/app_provider.dart';
+import 'package:quickfix/util/const.dart';
 
 class MyServiceRequestWidget extends StatelessWidget {
   final String title;
@@ -55,7 +57,10 @@ class MyServiceRequestWidget extends StatelessWidget {
           text: TextSpan(
             text: 'Description: ',
             style: TextStyle(
-              color: Colors.black,
+              color: Provider.of<AppProvider>(context).theme ==
+                      Constants.lightTheme
+                  ? Colors.black
+                  : Colors.white,
               fontSize: 15,
               fontWeight: FontWeight.bold,
             ),

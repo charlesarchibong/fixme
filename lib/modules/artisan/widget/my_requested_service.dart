@@ -1,9 +1,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:quickfix/modules/artisan/model/service_request.dart';
 import 'package:quickfix/modules/artisan/view/service_request_details.dart';
 import 'package:quickfix/modules/artisan/widget/request_leading_widget.dart';
+import 'package:quickfix/providers/app_provider.dart';
+import 'package:quickfix/util/const.dart';
 
 class MyRequestedServiceWidget extends StatelessWidget {
   final String title;
@@ -52,7 +55,10 @@ class MyRequestedServiceWidget extends StatelessWidget {
           text: TextSpan(
             text: 'Description: ',
             style: TextStyle(
-              color: Colors.black,
+              color: Provider.of<AppProvider>(context).theme ==
+                      Constants.lightTheme
+                  ? Colors.black
+                  : Colors.white,
               fontSize: 15,
               fontWeight: FontWeight.bold,
             ),
