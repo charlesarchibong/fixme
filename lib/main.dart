@@ -256,13 +256,18 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return Consumer<AppProvider>(
       builder: (BuildContext context, AppProvider appProvider, Widget child) {
-        print(widget.sp.get('opened'));
+        // print(widget.sp.get('opened'));
         return MaterialApp(
           key: appProvider.key,
           debugShowCheckedModeBanner: false,
           navigatorKey: appProvider.navigatorKey,
           title: Constants.appName,
-          theme: appProvider.theme,
+          // theme: appProvider.theme,
+          theme: Constants.lightTheme,
+          darkTheme: Constants.darkTheme,
+          themeMode: appProvider.theme == Constants.lightTheme
+              ? ThemeMode.light
+              : ThemeMode.dark,
           home: widget.sp.get('opened') == null
               ? Walkthrough()
               : widget.sp.get('user') != null
