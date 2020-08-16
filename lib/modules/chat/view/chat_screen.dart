@@ -79,7 +79,7 @@ class _ChatScreenState extends State<ChatScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            '${df.format(DateTime.fromMillisecondsSinceEpoch(message.time, isUtc: false))}',
+            '${Utils.getTimeDifferenceFromTimeStamp(message.time)}',
             style: TextStyle(
               color: Colors.white54,
               fontSize: 16.0,
@@ -233,7 +233,13 @@ class _ChatScreenState extends State<ChatScreen> {
                   CircleAvatar(
                     backgroundColor: Theme.of(context).primaryColor,
                     backgroundImage: snapshot.data != null
-                        ? NetworkImage(snapshot.data.profilePicture)
+                        ? NetworkImage(
+                            Utils.getPicturePlaceHolder(
+                              snapshot.data?.firstName,
+                              snapshot.data?.lastName,
+                              initialPicture: snapshot.data.profilePicture,
+                            ),
+                          )
                         : AssetImage('assets/dp.png'),
                   ),
                   SizedBox(
@@ -242,9 +248,10 @@ class _ChatScreenState extends State<ChatScreen> {
                   Text(
                     '${snapshot.data?.firstName ?? ''} ${snapshot.data?.lastName ?? ''}',
                     style: TextStyle(
-                        fontSize: 19.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
+                      fontSize: 19.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
                 ],
               );
@@ -294,8 +301,11 @@ class _ChatScreenState extends State<ChatScreen> {
                                           snapshot.data[index];
                                       final bool isMe = message.senderPhone ==
                                           currentUser.phoneNumber;
-                                      return _buildMessage(message, isMe,
-                                          currentUser.phoneNumber);
+                                      return _buildMessage(
+                                        message,
+                                        isMe,
+                                        currentUser.phoneNumber,
+                                      );
                                     },
                                   )
                                 : Center(

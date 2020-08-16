@@ -56,7 +56,8 @@ dependencies:
   cache_image: ^1.0.5
   sentry: ">=3.0.0 <4.0.0"
   flutter_dotenv: ^2.1.0
-  share: ^0.6.4+3 
+  share: ^0.6.4+3
+  timeago: ^2.0.26
 
 dev_dependencies:
   flutter_native_splash: ^0.1.9

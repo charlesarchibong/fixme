@@ -113,30 +113,32 @@ class _ChatsState extends State<Chats> {
                 )
               : Column(
                   children: <Widget>[
-                    StreamBuilder<QuerySnapshot>(
-                        stream: MessageService().getUserChats(),
-                        builder: (context, snapshot) {
-                          return snapshot.hasData
-                              ? ListView.builder(
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.vertical,
-                                  physics: AlwaysScrollableScrollPhysics(),
-                                  itemCount:
-                                      snapshot.data?.documents?.length ?? 0,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    // Map artisan = technicians[index];
-                                    return MyChatWidget(
-                                      message: snapshot
-                                          .data.documents[index].documentID,
-                                      me: '${currentUser.phoneNumber}',
-                                    );
-                                  },
-                                )
-                              : Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                        }),
+                    Expanded(
+                      child: StreamBuilder<QuerySnapshot>(
+                          stream: MessageService().getUserChats(),
+                          builder: (context, snapshot) {
+                            return snapshot.hasData
+                                ? ListView.builder(
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.vertical,
+                                    physics: AlwaysScrollableScrollPhysics(),
+                                    itemCount:
+                                        snapshot.data?.documents?.length ?? 0,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      // Map artisan = technicians[index];
+                                      return MyChatWidget(
+                                        message: snapshot
+                                            .data.documents[index].documentID,
+                                        me: '${currentUser.phoneNumber}',
+                                      );
+                                    },
+                                  )
+                                : Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                          }),
+                    ),
                   ],
                 ),
         ));

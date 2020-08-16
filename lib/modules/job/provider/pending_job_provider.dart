@@ -56,9 +56,6 @@ class PendingJobProvider extends ChangeNotifier {
         );
       }
     } catch (e) {
-      if (e is DioError) {
-        debugPrint(e.response.data);
-      }
       print(e.toString());
       return Left(
         Failure(

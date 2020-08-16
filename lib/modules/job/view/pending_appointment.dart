@@ -24,16 +24,20 @@ class _PendingAppointmentState extends State<PendingAppointment>
         Provider.of<PendingJobProvider>(context, listen: false);
     final fetched = await pendingJobProvider.getPendingRequest();
     fetched.fold((Failure failure) {
-      setState(() {
-        error = failure.message;
-        isloading = false;
-      });
+      if (mounted) {
+        setState(() {
+          error = failure.message;
+          isloading = false;
+        });
+      }
     }, (List<Job> jobs) {
-      setState(() {
-        isloading = false;
-        jobsAround = jobs;
-        bby = 'Done';
-      });
+      if (mounted) {
+        setState(() {
+          isloading = false;
+          jobsAround = jobs;
+          bby = 'Done';
+        });
+      }
       print(bby);
     });
   }
