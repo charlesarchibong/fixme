@@ -44,8 +44,12 @@ final BehaviorSubject<String> selectNotificationSubject =
     BehaviorSubject<String>();
 
 NotificationAppLaunchDetails notificationAppLaunchDetails;
+// final SentryClient _sentry = new SentryClient(
+//   dsn: Constants.SENTRY_DSN,
+// );
+
 final SentryClient _sentry = new SentryClient(
-  dsn: Constants.SENTRY_DSN,
+  dsn: DotEnv().env['$SENTRY_DSN'],
 );
 
 bool get isInDebugMode {

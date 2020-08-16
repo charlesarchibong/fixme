@@ -85,9 +85,11 @@ class _ProductDetailsState extends State<ProductDetails>
       widget.userData['user_mobile'],
     );
 
-    setState(() {
-      artisanReviews = reviews;
-    });
+    if (mounted) {
+      setState(() {
+        artisanReviews = reviews;
+      });
+    }
     // artisanReviews = ReviewList.fromData(reviews).reviewList;
   }
 
