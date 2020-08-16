@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 const FIXME_TOKEN = 'FIXME_LOGIN_TOKEN';
 const FCM_KEY = 'FCM_KEY';
+const FIREBASE_MESSAGE_COUNT = 'message_count';
 
 class Constants {
   static String appName = "Fixme Business";

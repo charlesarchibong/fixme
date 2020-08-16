@@ -29,9 +29,11 @@ class _PostJobState extends State<PostJob> {
     final postJob = Provider.of<PostJobProvider>(context, listen: false);
     final fetched = await postJob.getJobCategories();
     fetched.fold((Failure failure) {
-      setState(() {
-        error = 'An error occured, please try again!';
-      });
+      if (mounted) {
+        setState(() {
+          error = 'An error occured, please try again!';
+        });
+      }
       FlushBarCustomHelper.showErrorFlushbar(
         context,
         'Error',

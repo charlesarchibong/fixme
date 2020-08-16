@@ -49,7 +49,7 @@ class _MyServiceRequestsState extends State<MyServiceRequests> {
                       return myService.data.fold((Failure failure) {
                         return Center(
                           child: Text(
-                            '${failure.message} asf',
+                            '${failure.message}',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Colors.red,
@@ -61,7 +61,7 @@ class _MyServiceRequestsState extends State<MyServiceRequests> {
                       }, (List<ServiceRequest> jobs) {
                         return RefreshIndicator(
                           onRefresh: () {
-                            artisanProvider.getMyRequestedService();
+                            artisanProvider.getRequests();
                             return Future.value();
                           },
                           child: ListView.builder(

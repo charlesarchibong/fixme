@@ -2,11 +2,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_shimmer/flutter_shimmer.dart';
 import 'package:intl/intl.dart';
-import 'package:quickfix/modules/chat/model/message.dart';
-import 'package:quickfix/modules/chat/view/chat_screen.dart';
-import 'package:quickfix/modules/profile/model/user.dart';
-import 'package:quickfix/services/firebase/messages.dart';
-import 'package:quickfix/services/firebase/users.dart';
+
+import '../../../services/firebase/messages.dart';
+import '../../../services/firebase/messeage_count.dart';
+import '../../../services/firebase/users.dart';
+import '../../../util/Utils.dart';
+import '../../../util/const.dart';
+import '../../profile/model/user.dart';
+import '../model/message.dart';
+import '../view/chat_screen.dart';
 
 class MyChatWidget extends StatefulWidget {
   final String message;
@@ -55,6 +59,8 @@ class _MyChatWidgetState extends State<MyChatWidget> {
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
                                           builder: (_) => ChatScreen(
+                                            receiverToken:
+                                                user.data.firebaseToken,
                                             receiver: message.receiverPhone ==
                                                     widget.me
                                                 ? message.senderPhone
@@ -66,11 +72,14 @@ class _MyChatWidgetState extends State<MyChatWidget> {
                                     leading: CircleAvatar(
                                       backgroundColor:
                                           Theme.of(context).primaryColor,
-                                      backgroundImage: user.data != null
-                                          ? NetworkImage(
+                                      backgroundImage: NetworkImage(
+                                        Utils.getPicturePlaceHolder(
+                                          user.data?.firstName,
+                                          user.data?.lastName,
+                                          initialPicture:
                                               user.data.profilePicture,
-                                            )
-                                          : AssetImage('assets/dp.png'),
+                                        ),
+                                      ),
                                     ),
                                     title: Text(
                                       // ignore: null_aware_before_operator
@@ -88,22 +97,42 @@ class _MyChatWidgetState extends State<MyChatWidget> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.end,
                                       children: <Widget>[
+                                        // Text(
+                                        //   '${df.format(DateTime.fromMillisecondsSinceEpoch(message.time, isUtc: false))}',
+                                        // ),
                                         Text(
-                                          '${df.format(DateTime.fromMillisecondsSinceEpoch(message.time, isUtc: false))}',
+                                          '${Utils.getTimeDifferenceFromTimeStamp(message.time)}',
                                         ),
                                         Spacer(),
                                         message.senderPhone == widget.me
                                             ? Text('')
-                                            : message.unread == false
-                                                ? Text(
-                                                    'NEW',
+                                            : StreamBuilder<DocumentSnapshot>(
+                                                stream: MessageCount(
+                                                  messageCountCollection:
+                                                      Firestore.instance
+                                                          .collection(
+                                                    FIREBASE_MESSAGE_COUNT,
+                                                  ),
+                                                  messageId: message.id,
+                                                ).getMessage(),
+                                                builder: (context, snapshot) {
+                                                  return Text(
+                                                    snapshot.data
+                                                                .data['read'] ==
+                                                            false
+                                                        ? 'NEW'
+                                                        : '',
                                                     style: TextStyle(
-                                                      color: Theme.of(context)
-                                                          .accentColor,
-                                                      fontSize: 15.0,
+                                                      color: Theme.of(
+                                                        context,
+                                                      ).accentColor,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 17.0,
                                                     ),
-                                                  )
-                                                : Text('')
+                                                  );
+                                                },
+                                              )
                                       ],
                                     ),
                                   )

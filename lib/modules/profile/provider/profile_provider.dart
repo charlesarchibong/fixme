@@ -375,9 +375,13 @@ class ProfileProvider extends ChangeNotifier {
     try {
       // final user = await Utils.getUserSession();
       final String apiKey = await Utils.getApiKey();
+      final User user = await Utils.getUserSession();
       String url = Constants.updateProfileView;
       Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
-      Map<String, String> body = {'mobile': mobile};
+      Map<String, String> body = {
+        'viewed_user_mobile': mobile,
+        'mobile': user.phoneNumber,
+      };
       final response = await NetworkService().post(
         url: url,
         body: body,
@@ -403,10 +407,15 @@ class ProfileProvider extends ChangeNotifier {
     try {
       // List<ReviewModel> reviewList;
       String apiKey = await Utils.getApiKey();
+      final User user = await Utils.getUserSession();
       Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
-      Map<String, dynamic> body = {"mobile": phone};
+      Map<String, dynamic> body = {
+        "artisan_mobile": phone,
+        "mobile": user.phoneNumber,
+      };
 
-      String url = "https://manager.fixme.ng/get-reviews?mobile=$phone";
+      String url =
+          "https://manager.fixme.ng/get-reviews?mobile=${user.phoneNumber}&artisan_mobile=$phone";
 
       final response = await NetworkService().post(
         url: url,
