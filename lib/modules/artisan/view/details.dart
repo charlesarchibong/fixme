@@ -180,7 +180,7 @@ class _ProductDetailsState extends State<ProductDetails>
             Stack(
               children: <Widget>[
                 Container(
-                  height: MediaQuery.of(context).size.height / 3.2,
+                  height: MediaQuery.of(context).size.height / 2.5,
                   width: MediaQuery.of(context).size.width,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8.0),
@@ -188,7 +188,8 @@ class _ProductDetailsState extends State<ProductDetails>
                       image: CacheImage(
                         "${Constants.uploadUrl + widget.userData['profile_pic_file_name']}",
                       ),
-                      fit: BoxFit.cover,
+                      fit: BoxFit.fitWidth,
+                      alignment: FractionalOffset.topCenter,
                     ),
                   ),
                 ),

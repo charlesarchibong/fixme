@@ -43,7 +43,7 @@ class _MyRequestedServiceState extends State<MyRequestedService> {
               ),
               Expanded(
                 child: FutureBuilder(
-                  future: artisanProvider.getMyRequestedService(),
+                  // future: artisanProvider.getMyRequestedService(),
                   builder: (BuildContext context, AsyncSnapshot myService) {
                     if (myService.hasData) {
                       return myService.data.fold((Failure failure) {
@@ -72,7 +72,7 @@ class _MyRequestedServiceState extends State<MyRequestedService> {
                             itemBuilder: (BuildContext context, int index) {
                               ServiceRequest serviceRequest =
                                   artisanProvider.serviceRequests[index];
-                              print(serviceRequest.toMap());
+
                               return MyRequestedServiceWidget(
                                 title: serviceRequest.requestingMobile,
                                 subtitle: serviceRequest.status == 'accepted'

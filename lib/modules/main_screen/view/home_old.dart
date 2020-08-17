@@ -44,6 +44,7 @@ class _HomeState extends State<HomeW>
   _scrollListener() {
     if (_controller.offset >= _controller.position.maxScrollExtent &&
         !_controller.position.outOfRange) {
+      print("hey i am from the top");
       getMoreArtisanByLocation();
       setState(() {
         // message = "reach the bottom";
@@ -119,6 +120,7 @@ class _HomeState extends State<HomeW>
         context,
         listen: false,
       );
+      print("hey i am runninf");
       setState(() {
         _loadingMoreArtisan = true;
       });
@@ -143,6 +145,9 @@ class _HomeState extends State<HomeW>
         return newList;
       });
     } catch (error) {
+      setState(() {
+        _loadingMoreArtisan = false;
+      });
       print(error.toString());
       return List();
     }
