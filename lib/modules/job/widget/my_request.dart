@@ -1,9 +1,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:quickfix/modules/artisan/view/track_artisan.dart';
 import 'package:quickfix/modules/job/model/job.dart';
 import 'package:quickfix/modules/job/view/job_details.dart';
+import 'package:quickfix/providers/app_provider.dart';
+import 'package:quickfix/util/const.dart';
 
 class MyRequestWidget extends StatelessWidget {
   final String title;
@@ -55,7 +58,10 @@ class MyRequestWidget extends StatelessWidget {
           text: TextSpan(
             text: 'Description: ',
             style: TextStyle(
-              color: Colors.black,
+              color: Provider.of<AppProvider>(context).theme ==
+                      Constants.lightTheme
+                  ? Colors.black
+                  : Colors.white,
               fontSize: 15,
               fontWeight: FontWeight.bold,
             ),

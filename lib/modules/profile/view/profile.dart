@@ -127,8 +127,12 @@ class _ProfileState extends State<Profile> {
                     ),
                     toolTip: 'Edit',
                     onPressed: () {
-                      showProfilePopUp(context, _profileScaffoldKey,
-                          user.firstName, user.lastName);
+                      showProfilePopUp(
+                        context,
+                        _profileScaffoldKey,
+                        user.firstName,
+                        user.lastName,
+                      );
                     },
                   ),
                   _profileDetailsTiles(
@@ -495,204 +499,6 @@ Widget _profileImage(
   );
 }
 
-void showEditAccountDetails(
-    BuildContext context,
-    List<BankCode> listOfBank,
-    TextEditingController accountNumberController,
-    GlobalKey<FormState> formKey,
-    ProfileProvider profileProvider) {
-  bool loading = false;
-  showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return listOfBank.length > 0
-                ? Dialog(
-                    shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(20.0)), //this right here
-                    child: Container(
-                      height: 400,
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                left: 9,
-                                right: 9,
-                              ),
-                              child: Column(
-                                children: <Widget>[
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(5.0),
-                                      ),
-                                    ),
-                                    child: Form(
-                                        key: formKey,
-                                        child: Column(
-                                          children: <Widget>[
-                                            SizedBox(
-                                              height: 15,
-                                            ),
-                                            Card(
-                                              elevation: 4.0,
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 5.0, right: 5.0),
-                                                child: TextFormField(
-                                                  controller:
-                                                      accountNumberController,
-                                                  keyboardType:
-                                                      TextInputType.text,
-                                                  validator: (value) {
-                                                    return value == ''
-                                                        ? 'Account Number can not be empty'
-                                                        : null;
-                                                  },
-                                                  decoration: InputDecoration(
-                                                    hintText:
-                                                        'Enter Account Number',
-                                                    hintStyle: TextStyle(
-                                                      color: Colors.grey,
-                                                    ),
-                                                    border: InputBorder.none,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 15,
-                                            ),
-                                            Card(
-                                              elevation: 4.0,
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 5.0, right: 5.0),
-                                                child: DropdownButton<BankCode>(
-                                                  value: selected,
-                                                  hint: Text(
-                                                    'Select Bank Name',
-                                                    style: TextStyle(
-                                                      color: Colors.grey,
-                                                    ),
-                                                  ),
-                                                  isExpanded: true,
-                                                  underline: SizedBox(),
-                                                  icon: Icon(
-                                                      Icons.arrow_downward,
-                                                      color: Colors.black),
-                                                  items: listOfBank
-                                                      .map((BankCode v) {
-                                                    return DropdownMenuItem<
-                                                        BankCode>(
-                                                      value: v,
-                                                      child: Text(v.name),
-                                                    );
-                                                  }).toList(),
-                                                  onChanged:
-                                                      (BankCode newValue) {
-                                                    setState(() {
-                                                      selected = newValue;
-                                                    });
-                                                  },
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 20,
-                                            ),
-                                          ],
-                                        )),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  FlatButton(
-                                    child: loading
-                                        ? CircularProgressIndicator(
-                                            backgroundColor: Colors.white,
-                                          )
-                                        : Text("Save"),
-                                    padding: EdgeInsets.all(10.0),
-                                    textColor: Colors.white,
-                                    color: Theme.of(context).accentColor,
-                                    onPressed: () async {
-                                      if (formKey.currentState.validate()) {
-                                        setState(() {
-                                          loading = true;
-                                        });
-                                        final updated = await profileProvider
-                                            .updateBankDetails(selected,
-                                                accountNumberController.text);
-                                        updated.fold((Failure failure) {
-                                          setState(() {
-                                            loading = true;
-                                          });
-                                          Navigator.of(context).pop();
-
-                                          FlushBarCustomHelper
-                                              .showErrorFlushbar(context,
-                                                  'Error', failure.message);
-                                        }, (bool updated) {
-                                          setState(() {
-                                            loading = true;
-                                          });
-                                          Navigator.of(context).pop();
-
-                                          FlushBarCustomHelper.showInfoFlushbar(
-                                              context,
-                                              'Success',
-                                              'Account Details was updated');
-                                        });
-                                        listOfBank.clear();
-                                      }
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  )
-                : Dialog(
-                    shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(20.0)), //this right here
-                    child: Container(
-                      height: 400,
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            left: 9,
-                            right: 9,
-                          ),
-                          child: Container(
-                            width: 40,
-                            height: 40,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 1,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-          },
-        );
-      });
-}
-
 _showSubCategoryDialog(
     BuildContext context, GlobalKey<ScaffoldState> profileScaffoldKey) {
   final profileProvider = Provider.of<ProfileProvider>(context, listen: false);
@@ -724,8 +530,13 @@ _showSubCategoryDialog(
                     child: Padding(
                       padding: const EdgeInsets.only(left: 5.0, right: 5.0),
                       child: Form(
+                        autovalidate: true,
                         key: _formKey,
                         child: TextFormField(
+                          style: TextStyle(
+                            fontSize: 15.0,
+                            color: Colors.black,
+                          ),
                           controller: _controller,
                           keyboardType: TextInputType.text,
                           validator: (value) {

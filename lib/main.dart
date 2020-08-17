@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:quickfix/modules/auth/view/login.dart';
@@ -263,8 +264,58 @@ class _MyAppState extends State<MyApp> {
           navigatorKey: appProvider.navigatorKey,
           title: Constants.appName,
           // theme: appProvider.theme,
-          theme: Constants.lightTheme,
-          darkTheme: Constants.darkTheme,
+          theme: ThemeData(
+            primarySwatch: MaterialColor(0xFF880E4F, Constants.colorScratch),
+            // brightness: Brightness.light,
+            backgroundColor: Constants.darkAccent,
+            primaryColor: Constants.lightPrimary,
+            textTheme: GoogleFonts.solwayTextTheme(TextTheme()),
+            primaryTextTheme: GoogleFonts.solwayTextTheme(TextTheme()),
+            accentColor: Constants.lightAccent,
+            fontFamily: 'Popins',
+            cursorColor: Constants.lightAccent,
+            brightness: Brightness.light,
+            textSelectionColor: Color.fromRGBO(153, 0, 153, 1),
+            scaffoldBackgroundColor: Constants.lightBG,
+            appBarTheme: AppBarTheme(
+              color: Color.fromRGBO(153, 0, 153, 1.0),
+              textTheme: GoogleFonts.solwayTextTheme(
+                Theme.of(context).textTheme,
+              ),
+              iconTheme: IconThemeData(
+                color: Color.fromRGBO(153, 0, 153, 1.0),
+              ),
+
+//      iconTheme: IconThemeData(
+//        color: lightAccent,
+//      ),
+            ),
+          ),
+          darkTheme: ThemeData(
+            brightness: Brightness.dark,
+            backgroundColor: Constants.darkAccent,
+            textSelectionColor: Color.fromRGBO(153, 0, 153, 1),
+            primaryColor: Constants.darkPrimary,
+            textTheme: GoogleFonts.solwayTextTheme(TextTheme()),
+            primaryTextTheme: GoogleFonts.solwayTextTheme(TextTheme()),
+            accentColor: Constants.darkAccent,
+            scaffoldBackgroundColor: Constants.darkBG,
+            cursorColor: Constants.darkAccent,
+            fontFamily: 'Popins',
+            appBarTheme: AppBarTheme(
+              color: Color.fromRGBO(153, 0, 153, 1.0),
+              textTheme: GoogleFonts.solwayTextTheme(
+                Theme.of(context).textTheme,
+              ),
+              iconTheme: IconThemeData(
+                color: Color(0xffffffff),
+              ),
+
+//      iconTheme: IconThemeData(
+//        color: darkAccent,
+//      ),
+            ),
+          ),
           themeMode: appProvider.theme == Constants.lightTheme
               ? ThemeMode.light
               : ThemeMode.dark,

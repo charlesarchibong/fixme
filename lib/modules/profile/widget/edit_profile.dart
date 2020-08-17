@@ -50,7 +50,7 @@ showProfilePopUp(
                         ),
                         Container(
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            // color: Colors.white,
                             borderRadius: BorderRadius.all(
                               Radius.circular(5.0),
                             ),
@@ -61,10 +61,15 @@ showProfilePopUp(
                                 children: <Widget>[
                                   Card(
                                     elevation: 4.0,
+                                    color: Colors.white,
                                     child: Padding(
                                       padding: const EdgeInsets.only(
                                           left: 5.0, right: 5.0),
                                       child: TextFormField(
+                                        style: TextStyle(
+                                          fontSize: 15.0,
+                                          color: Colors.black,
+                                        ),
                                         controller: _firstNameController,
                                         keyboardType: TextInputType.text,
                                         validator: (value) {
@@ -86,11 +91,18 @@ showProfilePopUp(
                                     height: 15,
                                   ),
                                   Card(
+                                    color: Colors.white,
                                     elevation: 4.0,
                                     child: Padding(
                                       padding: const EdgeInsets.only(
-                                          left: 5.0, right: 5.0),
+                                        left: 5.0,
+                                        right: 5.0,
+                                      ),
                                       child: TextFormField(
+                                        style: TextStyle(
+                                          fontSize: 15.0,
+                                          color: Colors.black,
+                                        ),
                                         controller: _lastNameController,
                                         keyboardType: TextInputType.text,
                                         validator: (value) {
