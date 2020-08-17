@@ -196,6 +196,7 @@ class _ProductDetailsState extends State<ProductDetails>
                   right: 30,
                   bottom: 3.0,
                   child: Card(
+                    color: Colors.white,
                     elevation: 7,
                     child: Container(
                       decoration: BoxDecoration(

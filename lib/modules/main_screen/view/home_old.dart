@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:quickfix/helpers/flush_bar.dart';
@@ -126,7 +127,7 @@ class _HomeState extends State<HomeW>
       print(highestId);
 
       final fetched = await artisanProvider.getMoreArtisanByLocation(
-          locationData: locationData, highestId: highestId);
+          locationData: locationData, highestId: highestId.toString());
       return fetched.fold((Failure failure) {
         setState(() {
           _loadingMoreArtisan = false;
@@ -199,6 +200,7 @@ class _HomeState extends State<HomeW>
                             future: Utils.getUserSession(),
                             builder: (context, usersnapshot) {
                               return Card(
+                                color: Colors.white,
                                 elevation: 6.0,
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
@@ -213,15 +215,11 @@ class _HomeState extends State<HomeW>
                                       textAlign: TextAlign.center,
                                       text: TextSpan(
                                         text: 'Your account number is ',
-                                        style: TextStyle(
-                                          color: snapshot.hasData
-                                              ? snapshot.data
-                                                          .getString("theme") ==
-                                                      'light'
-                                                  ? Colors.black
-                                                  : Colors.white
-                                              : Colors.white,
-                                          fontSize: 17,
+                                        style: GoogleFonts.solway(
+                                          textStyle: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 17,
+                                          ),
                                         ),
                                         children: <TextSpan>[
                                           TextSpan(
@@ -254,10 +252,11 @@ class _HomeState extends State<HomeW>
                                           TextSpan(
                                             text:
                                                 '. Bank Name is Providus Bank. To receive/send money simply transfer to this account.',
-                                            style: TextStyle(
-                                              // color: Theme.of(context).primaryColor,
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.normal,
+                                            style: GoogleFonts.solway(
+                                              textStyle: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 17,
+                                              ),
                                             ),
                                           ),
                                         ],

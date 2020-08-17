@@ -22,7 +22,7 @@
 **/doc/api/
 .dart_tool/
 .flutter-plugins
-.flutter-plugins-dependencies
+**/.flutter-plugins-dependencies
 .packages
 .pub-cache/
 .pub/
@@ -35,7 +35,7 @@
 **/android/captures/
 **/android/gradlew
 **/android/gradlew.bat
-# **/android/local.properties
+**/android/local.properties
 **/android/**/GeneratedPluginRegistrant.java
 
 # iOS/XCode related

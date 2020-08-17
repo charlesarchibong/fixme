@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:quickfix/modules/artisan/provider/artisan_provider.dart';
-import 'package:quickfix/providers/app_provider.dart';
-import 'package:quickfix/util/const.dart';
 import 'package:share/share.dart';
+
+import '../../../providers/app_provider.dart';
+import '../../../util/const.dart';
+import '../../artisan/provider/artisan_provider.dart';
+import 'help.dart';
 
 class Settings extends StatefulWidget {
   Settings({Key key}) : super(key: key);
@@ -56,7 +58,7 @@ class _SettingsState extends State<Settings> {
   Widget _darkTheme() {
     return ListTile(
       leading: FaIcon(
-        FontAwesomeIcons.themeisle,
+        FontAwesomeIcons.adjust,
         color: Colors.grey,
       ),
       title: Text(
@@ -99,6 +101,13 @@ class _SettingsState extends State<Settings> {
 
   Widget _help() {
     return ListTile(
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (_) => Help(),
+          ),
+        );
+      },
       leading: FaIcon(
         FontAwesomeIcons.questionCircle,
         color: Colors.grey,
@@ -124,7 +133,7 @@ class _SettingsState extends State<Settings> {
     return ListTile(
       onTap: () {
         Share.share(
-          'Fixme makes it easier for you as a service provider or business owner to get hired faster  and more frequently through our platform.',
+          'Fixme makes it easier for you as a service provider or business owner to get hired faster  and more frequently through our platform. Download free at https://fixme.ng/',
           subject: 'Download ${Constants.appName} for Android and iOS',
         );
       },

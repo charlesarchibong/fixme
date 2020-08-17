@@ -2,8 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
-import 'package:quickfix/modules/profile/model/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:timeago/timeago.dart' as timeago;
+
+import '../modules/profile/model/user.dart';
 
 class Utils {
   static Future<bool> checkInternetConn() async {
@@ -69,6 +71,25 @@ class Utils {
   static Future<String> getSubService() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
     return sp.get('subService') ?? null;
+  }
+
+  static String getPicturePlaceHolder(String firstName, String lastName,
+      {String initialPicture}) {
+    String placeHolder =
+        'https://dummyimage.com/400x400/990099/fff&text=${firstName[0]}${lastName[0]}';
+    if (initialPicture == null)
+      return placeHolder;
+    else {
+      if (initialPicture.split('/').last == 'null') {
+        return placeHolder;
+      } else {
+        return initialPicture;
+      }
+    }
+  }
+
+  static String getTimeDifferenceFromTimeStamp(int dateTime) {
+    return '${timeago.format(DateTime.now().subtract(DateTime.now().difference(DateTime.fromMillisecondsSinceEpoch(dateTime, isUtc: false))))}';
   }
 
   static Future<bool> clearUserSession() async {

@@ -35,4 +35,8 @@ class MessageCount {
         )
         .snapshots();
   }
+
+  Stream<DocumentSnapshot> getMessage() {
+    return messageCountCollection.document(messageId).snapshots();
+  }
 }
