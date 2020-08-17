@@ -126,7 +126,7 @@ class _HomeState extends State<HomeW>
       print(highestId);
 
       final fetched = await artisanProvider.getMoreArtisanByLocation(
-          locationData: locationData, highestId: highestId);
+          locationData: locationData, highestId: highestId.toString());
       return fetched.fold((Failure failure) {
         setState(() {
           _loadingMoreArtisan = false;

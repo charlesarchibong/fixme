@@ -73,11 +73,12 @@ class ArtisanProvider with ChangeNotifier {
   Future<Either<Failure, List<ServiceRequest>>> getMyRequestedService() async {
     try {
       loading = true;
-      final List<ServiceRequest> requests =
-          await ArtisanApi().getMyServiceRequest();
+      var requests = await ArtisanApi().getMyServiceRequest();
+
+      serviceRequests = requests;
+      print(requests);
       loading = false;
-      myRequestedRequest = requests;
-      Logger().i(requests);
+
       notifyListeners();
       return Right(
         requests,
@@ -160,7 +161,7 @@ class ArtisanProvider with ChangeNotifier {
   }
 
   Future<Either<Failure, List>> getMoreArtisanByLocation(
-      {LocationData locationData, highestId}) async {
+      {LocationData locationData, String highestId}) async {
     try {
       final user = await Utils.getUserSession();
 

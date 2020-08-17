@@ -162,7 +162,7 @@ class ArtisanApi extends ArtisanService {
         contentType: ContentType.URL_ENCODED,
         headers: headers,
       );
-      print(response.data.toString());
+
       if (response.statusCode == 200 && response.data['reqRes'] == 'true') {
         List projects = response.data['serivceRequest'] as List;
         if (projects.length <= 0) {
@@ -173,10 +173,11 @@ class ArtisanApi extends ArtisanService {
           for (var i = 0; i < projects.length; i++) {
             print('najfndwefn legth is ${projects.length}');
             ServiceRequest bid = ServiceRequest.fromMap(projects[i]);
+
             bids.add(bid);
           }
         }
-        print(bids.length);
+        print(bids);
         return bids;
       } else {
         throw Exception(

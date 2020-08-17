@@ -281,34 +281,42 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
               },
               tooltip: "Chats",
             ),
-            // IconButton(
-            //   color: Colors.white,
-            //   icon: Badge(
-            //     badgeContent: Text(
-            //       requests.length.toString(),
-            //       style: TextStyle(
-            //         color: Colors.black,
-            //       ),
-            //     ),
-            //     badgeColor: Colors.white,
-            //     animationType: BadgeAnimationType.slide,
-            //     toAnimate: true,
-            //     child: FaIcon(
-            //       FontAwesomeIcons.bell,
-            //       size: 17.0,
-            //     ),
-            //   ),
-            //   onPressed: () {
-            //     Navigator.of(context).push(
-            //       MaterialPageRoute(
-            //         builder: (BuildContext context) {
-            //           return Notifications();
-            //         },
-            //       ),
-            //     );
-            //   },
-            //   tooltip: "Notifications",
-            // ),
+            IconButton(
+              color: Colors.white,
+              icon: Badge(
+                badgeContent: Consumer<ArtisanProvider>(
+                  builder: (
+                    BuildContext context,
+                    ArtisanProvider artisanProvider,
+                    Widget child,
+                  ) {
+                    return Text(
+                      artisanProvider.serviceRequests?.length.toString(),
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    );
+                  },
+                ),
+                // badgeColor: Colors.red,
+                animationType: BadgeAnimationType.slide,
+                toAnimate: true,
+                child: FaIcon(
+                  FontAwesomeIcons.checkSquare,
+                  color: Theme.of(context).textTheme.caption.color,
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) {
+                      return MyServiceRequests();
+                    },
+                  ),
+                );
+              },
+              tooltip: "Requests",
+            ),
           ],
         ),
         drawer: Drawer(
