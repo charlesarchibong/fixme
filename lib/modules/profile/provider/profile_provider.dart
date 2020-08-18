@@ -272,6 +272,68 @@ class ProfileProvider extends ChangeNotifier {
     }
   }
 
+  //************************ */get user profile *********************************
+  Future userProfile() async {
+    try {
+      User currentUser = await Utils.getUserSession();
+      String apiKey = await Utils.getApiKey();
+      Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
+      String url = 'https://manager.fixme.ng/user-info';
+      Map<String, dynamic> body = {
+        'mobile': currentUser.phoneNumber,
+      };
+      final response = await NetworkService().post(
+        url: url,
+        body: body,
+        contentType: ContentType.URL_ENCODED,
+        headers: headers,
+      );
+      User user = User.fromjson(response.data);
+      Utils.setUserSession(json.encode(user));
+      notifyListeners();
+    } catch (e) {
+      if (e is DioError) {
+        print(e.message);
+      }
+      print(
+        e.toString(),
+      );
+    }
+  }
+  //*********************  changeeee service *****************************************
+
+  Future changeServices({@required id}) async {
+    try {
+      User currentUser = await Utils.getUserSession();
+      String url = 'https://manager.fixme.ng/change-service';
+      String apiKey = await Utils.getApiKey();
+      Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
+      Map<String, dynamic> body = {
+        'user_id': currentUser.id,
+        'service_id': id,
+      };
+      final response = await NetworkService().post(
+        url: url,
+        body: body,
+        contentType: ContentType.URL_ENCODED,
+        headers: headers,
+      );
+
+      print(response);
+
+      userProfile();
+      notifyListeners();
+      return response;
+    } catch (e) {
+      if (e is DioError) {
+        print(e.message);
+      }
+      print(
+        e.toString(),
+      );
+    }
+  }
+
   Future<Either<Failure, bool>> updateProfile(
       String firstName, String lastName) async {
     try {

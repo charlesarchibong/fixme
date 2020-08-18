@@ -14,6 +14,7 @@ class User {
   int profileViews;
   int reviews;
   int userRating;
+  int id;
   String status;
   String bio;
   String address;
@@ -37,6 +38,7 @@ class User {
     this.bio,
     this.status,
     this.profileViews,
+    this.id,
   });
 
   Map<String, dynamic> toJson() {
@@ -57,6 +59,7 @@ class User {
     map['status'] = status;
     map['user_address'] = address;
     map['mobile_device_token'] = firebaseToken;
+    map['id'] = id;
     return map;
   }
 
@@ -79,5 +82,6 @@ class User {
     address = json['address'];
     status = json['status'];
     firebaseToken = json['mobile_device_token'];
+    id = json["id"];
   }
 }
