@@ -171,13 +171,12 @@ class ArtisanApi extends ArtisanService {
         List<ServiceRequest> bids = List();
         if (projects.length > 0) {
           for (var i = 0; i < projects.length; i++) {
-            print('najfndwefn legth is ${projects.length}');
             ServiceRequest bid = ServiceRequest.fromMap(projects[i]);
 
             bids.add(bid);
           }
         }
-        print(bids);
+
         return bids;
       } else {
         throw Exception(

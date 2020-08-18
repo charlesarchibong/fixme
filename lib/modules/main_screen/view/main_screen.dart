@@ -290,12 +290,25 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                     ArtisanProvider artisanProvider,
                     Widget child,
                   ) {
-                    return Text(
-                      artisanProvider.serviceRequests?.length.toString(),
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    );
+                    return FutureBuilder<Object>(
+                        future: artisanProvider.getMyRequestedService(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return Text(
+                              artisanProvider.serviceRequests?.length
+                                  .toString(),
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            );
+                          }
+                          return Text(
+                            artisanProvider.serviceRequests?.length.toString(),
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          );
+                        });
                   },
                 ),
                 // badgeColor: Colors.red,
@@ -303,7 +316,6 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                 toAnimate: true,
                 child: FaIcon(
                   FontAwesomeIcons.checkSquare,
-                  color: Theme.of(context).textTheme.caption.color,
                 ),
               ),
               onPressed: () {
@@ -863,6 +875,13 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
     pageController = PageController();
     location = new Location();
     sendDeviceDetails();
+
+    final requestedProvider = Provider.of<ArtisanProvider>(
+      context,
+      listen: false,
+    );
+
+    requestedProvider.getMyRequestedService();
     // showUpdatePictureDialog();
     location.onLocationChanged.listen((LocationData locationData) {
       sendLocationToServer(locationData);

@@ -49,7 +49,7 @@ class _ProfileState extends State<Profile> {
       listen: false,
     );
     String service = await profileProvider.getSubService();
-    print(service);
+
     if (mounted) {
       setState(() {
         subServices = service;
