@@ -27,6 +27,7 @@ class ProductDetails extends StatefulWidget {
 class _ProductDetailsState extends State<ProductDetails>
     with WidgetsBindingObserver {
   bool isFav = false;
+  bool loadingReviews = true;
   List artisanReviews;
 
   @override
@@ -86,6 +87,7 @@ class _ProductDetailsState extends State<ProductDetails>
     );
 
     setState(() {
+      loadingReviews = false;
       artisanReviews = reviews;
     });
     // artisanReviews = ReviewList.fromData(reviews).reviewList;
@@ -182,17 +184,41 @@ class _ProductDetailsState extends State<ProductDetails>
                 Hero(
                   transitionOnUserGestures: true,
                   tag: '${widget.userData['profile_pic_file_name']}',
-                  child: Container(
-                    height: MediaQuery.of(context).size.height / 2.5,
-                    width: MediaQuery.of(context).size.width,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8.0),
-                      child: Image(
-                        image: CacheImage(
-                          "${Constants.uploadUrl + widget.userData['profile_pic_file_name']}",
+                  child: InkWell(
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext con) => Dialog(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Container(
+                            height: 500,
+                            width: 300,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: CacheImage(
+                                  '${Constants.uploadUrl + widget.userData['profile_pic_file_name']}',
+                                ),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
                         ),
-                        fit: BoxFit.fitWidth,
-                        alignment: FractionalOffset.topCenter,
+                      );
+                    },
+                    child: Container(
+                      height: MediaQuery.of(context).size.height / 2.5,
+                      width: MediaQuery.of(context).size.width,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8.0),
+                        child: Image(
+                          image: CacheImage(
+                            "${Constants.uploadUrl + widget.userData['profile_pic_file_name']}",
+                          ),
+                          fit: BoxFit.fitWidth,
+                          alignment: FractionalOffset.topCenter,
+                        ),
                       ),
                     ),
                   ),
@@ -363,8 +389,9 @@ class _ProductDetailsState extends State<ProductDetails>
                             width: 300,
                             decoration: BoxDecoration(
                               image: DecorationImage(
-                                  image: NetworkImage(image),
-                                  fit: BoxFit.cover),
+                                image: NetworkImage(image),
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
                         ),
@@ -377,7 +404,7 @@ class _ProductDetailsState extends State<ProductDetails>
                         height: 80,
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                              image: NetworkImage(image), fit: BoxFit.cover),
+                              image: CacheImage(image), fit: BoxFit.cover),
                         ),
                       ),
                     ),
@@ -396,9 +423,11 @@ class _ProductDetailsState extends State<ProductDetails>
               maxLines: 2,
             ),
             SizedBox(height: 20.0),
-            Reviews(
-              reviews: artisanReviews,
-            ),
+            loadingReviews
+                ? CircularProgressIndicator()
+                : Reviews(
+                    reviews: artisanReviews,
+                  ),
             SizedBox(height: 10.0),
           ],
         ),
