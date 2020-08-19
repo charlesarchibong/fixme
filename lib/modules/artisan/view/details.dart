@@ -199,6 +199,7 @@ class _ProductDetailsState extends State<ProductDetails>
                             height: 500,
                             width: 300,
                             decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
                               image: DecorationImage(
                                 image: CacheImage(
                                   '${Constants.uploadUrl + widget.userData['profile_pic_file_name']}',
@@ -392,6 +393,7 @@ class _ProductDetailsState extends State<ProductDetails>
                                   height: 500,
                                   width: 300,
                                   decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
                                     image: DecorationImage(
                                       image: NetworkImage(image),
                                       fit: BoxFit.cover,
