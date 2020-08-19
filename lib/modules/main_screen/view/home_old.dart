@@ -114,7 +114,7 @@ class _HomeState extends State<HomeW>
   }
 
   // ************************** get more users *****************************************************
-  Future<List> getMoreArtisanByLocation() async {
+  Future getMoreArtisanByLocation() async {
     try {
       final artisanProvider = Provider.of<ArtisanProvider>(
         context,
@@ -130,20 +130,25 @@ class _HomeState extends State<HomeW>
 
       final fetched = await artisanProvider.getMoreArtisanByLocation(
           locationData: locationData, highestId: highestId.toString());
-      return fetched.fold((Failure failure) {
+      fetched.fold((Failure failure) {
         setState(() {
           _loadingMoreArtisan = false;
           users = users;
         });
         return List();
       }, (List listArtisan) {
-        List newList = [...users, ...listArtisan];
-        setState(() {
-          _loadingMoreArtisan = false;
-          users = newList;
-        });
-        return newList;
+        List newList = [];
+        if (highestId == users.length + 1) {
+          print(" yo man");
+          newList = [...users, ...listArtisan];
+          setState(() {
+            _loadingMoreArtisan = false;
+            users = newList;
+          });
+        }
       });
+
+      highestId = users.length + 1;
     } catch (error) {
       setState(() {
         _loadingMoreArtisan = false;

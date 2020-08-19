@@ -4,6 +4,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_shimmer/flutter_shimmer.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:quickfix/modules/job/model/job_category.dart';
+import 'package:quickfix/modules/job/provider/post_job_provider.dart';
+import 'package:quickfix/modules/profile/widget/change_service.dart';
 
 import '../../../helpers/flush_bar.dart';
 import '../../../models/failure.dart';
@@ -65,8 +68,12 @@ class _ProfileState extends State<Profile> {
     await profileProvider.getServiceImagesFromServer();
   }
 
-  void getUser() async {
-    user = await Utils.getUserSession();
+  Future getUser() async {
+    var result = await Utils.getUserSession();
+    setState(() {
+      user = result;
+    });
+
     profileImage = await Utils.getProfilePicture();
   }
 
@@ -81,6 +88,7 @@ class _ProfileState extends State<Profile> {
     getUser();
     getSubService();
     getServiceImages();
+
     super.initState();
   }
 
@@ -95,164 +103,182 @@ class _ProfileState extends State<Profile> {
                 child: CircularProgressIndicator(),
               ),
             )
-          : Padding(
-              padding: EdgeInsets.fromLTRB(10.0, 15.0, 10.0, 0),
-              child: ListView(
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                        child: Consumer<ProfileProvider>(
-                            builder: (context, profileProvider, child) {
-                          return _profileImage(
-                              profileProvider, user, profileImage);
-                        }),
-                      ),
-                      _profileName(user, context)
-                    ],
-                  ),
-                  Divider(),
-                  Container(height: 15.0),
-                  _accountInformation(),
-                  _profileDetailsTiles(
-                    title: 'Full Name',
-                    subTitle: '${user.firstName} ${user.lastName}',
-                    hasTrailing: true,
-                    trailingIcon: FaIcon(
-                      FontAwesomeIcons.edit,
-                      size: 25.0,
-                      color: Colors.grey,
-                    ),
-                    toolTip: 'Edit',
-                    onPressed: () {
-                      showProfilePopUp(
-                        context,
-                        _profileScaffoldKey,
-                        user.firstName,
-                        user.lastName,
-                      );
-                    },
-                  ),
-                  _profileDetailsTiles(
-                    title: 'Email',
-                    subTitle: user.email,
-                    hasTrailing: false,
-                  ),
-                  _profileDetailsTiles(
-                    title: 'Phone',
-                    subTitle: user.fullNumber,
-                    hasTrailing: false,
-                  ),
-                  Divider(),
-                  Container(height: 15.0),
-                  Padding(
-                    padding: EdgeInsets.all(5.0),
-                    child: Text(
-                      "Transaction Information",
-                      style: TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  Consumer<ProfileProvider>(
-                    builder: (context, profileProvider, child) {
-                      return FutureBuilder<BankInformation>(
-                        future: profileProiver.getAccountInfo(),
-                        builder: (context, snapshot) {
-                          return snapshot.hasData
-                              ? _profileDetailsTiles(
-                                  title: 'Wallet Balance',
-                                  subTitle: 'N${double.parse(
-                                    snapshot.data.balance.toString(),
-                                  )}',
-                                  hasTrailing: false,
-                                )
-                              : ListTileShimmer();
-                        },
-                      );
-                    },
-                  ),
-                  _profileDetailsTiles(
-                    title: 'Account Number',
-                    subTitle: user.accountNumber,
-                    hasTrailing: false,
-                  ),
-                  _profileDetailsTiles(
-                    title: 'Bank Name',
-                    subTitle: 'Providus Bank',
-                    hasTrailing: false,
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      RaisedButton(
-                        child: Text(
-                          "Transfer Fund From Fixme Wallet",
-                          style: TextStyle(
-                            color: Colors.white,
+          : FutureBuilder(
+              future: getUser(),
+              builder: (context, snapshot) {
+                return Padding(
+                    padding: EdgeInsets.fromLTRB(10.0, 15.0, 10.0, 0),
+                    child: ListView(
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                              child: Consumer<ProfileProvider>(
+                                  builder: (context, profileProvider, child) {
+                                return _profileImage(
+                                    profileProvider, user, profileImage);
+                              }),
+                            ),
+                            _profileName(user, context)
+                          ],
+                        ),
+                        Divider(),
+                        Container(height: 15.0),
+                        _accountInformation(),
+                        _profileDetailsTiles(
+                          title: 'Full Name',
+                          subTitle: '${user.firstName} ${user.lastName}',
+                          hasTrailing: true,
+                          trailingIcon: FaIcon(
+                            FontAwesomeIcons.edit,
+                            size: 25.0,
+                            color: Colors.grey,
+                          ),
+                          toolTip: 'Edit',
+                          onPressed: () {
+                            showProfilePopUp(
+                              context,
+                              _profileScaffoldKey,
+                              user.firstName,
+                              user.lastName,
+                            );
+                          },
+                        ),
+                        _profileDetailsTiles(
+                          title: 'Email',
+                          subTitle: user.email,
+                          hasTrailing: false,
+                        ),
+                        _profileDetailsTiles(
+                          title: 'Phone',
+                          subTitle: user.fullNumber,
+                          hasTrailing: false,
+                        ),
+                        Divider(),
+                        Container(height: 15.0),
+                        Padding(
+                          padding: EdgeInsets.all(5.0),
+                          child: Text(
+                            "Transaction Information",
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
-                        color: Theme.of(context).accentColor,
-                        onPressed: () async {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => TransferFund(),
+                        Consumer<ProfileProvider>(
+                          builder: (context, profileProvider, child) {
+                            return FutureBuilder<BankInformation>(
+                              future: profileProiver.getAccountInfo(),
+                              builder: (context, snapshot) {
+                                return snapshot.hasData
+                                    ? _profileDetailsTiles(
+                                        title: 'Wallet Balance',
+                                        subTitle: 'N${double.parse(
+                                          snapshot.data.balance.toString(),
+                                        )}',
+                                        hasTrailing: false,
+                                      )
+                                    : ListTileShimmer();
+                              },
+                            );
+                          },
+                        ),
+                        _profileDetailsTiles(
+                          title: 'Account Number',
+                          subTitle: user.accountNumber,
+                          hasTrailing: false,
+                        ),
+                        _profileDetailsTiles(
+                          title: 'Bank Name',
+                          subTitle: 'Providus Bank',
+                          hasTrailing: false,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget>[
+                            RaisedButton(
+                              child: Text(
+                                "Transfer Fund From Fixme Wallet",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              color: Theme.of(context).accentColor,
+                              onPressed: () async {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (_) => TransferFund(),
+                                  ),
+                                );
+                              },
                             ),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                  Divider(),
-                  Container(height: 15.0),
-                  Padding(
-                    padding: EdgeInsets.all(5.0),
-                    child: Text(
-                      "Service Information",
-                      style: TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    height: 14,
-                  ),
-                  _profileDetailsTiles(
-                    title: 'Service Category',
-                    subTitle: user.serviceArea,
-                    hasTrailing: false,
-                  ),
-                  _profileDetailsTiles(
-                    title: 'Service Subcategories',
-                    subTitle: subServices ?? 'No Subcategory available yet',
-                    hasTrailing: true,
-                    trailingIcon: FaIcon(
-                      FontAwesomeIcons.plus,
-                      color: Colors.grey,
-                      size: 25.0,
-                    ),
-                    toolTip: 'Add Subcategory',
-                    onPressed: () async {
-                      _showSubCategoryDialog(context, _profileScaffoldKey);
-                      await getSubService();
-                    },
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  _servicesImages(serviceImages, profileProiver),
-                  SizedBox(
-                    height: 50,
-                  ),
-                ],
-              )),
+                          ],
+                        ),
+                        Divider(),
+                        Container(height: 15.0),
+                        Padding(
+                          padding: EdgeInsets.all(5.0),
+                          child: Text(
+                            "Service Information",
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          height: 14,
+                        ),
+                        _profileDetailsTiles(
+                          title: 'Service Category',
+                          subTitle: user.serviceArea,
+                          toolTip: 'Add Subcategory',
+                          hasTrailing: true,
+                          trailingIcon: FaIcon(
+                            FontAwesomeIcons.edit,
+                            color: Colors.grey,
+                            size: 25.0,
+                          ),
+                          onPressed: () {
+                            showModalBottomSheet(
+                              context: context,
+                              builder: (context) => ChangeService(),
+                            );
+                          },
+                        ),
+                        _profileDetailsTiles(
+                          title: 'Service Subcategories',
+                          subTitle:
+                              subServices ?? 'No Subcategory available yet',
+                          hasTrailing: true,
+                          trailingIcon: FaIcon(
+                            FontAwesomeIcons.plus,
+                            color: Colors.grey,
+                            size: 25.0,
+                          ),
+                          toolTip: 'Add Subcategory',
+                          onPressed: () async {
+                            _showSubCategoryDialog(
+                                context, _profileScaffoldKey);
+                            await getSubService();
+                          },
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        _servicesImages(serviceImages, profileProiver),
+                        SizedBox(
+                          height: 50,
+                        ),
+                      ],
+                    ));
+              }),
     );
   }
 
