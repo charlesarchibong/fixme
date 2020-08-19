@@ -27,7 +27,7 @@ class ProductDetails extends StatefulWidget {
 class _ProductDetailsState extends State<ProductDetails>
     with WidgetsBindingObserver {
   bool isFav = false;
-  bool loadingReviews = true;
+  bool _loadingReviews = true;
   List artisanReviews;
 
   @override
@@ -51,14 +51,17 @@ class _ProductDetailsState extends State<ProductDetails>
   }
 
   void setStatusBar() async {
-    setState(() {
-      FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
-      FlutterStatusbarcolor.setNavigationBarWhiteForeground(true);
-      FlutterStatusbarcolor.setStatusBarColor(Color.fromRGBO(153, 0, 153, 1.0));
-      FlutterStatusbarcolor.setNavigationBarColor(
-        Color.fromRGBO(153, 0, 153, 1.0),
-      );
-    });
+    if (mounted) {
+      setState(() {
+        FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
+        FlutterStatusbarcolor.setNavigationBarWhiteForeground(true);
+        FlutterStatusbarcolor.setStatusBarColor(
+            Color.fromRGBO(153, 0, 153, 1.0));
+        FlutterStatusbarcolor.setNavigationBarColor(
+          Color.fromRGBO(153, 0, 153, 1.0),
+        );
+      });
+    }
   }
 
   void updateArtisanProfileView() async {
@@ -87,7 +90,7 @@ class _ProductDetailsState extends State<ProductDetails>
     );
 
     setState(() {
-      loadingReviews = false;
+      _loadingReviews = false;
       artisanReviews = reviews;
     });
     // artisanReviews = ReviewList.fromData(reviews).reviewList;
@@ -183,7 +186,7 @@ class _ProductDetailsState extends State<ProductDetails>
               children: <Widget>[
                 Hero(
                   transitionOnUserGestures: true,
-                  tag: '${widget.userData['profile_pic_file_name']}',
+                  tag: '${widget.userData['id']}',
                   child: InkWell(
                     onTap: () {
                       showDialog(
@@ -370,47 +373,58 @@ class _ProductDetailsState extends State<ProductDetails>
             SizedBox(height: 10.0),
             Container(
               height: 80,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: widget.userData["servicePictures"].length,
-                itemBuilder: (context, index) {
-                  String image = Constants.uploadUrl +
-                      widget.userData["servicePictures"][index];
-                  return InkWell(
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext con) => Dialog(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Container(
-                            height: 500,
-                            width: 300,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: NetworkImage(image),
-                                fit: BoxFit.cover,
+              child: widget.userData["servicePictures"].length > 0
+                  ? ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: widget.userData["servicePictures"].length,
+                      itemBuilder: (context, index) {
+                        String image = Constants.uploadUrl +
+                            widget.userData["servicePictures"][index];
+                        return InkWell(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext con) => Dialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Container(
+                                  height: 500,
+                                  width: 300,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: NetworkImage(image),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 10.0),
+                            child: Container(
+                              width: 100,
+                              height: 80,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: CacheImage(image),
+                                    fit: BoxFit.cover),
                               ),
                             ),
                           ),
-                        ),
-                      );
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 10.0),
-                      child: Container(
-                        width: 100,
-                        height: 80,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: CacheImage(image), fit: BoxFit.cover),
+                        );
+                      },
+                    )
+                  : Center(
+                      child: Text(
+                        "No service picture available yet",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
-                  );
-                },
-              ),
             ),
 
             SizedBox(height: 20.0),
@@ -423,8 +437,14 @@ class _ProductDetailsState extends State<ProductDetails>
               maxLines: 2,
             ),
             SizedBox(height: 20.0),
-            loadingReviews
-                ? CircularProgressIndicator()
+            _loadingReviews
+                ? Center(
+                    child: Container(
+                      width: 50,
+                      height: 50,
+                      child: CircularProgressIndicator(),
+                    ),
+                  )
                 : Reviews(
                     reviews: artisanReviews,
                   ),

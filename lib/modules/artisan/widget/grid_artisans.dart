@@ -36,7 +36,7 @@ class GridTechnician extends StatelessWidget {
             children: <Widget>[
               Hero(
                 transitionOnUserGestures: true,
-                tag: '${userData['profile_pic_file_name']}',
+                tag: '${userData['id']}',
                 child: Container(
                   height: MediaQuery.of(context).size.height / 3.6,
                   width: MediaQuery.of(context).size.width / 2.2,

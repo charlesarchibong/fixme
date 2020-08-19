@@ -861,6 +861,8 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
+    pageController = PageController();
+    getCurrentUser();
     try {
       versionCheck(context);
     } catch (e) {
@@ -872,7 +874,6 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
     });
     getPendingRequest();
     setStatusBar();
-    pageController = PageController();
     location = new Location();
     sendDeviceDetails();
 
@@ -886,7 +887,6 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
     location.onLocationChanged.listen((LocationData locationData) {
       sendLocationToServer(locationData);
     });
-    getCurrentUser();
 
     super.initState();
     //    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(

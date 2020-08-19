@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
-import 'package:quickfix/models/pin_pill_info.dart';
-import 'package:quickfix/util/Utils.dart';
-import 'package:quickfix/util/const.dart';
-import 'package:quickfix/widgets/map_pin_pill.dart';
+
+import '../../../models/pin_pill_info.dart';
+import '../../../util/Utils.dart';
+import '../../../util/const.dart';
+import '../../../widgets/map_pin_pill.dart';
 
 const double CAMERA_ZOOM = 16;
 const double CAMERA_TILT = 80;
@@ -255,27 +256,31 @@ class TrackArtisanState extends State<TrackArtisan> {
     controller.animateCamera(CameraUpdate.newCameraPosition(cPosition));
     // do this inside the setState() so Flutter gets notified
     // that a widget update is due
-    setState(() {
-      // updated position
-      var pinPosition =
-          LatLng(currentLocation.latitude, currentLocation.longitude);
+    if (mounted) {
+      setState(() {
+        // updated position
+        var pinPosition = LatLng(
+          currentLocation.latitude,
+          currentLocation.longitude,
+        );
 
-      sourcePinInfo.location = pinPosition;
+        sourcePinInfo?.location = pinPosition;
 
-      // the trick is to remove the marker (by id)
-      // and add it again at the updated location
-      _markers.removeWhere((m) => m.markerId.value == 'sourcePin');
-      _markers.add(Marker(
-          markerId: MarkerId('sourcePin'),
-          onTap: () {
-            setState(() {
-              currentlySelectedPin = sourcePinInfo;
-              pinPillPosition = 0;
-            });
-          },
-          position: pinPosition, // updated position
-          icon: sourceIcon));
-    });
+        // the trick is to remove the marker (by id)
+        // and add it again at the updated location
+        _markers.removeWhere((m) => m.markerId.value == 'sourcePin');
+        _markers.add(Marker(
+            markerId: MarkerId('sourcePin'),
+            onTap: () {
+              setState(() {
+                currentlySelectedPin = sourcePinInfo;
+                pinPillPosition = 0;
+              });
+            },
+            position: pinPosition, // updated position
+            icon: sourceIcon));
+      });
+    }
   }
 }
 

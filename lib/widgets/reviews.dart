@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:quickfix/util/const.dart';
-import 'package:quickfix/widgets/smooth_star_rating.dart';
 import 'package:intl/intl.dart';
+
+import '../util/const.dart';
+import 'smooth_star_rating.dart';
 
 class Reviews extends StatelessWidget {
   final List reviews;
@@ -9,7 +10,8 @@ class Reviews extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return reviews != null
+    // Logger().i(reviews);
+    return reviews != null && reviews.isNotEmpty
         ? ListView.builder(
             shrinkWrap: true,
             primary: false,
@@ -62,7 +64,7 @@ class Reviews extends StatelessWidget {
           )
         : Center(
             child: Text(
-              "No comment",
+              "No review available yet",
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,

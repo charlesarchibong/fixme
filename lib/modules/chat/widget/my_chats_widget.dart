@@ -117,8 +117,8 @@ class _MyChatWidgetState extends State<MyChatWidget> {
                                                 ).getMessage(),
                                                 builder: (context, snapshot) {
                                                   return Text(
-                                                    snapshot.data
-                                                                .data['read'] ==
+                                                    snapshot?.data?.data[
+                                                                'read'] ==
                                                             false
                                                         ? 'NEW'
                                                         : '',
