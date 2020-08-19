@@ -180,12 +180,11 @@ class ArtisanProvider with ChangeNotifier {
         contentType: ContentType.URL_ENCODED,
         headers: headers,
       );
-      print(response);
+
       var artisans = [];
 
       artisans = response.data['sortedUsers'] as List;
 
-      print(artisans.toString());
       return right(artisans);
     } catch (e) {
       CustomLogger().errorPrint(
