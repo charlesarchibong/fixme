@@ -269,7 +269,6 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                 toAnimate: true,
                 child: FaIcon(
                   FontAwesomeIcons.comment,
-                  size: 17.0,
                 ),
               ),
               onPressed: () {
@@ -298,20 +297,22 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                               artisanProvider.serviceRequests?.length
                                   .toString(),
                               style: TextStyle(
-                                color: Colors.white,
+                                color: Colors.black,
                               ),
                             );
                           }
                           return Text(
                             artisanProvider.serviceRequests?.length.toString(),
                             style: TextStyle(
-                              color: Colors.white,
+                              color: Colors.black,
                             ),
                           );
                         });
                   },
                 ),
                 // badgeColor: Colors.red,
+                badgeColor: Colors.white,
+
                 animationType: BadgeAnimationType.slide,
                 toAnimate: true,
                 child: FaIcon(
