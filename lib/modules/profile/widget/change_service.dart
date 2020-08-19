@@ -5,6 +5,7 @@ import 'package:quickfix/models/failure.dart';
 import 'package:quickfix/modules/job/model/job_category.dart';
 import 'package:quickfix/modules/job/provider/post_job_provider.dart';
 import 'package:quickfix/modules/profile/provider/profile_provider.dart';
+import 'package:searchable_dropdown/searchable_dropdown.dart';
 
 class ChangeService extends StatefulWidget {
   const ChangeService({
@@ -96,40 +97,42 @@ class _ChangeServiceState extends State<ChangeService> {
             Card(
               elevation: 3.0,
               child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(5.0),
-                    ),
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(5.0),
                   ),
-                  child: DropdownButton<JobCategory>(
-                    value: selectedService,
-                    hint: Text(
-                      'Select Job Category',
-                      style: TextStyle(
-                        color: Colors.grey,
-                      ),
-                    ),
-                    isExpanded: true,
-                    underline: SizedBox(),
-                    icon: Icon(
-                      Icons.arrow_downward,
+                ),
+                child: SearchableDropdown.single(
+                  value: selectedService,
+                  hint: Text(
+                    'Select Services',
+                    style: TextStyle(
                       color: Colors.grey,
                     ),
-                    items: _services.map((JobCategory value) {
-                      return DropdownMenuItem<JobCategory>(
-                        value: value,
-                        child: Text(value.service),
-                      );
-                    }).toList(),
-                    onChanged: (JobCategory newValue) {
-                      setState(() {
-                        selectedService = newValue;
-                      });
-                      print(selectedService.id);
-                    },
-                  )),
+                  ),
+                  isExpanded: true,
+                  underline: SizedBox(),
+                  // icon: Icon(
+                  //   Icons.arrow_downward,
+                  //   color: Colors.grey,
+                  // ),
+                  items: _services.map((JobCategory value) {
+                    return DropdownMenuItem<JobCategory>(
+                      value: value,
+                      child: Text(value.service),
+                    );
+                  }).toList(),
+                  searchHint: "Search Service",
+                  onChanged: (newValue) {
+                    setState(() {
+                      selectedService = newValue;
+                    });
+                    print(selectedService.id);
+                  },
+                ),
+              ),
             ),
             SizedBox(height: 40.0),
             Container(
