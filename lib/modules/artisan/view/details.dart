@@ -179,17 +179,21 @@ class _ProductDetailsState extends State<ProductDetails>
             SizedBox(height: 10.0),
             Stack(
               children: <Widget>[
-                Container(
-                  height: MediaQuery.of(context).size.height / 2.5,
-                  width: MediaQuery.of(context).size.width,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8.0),
-                    child: Image(
-                      image: CacheImage(
-                        "${Constants.uploadUrl + widget.userData['profile_pic_file_name']}",
+                Hero(
+                  transitionOnUserGestures: true,
+                  tag: '${widget.userData['profile_pic_file_name']}',
+                  child: Container(
+                    height: MediaQuery.of(context).size.height / 2.5,
+                    width: MediaQuery.of(context).size.width,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8.0),
+                      child: Image(
+                        image: CacheImage(
+                          "${Constants.uploadUrl + widget.userData['profile_pic_file_name']}",
+                        ),
+                        fit: BoxFit.fitWidth,
+                        alignment: FractionalOffset.topCenter,
                       ),
-                      fit: BoxFit.fitWidth,
-                      alignment: FractionalOffset.topCenter,
                     ),
                   ),
                 ),
