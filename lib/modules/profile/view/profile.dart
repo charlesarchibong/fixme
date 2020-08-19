@@ -4,9 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_shimmer/flutter_shimmer.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:quickfix/modules/job/model/job_category.dart';
-import 'package:quickfix/modules/job/provider/post_job_provider.dart';
-import 'package:quickfix/modules/profile/widget/change_service.dart';
 
 import '../../../helpers/flush_bar.dart';
 import '../../../models/failure.dart';
@@ -19,6 +16,7 @@ import '../model/bank_information.dart';
 import '../model/service_image.dart';
 import '../model/user.dart';
 import '../provider/profile_provider.dart';
+import '../widget/change_service.dart';
 import '../widget/edit_profile.dart';
 import '../widget/service_images.dart';
 

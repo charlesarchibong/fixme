@@ -18,7 +18,7 @@ class ChangeService extends StatefulWidget {
 
 class _ChangeServiceState extends State<ChangeService> {
   List<JobCategory> _services = List();
-  final _formKey = GlobalKey<FormState>();
+  // final _formKey = GlobalKey<FormState>();
   JobCategory selectedService;
   bool loading = false;
   Future getJobCategory() async {
@@ -65,7 +65,6 @@ class _ChangeServiceState extends State<ChangeService> {
 
   @override
   void initState() {
-    // TODO: implement initState
     getJobCategory();
     super.initState();
   }
