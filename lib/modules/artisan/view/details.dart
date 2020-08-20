@@ -1,12 +1,14 @@
 import 'package:cache_image/cache_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../helpers/flush_bar.dart';
 import '../../../models/failure.dart';
 import '../../../util/const.dart';
+import '../../../widgets/photo_viewer.dart';
 import '../../../widgets/reviews.dart';
 import '../../../widgets/smooth_star_rating.dart';
 import '../../chat/view/chat_screen.dart';
@@ -191,24 +193,33 @@ class _ProductDetailsState extends State<ProductDetails>
                     onTap: () {
                       showDialog(
                         context: context,
-                        builder: (BuildContext con) => Dialog(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                        builder: (BuildContext con) => PhotoView(
+                          imageProvider: CacheImage(
+                            '${Constants.uploadUrl + widget.userData['profile_pic_file_name']}',
                           ),
-                          child: Container(
-                            height: 500,
-                            width: 300,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              image: DecorationImage(
-                                image: CacheImage(
-                                  '${Constants.uploadUrl + widget.userData['profile_pic_file_name']}',
-                                ),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
+                          heroAttributes: PhotoViewHeroAttributes(
+                            tag: "${widget.userData['id']}",
                           ),
                         ),
+                        // Dialog(
+                        //   shape: RoundedRectangleBorder(
+                        //     borderRadius: BorderRadius.circular(10),
+                        //   ),
+                        //   child:
+// Container(
+//                             height: 500,
+//                             width: 300,
+//                             decoration: BoxDecoration(
+//                               borderRadius: BorderRadius.circular(10),
+//                               image: DecorationImage(
+//                                 image: CacheImage(
+//                                   '${Constants.uploadUrl + widget.userData['profile_pic_file_name']}',
+//                                 ),
+//                                 fit: BoxFit.cover,
+//                               ),
+//                             ),
+//                           ),
+                        // ),
                       );
                     },
                     child: Container(
@@ -282,7 +293,9 @@ class _ProductDetailsState extends State<ProductDetails>
                               ),
                               size: 10.0,
                             ),
-                            SizedBox(width: 10.0),
+                            SizedBox(
+                              width: 10.0,
+                            ),
                             Text(
                               "(${widget.userData['reviews']} Reviews)",
                               style: TextStyle(
@@ -319,7 +332,9 @@ class _ProductDetailsState extends State<ProductDetails>
                     }
                   },
                   // backgroundColor: Colors.green,
-                  child: Icon(Icons.phone),
+                  child: Icon(
+                    Icons.phone,
+                  ),
                 ),
               ],
             ),
@@ -383,25 +398,7 @@ class _ProductDetailsState extends State<ProductDetails>
                             widget.userData["servicePictures"][index];
                         return InkWell(
                           onTap: () {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext con) => Dialog(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Container(
-                                  height: 500,
-                                  width: 300,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    image: DecorationImage(
-                                      image: NetworkImage(image),
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            );
+                            open(context, index);
                           },
                           child: Padding(
                             padding: const EdgeInsets.only(right: 10.0),
@@ -530,6 +527,22 @@ class _ProductDetailsState extends State<ProductDetails>
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  void open(BuildContext context, final int index) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => GalleryPhotoViewWrapper(
+          galleryItems: widget.userData["servicePictures"],
+          backgroundDecoration: const BoxDecoration(
+            color: Colors.black,
+          ),
+          initialIndex: index,
+          scrollDirection: Axis.horizontal,
         ),
       ),
     );

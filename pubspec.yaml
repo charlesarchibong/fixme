@@ -59,6 +59,8 @@ dependencies:
   share: ^0.6.4+3
   timeago: ^2.0.26
   google_fonts: ^1.1.0
+  dots_indicator: ^1.2.0
+
 
 dev_dependencies:
   flutter_native_splash: ^0.1.9
@@ -106,3 +108,4 @@ fonts:
     fonts:
       - asset: assets/font/pragmatica_bold.ttf
         weight: 500
+

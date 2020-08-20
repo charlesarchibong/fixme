@@ -31,7 +31,6 @@ class _HomeState extends State<HomeW>
     return result;
   }
 
-  // int _current = 0;
   Location location;
   LocationData locationData;
   List users = List();
@@ -40,15 +39,13 @@ class _HomeState extends State<HomeW>
   String phoneNumber = '';
   String accountNumber = '0348861021';
   ScrollController _controller;
-  // final TextEditingController _searchControl = new TextEditingController();
+
   _scrollListener() {
     if (_controller.offset >= _controller.position.maxScrollExtent &&
         !_controller.position.outOfRange) {
       print("hey i am from the top");
       getMoreArtisanByLocation();
-      setState(() {
-        // message = "reach the bottom";
-      });
+      setState(() {});
     }
   }
 
@@ -63,7 +60,6 @@ class _HomeState extends State<HomeW>
         setState(() {
           locationData = loc;
         });
-      // getArtisanByLocation();
     });
     Future.delayed(
         Duration(
@@ -113,7 +109,6 @@ class _HomeState extends State<HomeW>
     }
   }
 
-  // ************************** get more users *****************************************************
   Future getMoreArtisanByLocation() async {
     try {
       final artisanProvider = Provider.of<ArtisanProvider>(
@@ -171,8 +166,7 @@ class _HomeState extends State<HomeW>
     super.build(context);
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
-        systemNavigationBarColor:
-            Color.fromRGBO(153, 0, 153, 1.0), // navigation bar color
+        systemNavigationBarColor: Color.fromRGBO(153, 0, 153, 1.0),
         statusBarColor: Color.fromRGBO(153, 0, 153, 1.0),
         statusBarIconBrightness: Brightness.dark,
         systemNavigationBarIconBrightness: Brightness.dark,
@@ -278,68 +272,7 @@ class _HomeState extends State<HomeW>
                             });
                       }),
                 ),
-                // SizedBox(
-                //   height: 6,
-                // ),
-                // InkWell(
-                //   onTap: () {
-                //     print('bby');
-                //   },
-                //   child: Card(
-                //     elevation: 6.0,
-                //     child: Container(
-                //       decoration: BoxDecoration(
-                //         color: Colors.white,
-                //         borderRadius: BorderRadius.all(
-                //           Radius.circular(5.0),
-                //         ),
-                //       ),
-                //       child: TextField(
-                //         style: TextStyle(
-                //           fontSize: 15.0,
-                //           color: Colors.black,
-                //         ),
-                //         decoration: InputDecoration(
-                //           contentPadding: EdgeInsets.all(10.0),
-                //           border: OutlineInputBorder(
-                //             borderRadius: BorderRadius.circular(5.0),
-                //             borderSide: BorderSide(
-                //               color: Colors.white,
-                //             ),
-                //           ),
-                //           enabledBorder: OutlineInputBorder(
-                //             borderSide: BorderSide(
-                //               color: Colors.white,
-                //             ),
-                //             borderRadius: BorderRadius.circular(5.0),
-                //           ),
-                //           hintText: "Search Service Providers or Businesses",
-                //           suffixIcon: IconButton(
-                //             onPressed: () {
-                //               // _searchArtisans(_searchControl.text);
-                //             },
-                //             icon: Icon(
-                //               Icons.search,
-                //               color: Colors.black,
-                //             ),
-                //           ),
-                //           hintStyle: TextStyle(
-                //             fontSize: 15.0,
-                //             color: Colors.black,
-                //           ),
-                //         ),
-                //         maxLines: 1,
-                //         controller: _searchControl,
-                //         onSubmitted: (val) {
-                //           // _searchArtisans(val);
-                //         },
-                //       ),
-                //     ),
-                //   ),
-                // ),
-
                 SizedBox(height: 10.0),
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -350,17 +283,6 @@ class _HomeState extends State<HomeW>
                         fontWeight: FontWeight.w800,
                       ),
                     ),
-//                 FlatButton(
-//                   child: Text(
-//                     "voew more",
-//                     style: TextStyle(
-//                       fontSize: 12,
-// //                      fontWeight: FontWeight.w800,
-//                       color: Theme.of(context).accentColor,
-//                     ),
-//                   ),
-//                   onPressed: () {},
-//                 ),
                   ],
                 ),
                 SizedBox(height: 10.0),
@@ -395,7 +317,7 @@ class _HomeState extends State<HomeW>
                   itemCount: users == null ? 0 : users.length,
                   itemBuilder: (BuildContext context, int index) {
                     Map technician = users[index];
-                    // print(technician['id']);
+
                     return AnimationConfiguration.staggeredGrid(
                       position: index,
                       duration: const Duration(milliseconds: 375),
@@ -453,7 +375,6 @@ class _HomeState extends State<HomeW>
                   Text(
                     'We are so sorry, no artisan available near your location.',
                     style: TextStyle(
-                      // color: Theme.of(context).accentColor,
                       fontSize: 20.0,
                     ),
                     textAlign: TextAlign.center,
