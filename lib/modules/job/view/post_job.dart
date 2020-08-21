@@ -7,6 +7,7 @@ import 'package:quickfix/modules/job/model/job.dart';
 import 'package:quickfix/modules/job/model/job_category.dart';
 import 'package:quickfix/modules/job/provider/post_job_provider.dart';
 import 'package:quickfix/modules/job/view/my_requests.dart';
+import 'package:searchable_dropdown/searchable_dropdown.dart';
 
 class PostJob extends StatefulWidget {
   @override
@@ -260,7 +261,7 @@ class _PostJobState extends State<PostJob> {
                               Radius.circular(5.0),
                             ),
                           ),
-                          child: DropdownButton<JobCategory>(
+                          child: SearchableDropdown.single(
                             value: jobCategory,
                             hint: Text(
                               'Select Job Category',
