@@ -476,7 +476,7 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
               ),
 
               ListTile(
-                title: Text('Service Requests'),
+                title: Text('Requests from Users'),
                 leading: Badge(
                   badgeContent: Consumer<ArtisanProvider>(
                     builder: (
