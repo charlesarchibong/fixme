@@ -85,7 +85,7 @@ class MyServiceRequestWidget extends StatelessWidget {
                 ),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () async {
-                    var url = "tel:0${this.job.requestingMobile}";
+                    var url = "tel:0${this.job.requestedMobile}";
                     if (await canLaunch(url)) {
                       await launch(url);
                     } else {
@@ -281,7 +281,7 @@ class MyServiceRequestWidget extends StatelessWidget {
           value: 8,
           child: InkWell(
             onTap: () async {
-              var url = "tel:0${this.job.requestingMobile}";
+              var url = "tel:0${this.job.requestedMobile}";
               if (await canLaunch(url)) {
                 await launch(url);
               } else {
