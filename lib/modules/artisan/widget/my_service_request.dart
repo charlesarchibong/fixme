@@ -8,8 +8,11 @@ import 'package:quickfix/models/failure.dart';
 import 'package:quickfix/modules/artisan/model/service_request.dart';
 import 'package:quickfix/modules/artisan/provider/artisan_provider.dart';
 import 'package:quickfix/modules/artisan/widget/request_leading_widget.dart';
+import 'package:quickfix/modules/profile/model/user.dart';
 import 'package:quickfix/providers/app_provider.dart';
+import 'package:quickfix/services/firebase/users.dart';
 import 'package:quickfix/util/const.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MyServiceRequestWidget extends StatelessWidget {
   final String title;
@@ -37,59 +40,77 @@ class MyServiceRequestWidget extends StatelessWidget {
         title: Row(
           children: <Widget>[
             Text(
-              'Request From: ',
+              'From: ',
               style: TextStyle(
+                fontSize: 17,
                 fontWeight: FontWeight.bold,
               ),
             ),
             SizedBox(
               width: 5.0,
             ),
-            Text(
-              this.title,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            )
+            StreamBuilder<User>(
+                stream: UsersService(
+                  userPhone: this.job.requestedMobile,
+                ).user,
+                builder: (context, snapshot) {
+                  return Text(
+                    '${snapshot.data?.firstName} ${snapshot.data?.lastName}',
+                    style: TextStyle(
+                      fontSize: 19,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  );
+                })
           ],
         ),
         subtitle: RichText(
           text: TextSpan(
-            text: 'Description: ',
+            text: 'Mobile: ',
             style: TextStyle(
               color: Provider.of<AppProvider>(context).theme ==
                       Constants.lightTheme
                   ? Colors.black
                   : Colors.white,
-              fontSize: 15,
+              fontSize: 17,
               fontWeight: FontWeight.bold,
             ),
             children: <TextSpan>[
               TextSpan(
-                text: this.subtitle,
+                text: '+234${this.job.requestedMobile}',
                 style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 14,
-                  fontWeight: FontWeight.normal,
+                  color: Theme.of(context).accentColor,
+                  fontSize: 19,
+                  fontWeight: FontWeight.bold,
                 ),
-                recognizer: TapGestureRecognizer()..onTap = () {},
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () async {
+                    var url = "tel:0${this.job.requestedMobile}";
+                    if (await canLaunch(url)) {
+                      await launch(url);
+                    } else {
+                      throw 'Could not launch $url';
+                    }
+                  },
               ),
               TextSpan(
                 text: ' \nDate: ${job.dateRequested}',
                 style: TextStyle(
                   // color: Theme.of(context).primaryColor,
-                  fontSize: 15,
+                  fontSize: 18,
                   fontWeight: FontWeight.normal,
                 ),
               ),
-              TextSpan(
-                text: ' \nStatus $status',
-                style: TextStyle(
-                  // color: Theme.of(context).primaryColor,
-                  fontSize: 15,
-                  fontWeight: FontWeight.normal,
-                ),
-              ),
+              this.job.status == 'pending'
+                  ? TextSpan(
+                      text: ' \nPlease confirm availability',
+                      style: TextStyle(
+                        // color: Theme.of(context).primaryColor,
+                        fontSize: 18,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    )
+                  : TextSpan(),
             ],
           ),
         ),
@@ -252,6 +273,31 @@ class MyServiceRequestWidget extends StatelessWidget {
                   width: 10.0,
                 ),
                 Text('Decline Offer'),
+              ],
+            ),
+          ),
+        ),
+        PopupMenuItem(
+          value: 8,
+          child: InkWell(
+            onTap: () async {
+              var url = "tel:0${this.job.requestedMobile}";
+              if (await canLaunch(url)) {
+                await launch(url);
+              } else {
+                throw 'Could not launch $url';
+              }
+            },
+            child: Row(
+              children: <Widget>[
+                FaIcon(
+                  FontAwesomeIcons.phone,
+                  color: Colors.green,
+                ),
+                SizedBox(
+                  width: 10.0,
+                ),
+                Text('Call User'),
               ],
             ),
           ),
