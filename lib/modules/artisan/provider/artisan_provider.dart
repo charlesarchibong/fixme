@@ -75,7 +75,7 @@ class ArtisanProvider with ChangeNotifier {
       loading = true;
       var requests = await ArtisanApi().getMyServiceRequest();
 
-      serviceRequests = requests;
+      myRequestedRequest = requests;
 
       loading = false;
 

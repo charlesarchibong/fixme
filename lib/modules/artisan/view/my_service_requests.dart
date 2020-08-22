@@ -29,7 +29,7 @@ class _MyServiceRequestsState extends State<MyServiceRequests> {
       context,
       listen: false,
     );
-    final reqs = await artisanProvider.getMyRequestedService();
+    final reqs = await artisanProvider.getRequests();
 
     reqs.fold((Failure failure) {
       Logger().i(failure);
@@ -109,7 +109,7 @@ class _MyServiceRequestsState extends State<MyServiceRequests> {
                                   servicesRequests[index];
 
                               return MyServiceRequestWidget(
-                                title: serviceRequest.requestedMobile,
+                                title: serviceRequest.requestingMobile,
                                 subtitle: 'Please confirm availability',
                                 status: serviceRequest.status,
                                 job: serviceRequest,

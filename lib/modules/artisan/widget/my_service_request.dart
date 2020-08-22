@@ -51,7 +51,7 @@ class MyServiceRequestWidget extends StatelessWidget {
             ),
             StreamBuilder<User>(
                 stream: UsersService(
-                  userPhone: this.job.requestedMobile,
+                  userPhone: this.job.requestingMobile,
                 ).user,
                 builder: (context, snapshot) {
                   return Text(
@@ -77,7 +77,7 @@ class MyServiceRequestWidget extends StatelessWidget {
             ),
             children: <TextSpan>[
               TextSpan(
-                text: '+234${this.job.requestedMobile}',
+                text: '+234${this.job.requestingMobile}',
                 style: TextStyle(
                   color: Theme.of(context).accentColor,
                   fontSize: 19,
@@ -85,7 +85,7 @@ class MyServiceRequestWidget extends StatelessWidget {
                 ),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () async {
-                    var url = "tel:0${this.job.requestedMobile}";
+                    var url = "tel:0${this.job.requestingMobile}";
                     if (await canLaunch(url)) {
                       await launch(url);
                     } else {
@@ -281,7 +281,7 @@ class MyServiceRequestWidget extends StatelessWidget {
           value: 8,
           child: InkWell(
             onTap: () async {
-              var url = "tel:0${this.job.requestedMobile}";
+              var url = "tel:0${this.job.requestingMobile}";
               if (await canLaunch(url)) {
                 await launch(url);
               } else {
