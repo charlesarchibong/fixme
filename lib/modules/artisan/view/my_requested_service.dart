@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:quickfix/models/failure.dart';
 import 'package:quickfix/modules/artisan/model/service_request.dart';
@@ -15,6 +16,48 @@ class MyRequestedService extends StatefulWidget {
 
 class _MyRequestedServiceState extends State<MyRequestedService> {
   bool isLoading = false;
+  String error = '';
+  List<ServiceRequest> servicesRequests = List();
+
+  void _getServiceRequests() async {
+    if (mounted) {
+      setState(() {
+        isLoading = true;
+      });
+    }
+    final artisanProvider = Provider.of<ArtisanProvider>(
+      context,
+      listen: false,
+    );
+
+    final reqs = await artisanProvider.getMyRequestedService();
+
+    reqs.fold((Failure failure) {
+      Logger().i(failure);
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+          error = failure.message;
+        });
+      }
+    }, (List<ServiceRequest> jobs) {
+      Logger().i(jobs.toString());
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+          servicesRequests = jobs;
+        });
+        Logger().i(servicesRequests.length);
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    _getServiceRequests();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<ArtisanProvider>(
@@ -42,60 +85,50 @@ class _MyRequestedServiceState extends State<MyRequestedService> {
                 height: 10.0,
               ),
               Expanded(
-                child: FutureBuilder(
-                  // future: artisanProvider.getMyRequestedService(),
-                  builder: (BuildContext context, AsyncSnapshot myService) {
-                    if (myService.hasData) {
-                      return myService.data.fold((Failure failure) {
-                        return Center(
-                          child: Text(
-                            '${failure.message}',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.red,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
+                child: isLoading == false
+                    ? error.isNotEmpty
+                        ? Center(
+                            child: Text(
+                              '$error',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
                             ),
-                          ),
-                        );
-                      }, (List<ServiceRequest> jobs) {
-                        return RefreshIndicator(
-                          onRefresh: () {
-                            artisanProvider.getMyRequestedService();
-                            return Future.value();
-                          },
-                          child: ListView.builder(
-                            itemCount:
-                                artisanProvider.serviceRequests.length == null
-                                    ? 0
-                                    : artisanProvider.serviceRequests.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              ServiceRequest serviceRequest =
-                                  artisanProvider.serviceRequests[index];
-
-                              return MyRequestedServiceWidget(
-                                title: serviceRequest.requestingMobile,
-                                subtitle: serviceRequest.status == 'accepted'
-                                    ? serviceRequest.status == 'completed'
-                                        ? 'This service request has been completed, Please rate the service provider'
-                                        : 'Artisan has accepted your request'
-                                    : 'Your request is still pending, artisan will confirm availability soon.',
-                                status: serviceRequest.status,
-                                job: serviceRequest,
-                                datePosted: serviceRequest.dateRequested,
-                              );
+                          )
+                        : RefreshIndicator(
+                            onRefresh: () {
+                              _getServiceRequests();
+                              return Future.value();
                             },
-                          ),
-                        );
-                      });
-                    } else {
-                      return Center(
+                            child: ListView.builder(
+                              itemCount: servicesRequests.length == null
+                                  ? 0
+                                  : servicesRequests.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                ServiceRequest serviceRequest =
+                                    servicesRequests[index];
+
+                                return MyRequestedServiceWidget(
+                                  title: serviceRequest.requestingMobile,
+                                  subtitle: serviceRequest.status == 'accepted'
+                                      ? serviceRequest.status == 'completed'
+                                          ? 'This service request has been completed, Please rate the service provider'
+                                          : 'Artisan has accepted your request'
+                                      : 'Your request is still pending, artisan will confirm availability soon.',
+                                  status: serviceRequest.status,
+                                  job: serviceRequest,
+                                  datePosted: serviceRequest.dateRequested,
+                                );
+                              },
+                            ),
+                          )
+                    : Center(
                         child: CircularProgressIndicator(),
-                      );
-                    }
-                  },
-                ),
-              ),
+                      ),
+              )
             ],
           ),
         ),
