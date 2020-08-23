@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:quickfix/modules/artisan/model/service_request.dart';
 import 'package:quickfix/modules/artisan/view/service_request_details.dart';
@@ -54,37 +55,49 @@ class MyRequestedServiceWidget extends StatelessWidget {
         subtitle: RichText(
           text: TextSpan(
             text: 'Description: ',
-            style: TextStyle(
-              color: Provider.of<AppProvider>(context).theme ==
-                      Constants.lightTheme
-                  ? Colors.black
-                  : Colors.white,
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
+            style: GoogleFonts.solway(
+              textStyle: TextStyle(
+                color: Provider.of<AppProvider>(context).theme ==
+                        Constants.lightTheme
+                    ? Colors.black
+                    : Colors.white,
+                fontSize: 19,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             children: <TextSpan>[
               TextSpan(
                 text: this.subtitle,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 15.5,
-                  fontWeight: FontWeight.normal,
+                style: GoogleFonts.solway(
+                  textStyle: TextStyle(
+                    color: Provider.of<AppProvider>(context).theme ==
+                            Constants.lightTheme
+                        ? Colors.black
+                        : Colors.white,
+                    fontSize: 19,
+                    fontWeight: FontWeight.normal,
+                  ),
                 ),
                 recognizer: TapGestureRecognizer()..onTap = () {},
               ),
               TextSpan(
                 text: ' \nDate: ${job.dateRequested}',
-                style: TextStyle(
-                  // color: Theme.of(context).primaryColor,
-                  fontSize: 15,
-                  fontWeight: FontWeight.normal,
+                style: GoogleFonts.solway(
+                  textStyle: TextStyle(
+                    color: Provider.of<AppProvider>(context).theme ==
+                            Constants.lightTheme
+                        ? Colors.black
+                        : Colors.white,
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               TextSpan(
-                text: ' \nStatus $status',
+                text: ' \nStatus: $status',
                 style: TextStyle(
                   // color: Theme.of(context).primaryColor,
-                  fontSize: 15,
+                  fontSize: 17,
                   fontWeight: FontWeight.normal,
                 ),
               ),

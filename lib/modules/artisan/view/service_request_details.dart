@@ -3,6 +3,7 @@ import 'package:quickfix/helpers/flush_bar.dart';
 import 'package:quickfix/modules/artisan/model/service_request.dart';
 import 'package:quickfix/modules/rate_review/view/rate_review_artisan.dart';
 import 'package:quickfix/util/const.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ServiceRequestDetails extends StatefulWidget {
   final ServiceRequest serviceRequest;
@@ -38,7 +39,9 @@ class _ServiceRequestDetailsState extends State<ServiceRequestDetails> {
         backgroundColor: Constants.lightAccent,
 //          automaticallyImplyLeading: false,
 //          centerTitle: true,
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: IconThemeData(
+          color: Colors.white,
+        ),
         title: Text(
           'Service Request Details',
           style: TextStyle(
@@ -58,35 +61,63 @@ class _ServiceRequestDetailsState extends State<ServiceRequestDetails> {
                 ),
               ),
               _serviceRequestDetails(),
-              // SizedBox(height: 4.0),
               RaisedButton(
-                  child: Text(
-                    'Rate Service Provider',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
+                child: Text(
+                  'Call Artisan',
+                  style: TextStyle(
+                    color: Colors.white,
                   ),
-                  color: Color.fromRGBO(153, 0, 153, 1),
-                  onPressed: () {
-                    if (widget.serviceRequest.status != 'completed') {
-                      FlushBarCustomHelper.showErrorFlushbar(
-                        context,
-                        'Error',
-                        'You can not rate/review service provider until this request is completed',
-                      );
-                      return;
-                    }
-
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => RateReviewArtisan(
-                          artisanPhone: widget.serviceRequest.requestedMobile,
-                          serviceId: widget.serviceRequest.serviceId,
-                          jobId: null,
-                        ),
-                      ),
+                ),
+                color: Color.fromRGBO(153, 0, 153, 1),
+                onPressed: () {
+                  FlushBarCustomHelper.showInfoFlushbarWithActionNot(
+                    context,
+                    'Information',
+                    'Do you want to call this user?',
+                    'Yes',
+                    () async {
+                      var url = "tel:0${widget.serviceRequest.requestedMobile}";
+                      if (await canLaunch(url)) {
+                        await launch(url);
+                      } else {
+                        throw 'Could not launch $url';
+                      }
+                    },
+                  );
+                },
+              ),
+              SizedBox(
+                height: 10.0,
+              ),
+              RaisedButton(
+                child: Text(
+                  'Rate Service Provider',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                color: Color.fromRGBO(153, 0, 153, 1),
+                onPressed: () {
+                  if (widget.serviceRequest.status != 'completed') {
+                    FlushBarCustomHelper.showErrorFlushbar(
+                      context,
+                      'Error',
+                      'You can not rate/review service provider until this request is completed',
                     );
-                  }),
+                    return;
+                  }
+
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => RateReviewArtisan(
+                        artisanPhone: widget.serviceRequest.requestedMobile,
+                        serviceId: widget.serviceRequest.serviceId,
+                        jobId: null,
+                      ),
+                    ),
+                  );
+                },
+              ),
             ],
           ),
         ),
@@ -100,13 +131,13 @@ class _ServiceRequestDetailsState extends State<ServiceRequestDetails> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
+          // _serviceRequestListTile(
+          //   'Service Requested Contact',
+          //   '+234${widget.serviceRequest.requestingMobile}',
+          // ),
           _serviceRequestListTile(
-            'Service Requested Contact',
-            widget.serviceRequest.requestedMobile,
-          ),
-          _serviceRequestListTile(
-            'Service Provider Contant',
-            widget.serviceRequest.requestingMobile,
+            'Service Provider Contact',
+            '+234${widget.serviceRequest.requestedMobile}',
           ),
           _serviceRequestListTile(
             'Service Status',
@@ -136,6 +167,10 @@ class _ServiceRequestDetailsState extends State<ServiceRequestDetails> {
       ),
       subtitle: Text(
         subTitle,
+        style: TextStyle(
+          fontSize: 17,
+          fontWeight: FontWeight.w100,
+        ),
       ),
     );
   }
