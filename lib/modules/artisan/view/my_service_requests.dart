@@ -29,6 +29,7 @@ class _MyServiceRequestsState extends State<MyServiceRequests> {
       context,
       listen: false,
     );
+
     final reqs = await artisanProvider.getRequests();
 
     reqs.fold((Failure failure) {
