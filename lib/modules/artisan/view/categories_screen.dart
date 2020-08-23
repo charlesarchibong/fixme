@@ -17,13 +17,13 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
         leading: IconButton(
           icon: Icon(
-            Icons.keyboard_backspace,
+            Icons.arrow_back_ios,
           ),
           onPressed: () => Navigator.pop(context),
         ),
+        automaticallyImplyLeading: false,
         centerTitle: true,
         title: Text(
           "Categories",

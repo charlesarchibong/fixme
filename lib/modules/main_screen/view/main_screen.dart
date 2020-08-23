@@ -2,8 +2,6 @@ import 'dart:io';
 
 import 'package:badges/badges.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:device_info/device_info.dart';
-import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,20 +11,16 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:location/location.dart';
 import 'package:logger/logger.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../helpers/flush_bar.dart';
-import '../../../helpers/notification.dart';
 import '../../../main.dart';
 import '../../../services/firebase/messeage_count.dart';
-import '../../../services/network/network_service.dart';
 import '../../../util/Utils.dart';
 import '../../../util/const.dart';
-import '../../../util/content_type.dart';
 import '../../artisan/provider/artisan_provider.dart';
 import '../../artisan/view/my_requested_service.dart';
 import '../../artisan/view/my_service_requests.dart';
@@ -36,7 +30,7 @@ import '../../dashboard/view/dashboard.dart';
 import '../../job/provider/approve_bid_provider.dart';
 import '../../job/provider/pending_job_provider.dart';
 import '../../job/view/approved_jobs.dart';
-import '../../job/view/my_requests.dart';
+import '../../job/view/my_jobs.dart';
 import '../../job/view/pending_appointment.dart';
 import '../../job/view/post_job.dart';
 import '../../profile/model/user.dart';
@@ -85,21 +79,7 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
   final _scaffoledKey = GlobalKey<ScaffoldState>();
   int _page = 0;
   int jobLength = 0;
-  Location location;
   FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
-
-  Future<void> getPendingRequest() async {
-    final pendingJobProvider = Provider.of<PendingJobProvider>(
-      context,
-      listen: false,
-    );
-    await pendingJobProvider.getPendingRequest();
-    final approvedBids = Provider.of<ApprovedBidProvider>(
-      context,
-      listen: false,
-    );
-    await approvedBids.getApprovedBids();
-  }
 
   void getMessage() {
     _firebaseMessaging.configure(
@@ -864,30 +844,17 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
     pageController = PageController();
     getCurrentUser();
-    try {
-      versionCheck(context);
-    } catch (e) {
-      print(e);
-    }
+    // try {
+    //   versionCheck(context);
+    // } catch (e) {
+    //   print(e);
+    // }
     getMessage();
     _firebaseMessaging.getToken().then((token) {
       print('on message $token');
     });
-    getPendingRequest();
+
     setStatusBar();
-    location = new Location();
-    sendDeviceDetails();
-
-    final requestedProvider = Provider.of<ArtisanProvider>(
-      context,
-      listen: false,
-    );
-
-    requestedProvider.getMyRequestedService();
-    // showUpdatePictureDialog();
-    location.onLocationChanged.listen((LocationData locationData) {
-      sendLocationToServer(locationData);
-    });
 
     super.initState();
     //    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
@@ -1118,72 +1085,6 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
           );
         },
       );
-    }
-  }
-
-  Future sendDeviceDetails() async {
-    try {
-      final token = await NotificationHelper().getToken();
-      String deviceOs;
-      String deviceType;
-      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-      if (Platform.isAndroid) {
-        AndroidDeviceInfo androidDeviceInfo = await deviceInfo.androidInfo;
-        deviceOs = 'Android';
-        deviceType =
-            androidDeviceInfo.manufacturer + ' - ' + androidDeviceInfo.model;
-      } else if (Platform.isIOS) {
-        IosDeviceInfo iosDeviceInfo = await deviceInfo.iosInfo;
-        deviceType = 'IOS ' + iosDeviceInfo.model;
-        deviceOs = iosDeviceInfo.systemName;
-      }
-      final user = await Utils.getUserSession();
-      final apiKey = await Utils.getApiKey();
-      final String url = Constants.savedDeviceDetails;
-      Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
-      Map<String, dynamic> body = {
-        'mobile': user.phoneNumber,
-        'device_token': token,
-        'device_os': deviceOs,
-        'device_type': deviceType,
-      };
-      final response = await NetworkService().post(
-        url: url,
-        body: body,
-        contentType: ContentType.URL_ENCODED,
-        headers: headers,
-      );
-      Logger().i(response.data);
-    } catch (e) {
-      if (e is DioError) {
-        print(e.message);
-      }
-      print(e.toString());
-    }
-  }
-
-  Future sendLocationToServer(LocationData locationData) async {
-    try {
-      final user = await Utils.getUserSession();
-      final apiKey = await Utils.getApiKey();
-      final String url = Constants.updateLocationUrl;
-      Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
-      Map<String, dynamic> body = {
-        'mobile': user.phoneNumber,
-        'latitude': locationData.latitude,
-        'longitude': locationData.longitude,
-      };
-      await NetworkService().post(
-        url: url,
-        body: body,
-        contentType: ContentType.URL_ENCODED,
-        headers: headers,
-      );
-    } catch (e) {
-      if (e is DioError) {
-        print(e.message);
-      }
-      print(e.toString());
     }
   }
 

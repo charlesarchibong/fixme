@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:quickfix/helpers/flush_bar.dart';
-import 'package:quickfix/modules/artisan/model/service_request.dart';
-import 'package:quickfix/modules/rate_review/view/rate_review_artisan.dart';
-import 'package:quickfix/util/const.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../../../helpers/flush_bar.dart';
+import '../../../util/const.dart';
+import '../../rate_review/view/rate_review_artisan.dart';
+import '../model/service_request.dart';
 
 class ServiceRequestDetails extends StatefulWidget {
   final ServiceRequest serviceRequest;
@@ -36,6 +37,12 @@ class _ServiceRequestDetailsState extends State<ServiceRequestDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+          ),
+          onPressed: () => Navigator.pop(context),
+        ),
         backgroundColor: Constants.lightAccent,
 //          automaticallyImplyLeading: false,
 //          centerTitle: true,
@@ -51,7 +58,12 @@ class _ServiceRequestDetailsState extends State<ServiceRequestDetails> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.fromLTRB(10.0, 0, 10.0, 0),
+          padding: EdgeInsets.fromLTRB(
+            10.0,
+            0,
+            10.0,
+            0,
+          ),
           child: Column(
             children: <Widget>[
               Center(

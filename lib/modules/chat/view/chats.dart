@@ -31,15 +31,15 @@ class _ChatsState extends State<Chats> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Color.fromRGBO(153, 0, 153, 1),
-          automaticallyImplyLeading: false,
           leading: IconButton(
             icon: Icon(
-              Icons.keyboard_backspace,
+              Icons.arrow_back_ios,
               color: Colors.white,
             ),
             onPressed: () => Navigator.pop(context),
           ),
+          backgroundColor: Color.fromRGBO(153, 0, 153, 1),
+          automaticallyImplyLeading: false,
           centerTitle: true,
           title: Text(
             "Chats",

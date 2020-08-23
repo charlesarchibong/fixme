@@ -275,6 +275,7 @@ class _MyAppState extends State<MyApp> {
             fontFamily: 'Popins',
             cursorColor: Constants.lightAccent,
             brightness: Brightness.light,
+            accentTextTheme: GoogleFonts.solwayTextTheme(TextTheme()),
             textSelectionColor: Color.fromRGBO(153, 0, 153, 1),
             scaffoldBackgroundColor: Constants.lightBG,
             appBarTheme: AppBarTheme(

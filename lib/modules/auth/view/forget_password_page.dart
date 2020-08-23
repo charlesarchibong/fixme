@@ -54,7 +54,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
             automaticallyImplyLeading: false,
             leading: IconButton(
               icon: Icon(
-                Icons.keyboard_backspace,
+                Icons.arrow_back_ios,
               ),
               onPressed: () => Navigator.pop(context),
             ),

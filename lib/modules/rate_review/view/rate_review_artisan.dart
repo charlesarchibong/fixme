@@ -40,8 +40,10 @@ class _RateReviewArtisanState extends State<RateReviewArtisan> {
         // title: "Get Technicain",
         title: 'Rate Artisan',
         body: '',
+
         image: _ratingWidget(),
         decoration: PageDecoration(
+          // boxDecoration: BoxDecoration(),
           titleTextStyle: TextStyle(
             fontSize: 28.0,
             fontWeight: FontWeight.w600,
@@ -62,7 +64,7 @@ class _RateReviewArtisanState extends State<RateReviewArtisan> {
             color: Theme.of(context).accentColor,
           ),
           bodyTextStyle: TextStyle(fontSize: 15.0),
-          boxDecoration: BoxDecoration(),
+          // boxDecoration: BoxDecoration(),
           pageColor: Theme.of(context).primaryColor,
         ),
       ),
@@ -73,6 +75,12 @@ class _RateReviewArtisanState extends State<RateReviewArtisan> {
       child: Scaffold(
         backgroundColor: Theme.of(context).primaryColor,
         appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back_ios,
+            ),
+            onPressed: () => Navigator.pop(context),
+          ),
           title: Text(
             'Rate and Review Artisan',
             style: TextStyle(
@@ -215,20 +223,20 @@ class _RateReviewArtisanState extends State<RateReviewArtisan> {
         SizedBox(
           height: 10,
         ),
-        RaisedButton(
-          child: _loading
-              ? CircularProgressIndicator()
-              : Text(
+        _loading
+            ? CircularProgressIndicator()
+            : RaisedButton(
+                child: Text(
                   "Submit",
                   style: TextStyle(
                     color: Colors.white,
                   ),
                 ),
-          color: Theme.of(context).accentColor,
-          onPressed: () async {
-            _rateArtisan();
-          },
-        ),
+                color: Theme.of(context).accentColor,
+                onPressed: () async {
+                  _rateArtisan();
+                },
+              ),
       ],
     );
   }
@@ -246,6 +254,9 @@ class _RateReviewArtisanState extends State<RateReviewArtisan> {
       widget.artisanPhone,
       rating,
     );
+    setState(() {
+      _loading = false;
+    });
     rated.fold((Failure failure) {
       FlushBarCustomHelper.showErrorFlushbar(
         context,
@@ -274,6 +285,9 @@ class _RateReviewArtisanState extends State<RateReviewArtisan> {
       widget.artisanPhone,
       _reviewController.text,
     );
+    setState(() {
+      _loading = false;
+    });
     rated.fold((Failure failure) {
       FlushBarCustomHelper.showErrorFlushbar(
         context,

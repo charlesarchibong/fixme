@@ -117,6 +117,12 @@ class TrackArtisanState extends State<TrackArtisan> {
     }
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+          ),
+          onPressed: () => Navigator.pop(context),
+        ),
         backgroundColor: Constants.lightAccent,
 //          automaticallyImplyLeading: false,
 //          centerTitle: true,

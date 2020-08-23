@@ -18,7 +18,7 @@ class _AritsansState extends State<Aritsans> {
         automaticallyImplyLeading: false,
         leading: IconButton(
           icon: Icon(
-            Icons.keyboard_backspace,
+            Icons.arrow_back_ios,
           ),
           onPressed: () => Navigator.pop(context),
         ),

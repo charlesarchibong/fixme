@@ -23,6 +23,12 @@ class _SettingsState extends State<Settings> {
         builder: (context, artisanProvider, child) {
       return Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back_ios,
+            ),
+            onPressed: () => Navigator.pop(context),
+          ),
           backgroundColor: Constants.lightAccent,
 //          automaticallyImplyLeading: false,
 //          centerTitle: true,

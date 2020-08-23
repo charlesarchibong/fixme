@@ -221,6 +221,12 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+          ),
+          onPressed: () => Navigator.pop(context),
+        ),
         iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: Theme.of(context).accentColor,
         title: StreamBuilder<User>(

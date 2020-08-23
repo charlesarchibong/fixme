@@ -43,6 +43,7 @@ class ApprovedBidWidget extends StatelessWidget {
               'Title:',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
+                fontSize: 19,
               ),
             ),
             SizedBox(
@@ -52,6 +53,7 @@ class ApprovedBidWidget extends StatelessWidget {
               this.title,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
+                fontSize: 19,
               ),
             )
           ],
@@ -64,7 +66,7 @@ class ApprovedBidWidget extends StatelessWidget {
                       Constants.lightTheme
                   ? Colors.black
                   : Colors.white,
-              fontSize: 15,
+              fontSize: 19,
               fontWeight: FontWeight.bold,
             ),
             children: <TextSpan>[
@@ -72,7 +74,7 @@ class ApprovedBidWidget extends StatelessWidget {
                 text: this.subtitle,
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: 14,
+                  fontSize: 19,
                   fontWeight: FontWeight.normal,
                 ),
                 recognizer: TapGestureRecognizer()..onTap = () {},
@@ -81,7 +83,7 @@ class ApprovedBidWidget extends StatelessWidget {
                 text: ' \nDate: $datePosted',
                 style: TextStyle(
                   // color: Theme.of(context).primaryColor,
-                  fontSize: 15,
+                  fontSize: 19,
                   fontWeight: FontWeight.normal,
                 ),
               ),
@@ -89,7 +91,7 @@ class ApprovedBidWidget extends StatelessWidget {
                 text: ' \nStatus $status',
                 style: TextStyle(
                   // color: Theme.of(context).primaryColor,
-                  fontSize: 15,
+                  fontSize: 19,
                   fontWeight: FontWeight.normal,
                 ),
               ),

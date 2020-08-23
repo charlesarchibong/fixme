@@ -2,17 +2,19 @@ import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:quickfix/helpers/flush_bar.dart';
-import 'package:quickfix/models/failure.dart';
-import 'package:quickfix/modules/artisan/model/service_request.dart';
-import 'package:quickfix/modules/artisan/provider/artisan_provider.dart';
-import 'package:quickfix/modules/artisan/widget/request_leading_widget.dart';
-import 'package:quickfix/modules/profile/model/user.dart';
-import 'package:quickfix/providers/app_provider.dart';
-import 'package:quickfix/services/firebase/users.dart';
-import 'package:quickfix/util/const.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../../../helpers/flush_bar.dart';
+import '../../../models/failure.dart';
+import '../../../providers/app_provider.dart';
+import '../../../services/firebase/users.dart';
+import '../../../util/const.dart';
+import '../../profile/model/user.dart';
+import '../model/service_request.dart';
+import '../provider/artisan_provider.dart';
+import 'request_leading_widget.dart';
 
 class MyServiceRequestWidget extends StatelessWidget {
   final String title;
@@ -41,9 +43,15 @@ class MyServiceRequestWidget extends StatelessWidget {
           children: <Widget>[
             Text(
               'From: ',
-              style: TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.bold,
+              style: GoogleFonts.solway(
+                textStyle: TextStyle(
+                  color: Provider.of<AppProvider>(context).theme ==
+                          Constants.lightTheme
+                      ? Colors.black
+                      : Colors.white,
+                  fontSize: 19,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
             SizedBox(
@@ -67,40 +75,62 @@ class MyServiceRequestWidget extends StatelessWidget {
         subtitle: RichText(
           text: TextSpan(
             text: 'Mobile: ',
-            style: TextStyle(
-              color: Provider.of<AppProvider>(context).theme ==
-                      Constants.lightTheme
-                  ? Colors.black
-                  : Colors.white,
-              fontSize: 17,
-              fontWeight: FontWeight.bold,
+            style: GoogleFonts.solway(
+              textStyle: TextStyle(
+                color: Provider.of<AppProvider>(context).theme ==
+                        Constants.lightTheme
+                    ? Colors.black
+                    : Colors.white,
+                fontSize: 19,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             children: <TextSpan>[
               TextSpan(
                 text: '+234${this.job.requestingMobile}',
-                style: TextStyle(
+                style: GoogleFonts.solway(
+                    textStyle: TextStyle(
                   color: Theme.of(context).accentColor,
                   fontSize: 19,
                   fontWeight: FontWeight.bold,
-                ),
+                )),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () async {
-                    var url = "tel:0${this.job.requestingMobile}";
-                    if (await canLaunch(url)) {
-                      await launch(url);
-                    } else {
-                      throw 'Could not launch $url';
-                    }
+                    FlushBarCustomHelper.showInfoFlushbarWithActionNot(
+                      context,
+                      'Information',
+                      'Do you want to call this user?',
+                      'Yes',
+                      () async {
+                        var url = "tel:0${this.job.requestingMobile}";
+                        if (await canLaunch(url)) {
+                          await launch(url);
+                        } else {
+                          throw 'Could not launch $url';
+                        }
+                      },
+                    );
                   },
               ),
               TextSpan(
                 text: ' \nDate: ${job.dateRequested}',
-                style: TextStyle(
-                  // color: Theme.of(context).primaryColor,
-                  fontSize: 18,
-                  fontWeight: FontWeight.normal,
+                style: GoogleFonts.solway(
+                  textStyle: TextStyle(
+                    // color: Theme.of(context).primaryColor,
+                    fontSize: 18,
+                    fontWeight: FontWeight.normal,
+                  ),
                 ),
               ),
+              TextSpan(
+                  text: ' \nStatus: $status',
+                  style: GoogleFonts.solway(
+                    textStyle: TextStyle(
+                      // color: Theme.of(context).primaryColor,
+                      fontSize: 17,
+                      fontWeight: FontWeight.normal,
+                    ),
+                  )),
               this.job.status == 'pending'
                   ? TextSpan(
                       text: ' \nPlease confirm availability',
@@ -281,12 +311,20 @@ class MyServiceRequestWidget extends StatelessWidget {
           value: 8,
           child: InkWell(
             onTap: () async {
-              var url = "tel:0${this.job.requestingMobile}";
-              if (await canLaunch(url)) {
-                await launch(url);
-              } else {
-                throw 'Could not launch $url';
-              }
+              FlushBarCustomHelper.showInfoFlushbarWithActionNot(
+                context,
+                'Information',
+                'Do you want to call this user?',
+                'Yes',
+                () async {
+                  var url = "tel:0${job.requestingMobile}";
+                  if (await canLaunch(url)) {
+                    await launch(url);
+                  } else {
+                    throw 'Could not launch $url';
+                  }
+                },
+              );
             },
             child: Row(
               children: <Widget>[

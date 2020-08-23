@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
-import 'package:quickfix/models/failure.dart';
-import 'package:quickfix/modules/artisan/model/service_request.dart';
-import 'package:quickfix/modules/artisan/provider/artisan_provider.dart';
-import 'package:quickfix/modules/artisan/widget/my_requested_service.dart';
-import 'package:quickfix/util/const.dart';
+import 'package:quickfix/modules/main_screen/view/main_screen.dart';
+
+import '../../../models/failure.dart';
+import '../../../util/const.dart';
+import '../model/service_request.dart';
+import '../provider/artisan_provider.dart';
+import '../widget/my_requested_service.dart';
 
 class MyRequestedService extends StatefulWidget {
   MyRequestedService({Key key}) : super(key: key);
@@ -64,6 +66,18 @@ class _MyRequestedServiceState extends State<MyRequestedService> {
         builder: (context, artisanProvider, child) {
       return Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back_ios,
+            ),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => MainScreen(),
+                ),
+              );
+            },
+          ),
           backgroundColor: Constants.lightAccent,
 //          automaticallyImplyLeading: false,
 //          centerTitle: true,

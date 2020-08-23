@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:device_info/device_info.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -5,15 +9,22 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:location/location.dart';
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
-import 'package:quickfix/helpers/flush_bar.dart';
-import 'package:quickfix/models/failure.dart';
-import 'package:quickfix/modules/artisan/provider/artisan_provider.dart';
-import 'package:quickfix/modules/artisan/widget/grid_artisans.dart';
-import 'package:quickfix/modules/profile/model/user.dart';
-import 'package:quickfix/util/Utils.dart';
-import 'package:quickfix/util/const.dart';
+import 'package:quickfix/services/network/network_service.dart';
+import 'package:quickfix/util/content_type.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../helpers/flush_bar.dart';
+import '../../../helpers/notification.dart';
+import '../../../models/failure.dart';
+import '../../../util/Utils.dart';
+import '../../../util/const.dart';
+import '../../artisan/provider/artisan_provider.dart';
+import '../../artisan/widget/grid_artisans.dart';
+import '../../job/provider/approve_bid_provider.dart';
+import '../../job/provider/pending_job_provider.dart';
+import '../../profile/model/user.dart';
 
 class HomeW extends StatefulWidget {
   @override
@@ -59,11 +70,12 @@ class _HomeState extends State<HomeW>
       if (mounted)
         setState(() {
           locationData = loc;
+          sendLocationToServer(locationData);
         });
     });
     Future.delayed(
         Duration(
-          seconds: 10,
+          seconds: 1,
         ), () {
       getArtisanByLocation();
     });
@@ -71,7 +83,93 @@ class _HomeState extends State<HomeW>
 
     _controller = ScrollController();
     _controller.addListener(_scrollListener);
+    final requestedProvider = Provider.of<ArtisanProvider>(
+      context,
+      listen: false,
+    );
+    getPendingRequest();
+    sendDeviceDetails();
+    requestedProvider.getMyRequestedService();
     super.initState();
+  }
+
+  Future<void> getPendingRequest() async {
+    final pendingJobProvider = Provider.of<PendingJobProvider>(
+      context,
+      listen: false,
+    );
+    await pendingJobProvider.getPendingRequest();
+    final approvedBids = Provider.of<ApprovedBidProvider>(
+      context,
+      listen: false,
+    );
+    await approvedBids.getApprovedBids();
+  }
+
+  Future sendDeviceDetails() async {
+    try {
+      final token = await NotificationHelper().getToken();
+      String deviceOs;
+      String deviceType;
+      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+      if (Platform.isAndroid) {
+        AndroidDeviceInfo androidDeviceInfo = await deviceInfo.androidInfo;
+        deviceOs = 'Android';
+        deviceType =
+            androidDeviceInfo.manufacturer + ' - ' + androidDeviceInfo.model;
+      } else if (Platform.isIOS) {
+        IosDeviceInfo iosDeviceInfo = await deviceInfo.iosInfo;
+        deviceType = 'IOS ' + iosDeviceInfo.model;
+        deviceOs = iosDeviceInfo.systemName;
+      }
+      final user = await Utils.getUserSession();
+      final apiKey = await Utils.getApiKey();
+      final String url = Constants.savedDeviceDetails;
+      Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
+      Map<String, dynamic> body = {
+        'mobile': user.phoneNumber,
+        'device_token': token,
+        'device_os': deviceOs,
+        'device_type': deviceType,
+      };
+      final response = await NetworkService().post(
+        url: url,
+        body: body,
+        contentType: ContentType.URL_ENCODED,
+        headers: headers,
+      );
+      Logger().i(response.data);
+    } catch (e) {
+      if (e is DioError) {
+        print(e.message);
+      }
+      print(e.toString());
+    }
+  }
+
+  Future sendLocationToServer(LocationData locationData) async {
+    try {
+      final user = await Utils.getUserSession();
+      final apiKey = await Utils.getApiKey();
+      final String url = Constants.updateLocationUrl;
+      Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
+      Map<String, dynamic> body = {
+        'mobile': user.phoneNumber,
+        'latitude': locationData.latitude,
+        'longitude': locationData.longitude,
+      };
+      await NetworkService().post(
+        url: url,
+        body: body,
+        contentType: ContentType.URL_ENCODED,
+        headers: headers,
+      );
+    } catch (e) {
+      if (e is DioError) {
+        print(e.message);
+      }
+      print(e.toString());
+    }
   }
 
   Future<List> getArtisanByLocation() async {

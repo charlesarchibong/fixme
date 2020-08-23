@@ -3,11 +3,12 @@ import 'package:flutter_sparkline/flutter_sparkline.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:provider/provider.dart';
-import 'package:quickfix/models/failure.dart';
-import 'package:quickfix/modules/dashboard/model/dashboard_model.dart';
-import 'package:quickfix/modules/dashboard/provider/dashboard_provider.dart';
-import 'package:quickfix/util/const.dart';
-import 'package:quickfix/util/graph.dart';
+
+import '../../../models/failure.dart';
+import '../../../util/const.dart';
+import '../../../util/graph.dart';
+import '../model/dashboard_model.dart';
+import '../provider/dashboard_provider.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -57,6 +58,12 @@ class _DashboardState extends State<Dashboard> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back_ios,
+            ),
+            onPressed: () => Navigator.pop(context),
+          ),
           backgroundColor: Constants.lightAccent,
 //          automaticallyImplyLeading: false,
           centerTitle: true,

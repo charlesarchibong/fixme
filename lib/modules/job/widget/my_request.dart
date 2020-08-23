@@ -41,6 +41,7 @@ class MyRequestWidget extends StatelessWidget {
               'Title:',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
+                fontSize: 19,
               ),
             ),
             SizedBox(
@@ -50,6 +51,7 @@ class MyRequestWidget extends StatelessWidget {
               this.title,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
+                fontSize: 19,
               ),
             )
           ],
@@ -62,7 +64,7 @@ class MyRequestWidget extends StatelessWidget {
                       Constants.lightTheme
                   ? Colors.black
                   : Colors.white,
-              fontSize: 15,
+              fontSize: 19,
               fontWeight: FontWeight.bold,
             ),
             children: <TextSpan>[
@@ -70,7 +72,7 @@ class MyRequestWidget extends StatelessWidget {
                 text: this.subtitle,
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: 14,
+                  fontSize: 19,
                   fontWeight: FontWeight.normal,
                 ),
                 recognizer: TapGestureRecognizer()..onTap = () {},
@@ -79,7 +81,7 @@ class MyRequestWidget extends StatelessWidget {
                 text: ' \nDate: ${job.datePosted}',
                 style: TextStyle(
                   // color: Theme.of(context).primaryColor,
-                  fontSize: 15,
+                  fontSize: 19,
                   fontWeight: FontWeight.normal,
                 ),
               ),

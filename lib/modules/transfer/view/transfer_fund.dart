@@ -73,6 +73,12 @@ class _TransferFundState extends State<TransferFund> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+          ),
+          onPressed: () => Navigator.pop(context),
+        ),
         backgroundColor: Constants.lightAccent,
 //          automaticallyImplyLeading: false,
 //          centerTitle: true,

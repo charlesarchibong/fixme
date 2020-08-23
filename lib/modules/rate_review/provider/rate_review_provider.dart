@@ -34,7 +34,8 @@ class RateReviewProvider with ChangeNotifier {
       Logger().e(e.toString());
       return left(
         Failure(
-            message: 'Unable to rate artisan at the moment, please try again'),
+          message: 'Unable to rate artisan at the moment, please try again',
+        ),
       );
     }
   }
@@ -65,7 +66,8 @@ class RateReviewProvider with ChangeNotifier {
       Logger().e(e.toString());
       return left(
         Failure(
-            message: 'Unable to rate artisan at the moment, please try again'),
+          message: 'Unable to rate artisan at the moment, please try again',
+        ),
       );
     }
   }

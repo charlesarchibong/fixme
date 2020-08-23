@@ -103,15 +103,14 @@ class _ProductDetailsState extends State<ProductDetails>
     print(widget.userData);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromRGBO(153, 0, 153, 1),
-        automaticallyImplyLeading: false,
         leading: IconButton(
           icon: Icon(
-            Icons.keyboard_backspace,
-            color: Colors.white,
+            Icons.arrow_back_ios,
           ),
           onPressed: () => Navigator.pop(context),
         ),
+        backgroundColor: Color.fromRGBO(153, 0, 153, 1),
+        automaticallyImplyLeading: false,
         centerTitle: true,
         title: Text(
           "Artisan's Profile",
