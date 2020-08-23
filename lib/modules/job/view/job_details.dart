@@ -430,8 +430,9 @@ class _JobDetailsState extends State<JobDetails> {
                                     MaterialPageRoute(
                                       builder: (BuildContext context) {
                                         return ProductDetails(
-                                            userData: bids['bidder_info'],
-                                            distance: bids['distance']);
+                                          userData: bids['bidder_info'],
+                                          distance: bids['distance'],
+                                        );
                                       },
                                     ),
                                   );

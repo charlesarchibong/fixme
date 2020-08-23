@@ -106,6 +106,7 @@ class _ProductDetailsState extends State<ProductDetails>
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios,
+            color: Colors.white,
           ),
           onPressed: () => Navigator.pop(context),
         ),
@@ -388,7 +389,8 @@ class _ProductDetailsState extends State<ProductDetails>
             SizedBox(height: 10.0),
             Container(
               height: 80,
-              child: widget.userData["servicePictures"].length > 0
+              child: widget.userData["servicePictures"] != null &&
+                      widget.userData["servicePictures"].length > 0
                   ? ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: widget.userData["servicePictures"].length,
