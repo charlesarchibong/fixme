@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_lock_screen/flutter_lock_screen.dart';
+import 'package:flutter_shimmer/flutter_shimmer.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
+import 'package:quickfix/modules/profile/model/bank_information.dart';
+import 'package:quickfix/modules/profile/provider/profile_provider.dart';
+import 'package:quickfix/util/Utils.dart';
 import 'package:searchable_dropdown/searchable_dropdown.dart';
 
 import '../../../helpers/flush_bar.dart';
@@ -22,6 +26,7 @@ class _TransferFundState extends State<TransferFund> {
   TextEditingController _accountNameController = TextEditingController();
   TextEditingController _amountController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   BankList bankSelected;
@@ -30,6 +35,14 @@ class _TransferFundState extends State<TransferFund> {
   bool isFingerprint = false;
 
   String pin = '';
+  String accountNumber;
+
+  Future getUserPhone() async {
+    final user = await Utils.getUserSession();
+    setState(() {
+      accountNumber = user.accountNumber;
+    });
+  }
 
   List<BankList> bankList = List();
 
@@ -65,11 +78,13 @@ class _TransferFundState extends State<TransferFund> {
   @override
   void initState() {
     getBankList();
+    getUserPhone();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final profileProiver = Provider.of<ProfileProvider>(context, listen: false);
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -82,7 +97,7 @@ class _TransferFundState extends State<TransferFund> {
         backgroundColor: Constants.lightAccent,
 //          automaticallyImplyLeading: false,
 //          centerTitle: true,
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: IconThemeData(color: Color(0xfffefefef)),
         title: Text(
           'Transfer Fund',
           style: TextStyle(
@@ -92,7 +107,7 @@ class _TransferFundState extends State<TransferFund> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.fromLTRB(10.0, 0, 10.0, 0),
+          padding: EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
           child: Column(
             children: <Widget>[
               SizedBox(
@@ -116,54 +131,98 @@ class _TransferFundState extends State<TransferFund> {
                             SizedBox(
                               height: 15,
                             ),
-                            Card(
-                              elevation: 4.0,
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                  left: 10.0,
-                                  right: 10.0,
-                                ),
-                                child: SearchableDropdown.single(
-                                  items: bankList.map((BankList v) {
-                                    return DropdownMenuItem<BankList>(
-                                      value: v,
-                                      child: Text(v.name),
-                                    );
-                                  }).toList(),
-                                  value: bankSelected,
-                                  hint: "Select Bank",
-                                  searchHint: "Search Bank",
-                                  onChanged: (value) {
-                                    Logger().i(value);
-                                    setState(() {
-                                      bankSelected = value;
-                                    });
-                                    if (_accountNumberController.text.length ==
-                                        10) {
-                                      _verifyAccountNumber(
-                                        _accountNumberController.text,
-                                        bankSelected.code,
-                                      );
-                                    }
-                                  },
-                                  isExpanded: true,
-                                ),
+                            Container(
+                              padding: EdgeInsets.all(20),
+                              color: Color(0xffE4E4E4),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Your account balance:",
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                  Text("$accountNumber"),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Consumer<ProfileProvider>(
+                                        builder:
+                                            (context, profileProvider, child) {
+                                          return FutureBuilder<BankInformation>(
+                                            // future:
+                                            //     profileProiver.getAccountInfo(),
+                                            builder: (context, snapshot) {
+                                              return snapshot.hasData
+                                                  ? Text(
+                                                      'N${double.parse(
+                                                        snapshot.data.balance
+                                                            .toString(),
+                                                      )}',
+                                                      style: TextStyle(
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .accentColor,
+                                                          fontSize: 20),
+                                                    )
+                                                  : ListTileShimmer();
+                                            },
+                                          );
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
                             ),
                             SizedBox(
-                              height: 20,
+                              height: 15,
+                            ),
+                            Material(
+                              // elevation: 1,
+                              child: SearchableDropdown.single(
+                                items: bankList.map((BankList v) {
+                                  return DropdownMenuItem<BankList>(
+                                    value: v,
+                                    child: Text(v.name),
+                                  );
+                                }).toList(),
+                                value: bankSelected,
+                                hint: "Select Bank",
+                                searchHint: "Search Bank",
+                                onChanged: (value) {
+                                  Logger().i(value);
+                                  setState(() {
+                                    bankSelected = value;
+                                  });
+                                  if (_accountNumberController.text.length ==
+                                      10) {
+                                    _verifyAccountNumber(
+                                      _accountNumberController.text,
+                                      bankSelected.code,
+                                    );
+                                  }
+                                },
+                                isExpanded: true,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 15,
                             ),
                             Card(
-                              elevation: 4.0,
+                              elevation: 1.0,
+                              color: Color(0xffE4E4E4),
                               child: Padding(
-                                padding: const EdgeInsets.only(
-                                  left: 10.0,
-                                  right: 10.0,
-                                ),
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 0, horizontal: 10),
                                 child: TextFormField(
                                   controller: _accountNumberController,
                                   keyboardType: TextInputType.phone,
-                                  maxLength: 10,
+                                  // maxLength: 10,
                                   enabled: _loading == true ? false : true,
                                   validator: (value) {
                                     return value == ''
@@ -200,7 +259,7 @@ class _TransferFundState extends State<TransferFund> {
                               height: 15,
                             ),
                             Card(
-                              elevation: 4.0,
+                              elevation: 1.0,
                               child: Padding(
                                 padding: const EdgeInsets.only(
                                   left: 10.0,
@@ -226,10 +285,10 @@ class _TransferFundState extends State<TransferFund> {
                               ),
                             ),
                             SizedBox(
-                              height: 20,
+                              height: 15,
                             ),
                             Card(
-                              elevation: 4.0,
+                              elevation: 1.0,
                               child: Padding(
                                 padding: const EdgeInsets.only(
                                   left: 10.0,
@@ -259,18 +318,15 @@ class _TransferFundState extends State<TransferFund> {
                                 ),
                               ),
                             ),
-                            SizedBox(
-                              height: 20,
-                            ),
                             Card(
-                              elevation: 4.0,
+                              elevation: 1.0,
                               child: Padding(
                                 padding: const EdgeInsets.only(
                                   left: 10.0,
                                   right: 10.0,
                                 ),
                                 child: TextFormField(
-                                  maxLines: 10,
+                                  // maxLines: 10,
                                   enabled: _loading == true ? false : true,
                                   controller: _descriptionController,
                                   keyboardType: TextInputType.multiline,
@@ -283,9 +339,6 @@ class _TransferFundState extends State<TransferFund> {
                                   ),
                                 ),
                               ),
-                            ),
-                            SizedBox(
-                              height: 15,
                             ),
                             _loading
                                 ? CircularProgressIndicator()
@@ -303,7 +356,7 @@ class _TransferFundState extends State<TransferFund> {
                                         _authTransfer();
                                       }
                                     },
-                                  )
+                                  ),
                           ],
                         ),
                 ),
@@ -479,3 +532,172 @@ class _TransferFundState extends State<TransferFund> {
     });
   }
 }
+
+// Card(
+//                               elevation: 4.0,
+//                               child: Padding(
+//                                 padding: const EdgeInsets.only(
+//                                   left: 10.0,
+//                                   right: 10.0,
+//                                 ),
+//     child: SearchableDropdown.single(
+//       items: bankList.map((BankList v) {
+//         return DropdownMenuItem<BankList>(
+//           value: v,
+//           child: Text(v.name),
+//         );
+//       }).toList(),
+//       value: bankSelected,
+//       hint: "Select Bank",
+//       searchHint: "Search Bank",
+//       onChanged: (value) {
+//         Logger().i(value);
+//         setState(() {
+//           bankSelected = value;
+//         });
+//         if (_accountNumberController.text.length ==
+//             10) {
+//           _verifyAccountNumber(
+//             _accountNumberController.text,
+//             bankSelected.code,
+//           );
+//         }
+//       },
+//       isExpanded: true,
+//     ),
+//   ),
+// ),
+//                             SizedBox(
+//                               height: 20,
+//                             ),
+// Card(
+//   elevation: 4.0,
+//   child: Padding(
+//     padding: const EdgeInsets.only(
+//       left: 10.0,
+//       right: 10.0,
+//     ),
+//     child: TextFormField(
+//       controller: _accountNumberController,
+//       keyboardType: TextInputType.phone,
+//       maxLength: 10,
+//       enabled: _loading == true ? false : true,
+//       validator: (value) {
+//         return value == ''
+//             ? 'Account Number can not be empty'
+//             : null;
+//       },
+//       decoration: InputDecoration(
+//         hintText: 'Enter Account Number',
+//         hintStyle: TextStyle(
+//           color: Colors.grey,
+//         ),
+//         border: InputBorder.none,
+//       ),
+//       onChanged: (value) {
+//         if (value.length == 10) {
+//           if (bankSelected == null) {
+//             FlushBarCustomHelper.showErrorFlushbar(
+//               context,
+//               'Error',
+//               'Please select reciever bank',
+//             );
+//             return;
+//           }
+//           _verifyAccountNumber(
+//             _accountNumberController.text,
+//             bankSelected.code,
+//           );
+//         }
+//       },
+//     ),
+//   ),
+// ),
+//                             SizedBox(
+//                               height: 15,
+//                             ),
+// Card(
+//   elevation: 4.0,
+//   child: Padding(
+//     padding: const EdgeInsets.only(
+//       left: 10.0,
+//       right: 10.0,
+//     ),
+//     child: TextFormField(
+//       readOnly: true,
+//       controller: _accountNameController,
+//       keyboardType: TextInputType.text,
+//       validator: (value) {
+//         return value == ''
+//             ? 'Account Name can not be empty'
+//             : null;
+//       },
+//       decoration: InputDecoration(
+//         hintText: 'Confirm Account Name',
+//         hintStyle: TextStyle(
+//           color: Colors.grey,
+//         ),
+//         border: InputBorder.none,
+//       ),
+//     ),
+//   ),
+// ),
+//                             SizedBox(
+//                               height: 20,
+//                             ),
+//                             Card(
+//                               elevation: 4.0,
+//                               child: Padding(
+//                                 padding: const EdgeInsets.only(
+//                                   left: 10.0,
+//                                   right: 10.0,
+//                                 ),
+//                                 child: TextFormField(
+//                                   enabled: _loading == true ? false : true,
+//                                   controller: _amountController,
+//                                   keyboardType: TextInputType.phone,
+//                                   validator: (value) {
+//                                     try {
+//                                       int.parse(value);
+//                                       return value == ''
+//                                           ? 'Amount can not be empty'
+//                                           : null;
+//                                     } catch (e) {
+//                                       return 'Amount should contain only numbers';
+//                                     }
+//                                   },
+//                                   decoration: InputDecoration(
+//                                     hintText: 'Amount',
+//                                     hintStyle: TextStyle(
+//                                       color: Colors.grey,
+//                                     ),
+//                                     border: InputBorder.none,
+//                                   ),
+//                                 ),
+//                               ),
+//                             ),
+//                             SizedBox(
+//                               height: 20,
+//                             ),
+// Card(
+//   elevation: 4.0,
+//   child: Padding(
+//     padding: const EdgeInsets.only(
+//       left: 10.0,
+//       right: 10.0,
+//     ),
+//     child: TextFormField(
+//       maxLines: 10,
+//       enabled: _loading == true ? false : true,
+//       controller: _descriptionController,
+//       keyboardType: TextInputType.multiline,
+//       decoration: InputDecoration(
+//         hintText: 'Transaction Description',
+//         hintStyle: TextStyle(
+//           color: Colors.grey,
+//         ),
+//         border: InputBorder.none,
+//       ),
+//     ),
+//   ),
+// ),
