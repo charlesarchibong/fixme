@@ -9,6 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:quickfix/modules/auth/view/login.dart';
+import 'package:quickfix/modules/transfer/view/transfer_fund.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sentry/sentry.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -320,6 +321,7 @@ class _MyAppState extends State<MyApp> {
           themeMode: appProvider.theme == Constants.lightTheme
               ? ThemeMode.light
               : ThemeMode.dark,
+
           home: widget.sp.get('opened') == null
               ? Walkthrough()
               : widget.sp.get('user') != null
