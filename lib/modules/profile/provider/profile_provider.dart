@@ -245,6 +245,8 @@ class ProfileProvider extends ChangeNotifier {
         headers: headers,
         contentType: ContentType.JSON,
       );
+
+      print("heeeeee how many times are you running");
       if (response.statusCode == 200) {
         return Right(true);
       } else {

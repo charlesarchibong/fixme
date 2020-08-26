@@ -84,7 +84,6 @@ class _TransferFundState extends State<TransferFund> {
 
   @override
   Widget build(BuildContext context) {
-    final profileProiver = Provider.of<ProfileProvider>(context, listen: false);
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -129,61 +128,17 @@ class _TransferFundState extends State<TransferFund> {
                       : Column(
                           children: <Widget>[
                             SizedBox(
-                              height: 15,
-                            ),
-                            Container(
-                              padding: EdgeInsets.all(20),
-                              color: Color(0xffE4E4E4),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Your account balance:",
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                  Text("$accountNumber"),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      Consumer<ProfileProvider>(
-                                        builder:
-                                            (context, profileProvider, child) {
-                                          return FutureBuilder<BankInformation>(
-                                            // future:
-                                            //     profileProiver.getAccountInfo(),
-                                            builder: (context, snapshot) {
-                                              return snapshot.hasData
-                                                  ? Text(
-                                                      'N${double.parse(
-                                                        snapshot.data.balance
-                                                            .toString(),
-                                                      )}',
-                                                      style: TextStyle(
-                                                          color:
-                                                              Theme.of(context)
-                                                                  .accentColor,
-                                                          fontSize: 20),
-                                                    )
-                                                  : ListTileShimmer();
-                                            },
-                                          );
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
+                              height: 20,
                             ),
                             SizedBox(
-                              height: 15,
+                              height: 20,
                             ),
-                            Material(
-                              // elevation: 1,
+                            Container(
+                              decoration: BoxDecoration(
+                                color: Color(0xffE4E4E4),
+                                borderRadius: BorderRadius.circular(5),
+                                border: Border.all(color: Colors.black),
+                              ),
                               child: SearchableDropdown.single(
                                 items: bankList.map((BankList v) {
                                   return DropdownMenuItem<BankList>(
@@ -191,6 +146,7 @@ class _TransferFundState extends State<TransferFund> {
                                     child: Text(v.name),
                                   );
                                 }).toList(),
+                                style: TextStyle(color: Colors.black),
                                 value: bankSelected,
                                 hint: "Select Bank",
                                 searchHint: "Search Bank",
@@ -211,152 +167,176 @@ class _TransferFundState extends State<TransferFund> {
                               ),
                             ),
                             SizedBox(
-                              height: 15,
+                              height: 20,
                             ),
-                            Card(
-                              elevation: 1.0,
-                              color: Color(0xffE4E4E4),
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 0, horizontal: 10),
-                                child: TextFormField(
-                                  controller: _accountNumberController,
-                                  keyboardType: TextInputType.phone,
-                                  // maxLength: 10,
-                                  enabled: _loading == true ? false : true,
-                                  validator: (value) {
-                                    return value == ''
-                                        ? 'Account Number can not be empty'
-                                        : null;
-                                  },
-                                  decoration: InputDecoration(
-                                    hintText: 'Enter Account Number',
-                                    hintStyle: TextStyle(
-                                      color: Colors.grey,
-                                    ),
-                                    border: InputBorder.none,
+                            Container(
+                              decoration: BoxDecoration(
+                                color: Color(0xffE4E4E4),
+                                borderRadius: BorderRadius.circular(5),
+                                border: Border.all(color: Colors.black),
+                              ),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 0, horizontal: 10),
+                              child: TextFormField(
+                                controller: _accountNumberController,
+                                keyboardType: TextInputType.phone,
+                                style: TextStyle(color: Colors.black),
+                                // maxLength: 10,
+                                enabled: _loading == true ? false : true,
+                                validator: (value) {
+                                  return value == ''
+                                      ? 'Account Number can not be empty'
+                                      : null;
+                                },
+                                decoration: InputDecoration(
+                                  hintText: 'Enter Account Number',
+                                  hintStyle: TextStyle(
+                                    color: Colors.black,
                                   ),
-                                  onChanged: (value) {
-                                    if (value.length == 10) {
-                                      if (bankSelected == null) {
-                                        FlushBarCustomHelper.showErrorFlushbar(
-                                          context,
-                                          'Error',
-                                          'Please select reciever bank',
-                                        );
-                                        return;
-                                      }
-                                      _verifyAccountNumber(
-                                        _accountNumberController.text,
-                                        bankSelected.code,
+                                  border: InputBorder.none,
+                                ),
+                                onChanged: (value) {
+                                  if (value.length == 10) {
+                                    if (bankSelected == null) {
+                                      FlushBarCustomHelper.showErrorFlushbar(
+                                        context,
+                                        'Error',
+                                        'Please select reciever bank',
                                       );
+                                      return;
                                     }
-                                  },
+                                    _verifyAccountNumber(
+                                      _accountNumberController.text,
+                                      bankSelected.code,
+                                    );
+                                  }
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                color: Color(0xffE4E4E4),
+                                borderRadius: BorderRadius.circular(5),
+                                border: Border.all(color: Colors.black),
+                              ),
+                              padding: const EdgeInsets.only(
+                                left: 10.0,
+                                right: 10.0,
+                              ),
+                              child: TextFormField(
+                                readOnly: true,
+                                style: TextStyle(color: Colors.black),
+                                controller: _accountNameController,
+                                keyboardType: TextInputType.text,
+                                validator: (value) {
+                                  return value == ''
+                                      ? 'Account Name can not be empty'
+                                      : null;
+                                },
+                                decoration: InputDecoration(
+                                  hintText: 'Confirm Account Name',
+                                  hintStyle: TextStyle(
+                                    color: Colors.black,
+                                  ),
+                                  border: InputBorder.none,
                                 ),
                               ),
                             ),
                             SizedBox(
-                              height: 15,
+                              height: 20,
                             ),
-                            Card(
-                              elevation: 1.0,
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                  left: 10.0,
-                                  right: 10.0,
-                                ),
-                                child: TextFormField(
-                                  readOnly: true,
-                                  controller: _accountNameController,
-                                  keyboardType: TextInputType.text,
-                                  validator: (value) {
+                            Container(
+                              decoration: BoxDecoration(
+                                color: Color(0xffE4E4E4),
+                                borderRadius: BorderRadius.circular(5),
+                                border: Border.all(color: Colors.black),
+                              ),
+                              padding: const EdgeInsets.only(
+                                left: 10.0,
+                                right: 10.0,
+                              ),
+                              child: TextFormField(
+                                enabled: _loading == true ? false : true,
+                                controller: _amountController,
+                                style: TextStyle(color: Colors.black),
+                                keyboardType: TextInputType.phone,
+                                validator: (value) {
+                                  try {
+                                    int.parse(value);
                                     return value == ''
-                                        ? 'Account Name can not be empty'
+                                        ? 'Amount can not be empty'
                                         : null;
-                                  },
-                                  decoration: InputDecoration(
-                                    hintText: 'Confirm Account Name',
-                                    hintStyle: TextStyle(
-                                      color: Colors.grey,
-                                    ),
-                                    border: InputBorder.none,
+                                  } catch (e) {
+                                    return 'Amount should contain only numbers';
+                                  }
+                                },
+                                decoration: InputDecoration(
+                                  hintText: 'Amount',
+                                  hintStyle: TextStyle(
+                                    color: Colors.black,
                                   ),
+                                  border: InputBorder.none,
                                 ),
                               ),
                             ),
                             SizedBox(
-                              height: 15,
+                              height: 20,
                             ),
-                            Card(
-                              elevation: 1.0,
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                  left: 10.0,
-                                  right: 10.0,
-                                ),
-                                child: TextFormField(
-                                  enabled: _loading == true ? false : true,
-                                  controller: _amountController,
-                                  keyboardType: TextInputType.phone,
-                                  validator: (value) {
-                                    try {
-                                      int.parse(value);
-                                      return value == ''
-                                          ? 'Amount can not be empty'
-                                          : null;
-                                    } catch (e) {
-                                      return 'Amount should contain only numbers';
-                                    }
-                                  },
-                                  decoration: InputDecoration(
-                                    hintText: 'Amount',
-                                    hintStyle: TextStyle(
-                                      color: Colors.grey,
-                                    ),
-                                    border: InputBorder.none,
+                            Container(
+                              decoration: BoxDecoration(
+                                color: Color(0xffE4E4E4),
+                                borderRadius: BorderRadius.circular(5),
+                                border: Border.all(color: Colors.black),
+                              ),
+                              padding: const EdgeInsets.only(
+                                left: 10.0,
+                                right: 10.0,
+                              ),
+                              child: TextFormField(
+                                maxLines: 5,
+                                style: TextStyle(color: Colors.black),
+                                enabled: _loading == true ? false : true,
+                                controller: _descriptionController,
+                                keyboardType: TextInputType.multiline,
+                                decoration: InputDecoration(
+                                  hintText: 'Transaction Description',
+                                  hintStyle: TextStyle(
+                                    color: Colors.black,
                                   ),
+                                  border: InputBorder.none,
                                 ),
                               ),
                             ),
-                            Card(
-                              elevation: 1.0,
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                  left: 10.0,
-                                  right: 10.0,
+                            SizedBox(
+                              height: 40,
+                            ),
+                            InkWell(
+                              onTap: () async {
+                                if (_formKey.currentState.validate()) {
+                                  _authTransfer();
+                                }
+                              },
+                              child: Container(
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Theme.of(context).accentColor,
                                 ),
-                                child: TextFormField(
-                                  // maxLines: 10,
-                                  enabled: _loading == true ? false : true,
-                                  controller: _descriptionController,
-                                  keyboardType: TextInputType.multiline,
-                                  decoration: InputDecoration(
-                                    hintText: 'Transaction Description',
-                                    hintStyle: TextStyle(
-                                      color: Colors.grey,
-                                    ),
-                                    border: InputBorder.none,
-                                  ),
+                                child: Center(
+                                  child: _loading
+                                      ? CircularProgressIndicator()
+                                      : Text(
+                                          "Transfer Fund",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                          ),
+                                        ),
                                 ),
                               ),
                             ),
-                            _loading
-                                ? CircularProgressIndicator()
-                                : FlatButton(
-                                    child: Text(
-                                      "Transfer Fund",
-                                    ),
-                                    padding: EdgeInsets.all(
-                                      14.0,
-                                    ),
-                                    textColor: Colors.white,
-                                    color: Theme.of(context).accentColor,
-                                    onPressed: () async {
-                                      if (_formKey.currentState.validate()) {
-                                        _authTransfer();
-                                      }
-                                    },
-                                  ),
                           ],
                         ),
                 ),
@@ -614,7 +594,7 @@ class _TransferFundState extends State<TransferFund> {
 //   ),
 // ),
 //                             SizedBox(
-//                               height: 15,
+//                               height: 20,
 //                             ),
 // Card(
 //   elevation: 4.0,
