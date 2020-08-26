@@ -75,7 +75,7 @@ class _HomeState extends State<HomeW>
     });
     Future.delayed(
         Duration(
-          seconds: 1,
+          seconds: 2,
         ), () {
       getArtisanByLocation();
     });
@@ -181,7 +181,7 @@ class _HomeState extends State<HomeW>
       setState(() {
         _loadingArtisan = true;
       });
-
+      if (locationData == null) getArtisanByLocation();
       final fetched = await artisanProvider.getArtisanByLocation(locationData);
       setState(() {
         _loadingArtisan = false;
