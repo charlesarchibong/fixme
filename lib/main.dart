@@ -321,18 +321,18 @@ class _MyAppState extends State<MyApp> {
           themeMode: appProvider.theme == Constants.lightTheme
               ? ThemeMode.light
               : ThemeMode.dark,
-
-          home: widget.sp.get('opened') == null
-              ? Walkthrough()
-              : widget.sp.get('user') != null
-                  ? widget.userModel?.profilePicture == null ||
-                          widget.userModel?.profilePicture ==
-                              'no_picture_upload'
-                      ? NoProfileImage()
-                      : widget.sp.get('exist') == false
-                          ? EnterSecurityPin()
-                          : MainScreen()
-                  : LoginScreen(),
+          home: TransferFund(),
+          // home: widget.sp.get('opened') == null
+          //     ? Walkthrough()
+          //     : widget.sp.get('user') != null
+          //         ? widget.userModel?.profilePicture == null ||
+          //                 widget.userModel?.profilePicture ==
+          //                     'no_picture_upload'
+          //             ? NoProfileImage()
+          //             : widget.sp.get('exist') == false
+          //                 ? EnterSecurityPin()
+          //                 : MainScreen()
+          //         : LoginScreen(),
         );
       },
     );
