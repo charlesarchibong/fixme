@@ -13,7 +13,6 @@ import 'package:quickfix/modules/auth/view/security_pin.dart';
 import 'package:quickfix/modules/custom/view/walkthrough.dart';
 import 'package:quickfix/modules/main_screen/view/main_screen.dart';
 import 'package:quickfix/modules/main_screen/view/no_profile_image.dart';
-import 'package:quickfix/modules/transfer/view/transfer_fund.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sentry/sentry.dart';
 import 'package:shared_preferences/shared_preferences.dart';
