@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_lock_screen/flutter_lock_screen.dart';
-import 'package:flutter_shimmer/flutter_shimmer.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
-import 'package:quickfix/modules/profile/model/bank_information.dart';
-import 'package:quickfix/modules/profile/provider/profile_provider.dart';
-import 'package:quickfix/util/Utils.dart';
 import 'package:searchable_dropdown/searchable_dropdown.dart';
 
 import '../../../helpers/flush_bar.dart';
 import '../../../models/failure.dart';
+import '../../../util/Utils.dart';
 import '../../../util/const.dart';
 import '../model/bank_list.dart';
 import '../provider/transfer_provider.dart';

@@ -1,7 +1,7 @@
 name: quickfix
 description: A platform to order for a technician service and get it done immediately.
 
-version: 1.3.0+6
+version: 1.3.1+7
 
 environment:
   sdk: ">=2.2.0 <3.0.0"
@@ -16,7 +16,7 @@ dependencies:
   font_awesome_flutter: ^8.8.1
   carousel_slider: ^2.1.0
   http: ^0.12.1
-  flushbar: ^1.10.4
+  flushbar: ^1.10.4  
   geocoder: ^0.2.1
   provider: ^4.0.4
   connectivity: ^0.4.8+5
