@@ -8,6 +8,12 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
+import 'package:quickfix/modules/auth/view/login.dart';
+import 'package:quickfix/modules/auth/view/security_pin.dart';
+import 'package:quickfix/modules/custom/view/walkthrough.dart';
+import 'package:quickfix/modules/main_screen/view/main_screen.dart';
+import 'package:quickfix/modules/main_screen/view/no_profile_image.dart';
+import 'package:quickfix/modules/transfer/view/transfer_fund.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sentry/sentry.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,16 +21,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'modules/artisan/provider/artisan_provider.dart';
 import 'modules/auth/provider/login_form_validation.dart';
 import 'modules/auth/provider/security_pin_provider.dart';
-import 'modules/auth/view/login.dart';
-import 'modules/auth/view/security_pin.dart';
-import 'modules/custom/view/walkthrough.dart';
 import 'modules/dashboard/provider/dashboard_provider.dart';
 import 'modules/job/provider/approve_bid_provider.dart';
 import 'modules/job/provider/my_request_provider.dart';
 import 'modules/job/provider/pending_job_provider.dart';
 import 'modules/job/provider/post_job_provider.dart';
-import 'modules/main_screen/view/main_screen.dart';
-import 'modules/main_screen/view/no_profile_image.dart';
 import 'modules/profile/provider/profile_provider.dart';
 import 'modules/rate_review/provider/rate_review_provider.dart';
 import 'modules/search/provider/search_provider.dart';
@@ -320,7 +321,6 @@ class _MyAppState extends State<MyApp> {
           themeMode: appProvider.theme == Constants.lightTheme
               ? ThemeMode.light
               : ThemeMode.dark,
-          // home: TransferFund(),
           home: widget.sp.get('opened') == null
               ? Walkthrough()
               : widget.sp.get('user') != null
