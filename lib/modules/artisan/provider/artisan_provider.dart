@@ -125,7 +125,7 @@ class ArtisanProvider with ChangeNotifier {
   }
 
   Future<Either<Failure, List>> getArtisanByLocation(
-      LocationData locationData) async {
+      double lat, double long) async {
     try {
       final user = await Utils.getUserSession();
 
@@ -133,8 +133,8 @@ class ArtisanProvider with ChangeNotifier {
       Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
       Map<String, dynamic> body = {
         'mobile': user.phoneNumber,
-        'latitude': locationData.latitude,
-        'longitude': locationData.longitude
+        'latitude': lat,
+        'longitude': long,
       };
       String url = Constants.getArtisanByLocationUrl;
       final response = await NetworkService().post(

@@ -7,19 +7,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:geolocation/geolocation.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:location/location.dart';
+import 'package:location/location.dart' as userLocation;
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
-import 'package:quickfix/services/network/network_service.dart';
-import 'package:quickfix/util/content_type.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../helpers/flush_bar.dart';
 import '../../../helpers/notification.dart';
 import '../../../models/failure.dart';
+import '../../../services/network/network_service.dart';
 import '../../../util/Utils.dart';
 import '../../../util/const.dart';
+import '../../../util/content_type.dart';
 import '../../artisan/provider/artisan_provider.dart';
 import '../../artisan/widget/grid_artisans.dart';
 import '../../job/provider/approve_bid_provider.dart';
@@ -42,8 +43,9 @@ class _HomeState extends State<HomeW>
     return result;
   }
 
-  Location location;
-  LocationData locationData;
+  // Location location;
+  userLocation.LocationData locationData;
+  userLocation.Location location;
   List users = List();
   bool _loadingArtisan = false;
   bool _loadingMoreArtisan = false;
@@ -62,23 +64,20 @@ class _HomeState extends State<HomeW>
 
   @override
   void initState() {
-    location = new Location();
-    location.getLocation().then((value) {
-      locationData = value;
-    });
-    location.onLocationChanged.listen((LocationData loc) {
+    getArtisanByLocation();
+
+    location = new userLocation.Location();
+    // location.getLocation().then((value) {
+    //   locationData = value;
+    // });
+    location.onLocationChanged.listen((userLocation.LocationData loc) {
       if (mounted)
         setState(() {
           locationData = loc;
           sendLocationToServer(locationData);
         });
     });
-    Future.delayed(
-        Duration(
-          seconds: 2,
-        ), () {
-      getArtisanByLocation();
-    });
+
     getUserPhone();
 
     _controller = ScrollController();
@@ -147,7 +146,7 @@ class _HomeState extends State<HomeW>
     }
   }
 
-  Future sendLocationToServer(LocationData locationData) async {
+  Future sendLocationToServer(userLocation.LocationData locationData) async {
     try {
       final user = await Utils.getUserSession();
       final apiKey = await Utils.getApiKey();
@@ -178,31 +177,49 @@ class _HomeState extends State<HomeW>
         context,
         listen: false,
       );
-      setState(() {
-        _loadingArtisan = true;
-      });
-      if (locationData == null) getArtisanByLocation();
-      final fetched = await artisanProvider.getArtisanByLocation(locationData);
-      setState(() {
-        _loadingArtisan = false;
-      });
-      return fetched.fold((Failure failure) {
+
+      final GeolocationResult result =
+          await Geolocation.isLocationOperational();
+      if (result.isSuccessful) {
+        // location service is enabled, and location permission is granted
+        LocationResult location = await Geolocation.lastKnownLocation();
+        double lat = location.location.latitude;
+        double lng = location.location.longitude;
+
         setState(() {
-          users = List();
+          _loadingArtisan = true;
         });
-        return List();
-      }, (List listArtisan) {
+
+        final fetched = await artisanProvider.getArtisanByLocation(lat, lng);
         setState(() {
-          users = listArtisan;
+          _loadingArtisan = false;
         });
-        return listArtisan;
-      });
+        return fetched.fold((Failure failure) {
+          setState(() {
+            users = List();
+          });
+          return List();
+        }, (List listArtisan) {
+          setState(() {
+            users = listArtisan;
+          });
+          return listArtisan;
+        });
+      } else {
+        throw Exception('${result.error.message}');
+      }
     } catch (error) {
       setState(() {
-        users = List();
+        users = null;
       });
-
+      // getArtisanByLocation();
       print(error.toString());
+      FlushBarCustomHelper.showErrorFlushbar(
+        context,
+        'Error',
+        'An error occured, please on your location service and click on the refresh to load artisans',
+      );
+
       return List();
     }
   }
@@ -471,7 +488,7 @@ class _HomeState extends State<HomeW>
                     height: 10.0,
                   ),
                   Text(
-                    'We are so sorry, no artisan available near your location.',
+                    'We are so sorry, no artisan available near your location. Please ensure that your device location is on and click the button below to refresh',
                     style: TextStyle(
                       fontSize: 20.0,
                     ),
