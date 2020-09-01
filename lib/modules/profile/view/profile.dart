@@ -44,6 +44,8 @@ class _ProfileState extends State<Profile> {
 
   String profileImage;
 
+  BankInformation bankInformation;
+
   getSubService() async {
     final profileProvider = Provider.of<ProfileProvider>(
       context,
@@ -56,6 +58,22 @@ class _ProfileState extends State<Profile> {
         subServices = service;
       });
     }
+  }
+
+  getBankInformation() async {
+    try {
+      final profileProvider = Provider.of<ProfileProvider>(
+        context,
+        listen: false,
+      );
+      final response = await profileProvider.getAccountInfo();
+
+      setState(() {
+        bankInformation = response;
+
+        print(bankInformation.balance);
+      });
+    } catch (e) {}
   }
 
   getServiceImages() async {
@@ -86,7 +104,7 @@ class _ProfileState extends State<Profile> {
     getUser();
     getSubService();
     getServiceImages();
-
+    getBankInformation();
     super.initState();
   }
 
@@ -166,24 +184,17 @@ class _ProfileState extends State<Profile> {
                             ),
                           ),
                         ),
-                        Consumer<ProfileProvider>(
-                          builder: (context, profileProvider, child) {
-                            return FutureBuilder<BankInformation>(
-                              future: profileProiver.getAccountInfo(),
-                              builder: (context, snapshot) {
-                                return snapshot.hasData
-                                    ? _profileDetailsTiles(
-                                        title: 'Wallet Balance',
-                                        subTitle: 'N${double.parse(
-                                          snapshot.data.balance.toString(),
-                                        )}',
-                                        hasTrailing: false,
-                                      )
-                                    : ListTileShimmer();
-                              },
-                            );
-                          },
-                        ),
+                        bankInformation != null
+                            ? _profileDetailsTiles(
+                                title: 'Wallet Balance',
+                                subTitle: 'N${double.parse(
+                                  bankInformation.balance.toString(),
+                                )}',
+                                hasTrailing: false,
+                              )
+                            : ListTileShimmer(
+                                padding: EdgeInsets.all(0),
+                              ),
                         _profileDetailsTiles(
                           title: 'Account Number',
                           subTitle: user.accountNumber,
