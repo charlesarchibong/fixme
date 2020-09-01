@@ -1,4 +1,3 @@
-import 'package:cache_image/cache_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_shimmer/flutter_shimmer.dart';
@@ -499,11 +498,12 @@ Widget _profileName(User snapshot, BuildContext context) {
 
 Widget _profileImage(
     ProfileProvider profileProvider, User user, String profileImage) {
+  // Logger().i(profileImage);
   return Stack(
     alignment: Alignment.bottomCenter,
     children: <Widget>[
       Image(
-        image: CacheImage('${user.profilePicture}'),
+        image: NetworkImage('$profileImage'),
         fit: BoxFit.cover,
         width: 100.0,
         height: 100.0,
