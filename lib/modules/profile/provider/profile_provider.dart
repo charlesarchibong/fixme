@@ -38,7 +38,7 @@ class ProfileProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getImage() async {
+  Future<String> getImage() async {
     ImagePicker imagePicker = ImagePicker();
     var image = await imagePicker.getImage(source: ImageSource.gallery);
     var uploaded = await uploadImageToServer(
@@ -59,6 +59,7 @@ class ProfileProvider extends ChangeNotifier {
       imageUrl: _profilePicture,
     );
     notifyListeners();
+    return _profilePicture;
   }
 
   Future<String> getSubService() async {

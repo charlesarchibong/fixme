@@ -16,6 +16,7 @@ import 'package:quickfix/modules/main_screen/view/no_profile_image.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sentry/sentry.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smartlook/smartlook.dart';
 
 import 'modules/artisan/provider/artisan_provider.dart';
 import 'modules/auth/provider/login_form_validation.dart';
@@ -243,6 +244,7 @@ class _MyAppState extends State<MyApp> {
     _requestIOSPermissions();
     _configureDidReceiveLocalNotificationSubject();
     _configureSelectNotificationSubject();
+    Smartlook.setupAndStartRecording(DotEnv().env['$SMART_LOCK']);
     super.initState();
   }
 

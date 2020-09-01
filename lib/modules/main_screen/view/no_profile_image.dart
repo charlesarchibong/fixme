@@ -103,22 +103,19 @@ class _NoProfileImageState extends State<NoProfileImage> {
                                         'Profile picture updated',
                                       );
                                       profileProvider.setNotLoading();
-                                      Future.delayed(Duration(seconds: 2), () {
-                                        if (securityPinExist) {
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: (_) => MainScreen(),
-                                            ),
-                                          );
-                                        } else {
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: (_) =>
-                                                  EnterSecurityPin(),
-                                            ),
-                                          );
-                                        }
-                                      });
+                                      if (securityPinExist) {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (_) => MainScreen(),
+                                          ),
+                                        );
+                                      } else {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (_) => EnterSecurityPin(),
+                                          ),
+                                        );
+                                      }
                                     }).catchError((e) {
                                       FlushBarCustomHelper.showInfoFlushbar(
                                         context,
