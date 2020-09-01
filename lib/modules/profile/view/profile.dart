@@ -503,7 +503,7 @@ Widget _profileImage(
     alignment: Alignment.bottomCenter,
     children: <Widget>[
       Image(
-        image: CacheImage('$profileImage'),
+        image: CacheImage('${user.profilePicture}'),
         fit: BoxFit.cover,
         width: 100.0,
         height: 100.0,
