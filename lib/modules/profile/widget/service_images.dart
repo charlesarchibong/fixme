@@ -48,7 +48,8 @@ class _ServicesImagesState extends State<ServicesImages> {
                     RaisedButton(
                       onPressed: () {
                         profileProvider.removeImage(
-                            widget.listImages[index].imageFileName);
+                          widget.listImages[index].imageFileName,
+                        );
                       },
                       child: Icon(
                         Icons.remove,
