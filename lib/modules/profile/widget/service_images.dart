@@ -1,4 +1,3 @@
-import 'package:cache_image/cache_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_shimmer/flutter_shimmer.dart';
 import 'package:provider/provider.dart';
@@ -43,7 +42,7 @@ class _ServicesImagesState extends State<ServicesImages> {
                       padding: EdgeInsets.only(left: 10, right: 10),
                       decoration: BoxDecoration(),
                       child: Image(
-                        image: CacheImage(image),
+                        image: NetworkImage(image),
                       ),
                     ),
                     RaisedButton(
