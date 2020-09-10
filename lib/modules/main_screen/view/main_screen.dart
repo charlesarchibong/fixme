@@ -318,21 +318,30 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
           child: ListView(
             children: <Widget>[
               _drawwerImage(),
-              Provider.of<AppProvider>(context).userRole == 'artisan'
-                  ? ListTile(
-                      title: Text('Dashboard'),
-                      leading: FaIcon(FontAwesomeIcons.chartPie),
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => Dashboard(
-                              pageController: pageController,
-                            ),
-                          ),
-                        );
-                      },
-                    )
-                  : Text(''),
+              ListTile(
+                title: Text('Dashboard'),
+                leading: FaIcon(FontAwesomeIcons.chartPie),
+                onTap: () {
+                  if (Provider.of<AppProvider>(context, listen: false)
+                          .userRole !=
+                      'artisan') {
+                    FlushBarCustomHelper.showInfoFlushbar(
+                      context,
+                      'Information',
+                      'Dear ${currentUser.firstName} ${currentUser.lastName}, this feature is only available for Sevice Providers, please update your account to an ARTISAN from your profile page',
+                    );
+                    return;
+                  }
+
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => Dashboard(
+                        pageController: pageController,
+                      ),
+                    ),
+                  );
+                },
+              ),
 
               ListTile(
                 title: Text('My Chats'),
@@ -371,77 +380,92 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                   );
                 },
               ),
-              Provider.of<AppProvider>(context).userRole == 'artisan'
-                  ? ListTile(
-                      title: Text('Jobs Around me'),
-                      leading: Badge(
-                        badgeContent: Consumer<PendingJobProvider>(
-                          builder: (
-                            BuildContext context,
-                            PendingJobProvider pendingJobProvider,
-                            Widget child,
-                          ) {
-                            return Text(
-                              pendingJobProvider.listOfJobs.length.toString(),
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            );
-                          },
+              ListTile(
+                title: Text('Jobs Around me'),
+                leading: Badge(
+                  badgeContent: Consumer<PendingJobProvider>(
+                    builder: (
+                      BuildContext context,
+                      PendingJobProvider pendingJobProvider,
+                      Widget child,
+                    ) {
+                      return Text(
+                        pendingJobProvider.listOfJobs.length.toString(),
+                        style: TextStyle(
+                          color: Colors.white,
                         ),
-                        badgeColor: Colors.red,
-                        animationType: BadgeAnimationType.slide,
-                        toAnimate: true,
-                        child: FaIcon(
-                          FontAwesomeIcons.luggageCart,
-                          color: _page == 3
-                              ? Theme.of(context).accentColor
-                              : Theme.of(context).textTheme.caption.color,
+                      );
+                    },
+                  ),
+                  badgeColor: Colors.red,
+                  animationType: BadgeAnimationType.slide,
+                  toAnimate: true,
+                  child: FaIcon(
+                    FontAwesomeIcons.luggageCart,
+                    color: _page == 3
+                        ? Theme.of(context).accentColor
+                        : Theme.of(context).textTheme.caption.color,
+                  ),
+                ),
+                onTap: () {
+                  if (Provider.of<AppProvider>(context, listen: false)
+                          .userRole !=
+                      'artisan') {
+                    FlushBarCustomHelper.showInfoFlushbar(
+                      context,
+                      'Information',
+                      'Dear ${currentUser.firstName} ${currentUser.lastName}, this feature is only available for Sevice Providers, please update your account to an ARTISAN from your profile page',
+                    );
+                    return;
+                  }
+                  Navigator.of(context).pop();
+                  navigationTapped(3);
+                },
+              ),
+              ListTile(
+                title: Text('My Job Bids'),
+                leading: Badge(
+                  badgeContent: Consumer<ApprovedBidProvider>(
+                    builder: (
+                      BuildContext context,
+                      ApprovedBidProvider approvedBidProvider,
+                      Widget child,
+                    ) {
+                      return Text(
+                        approvedBidProvider.approvedBids.length.toString(),
+                        style: TextStyle(
+                          color: Colors.white,
                         ),
-                      ),
-                      onTap: () {
-                        Navigator.of(context).pop();
-                        navigationTapped(3);
-                      },
-                    )
-                  : Text(''),
-              Provider.of<AppProvider>(context).userRole == 'artisan'
-                  ? ListTile(
-                      title: Text('My Job Bids'),
-                      leading: Badge(
-                        badgeContent: Consumer<ApprovedBidProvider>(
-                          builder: (
-                            BuildContext context,
-                            ApprovedBidProvider approvedBidProvider,
-                            Widget child,
-                          ) {
-                            return Text(
-                              approvedBidProvider.approvedBids.length
-                                  .toString(),
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            );
-                          },
-                        ),
-                        badgeColor: Colors.red,
-                        animationType: BadgeAnimationType.slide,
-                        toAnimate: true,
-                        child: FaIcon(
-                          FontAwesomeIcons.checkSquare,
-                          color: Theme.of(context).textTheme.caption.color,
-                        ),
-                      ),
-                      onTap: () {
-                        Navigator.of(context).pop();
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => ApprovedBid(),
-                          ),
-                        );
-                      },
-                    )
-                  : Text(''),
+                      );
+                    },
+                  ),
+                  badgeColor: Colors.red,
+                  animationType: BadgeAnimationType.slide,
+                  toAnimate: true,
+                  child: FaIcon(
+                    FontAwesomeIcons.checkSquare,
+                    color: Theme.of(context).textTheme.caption.color,
+                  ),
+                ),
+                onTap: () {
+                  if (Provider.of<AppProvider>(context, listen: false)
+                          .userRole !=
+                      'artisan') {
+                    FlushBarCustomHelper.showInfoFlushbar(
+                      context,
+                      'Information',
+                      'Dear ${currentUser.firstName} ${currentUser.lastName}, this feature is only available for Sevice Providers, please update your account to an ARTISAN from your profile page',
+                    );
+                    return;
+                  }
+                  Navigator.of(context).pop();
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => ApprovedBid(),
+                    ),
+                  );
+                },
+              ),
               ListTile(
                 title: Text('My Posted Job(s)'),
                 leading: FaIcon(FontAwesomeIcons.luggageCart),
@@ -466,43 +490,50 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                   navigationTapped(2);
                 },
               ),
-              Provider.of<AppProvider>(context).userRole == 'artisan'
-                  ? ListTile(
-                      title: Text('Requests from Users'),
-                      leading: Badge(
-                        badgeContent: Consumer<ArtisanProvider>(
-                          builder: (
-                            BuildContext context,
-                            ArtisanProvider artisanProvider,
-                            Widget child,
-                          ) {
-                            return Text(
-                              artisanProvider.serviceRequests?.length
-                                  .toString(),
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            );
-                          },
+              ListTile(
+                title: Text('Requests from Users'),
+                leading: Badge(
+                  badgeContent: Consumer<ArtisanProvider>(
+                    builder: (
+                      BuildContext context,
+                      ArtisanProvider artisanProvider,
+                      Widget child,
+                    ) {
+                      return Text(
+                        artisanProvider.serviceRequests?.length.toString(),
+                        style: TextStyle(
+                          color: Colors.white,
                         ),
-                        // badgeColor: Colors.red,
-                        animationType: BadgeAnimationType.slide,
-                        toAnimate: true,
-                        child: FaIcon(
-                          FontAwesomeIcons.checkSquare,
-                          color: Theme.of(context).textTheme.caption.color,
-                        ),
-                      ),
-                      onTap: () {
-                        Navigator.of(context).pop();
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => MyServiceRequests(),
-                          ),
-                        );
-                      },
-                    )
-                  : Text(''),
+                      );
+                    },
+                  ),
+                  // badgeColor: Colors.red,
+                  animationType: BadgeAnimationType.slide,
+                  toAnimate: true,
+                  child: FaIcon(
+                    FontAwesomeIcons.checkSquare,
+                    color: Theme.of(context).textTheme.caption.color,
+                  ),
+                ),
+                onTap: () {
+                  if (Provider.of<AppProvider>(context, listen: false)
+                          .userRole !=
+                      'artisan') {
+                    FlushBarCustomHelper.showInfoFlushbar(
+                      context,
+                      'Information',
+                      'Dear ${currentUser.firstName} ${currentUser.lastName}, this feature is only available for Sevice Providers, please update your account to an ARTISAN from your profile page',
+                    );
+                    return;
+                  }
+                  Navigator.of(context).pop();
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => MyServiceRequests(),
+                    ),
+                  );
+                },
+              ),
 
               ListTile(
                 title: Text('My Requested Service'),

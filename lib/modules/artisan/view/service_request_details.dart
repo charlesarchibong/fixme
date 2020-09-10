@@ -78,6 +78,7 @@ class _ServiceRequestDetailsState extends State<ServiceRequestDetails> {
                   'Call Artisan',
                   style: TextStyle(
                     color: Colors.white,
+                    fontSize: 18,
                   ),
                 ),
                 color: Color.fromRGBO(153, 0, 153, 1),
@@ -106,6 +107,7 @@ class _ServiceRequestDetailsState extends State<ServiceRequestDetails> {
                   'Rate Service Provider',
                   style: TextStyle(
                     color: Colors.white,
+                    fontSize: 18,
                   ),
                 ),
                 color: Color.fromRGBO(153, 0, 153, 1),

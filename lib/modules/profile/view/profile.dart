@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_shimmer/flutter_shimmer.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:quickfix/providers/app_provider.dart';
 
 import '../../../helpers/flush_bar.dart';
 import '../../../models/failure.dart';
@@ -212,6 +213,7 @@ class _ProfileState extends State<Profile> {
                           "Transfer Fund From Fixme Wallet",
                           style: TextStyle(
                             color: Colors.white,
+                            fontSize: 18,
                           ),
                         ),
                         color: Theme.of(context).accentColor,
@@ -227,55 +229,84 @@ class _ProfileState extends State<Profile> {
                   ),
                   Divider(),
                   Container(height: 15.0),
-                  Padding(
-                    padding: EdgeInsets.all(5.0),
-                    child: Text(
-                      "Service Information",
-                      style: TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    height: 14,
-                  ),
-                  _profileDetailsTiles(
-                    title: 'Service Category',
-                    subTitle: user.serviceArea,
-                    toolTip: 'Add Subcategory',
-                    hasTrailing: true,
-                    trailingIcon: FaIcon(
-                      FontAwesomeIcons.edit,
-                      color: Colors.grey,
-                      size: 25.0,
-                    ),
-                    onPressed: () {
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (context) => ChangeService(),
-                      );
-                    },
-                  ),
-                  _profileDetailsTiles(
-                    title: 'Service Subcategories',
-                    subTitle: subServices ?? 'No Subcategory available yet',
-                    hasTrailing: true,
-                    trailingIcon: FaIcon(
-                      FontAwesomeIcons.plus,
-                      color: Colors.grey,
-                      size: 25.0,
-                    ),
-                    toolTip: 'Add Subcategory',
-                    onPressed: () async {
-                      _showSubCategoryDialog(context, _profileScaffoldKey);
-                      await getSubService();
-                    },
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  _servicesImages(serviceImages, profileProiver),
+                  Provider.of<AppProvider>(context).userRole == 'artisan'
+                      ? Column(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.all(5.0),
+                              child: Text(
+                                "Service Information",
+                                style: TextStyle(
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              height: 14,
+                            ),
+                            _profileDetailsTiles(
+                              title: 'Service Category',
+                              subTitle: user.serviceArea,
+                              toolTip: 'Add Subcategory',
+                              hasTrailing: true,
+                              trailingIcon: FaIcon(
+                                FontAwesomeIcons.edit,
+                                color: Colors.grey,
+                                size: 25.0,
+                              ),
+                              onPressed: () {
+                                showModalBottomSheet(
+                                  context: context,
+                                  builder: (context) => ChangeService(),
+                                );
+                              },
+                            ),
+                            _profileDetailsTiles(
+                              title: 'Service Subcategories',
+                              subTitle:
+                                  subServices ?? 'No Subcategory available yet',
+                              hasTrailing: true,
+                              trailingIcon: FaIcon(
+                                FontAwesomeIcons.plus,
+                                color: Colors.grey,
+                                size: 25.0,
+                              ),
+                              toolTip: 'Add Subcategory',
+                              onPressed: () async {
+                                _showSubCategoryDialog(
+                                    context, _profileScaffoldKey);
+                                await getSubService();
+                              },
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            _servicesImages(serviceImages, profileProiver),
+                          ],
+                        )
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget>[
+                            RaisedButton(
+                              child: Text(
+                                " Change to business account ",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                ),
+                              ),
+                              color: Theme.of(context).accentColor,
+                              onPressed: () async {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (_) => TransferFund(),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
                   SizedBox(
                     height: 50,
                   ),
@@ -475,7 +506,7 @@ Widget _profileName(User snapshot, BuildContext context) {
               child: Text(
                 "Logout",
                 style: TextStyle(
-                  fontSize: 13.0,
+                  fontSize: 18.0,
                   fontWeight: FontWeight.w400,
                   color: Colors.white,
                 ),
@@ -599,7 +630,12 @@ _showSubCategoryDialog(
                             backgroundColor: Colors.white,
                           ),
                         )
-                      : Text("Save"),
+                      : Text(
+                          "Save",
+                          style: TextStyle(
+                            fontSize: 18,
+                          ),
+                        ),
                   padding: EdgeInsets.all(10.0),
                   textColor: Colors.white,
                   color: Theme.of(context).accentColor,
