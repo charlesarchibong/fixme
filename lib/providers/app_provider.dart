@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:quickfix/modules/profile/model/user.dart';
+import 'package:quickfix/util/Utils.dart';
 import 'package:quickfix/util/const.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -41,6 +43,7 @@ class AppProvider extends ChangeNotifier {
   }
 
   void setUserRole(String role) {
+    userRole = role;
     SharedPreferences.getInstance().then((prefs) async {
       await prefs.setString("user_role", role);
     });
@@ -74,10 +77,8 @@ class AppProvider extends ChangeNotifier {
   }
 
   Future<String> checkUserRole() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String r = prefs.getString("user_role") == null
-        ? "user"
-        : prefs.getString("user_role");
+    User user = await Utils.getUserSession();
+    String r = user == null ? 'user' : user.userRole;
     setUserRole(r);
     return r;
   }

@@ -14,6 +14,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:logger/logger.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
+import 'package:quickfix/providers/app_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../helpers/flush_bar.dart';
@@ -317,16 +318,22 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
           child: ListView(
             children: <Widget>[
               _drawwerImage(),
-              ListTile(
-                title: Text('Dashboard'),
-                leading: FaIcon(FontAwesomeIcons.chartPie),
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => Dashboard(
-                            pageController: pageController,
-                          )));
-                },
-              ),
+              Provider.of<AppProvider>(context).userRole == 'artisan'
+                  ? ListTile(
+                      title: Text('Dashboard'),
+                      leading: FaIcon(FontAwesomeIcons.chartPie),
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => Dashboard(
+                              pageController: pageController,
+                            ),
+                          ),
+                        );
+                      },
+                    )
+                  : Text(''),
+
               ListTile(
                 title: Text('My Chats'),
                 leading: Badge(
@@ -364,72 +371,77 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                   );
                 },
               ),
-              ListTile(
-                title: Text('Jobs Around me'),
-                leading: Badge(
-                  badgeContent: Consumer<PendingJobProvider>(
-                    builder: (
-                      BuildContext context,
-                      PendingJobProvider pendingJobProvider,
-                      Widget child,
-                    ) {
-                      return Text(
-                        pendingJobProvider.listOfJobs.length.toString(),
-                        style: TextStyle(
-                          color: Colors.white,
+              Provider.of<AppProvider>(context).userRole == 'artisan'
+                  ? ListTile(
+                      title: Text('Jobs Around me'),
+                      leading: Badge(
+                        badgeContent: Consumer<PendingJobProvider>(
+                          builder: (
+                            BuildContext context,
+                            PendingJobProvider pendingJobProvider,
+                            Widget child,
+                          ) {
+                            return Text(
+                              pendingJobProvider.listOfJobs.length.toString(),
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
-                  badgeColor: Colors.red,
-                  animationType: BadgeAnimationType.slide,
-                  toAnimate: true,
-                  child: FaIcon(
-                    FontAwesomeIcons.luggageCart,
-                    color: _page == 3
-                        ? Theme.of(context).accentColor
-                        : Theme.of(context).textTheme.caption.color,
-                  ),
-                ),
-                onTap: () {
-                  Navigator.of(context).pop();
-                  navigationTapped(3);
-                },
-              ),
-              ListTile(
-                title: Text('My Job Bids'),
-                leading: Badge(
-                  badgeContent: Consumer<ApprovedBidProvider>(
-                    builder: (
-                      BuildContext context,
-                      ApprovedBidProvider approvedBidProvider,
-                      Widget child,
-                    ) {
-                      return Text(
-                        approvedBidProvider.approvedBids.length.toString(),
-                        style: TextStyle(
-                          color: Colors.white,
+                        badgeColor: Colors.red,
+                        animationType: BadgeAnimationType.slide,
+                        toAnimate: true,
+                        child: FaIcon(
+                          FontAwesomeIcons.luggageCart,
+                          color: _page == 3
+                              ? Theme.of(context).accentColor
+                              : Theme.of(context).textTheme.caption.color,
                         ),
-                      );
-                    },
-                  ),
-                  badgeColor: Colors.red,
-                  animationType: BadgeAnimationType.slide,
-                  toAnimate: true,
-                  child: FaIcon(
-                    FontAwesomeIcons.checkSquare,
-                    color: Theme.of(context).textTheme.caption.color,
-                  ),
-                ),
-                onTap: () {
-                  Navigator.of(context).pop();
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => ApprovedBid(),
-                    ),
-                  );
-                },
-              ),
+                      ),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        navigationTapped(3);
+                      },
+                    )
+                  : Text(''),
+              Provider.of<AppProvider>(context).userRole == 'artisan'
+                  ? ListTile(
+                      title: Text('My Job Bids'),
+                      leading: Badge(
+                        badgeContent: Consumer<ApprovedBidProvider>(
+                          builder: (
+                            BuildContext context,
+                            ApprovedBidProvider approvedBidProvider,
+                            Widget child,
+                          ) {
+                            return Text(
+                              approvedBidProvider.approvedBids.length
+                                  .toString(),
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            );
+                          },
+                        ),
+                        badgeColor: Colors.red,
+                        animationType: BadgeAnimationType.slide,
+                        toAnimate: true,
+                        child: FaIcon(
+                          FontAwesomeIcons.checkSquare,
+                          color: Theme.of(context).textTheme.caption.color,
+                        ),
+                      ),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => ApprovedBid(),
+                          ),
+                        );
+                      },
+                    )
+                  : Text(''),
               ListTile(
                 title: Text('My Posted Job(s)'),
                 leading: FaIcon(FontAwesomeIcons.luggageCart),
@@ -454,41 +466,43 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                   navigationTapped(2);
                 },
               ),
-
-              ListTile(
-                title: Text('Requests from Users'),
-                leading: Badge(
-                  badgeContent: Consumer<ArtisanProvider>(
-                    builder: (
-                      BuildContext context,
-                      ArtisanProvider artisanProvider,
-                      Widget child,
-                    ) {
-                      return Text(
-                        artisanProvider.serviceRequests?.length.toString(),
-                        style: TextStyle(
-                          color: Colors.white,
+              Provider.of<AppProvider>(context).userRole == 'artisan'
+                  ? ListTile(
+                      title: Text('Requests from Users'),
+                      leading: Badge(
+                        badgeContent: Consumer<ArtisanProvider>(
+                          builder: (
+                            BuildContext context,
+                            ArtisanProvider artisanProvider,
+                            Widget child,
+                          ) {
+                            return Text(
+                              artisanProvider.serviceRequests?.length
+                                  .toString(),
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
-                  // badgeColor: Colors.red,
-                  animationType: BadgeAnimationType.slide,
-                  toAnimate: true,
-                  child: FaIcon(
-                    FontAwesomeIcons.checkSquare,
-                    color: Theme.of(context).textTheme.caption.color,
-                  ),
-                ),
-                onTap: () {
-                  Navigator.of(context).pop();
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => MyServiceRequests(),
-                    ),
-                  );
-                },
-              ),
+                        // badgeColor: Colors.red,
+                        animationType: BadgeAnimationType.slide,
+                        toAnimate: true,
+                        child: FaIcon(
+                          FontAwesomeIcons.checkSquare,
+                          color: Theme.of(context).textTheme.caption.color,
+                        ),
+                      ),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => MyServiceRequests(),
+                          ),
+                        );
+                      },
+                    )
+                  : Text(''),
 
               ListTile(
                 title: Text('My Requested Service'),
@@ -716,29 +730,31 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                       ),
                     ],
                   ),
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      IconButton(
-                        icon: FaIcon(FontAwesomeIcons.luggageCart),
-                        color: _page == 3
-                            ? Theme.of(context).accentColor
-                            : Theme.of(context).textTheme.caption.color,
-                        onPressed: () => navigationTapped(3),
-                      ),
-                      Text(
-                        'Jobs',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: _page == 3
-                              ? Theme.of(context).accentColor
-                              : Theme.of(context).textTheme.caption.color,
-                        ),
-                      ),
-                    ],
-                  ),
+                  Provider.of<AppProvider>(context).userRole == 'artisan'
+                      ? Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            IconButton(
+                              icon: FaIcon(FontAwesomeIcons.luggageCart),
+                              color: _page == 3
+                                  ? Theme.of(context).accentColor
+                                  : Theme.of(context).textTheme.caption.color,
+                              onPressed: () => navigationTapped(3),
+                            ),
+                            Text(
+                              'Jobs',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: _page == 3
+                                    ? Theme.of(context).accentColor
+                                    : Theme.of(context).textTheme.caption.color,
+                              ),
+                            ),
+                          ],
+                        )
+                      : Text(''),
                   Column(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,

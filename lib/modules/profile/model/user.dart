@@ -19,6 +19,7 @@ class User {
   String bio;
   String address;
   String firebaseToken;
+  String userRole;
 
   User.name({
     this.firstName,
@@ -39,6 +40,7 @@ class User {
     this.status,
     this.profileViews,
     this.id,
+    this.userRole,
   });
 
   Map<String, dynamic> toJson() {
@@ -60,6 +62,7 @@ class User {
     map['user_address'] = address;
     map['mobile_device_token'] = firebaseToken;
     map['id'] = id;
+    map['user_role'] = userRole;
     return map;
   }
 
@@ -83,5 +86,6 @@ class User {
     status = json['status'];
     firebaseToken = json['mobile_device_token'];
     id = json["id"];
+    userRole = json["user_role"];
   }
 }
