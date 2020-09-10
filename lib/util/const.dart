@@ -6,7 +6,7 @@ const SMART_LOCK = 'SMART_LOCK';
 const FIREBASE_MESSAGE_COUNT = 'message_count';
 
 class Constants {
-  static String appName = "Fixme Business";
+  static String appName = "Fixme";
   static String appVersion = "5.0.0";
   static String lagelSee =
       "All Right Reserved, and all information store in this application is secure and is only use for Identification";
