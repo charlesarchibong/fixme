@@ -7,12 +7,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AppProvider extends ChangeNotifier {
   AppProvider() {
     checkTheme();
+    checkUserRole();
   }
 
   ThemeData theme = Constants.lightTheme;
   Key key = UniqueKey();
   GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-
+  String userRole = "user";
   void setKey(value) {
     key = value;
     notifyListeners();
@@ -39,8 +40,20 @@ class AppProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setUserRole(String role) {
+    SharedPreferences.getInstance().then((prefs) async {
+      await prefs.setString("user_role", role);
+    });
+
+    notifyListeners();
+  }
+
   ThemeData getTheme(value) {
     return theme;
+  }
+
+  String getUserRole() {
+    return userRole;
   }
 
   Future<ThemeData> checkTheme() async {
@@ -58,5 +71,14 @@ class AppProvider extends ChangeNotifier {
     }
 
     return t;
+  }
+
+  Future<String> checkUserRole() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String r = prefs.getString("user_role") == null
+        ? "user"
+        : prefs.getString("user_role");
+    setUserRole(r);
+    return r;
   }
 }
