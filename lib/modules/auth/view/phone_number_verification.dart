@@ -6,7 +6,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:quickfix/modules/auth/view/security_pin.dart';
 
 import '../../../helpers/flush_bar.dart';
 import '../../../util/Utils.dart';
@@ -15,14 +14,15 @@ import '../../main_screen/view/main_screen.dart';
 import '../../main_screen/view/no_profile_image.dart';
 import '../../profile/model/user.dart';
 import 'login.dart';
+import 'security_pin.dart';
+import 'signup.dart';
 
 class PhoneNumberVerification extends StatefulWidget {
   final User user;
+  final String phone;
 
-  const PhoneNumberVerification({
-    Key key,
-    @required this.user,
-  }) : super(key: key);
+  const PhoneNumberVerification({Key key, this.user, @required this.phone})
+      : super(key: key);
   @override
   _PhoneNumberVerificationState createState() =>
       _PhoneNumberVerificationState();
@@ -44,7 +44,7 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
   void initState() {
     _loading = false;
     timeOutNumber = 60;
-    print(widget.user.toJson().toString());
+
     onTapRecognizer = TapGestureRecognizer()
       ..onTap = () {
         Navigator.pop(context);
@@ -105,7 +105,7 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
         FlushBarCustomHelper.showInfoFlushbar(
           context,
           'Success',
-          '${widget.user.fullNumber} has been verified',
+          '${widget.phone} has been verified',
         );
         phoneSuccesRequest();
       });
@@ -143,7 +143,7 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
       FlushBarCustomHelper.showInfoFlushbar(
         context,
         'Success',
-        'Your automatic verification code has been sent to ${widget.user.fullNumber}',
+        'Your automatic verification code has been sent to ${widget.phone}',
       );
     };
 
@@ -175,7 +175,7 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
     };
 
     await auth.verifyPhoneNumber(
-      phoneNumber: '${widget.user.fullNumber}',
+      phoneNumber: '${widget.phone}',
       timeout: const Duration(seconds: 40),
       verificationCompleted: verificationCompleted,
       verificationFailed: verificationFailed,
@@ -186,32 +186,40 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
 
   void phoneSuccesRequest() async {
     print('User from phone verification');
-    print(widget.user.toJson().toString());
     timer.cancel();
-    Utils.setUserSession(json.encode(widget.user));
-    Utils.setProfilePicture(widget.user.profilePicture);
-    bool exist = await Utils.getSecurityPinExist();
-
-    final picture = widget.user.profilePicture;
-
-    if (picture != '${Constants.uploadUrl}no_picture_upload') {
-      if (exist) {
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (BuildContext context) {
-            return MainScreen();
-          }),
-        );
-      } else {
-        Navigator.of(context).push(
+    if (widget.user != null) {
+      print(widget.user.toJson().toString());
+      Utils.setUserSession(json.encode(widget.user));
+      Utils.setProfilePicture(widget.user.profilePicture);
+      bool exist = await Utils.getSecurityPinExist();
+      final picture = widget.user.profilePicture;
+      final profile = await Utils.getProfilePicture();
+      if (!exist) {
+        Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (BuildContext context) {
             return EnterSecurityPin();
           }),
         );
+      } else {
+        if (picture != '${Constants.uploadUrl}no_picture_upload' ||
+            profile == "don’t ask me for this again") {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (BuildContext context) {
+              return MainScreen();
+            }),
+          );
+        } else {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (BuildContext context) {
+              return NoProfileImage();
+            }),
+          );
+        }
       }
     } else {
-      Navigator.of(context).push(
+      Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (BuildContext context) {
-          return NoProfileImage();
+          return SignupView();
         }),
       );
     }
@@ -227,7 +235,7 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
       FlushBarCustomHelper.showInfoFlushbar(
         context,
         'Success',
-        '${widget.user.fullNumber} has been verified',
+        '${widget.phone} has been verified',
       );
       phoneSuccesRequest();
     }).catchError((e) {
@@ -342,7 +350,7 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
                                         ),
                                         children: <TextSpan>[
                                           TextSpan(
-                                            text: '${widget.user.fullNumber}',
+                                            text: '${widget.phone}',
                                             style: TextStyle(
                                               color:
                                                   Theme.of(context).accentColor,

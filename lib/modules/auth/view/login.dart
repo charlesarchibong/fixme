@@ -22,20 +22,24 @@ class _LoginScreenState extends State<LoginScreen> {
       loginForm.setLoading();
       loginForm.loginUser(_phoneControl.text).then((user) {
         // print(user.toJson());
-        if (user != null) {
-          loginForm.setNotLoading();
-          Navigator.of(context).push(
-            MaterialPageRoute(builder: (BuildContext context) {
-              print(user.toJson().toString());
-              print('From login');
-              return PhoneNumberVerification(user: user);
-            }),
-          );
-        } else {
-          throw new InvalidPhoneException(
-            message: 'Invalid phone number, please try again!',
-          );
-        }
+
+        loginForm.setNotLoading();
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (BuildContext context) {
+            // print(user.toJson().toString());
+            if (loginForm.res == "false") {
+              print("heeeeee");
+              return PhoneNumberVerification(
+                phone: "+234${_phoneControl.text}",
+              );
+            } else {
+              return PhoneNumberVerification(
+                phone: "+234${_phoneControl.text}",
+                user: user,
+              );
+            }
+          }),
+        );
       }).catchError((error) {
         loginForm.setNotLoading();
         // print(error.toString().split(":")[1]);
@@ -98,7 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 Text(
-                  "Login",
+                  "Login or Register",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
                 ),
                 SizedBox(height: 60.0),
@@ -177,7 +181,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           )
                         : Text(
-                            "LOGIN".toUpperCase(),
+                            "Continue".toUpperCase(),
                             style: TextStyle(
                               color: Colors.white,
                             ),

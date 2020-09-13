@@ -115,7 +115,7 @@ class LoginFormValidation extends ChangeNotifier {
         'Authorization': 'Bearer $token',
       };
       Map<String, String> body = {'phoneNumber': phone};
-      String url = "https://manager.fixme.ng/user-auth";
+      String url = "https://manager.fixme.ng/m-login";
 
       final response = await NetworkService().post(
           url: url,
@@ -129,7 +129,7 @@ class LoginFormValidation extends ChangeNotifier {
         if (response.data['reqRes'] == "false") {
           print("i got here oooo");
           res = response.data['reqRes'];
-          return response.data['reqRes'];
+          return response.data;
           // throw new Exception('Invalid phone number, please try again!');
 
         } else {

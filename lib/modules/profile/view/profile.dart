@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_shimmer/flutter_shimmer.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:quickfix/modules/profile/widget/change_to_business_account.dart';
 import 'package:quickfix/providers/app_provider.dart';
@@ -87,6 +88,7 @@ class _ProfileState extends State<Profile> {
 
   Future getUser() async {
     var result = await Utils.getUserSession();
+    Logger().i(result.toJson());
     setState(() {
       user = result;
     });
@@ -168,6 +170,11 @@ class _ProfileState extends State<Profile> {
                   _profileDetailsTiles(
                     title: 'Phone',
                     subTitle: user.fullNumber,
+                    hasTrailing: false,
+                  ),
+                  _profileDetailsTiles(
+                    title: 'Account Type',
+                    subTitle: 'user.userRole',
                     hasTrailing: false,
                   ),
                   Divider(),

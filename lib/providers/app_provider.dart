@@ -79,6 +79,8 @@ class AppProvider extends ChangeNotifier {
   Future<String> checkUserRole() async {
     User user = await Utils.getUserSession();
     String r = user == null ? 'user' : user.userRole;
+    userRole = r;
+    notifyListeners();
     setUserRole(r);
     return r;
   }
