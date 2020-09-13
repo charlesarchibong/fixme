@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_shimmer/flutter_shimmer.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:quickfix/modules/profile/widget/change_to_business_account.dart';
 import 'package:quickfix/providers/app_provider.dart';
 
 import '../../../helpers/flush_bar.dart';
@@ -298,10 +299,10 @@ class _ProfileState extends State<Profile> {
                               ),
                               color: Theme.of(context).accentColor,
                               onPressed: () async {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (_) => TransferFund(),
-                                  ),
+                                showModalBottomSheet(
+                                  context: context,
+                                  builder: (context) =>
+                                      ChangeToBusinessAccount(),
                                 );
                               },
                             ),
