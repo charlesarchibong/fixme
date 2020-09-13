@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:quickfix/helpers/flush_bar.dart';
-import 'package:quickfix/models/failure.dart';
-import 'package:quickfix/modules/job/model/job_category.dart';
-import 'package:quickfix/modules/job/provider/post_job_provider.dart';
-import 'package:quickfix/modules/profile/provider/profile_provider.dart';
 import 'package:searchable_dropdown/searchable_dropdown.dart';
+
+import '../../../helpers/flush_bar.dart';
+import '../../../models/failure.dart';
+import '../../job/model/job_category.dart';
+import '../../job/provider/post_job_provider.dart';
+import '../provider/profile_provider.dart';
 
 class ChangeService extends StatefulWidget {
   const ChangeService({

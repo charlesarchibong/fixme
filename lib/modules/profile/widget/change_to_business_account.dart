@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:quickfix/helpers/flush_bar.dart';
-import 'package:quickfix/models/failure.dart';
-import 'package:quickfix/modules/job/model/job_category.dart';
-import 'package:quickfix/modules/job/provider/post_job_provider.dart';
-import 'package:quickfix/modules/profile/provider/profile_provider.dart';
 import 'package:searchable_dropdown/searchable_dropdown.dart';
+
+import '../../../helpers/flush_bar.dart';
+import '../../../models/failure.dart';
+import '../../../util/const.dart';
+import '../../job/model/job_category.dart';
+import '../../job/provider/post_job_provider.dart';
+import '../provider/profile_provider.dart';
 
 class ChangeToBusinessAccount extends StatefulWidget {
   const ChangeToBusinessAccount({
@@ -57,6 +59,11 @@ class _ChangeToBusinessAccountState extends State<ChangeToBusinessAccount> {
         loading = false;
       });
       Navigator.pop(context);
+      FlushBarCustomHelper.showInfoFlushbar(
+        context,
+        'Success',
+        'Your account has successfully been changed to a business account, you can now bid for jobs, appear on the service provider view and earn more with ${Constants.appName}',
+      );
     } catch (e) {
       setState(() {
         loading = false;
