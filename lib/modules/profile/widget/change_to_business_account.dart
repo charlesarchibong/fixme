@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:quickfix/providers/app_provider.dart';
 import 'package:searchable_dropdown/searchable_dropdown.dart';
 
 import '../../../helpers/flush_bar.dart';
@@ -58,6 +59,8 @@ class _ChangeToBusinessAccountState extends State<ChangeToBusinessAccount> {
       setState(() {
         loading = false;
       });
+      Provider.of<AppProvider>(context, listen: false).checkUserRole();
+
       Navigator.pop(context);
       FlushBarCustomHelper.showInfoFlushbar(
         context,

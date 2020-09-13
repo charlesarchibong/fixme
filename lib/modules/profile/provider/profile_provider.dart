@@ -293,6 +293,7 @@ class ProfileProvider extends ChangeNotifier {
       );
       User user = User.fromjson(response.data);
       Utils.setUserSession(json.encode(user));
+
       notifyListeners();
     } catch (e) {
       if (e is DioError) {
@@ -309,6 +310,38 @@ class ProfileProvider extends ChangeNotifier {
     try {
       User currentUser = await Utils.getUserSession();
       String url = 'https://manager.fixme.ng/change-service';
+      String apiKey = await Utils.getApiKey();
+      Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
+      Map<String, dynamic> body = {
+        'user_id': currentUser.id,
+        'service_id': id,
+      };
+      final response = await NetworkService().post(
+        url: url,
+        body: body,
+        contentType: ContentType.URL_ENCODED,
+        headers: headers,
+      );
+
+      print(response);
+
+      userProfile();
+      notifyListeners();
+      return response;
+    } catch (e) {
+      if (e is DioError) {
+        print(e.message);
+      }
+      print(
+        e.toString(),
+      );
+    }
+  }
+
+  Future changeToBusiness({@required id}) async {
+    try {
+      User currentUser = await Utils.getUserSession();
+      String url = 'https://manager.fixme.ng/business-account';
       String apiKey = await Utils.getApiKey();
       Map<String, String> headers = {'Authorization': 'Bearer $apiKey'};
       Map<String, dynamic> body = {
