@@ -46,6 +46,11 @@ class Utils {
     sp.setString("apiKey", apiKey);
   }
 
+  static void setUserRole(String role) async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    sp.setString("user_role", role);
+  }
+
   static void setSubService(String subService) async {
     SharedPreferences sp = await SharedPreferences.getInstance();
     sp.setString("subService", subService);
@@ -61,6 +66,11 @@ class Utils {
   static Future<String> getProfilePicture() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
     return sp.get('profilePicture') ?? null;
+  }
+
+  static Future<String> getUserRole() async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    return sp.get('user_role') ?? 'user';
   }
 
   static Future<bool> getSecurityPinExist() async {

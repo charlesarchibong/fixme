@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:logger/logger.dart';
 import 'package:quickfix/util/const.dart';
 
 import '../../../services/firebase/users.dart';
@@ -135,13 +136,17 @@ class LoginFormValidation extends ChangeNotifier {
         } else {
           String apiKey = response.headers.value('bearer');
           Utils.setApiKey(apiKey);
+
           Utils.setSecurityPinExist(response.data['sec_pin_status']);
           User user = User.fromjson(response.data);
+          Utils.setUserRole(user.userRole);
+          Logger().i(user.userRole);
           // debugPrint(user.toJson().toString());
           await UsersService(userPhone: user.phoneNumber).updateUserDate(
             user: user,
             imageUrl: user.profilePicture,
           );
+
           return user;
         }
       } else {
