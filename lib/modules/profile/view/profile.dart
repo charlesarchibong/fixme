@@ -172,10 +172,15 @@ class _ProfileState extends State<Profile> {
                     subTitle: user.fullNumber,
                     hasTrailing: false,
                   ),
-                  _profileDetailsTiles(
-                    title: 'Account Type',
-                    subTitle: 'user.userRole',
-                    hasTrailing: false,
+                  FutureBuilder<String>(
+                    future: Utils.getUserRole(),
+                    builder: (context, snapshot) {
+                      return _profileDetailsTiles(
+                        title: 'Account Type',
+                        subTitle: '${snapshot.data.toUpperCase() ?? 'USER'}',
+                        hasTrailing: false,
+                      );
+                    }
                   ),
                   Divider(),
                   Container(height: 15.0),
