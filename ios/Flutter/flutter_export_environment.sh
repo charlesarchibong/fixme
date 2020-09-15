@@ -1,12 +1,12 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=/home/charlesarchibong/Android/flutter"
-export "FLUTTER_APPLICATION_PATH=/home/charlesarchibong/AndroidStudioProjects/Fixme/fixme"
+export "FLUTTER_ROOT=/Users/macbook/Library/Android/flutter"
+export "FLUTTER_APPLICATION_PATH=/Users/macbook/Documents/Dev/Flutter/fixme"
 export "FLUTTER_TARGET=lib/main.dart"
 export "FLUTTER_BUILD_DIR=build"
 export "SYMROOT=${SOURCE_ROOT}/../build/ios"
 export "OTHER_LDFLAGS=$(inherited) -framework Flutter"
-export "FLUTTER_FRAMEWORK_DIR=/home/charlesarchibong/Android/flutter/bin/cache/artifacts/engine/ios"
+export "FLUTTER_FRAMEWORK_DIR=/Users/macbook/Library/Android/flutter/bin/cache/artifacts/engine/ios"
 export "FLUTTER_BUILD_NAME=1.3.2"
 export "FLUTTER_BUILD_NUMBER=8"
 export "DART_OBFUSCATION=false"
