@@ -123,13 +123,13 @@ class _ChatsState extends State<Chats> {
                                     scrollDirection: Axis.vertical,
                                     physics: AlwaysScrollableScrollPhysics(),
                                     itemCount:
-                                        snapshot.data?.documents?.length ?? 0,
+                                        snapshot.data?.docs?.length ?? 0,
                                     itemBuilder:
                                         (BuildContext context, int index) {
                                       // Map artisan = technicians[index];
                                       return MyChatWidget(
                                         message: snapshot
-                                            .data.documents[index].documentID,
+                                            .data.docs[index].id,
                                         me: '${currentUser.phoneNumber}',
                                       );
                                     },

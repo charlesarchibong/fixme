@@ -38,7 +38,7 @@ import '../../profile/model/user.dart';
 import '../../profile/provider/profile_provider.dart';
 import '../../profile/view/profile.dart';
 import '../../search/view/search.dart';
-import '../../setting/view/settings.dart';
+import '../../setting/view/settings.dart' as fixmeSetting;
 import '../../transfer/view/transfer_fund.dart';
 import 'home_old.dart';
 
@@ -229,7 +229,7 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
               icon: Badge(
                 badgeContent: StreamBuilder<QuerySnapshot>(
                   stream: MessageCount(
-                    messageCountCollection: Firestore.instance.collection(
+                    messageCountCollection: FirebaseFirestore.instance.collection(
                       FIREBASE_MESSAGE_COUNT,
                     ),
                   ).getMessageCount(
@@ -238,7 +238,7 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                   ),
                   builder: (context, snapshot) {
                     return Text(
-                      snapshot.data?.documents?.length.toString(),
+                      snapshot.data?.docs?.length.toString(),
                       style: TextStyle(
                         color: Colors.black,
                       ),
@@ -348,7 +348,7 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                 leading: Badge(
                   badgeContent: StreamBuilder<QuerySnapshot>(
                     stream: MessageCount(
-                      messageCountCollection: Firestore.instance.collection(
+                      messageCountCollection: FirebaseFirestore.instance.collection(
                         FIREBASE_MESSAGE_COUNT,
                       ),
                     ).getMessageCount(
@@ -357,7 +357,7 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                     ),
                     builder: (context, snapshot) {
                       return Text(
-                        snapshot.data?.documents?.length.toString(),
+                        snapshot.data?.docs?.length.toString(),
                         style: TextStyle(
                           color: Colors.white,
                         ),
@@ -642,7 +642,7 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                       builder: (
                         BuildContext context,
                       ) {
-                        return Settings();
+                        return fixmeSetting.Settings();
                       },
                     ),
                   );

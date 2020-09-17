@@ -1,4 +1,3 @@
-import 'package:cache_image/cache_image.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
@@ -86,7 +85,7 @@ class _GalleryPhotoViewWrapperState extends State<GalleryPhotoViewWrapper> {
   PhotoViewGalleryPageOptions _buildItem(BuildContext context, int index) {
     final String item = Constants.uploadUrl + widget.galleryItems[index];
     return PhotoViewGalleryPageOptions(
-      imageProvider: CacheImage(
+      imageProvider: NetworkImage(
         item,
       ),
       initialScale: PhotoViewComputedScale.contained,

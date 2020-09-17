@@ -41,7 +41,7 @@ class _ChatScreenState extends State<ChatScreen> {
   _buildMessage(Message message, bool isMe, String myPhone) {
     if (message.receiverPhone == myPhone) {
       MessageCount(
-        messageCountCollection: Firestore.instance.collection(
+        messageCountCollection: FirebaseFirestore.instance.collection(
           FIREBASE_MESSAGE_COUNT,
         ),
         messageId: message.id,
@@ -179,7 +179,7 @@ class _ChatScreenState extends State<ChatScreen> {
       await MessageService(messageId: messageId).updateMessage(message);
       sendAndRetrieveMessage(1, messageText);
       await MessageCount(
-        messageCountCollection: Firestore.instance.collection(
+        messageCountCollection: FirebaseFirestore.instance.collection(
           FIREBASE_MESSAGE_COUNT,
         ),
         messageId: messageId,

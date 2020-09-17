@@ -16,7 +16,7 @@ class MessageCount {
     @required String receiver,
     @required bool read,
   }) async {
-    return messageCountCollection.document(this.messageId).setData({
+    return messageCountCollection.doc(this.messageId).set({
       '$RECEIVER': receiver,
       '$READ': read,
     });
@@ -37,6 +37,6 @@ class MessageCount {
   }
 
   Stream<DocumentSnapshot> getMessage() {
-    return messageCountCollection.document(messageId).snapshots();
+    return messageCountCollection.doc(messageId).snapshots();
   }
 }

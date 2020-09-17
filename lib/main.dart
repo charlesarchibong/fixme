@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -239,8 +240,14 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  void initFirebase() async{
+    FirebaseApp app = await Firebase.initializeApp();
+    Logger().i(app.name);
+  }
+
   @override
   void initState() {
+    initFirebase();
     _requestIOSPermissions();
     _configureDidReceiveLocalNotificationSubject();
     _configureSelectNotificationSubject();

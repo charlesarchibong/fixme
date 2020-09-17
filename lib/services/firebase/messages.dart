@@ -7,15 +7,15 @@ class MessageService {
   MessageService({this.messageId});
 
   final CollectionReference _collectionReference =
-      Firestore.instance.collection('messages');
+  FirebaseFirestore.instance.collection('messages');
 
   Future updateMessage(Message message) async {
     _collectionReference
-        .document(getChatNode(
+        .doc(getChatNode(
       message.senderPhone,
       message.receiverPhone,
     ))
-        .setData({
+        .set({
       'time': message.time,
       'chatId': message.receiverPhone,
       'receiver': getChatNode(
@@ -24,20 +24,20 @@ class MessageService {
       ),
     });
     return await _collectionReference
-        .document(getChatNode(
+        .doc(getChatNode(
           message.senderPhone,
           message.receiverPhone,
         ))
         .collection('chats')
-        .document(this.messageId)
-        .setData(
+        .doc(this.messageId)
+        .set(
           message.toMap(),
         );
   }
 
   Stream<List<Message>> getMessages(String sender, String receiver) {
     return _collectionReference
-        .document(getChatNode(sender, receiver))
+        .doc(getChatNode(sender, receiver))
         .collection('chats')
         .orderBy('time', descending: true)
         .snapshots()
@@ -60,7 +60,7 @@ class MessageService {
 
   Stream<QuerySnapshot> getMyChats(String nodeId, String me) {
     return _collectionReference
-        .document(nodeId)
+        .doc(nodeId)
         .collection('chats')
         // .where('chatId', isEqualTo: nodeId)
         .orderBy('time', descending: true)
@@ -117,8 +117,8 @@ class MessageService {
   }
 
   List<Message> _convertMessageToListStream(QuerySnapshot querySnapshot) {
-    return querySnapshot.documents
-        .map((doc) => Message.fromMap(doc.data))
+    return querySnapshot.docs
+        .map((doc) => Message.fromMap(doc.data()))
         .toList();
   }
 }

@@ -37,7 +37,7 @@ class _MyChatWidgetState extends State<MyChatWidget> {
             stream: MessageService().getMyChats(widget.message, widget.me),
             builder: (context, snapshot) {
               Message message = Message.fromMap(
-                snapshot.data?.documents?.first?.data,
+                snapshot.data?.docs?.first?.data(),
               );
               return message == null
                   ? Text('')
@@ -109,7 +109,7 @@ class _MyChatWidgetState extends State<MyChatWidget> {
                                             : StreamBuilder<DocumentSnapshot>(
                                                 stream: MessageCount(
                                                   messageCountCollection:
-                                                      Firestore.instance
+                                                  FirebaseFirestore.instance
                                                           .collection(
                                                     FIREBASE_MESSAGE_COUNT,
                                                   ),
@@ -117,7 +117,7 @@ class _MyChatWidgetState extends State<MyChatWidget> {
                                                 ).getMessage(),
                                                 builder: (context, snapshot) {
                                                   return Text(
-                                                    snapshot?.data?.data[
+                                                    snapshot?.data?.data()[
                                                                 'read'] ==
                                                             false
                                                         ? 'NEW'

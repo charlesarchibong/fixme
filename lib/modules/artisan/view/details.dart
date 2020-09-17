@@ -1,4 +1,3 @@
-import 'package:cache_image/cache_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:photo_view/photo_view.dart';
@@ -194,7 +193,7 @@ class _ProductDetailsState extends State<ProductDetails>
                       showDialog(
                         context: context,
                         builder: (BuildContext con) => PhotoView(
-                          imageProvider: CacheImage(
+                          imageProvider: NetworkImage(
                             '${Constants.uploadUrl + widget.userData['profile_pic_file_name']}',
                           ),
                           heroAttributes: PhotoViewHeroAttributes(
@@ -212,7 +211,7 @@ class _ProductDetailsState extends State<ProductDetails>
 //                             decoration: BoxDecoration(
 //                               borderRadius: BorderRadius.circular(10),
 //                               image: DecorationImage(
-//                                 image: CacheImage(
+//                                 image: NetworkImage(
 //                                   '${Constants.uploadUrl + widget.userData['profile_pic_file_name']}',
 //                                 ),
 //                                 fit: BoxFit.cover,
@@ -228,7 +227,7 @@ class _ProductDetailsState extends State<ProductDetails>
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(8.0),
                         child: Image(
-                          image: CacheImage(
+                          image: NetworkImage(
                             "${Constants.uploadUrl + widget.userData['profile_pic_file_name']}",
                           ),
                           fit: BoxFit.fitWidth,
@@ -408,7 +407,7 @@ class _ProductDetailsState extends State<ProductDetails>
                               height: 80,
                               decoration: BoxDecoration(
                                 image: DecorationImage(
-                                    image: CacheImage(image),
+                                    image: NetworkImage(image),
                                     fit: BoxFit.cover),
                               ),
                             ),

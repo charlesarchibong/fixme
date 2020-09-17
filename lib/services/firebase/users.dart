@@ -4,7 +4,7 @@ import 'package:quickfix/modules/profile/model/user.dart';
 
 class UsersService {
   final CollectionReference _collectionReference =
-      Firestore.instance.collection(
+  FirebaseFirestore.instance.collection(
     'users',
   );
   final String userPhone;
@@ -22,12 +22,12 @@ class UsersService {
       'imageUrl': imageUrl,
       'mobile_device_token': user.firebaseToken,
     };
-    return await _collectionReference.document(userPhone).setData(userMap);
+    return await _collectionReference.doc(userPhone).set(userMap);
   }
 
   Stream<User> get user {
     return _collectionReference
-        .document(this.userPhone)
+        .doc(this.userPhone)
         .snapshots()
         .map(_getUserFromMap);
   }
@@ -37,12 +37,12 @@ class UsersService {
   }
 
   User _getUserFromMap(DocumentSnapshot documentSnapshot) {
-    return User.fromjson(documentSnapshot.data);
+    return User.fromjson(documentSnapshot.data());
   }
 
   List<User> _getListUserFromMap(QuerySnapshot querySnapshot) {
-    return querySnapshot.documents
-        .map((user) => User.fromjson(user.data))
+    return querySnapshot.docs
+        .map((user) => User.fromjson(user.data()))
         .toList();
   }
 }

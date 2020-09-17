@@ -12,13 +12,13 @@ import '../../../util/Utils.dart';
 import '../../../util/const.dart';
 import '../../main_screen/view/main_screen.dart';
 import '../../main_screen/view/no_profile_image.dart';
-import '../../profile/model/user.dart';
+import '../../profile/model/user.dart' as fixmeUser;
 import 'login.dart';
 import 'security_pin.dart';
 import 'signup.dart';
 
 class PhoneNumberVerification extends StatefulWidget {
-  final User user;
+  final fixmeUser.User user;
   final String phone;
 
   const PhoneNumberVerification({Key key, this.user, @required this.phone})
@@ -112,7 +112,7 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
     };
 
     final PhoneVerificationFailed verificationFailed =
-        (AuthException authException) {
+        (FirebaseAuthException authException) {
       FlushBarCustomHelper.showErrorFlushbar(
         context,
         'Error',
@@ -226,12 +226,12 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
   }
 
   void verifyPhoneManually(String verficationId, String smsCode) async {
-    AuthCredential credential = PhoneAuthProvider.getCredential(
+    AuthCredential credential = PhoneAuthProvider.credential(
       verificationId: verificationId,
       smsCode: smsCode,
     );
 
-    await auth.signInWithCredential(credential).then((AuthResult result) {
+    await auth.signInWithCredential(credential).then(( result) {
       FlushBarCustomHelper.showInfoFlushbar(
         context,
         'Success',
@@ -377,7 +377,7 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
                                             height: 50,
                                             child: PinCodeTextField(
                                               length: 6,
-                                              obsecureText: false,
+                                              obscureText: true,
                                               animationType: AnimationType.fade,
                                               pinTheme: PinTheme(
                                                 shape: PinCodeFieldShape.box,
@@ -433,7 +433,7 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
                                                 //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
                                                 //but you can show anything you want here, like your pop up saying wrong paste format or etc
                                                 return true;
-                                              },
+                                              }, appContext: context,
                                             ),
                                           ),
                                     SizedBox(
